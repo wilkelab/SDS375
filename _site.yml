@@ -1,0 +1,14 @@
+name: "SDS375"
+title: "SDS 375"
+description: |
+  SDS 375
+output_dir: "docs"
+include: ["assignments/*"]
+navbar:
+  left:
+    - text: "Home"
+      href: index.html
+  right:
+    - text: "Syllabus"
+      href: syllabus.html
+output: distill::distill_article

@@ -1,0 +1,132 @@
+---
+title: "Syllabus"
+description: ""
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 2
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+## Purpose and contents of the class
+
+In this class, students will learn how to visualize data sets and how to reason about and communicate with data visualizations. A substantial component of this class will be dedicated to learning how to program in R. In addition, students will learn how to compile analyses and visualizations into reports, how to make the reports reproducible, and how to post reports on a website or blog.
+
+## Prerequisites
+
+The class requires no prior knowledge of programming. However, students are expected to have successfully completed SDS 328M before taking this class, and materials from SDS 328M will be considered known. In particular, students are expected to have some basic familiarity with the statistical language R.
+
+## Textbook
+
+This class draws heavily from materials presented in the following two books. Both books are freely available online and you do not need to purchase a physical copy of either book to succeed in this class.
+
+1. Claus O. Wilke. [Fundamentals of Data Visualization.](https://clauswilke.com/dataviz) O'Reilly Media, 2019.
+
+2. Kieran Healy. [Data Visualization: A Practical Introduction.](https://socviz.co/) Princeton University Press, 2018.
+
+## Topics covered
+
+::: l-page
+------------------------------------------------------------------
+  Class Topic                       Coding concepts covered
+------- --------------------------- ------------------------------
+1.      Introduction                RStudio setup online, R Markdown
+
+2.      Aesthetics                  ggplot2 quickstart
+
+3.      Visualizing amounts         `geom_col()`, `geom_point()`,
+                                    position adjustments
+
+4.      Visualizing distributions I stats, `geom_density()`,
+                                    `geom_histogram()`
+
+5.      Visualizing distributions   violin plots, sina plots, ridgeline plots
+        II
+
+6.      Coordinate systems and      coords and position scales
+        axes
+        
+7.      Color scales                color and fill scales
+
+8.      Figure design               ggplot themes
+
+9.      Data wrangling              `mutate()`, `filter()`, `arrange()`
+
+10.     Data wrangling              `group_by()`, `summarize()`, `count()`
+
+11.     Getting things into the     `fct_reorder()`, `fct_lump()`
+        right order
+
+12.     Visualizing proportions     bar charts, pie charts
+
+13.     Visualizing trends          `geom_smooth()`
+
+14.     Dimension reduction         principal components analysis
+
+15.     Hierarchical clustering
+
+16.     Visualizing uncertainty I   frequency framing, quantile dotplots
+
+17.     Visualizing uncertainty II  
+        
+18.     Visualizing geospatial      `geom_sf()`, `coord_sf()`
+        data I
+
+19.     Visualizing geospatial
+        data II
+
+20.     Color spaces, color vision
+        deficiency
+        
+21.     Redundant coding, text      ggrepel package
+        annotations
+
+22.     Over-plotting               jittering, 2d histograms,
+                                    contour plots
+
+23.     Figure titles, captions,
+        tables
+
+24.     Compound figures            patchwork package
+
+25.     Telling a story
+
+26.     Setting up a blog           distill package
+
+27.     Web technologies            HTML, CSS
+
+28.     Image formats, image        magick package
+        manipulation
+
+29.     Interactive plots           ggplotly
+
+30.     Animations                  gganimate
+----------------------------------------------------------------
+:::
+
+## Computing requirements
+
+Programming needs to be learned by doing, and much of the classroom time will be dedicated to working through simple problems. Therefore, students will be strongly encouraged to bring laptops or tablets (with bluetooth keyboard) into the classroom and to follow along as the material is presented. While no graded assignments in this class will require having a laptop, the overall learning experience will be much less rewarding for students who cannot participate in in-class activities. All programming exercises will be available through a web-based system, so the only system requirement for student laptops is a modern web browser.
+
+## Assignments and grading
+
+TBD
+
+## Late assignment policy
+
+TBD
+
+## Extra assignment for graduate course credit
+
+Graduate students who are taking this class for graduate course credit will have to complete one additional assignment. The assignment will be to write a brief report (4-5 pages, no more than 3 figures) applying concepts from this class to a dataset of the student’s choice. This assignment will be graded pass/fail, and a failing grade on this assignment will result in a 10% penalty on the total points obtained in the class. Students who receive a failing grade can submit a revised assignment for regrading. The last day by which a revised assignment can be submitted is the last day of class in the semester.
+
+## Special accommodations
+
+**Students with disabilities.** Students with disabilities may request appropriate accommodations from the Division of Diversity and Community Engagement, Services for Students with Disabilities, 512-471-6259, https://diversity.utexas.edu/disability/
+
+**Religious holy days.** Students who must miss a class or an assignment to observe a religious holy day will be given an opportunity to complete the missed work within a reasonable time after the absence. According to UT Austin policy, such students must notify me of the pending absence at least fourteen days prior to the date of observance of a religious holy day. 
+
