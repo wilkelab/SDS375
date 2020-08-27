@@ -3,7 +3,7 @@ title: "SDS 375"
 description: |
   SDS 375
 output_dir: "docs"
-include: ["assignments/*"]
+include: ["assignments/*", ".nojekyll"]
 navbar:
   left:
     - text: "Home"

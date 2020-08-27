@@ -17,3 +17,7 @@ knitr::opts_chunk$set(echo = FALSE)
 ```
 
 This is the home page for SDS 375, Data Visualization in R. All course materials will be posted on this site.
+
+Instructor: [Claus O. Wilke](https://clauswilke.com)  
+Meeting times: TTH 9:30am to 11:00am  
+Venue: online  
