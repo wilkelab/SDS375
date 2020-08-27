@@ -2,7 +2,6 @@
 title: "SDS 375"
 description: Data Visualization in R
 site: distill::distill_website
-creative_commons: CC BY
 ---
 
 ```{r setup, include=FALSE}
@@ -21,3 +20,35 @@ This is the home page for SDS 375, Data Visualization in R. All course materials
 Instructor: [Claus O. Wilke](https://clauswilke.com)  
 Meeting times: TTH 9:30am to 11:00am  
 Venue: online  
+
+
+## Computing requirements
+
+For students enrolled in this course, you only need a working web browser to access the RStudio class server.
+
+To run any of the materials locally on your own machine, you will need the following:
+
+- A recent version of R, [download from here.](https://cloud.r-project.org/)
+- A recent version of RStudio, [download from here.](https://rstudio.com/products/rstudio/download/#download)
+- The following R packages:    
+  colorspace, cowplot, distill, gganimate, ggforce, ggdist, ggrepel, ggridges, ggtext, magick, palmerpenguins, patchwork, plotly, recipes, sf, tidyverse
+  
+  
+You can install all required R packages at once by running the following code in the R command line:
+
+```{r eval = FALSE, echo = TRUE}
+install.packages(
+  c(
+    "colorspace", "cowplot", "distill",
+    "gganimate", "ggforce", "ggdist",
+    "ggrepel", "ggridges", "ggtext",
+    "magick", "palmerpenguins", "patchwork",
+    "plotly", "recipes", "sf",
+    "tidyverse"
+  )
+)
+```
+
+## Reuse {.appendix}
+
+Text and figures are licensed under Creative Commons Attribution [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Note that figures in slides may be pulled in from external sources and may be licensed under different terms.

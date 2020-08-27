@@ -65,19 +65,18 @@ This class draws heavily from materials presented in the following two books. Bo
 
 13.     Visualizing trends          `geom_smooth()`
 
-14.     Dimension reduction         principal components analysis
+14.     Dimension reduction 1       recipes package
 
-15.     Hierarchical clustering
+15.     Dimension reduction 2        
 
-16.     Visualizing uncertainty I   frequency framing, quantile dotplots
+16.     Hierarchical clustering
 
-17.     Visualizing uncertainty II  
+17.     Visualizing uncertainty I   frequency framing, quantile dotplots
+
+18.     Visualizing uncertainty II  
         
-18.     Visualizing geospatial      `geom_sf()`, `coord_sf()`
-        data I
-
-19.     Visualizing geospatial
-        data II
+19.     Visualizing geospatial      `geom_sf()`, `coord_sf()`
+        data
 
 20.     Color spaces, color vision
         deficiency

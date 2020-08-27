@@ -23,7 +23,6 @@
 
   <meta property="description" itemprop="description" content="Data Visualization in R"/>
 
-  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/"/>
 
 
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
@@ -42,7 +41,7 @@
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","site","creative_commons"]}},"value":[{"type":"character","attributes":{},"value":["SDS 375"]},{"type":"character","attributes":{},"value":["Data Visualization in R"]},{"type":"character","attributes":{},"value":["distill::distill_website"]},{"type":"character","attributes":{},"value":["CC BY"]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","site"]}},"value":[{"type":"character","attributes":{},"value":["SDS 375"]},{"type":"character","attributes":{},"value":["Data Visualization in R"]},{"type":"character","attributes":{},"value":["distill::distill_website"]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   <!--radix_placeholder_navigation_in_header-->
@@ -1316,6 +1315,31 @@
 <p>Instructor: <a href="https://clauswilke.com">Claus O. Wilke</a><br />
 Meeting times: TTH 9:30am to 11:00am<br />
 Venue: online</p>
+<h2 id="computing-requirements">Computing requirements</h2>
+<p>For students enrolled in this course, you only need a working web browser to access the RStudio class server.</p>
+<p>To run any of the materials locally on your own machine, you will need the following:</p>
+<ul>
+<li>A recent version of R, <a href="https://cloud.r-project.org/">download from here.</a></li>
+<li>A recent version of RStudio, <a href="https://rstudio.com/products/rstudio/download/#download">download from here.</a></li>
+<li>The following R packages:<br />
+colorspace, cowplot, distill, gganimate, ggforce, ggdist, ggrepel, ggridges, ggtext, magick, palmerpenguins, patchwork, plotly, recipes, sf, tidyverse</li>
+</ul>
+<p>You can install all required R packages at once by running the following code in the R command line:</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+install.packages(
+  c(
+    &quot;colorspace&quot;, &quot;cowplot&quot;, &quot;distill&quot;,
+    &quot;gganimate&quot;, &quot;ggforce&quot;, &quot;ggdist&quot;,
+    &quot;ggrepel&quot;, &quot;ggridges&quot;, &quot;ggtext&quot;,
+    &quot;magick&quot;, &quot;palmerpenguins&quot;, &quot;patchwork&quot;,
+    &quot;plotly&quot;, &quot;recipes&quot;, &quot;sf&quot;,
+    &quot;tidyverse&quot;
+  )
+)</code></pre>
+</div>
+<h2 class="appendix" id="reuse">Reuse</h2>
+<p>Text and figures are licensed under Creative Commons Attribution <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Note that figures in slides may be pulled in from external sources and may be licensed under different terms.</p>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
@@ -1327,10 +1351,7 @@ Venue: online</p>
 <!--radix_placeholder_site_after_body-->
 <!--/radix_placeholder_site_after_body-->
 <!--radix_placeholder_appendices-->
-<div class="appendix-bottom">
-<h3 id="reuse">Reuse</h3>
-<p>Text and figures are licensed under Creative Commons Attribution <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. The figures that have been reused from other sources don't fall under this license and can be recognized by a note in their caption: "Figure from ...".</p>
-</div>
+<div class="appendix-bottom"></div>
 <!--/radix_placeholder_appendices-->
 <!--radix_placeholder_navigation_after_body-->
 <!--/radix_placeholder_navigation_after_body-->
