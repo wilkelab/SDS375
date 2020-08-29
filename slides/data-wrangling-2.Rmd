@@ -1,0 +1,97 @@
+---
+title: "Data wrangling 2"
+author: "Claus O. Wilke"
+date: "last updated: `r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      ratio: '16:9'
+      highlightStyle: github
+      highlightLines: true
+      #slideNumberFormat: '%current%' 
+      slideNumberFormat: '' 
+      countIncrementalSlides: false
+      titleSlideClass: [center, middle]
+---
+
+```{r setup, include=FALSE, echo=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(comment = "")
+
+library(tidyverse)
+library(palmerpenguins)
+```
+
+
+# Elementary data manipulations
+
+Previous class:
+
+- Pick rows: `filter()`
+- Pick columns: `select()`
+- Sort rows: `arrange()`
+
+--
+
+This class:
+
+- Make new columns: `mutate()`
+- Count: `count()`
+
+---
+
+background-image: url(data-wrangling-2_files/mutate.svg)
+background-position: 50% 60%
+background-size: 75%
+
+# Make a new table column: `mutate()`
+
+---
+
+# Make a new column
+
+```{r}
+penguins %>%
+  select(species, island, flipper_length_mm) %>%
+  mutate(flipper_length_cm = flipper_length_mm / 10)
+```
+
+---
+
+# Make multiple columns at once
+
+We can create multiple columns in one `mutate()` statement:
+
+```{r}
+penguins %>%
+  select(species, island, flipper_length_mm) %>%
+  mutate(
+    flipper_length_cm = flipper_length_mm / 10,  # <- notice the comma
+    flipper_length_in = flipper_length_mm / 25.4
+  )
+```
+
+---
+
+# Count things
+
+```{r}
+penguins %>%
+  count(species)
+```
+
+
+---
+
+# Count things
+
+```{r}
+penguins %>%
+  count(species, island)
+```
+
+---
+
+# TODO: combine multiple steps into pipeline
+

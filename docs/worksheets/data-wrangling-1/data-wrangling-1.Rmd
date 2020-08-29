@@ -1,0 +1,257 @@
+---
+#############################################################
+#                                                           #
+# Click on "Run Document" in RStudio to run this worksheet. #
+#                                                           #
+#############################################################
+title: "Data wrangling 1"
+author: "Claus O. Wilke"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(tibble)
+knitr::opts_chunk$set(echo = FALSE, comment = "")
+```
+
+## Introduction
+
+In this worksheet, we will discuss how to perform basic data manipulations, such as filtering data rows that meet certain conditions, arranging data in ascending or descending order, and creating new data columns.
+
+We will be using two R packages, {palmerpenguins} for the `penguins` dataset and {dplyr} for the data manipulation functions `%>%`, `filter()`, `arrange()`, `mutate()`.
+
+```{r library-calls, echo = TRUE, message = FALSE}
+# load required libraries
+library(palmerpenguins)
+library(dplyr)
+```
+
+## The pipe (`%>%`, read: "and then")
+
+When writing complex data analysis pipelines, we frequently use the pipe operator `%>%` to move data from one analysis step to the next. The pipe is pronounced "and then", and it takes the data on its left and uses it as the first argument for the function on its right.
+
+For example, to see the first few lines of a dataset, we often write `head(data)`. Instead, we can write `data %>% head()`.
+
+Try this yourself. Write code that displays the first few lines of the `penguins` dataset, using `%>%` and `head()`:
+
+```{r pipe, exercise=TRUE, exercise.eval=TRUE}
+penguins
+```
+
+```{r pipe-hint}
+penguins ___ head()
+```
+
+```{r pipe-solution}
+penguins %>% head()
+```
+
+
+## Filtering data
+
+The function `filter()` allows you to find rows in a dataset that meet one or more specific conditions. The syntax is `data %>% filter(condition)`, where condition is a logical condition. For example, `filter(x > 5)` would pick all rows for which the value in column `x` is greater than 5.
+
+As an example, the following code picks all penguins from the island Biscoe:
+
+```{r filter-island-demo, echo=TRUE}
+penguins %>%
+  filter(island == "Biscoe")
+```
+
+Now it's your turn. Pick all penguins from the island Dream:
+
+```{r filter-island, exercise=TRUE}
+penguins %>%
+  filter(___)
+```
+
+```{r filter-island-solution}
+penguins %>%
+  filter(island == "Dream")
+```
+
+### Filtering for multiple conditions
+
+You can also state multiple conditions, separated by a comma. For example, `filter(x > 5, y < 2)` would pick all rows for which the value in the column `x` is greater than 5 and the value in the column `y` is less than 2. Note that the conditions are combined via logical and, both need to be satisfied for the row to be picked.
+
+To try this out, pick all penguins of species Chinstrap from the island Dream:
+
+```{r filter-species-island, exercise=TRUE}
+penguins %>%
+  filter(___, ___)
+```
+
+```{r filter-species-island-hint}
+penguins %>%
+  filter(species == ___, island == ___)
+```
+
+```{r filter-species-island-solution}
+penguins %>%
+  filter(species == "Chinstrap", island == "Dream")
+```
+
+```{r penguin-island, echo=FALSE}
+question("Which penguins species can be found on the island Dream?",
+  answer("Adelie"),
+  answer("Chinstrap"),
+  answer("Gentoo"),
+  answer("Adelie and Chinstrap", correct = TRUE),
+  answer("Adelie and Gentoo")
+)
+```
+
+## Sorting data
+
+The function `arrange()` allows you to sort data by one or more columns. For example, `data %>% arrange(x)` would sort the data by increasing values of `x`, and `data %>% arrange(x, y)` would sort the data first by `x` and then, for ties in `x`, by `y`.
+
+As an example, the following code sorts penguins by their flipper length:
+
+```{r arrange-flipper-demo, echo=TRUE}
+penguins %>%
+  arrange(flipper_length_mm)
+```
+
+Now it's your turn. Sort the penguins by bill length:
+
+```{r arrange-bill-length, exercise=TRUE}
+penguins %>%
+  arrange(___)
+```
+
+```{r arrange-bill-length-solution}
+penguins %>%
+  arrange(bill_length_mm)
+```
+
+### Arranging in descending order
+
+To arrange data in descending order, enclose the data column in `desc()`. For example, `data %>% arrange(desc(x))` would sort the data by decreasing values of `x`.
+
+Try this out. Sort the penguins by body mass, from largest to smallest:
+
+```{r arrange-body-mass, exercise=TRUE}
+penguins %>%
+  arrange(___)
+```
+
+```{r arrange-body-mass-hint}
+penguins %>%
+  arrange(___(body_mass_g))
+```
+
+```{r arrange-body-mass-solution}
+penguins %>%
+  arrange(desc(body_mass_g))
+```
+
+
+## Creating new data columns
+
+The function `mutate()` allows you to add new columns to a data table. For example, `data %>% mutate(xy = x + y)` would create a new column `xy` that is the sum of the columns `x` and `y`:
+
+```{r simple-mutate-example, echo=TRUE, eval=FALSE}
+data <- tibble(x = 1:3, y = c(10, 20, 30))
+data
+```
+
+```{r simple-mutate-example-code, echo=FALSE, eval=TRUE}
+data <- tibble(x = 1:3, y = c(10, 20, 30))
+print(data)
+```
+
+```{r simple-mutate-example2, echo=TRUE, eval=FALSE}
+data %>%
+  mutate(
+    xy = x + y
+  )
+```
+
+```{r simple-mutate-example2-code, echo=FALSE, eval=TRUE}
+data %>%
+  mutate(
+    xy = x + y
+  ) %>%
+  print()
+```
+
+
+Note that the part to the left of the equals sign (here, `xy`) is the name of the new column, and the part to the right of the equals sign (here, `x + y`) is an R expression that evaluates to the values in the new column.
+
+Now apply this concept to the `penguins` dataset, and add a new column `bill_ratio` that is the ratio of bill length and bill depth:
+
+```{r mutate-bill-ratio, exercise=TRUE}
+penguins %>%
+  mutate(
+    ___ = ___
+  )
+```
+
+```{r mutate-bill-ratio-hint}
+penguins %>%
+  mutate(
+    bill_ratio = ___
+  )
+```
+
+```{r mutate-bill-ratio-solution}
+penguins %>%
+  mutate(
+    bill_ratio = bill_length_mm / bill_depth_mm
+  )
+```
+
+## Chaining analysis steps into pipelines
+
+We can chain multiple analysis steps into a pipeline by continuing to add "and then" statements. For example, `data %>% filter(...) %>% arrange(...)` would first filter and then sort the data.
+
+Try this out by creating a new column `bill_ratio` as in the previous exercise, filter penguins whose bill ratio is > 3.45, and then sort in descending order of bill ratio.
+
+```{r analysis-chain, exercise=TRUE}
+penguins %>%
+  mutate(
+    bill_ratio = ___
+  ) %>%
+  filter(___) %>%
+  arrange(___)
+```
+
+```{r analysis-chain-hint-1}
+penguins %>%
+  mutate(
+    bill_ratio = bill_length_mm / bill_depth_mm
+  ) %>%
+  filter(___) %>%
+  arrange(___)
+```
+
+```{r analysis-chain-hint-2}
+penguins %>%
+  mutate(
+    bill_ratio = bill_length_mm / bill_depth_mm
+  ) %>%
+  filter(bill_ratio > ___) %>%
+  arrange(___(bill_ratio))
+```
+
+```{r analysis-chain-solution}
+penguins %>%
+  mutate(
+    bill_ratio = bill_length_mm / bill_depth_mm
+  ) %>%
+  filter(bill_ratio > 3.45) %>%
+  arrange(desc(bill_ratio))
+```
+
+
+```{r analysis-chain-quiz, echo=FALSE}
+question("What is the species and sex of the penguin with the largest bill ratio?",
+  answer("Adelie, female"),
+  answer("Chinstrap, female"),
+  answer("Chinstrap, male"),
+  answer("Gentoo, female"),
+  answer("Gentoo, male", correct = TRUE)
+)
+```

@@ -31,7 +31,7 @@ To run any of the materials locally on your own machine, you will need the follo
 - A recent version of R, [download from here.](https://cloud.r-project.org/)
 - A recent version of RStudio, [download from here.](https://rstudio.com/products/rstudio/download/#download)
 - The following R packages:    
-  colorspace, cowplot, distill, gganimate, ggforce, ggdist, ggrepel, ggridges, ggtext, magick, palmerpenguins, patchwork, plotly, recipes, sf, tidyverse
+  colorspace, cowplot, distill, gganimate, ggforce, ggdist, ggrepel, ggridges, ggtext, learnr, magick, palmerpenguins, patchwork, plotly, recipes, sf, tidyverse
   
   
 You can install all required R packages at once by running the following code in the R command line:
@@ -39,11 +39,10 @@ You can install all required R packages at once by running the following code in
 ```{r eval = FALSE, echo = TRUE}
 install.packages(
   c(
-    "colorspace", "cowplot", "distill",
-    "gganimate", "ggforce", "ggdist",
-    "ggrepel", "ggridges", "ggtext",
-    "magick", "palmerpenguins", "patchwork",
-    "plotly", "recipes", "sf",
+    "colorspace", "cowplot", "distill", "gganimate",
+    "ggforce", "ggdist", "ggrepel", "ggridges",
+    "ggtext", "learnr", "magick", "palmerpenguins",
+    "patchwork", "plotly", "recipes", "sf",
     "tidyverse"
   )
 )

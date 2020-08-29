@@ -1,0 +1,98 @@
+---
+title: "Data wrangling 1"
+author: "Claus O. Wilke"
+date: "last updated: `r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      ratio: '16:9'
+      highlightStyle: github
+      highlightLines: true
+      #slideNumberFormat: '%current%' 
+      slideNumberFormat: '' 
+      countIncrementalSlides: false
+      titleSlideClass: [center, middle]
+---
+
+```{r setup, include=FALSE, echo=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(comment = "")
+
+library(tidyverse)
+library(palmerpenguins)
+```
+
+
+# Elementary data manipulations
+
+This class:
+
+- Pick rows
+- Pick columns
+- Sort rows
+
+--
+
+Next class:
+
+- Make new columns
+- Count
+
+---
+
+# TODO: explain the pipe
+
+---
+
+background-image: url(data-wrangling-1_files/filter.svg)
+background-position: 50% 60%
+background-size: 75%
+
+# Pick rows from a table: `filter()`
+
+---
+
+# Filter out penguins of species Gentoo
+
+```{r}
+penguins %>%
+  filter(species == "Gentoo")
+```
+
+---
+
+# Filter out penguins with bill length > 50 mm
+
+```{r}
+penguins %>%
+  filter(bill_length_mm > 50)
+```
+
+---
+
+background-image: url(data-wrangling-1_files/arrange.svg)
+background-position: 50% 60%
+background-size: 75%
+
+# Sort the rows in a table: `arrange()`
+
+---
+
+# Sort penguins by bill length, ascending
+
+```{r}
+penguins %>%
+  arrange(bill_length_mm)
+```
+
+---
+
+# Sort penguins by bill length, descending
+
+```{r}
+penguins %>%
+  arrange(desc(bill_length_mm))
+```
+
+
