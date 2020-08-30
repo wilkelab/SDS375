@@ -6,7 +6,7 @@
     <meta name="author" content="Claus O. Wilke" />
     <script src="libs/header-attrs/header-attrs.js"></script>
     <link href="libs/remark-css/default.css" rel="stylesheet" />
-    <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
+    <link rel="stylesheet" href="Wilke-slides-theme.css" type="text/css" />
   </head>
   <body>
     <textarea id="source">
@@ -14,7 +14,7 @@ class: center, middle, title-slide
 
 # Data wrangling 2
 ### Claus O. Wilke
-### last updated: 2020-08-28
+### last updated: 2020-08-30
 
 ---
 
@@ -30,6 +30,9 @@ Previous class:
 - Pick columns: `select()`
 - Sort rows: `arrange()`
 
+&lt;br&gt;
+
+
 --
 
 This class:
@@ -38,12 +41,13 @@ This class:
 - Count: `count()`
 
 ---
-
-background-image: url(data-wrangling-2_files/mutate.svg)
-background-position: 50% 60%
-background-size: 75%
-
 # Make a new table column: `mutate()`
+
+&lt;br&gt;
+
+.center[
+&lt;img src = "data-wrangling-2_files/mutate.svg", width = 75%&gt;&lt;/img&gt;
+]
 
 ---
 
@@ -75,10 +79,9 @@ penguins %&gt;%
 
 ---
 
-# Make multiple columns at once
+# Make multiple columns in one `mutate()` statement
 
-We can create multiple columns in one `mutate()` statement:
-
+.small-font[
 
 ```r
 penguins %&gt;%
@@ -105,6 +108,7 @@ penguins %&gt;%
 10 Adelie  Torgersen               190              19                7.48
 # … with 334 more rows
 ```
+]
 
 ---
 
@@ -158,8 +162,7 @@ penguins %&gt;%
 "ratio": "16:9",
 "highlightStyle": "github",
 "highlightLines": true,
-"slideNumberFormat": "",
-"countIncrementalSlides": false
+"slideNumberFormat": ""
 });
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   window.dispatchEvent(new Event('resize'));

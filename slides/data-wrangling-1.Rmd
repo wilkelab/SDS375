@@ -4,14 +4,13 @@ author: "Claus O. Wilke"
 date: "last updated: `r Sys.Date()`"
 output:
   xaringan::moon_reader:
+    css: [default, "Wilke-slides-theme.css"]
     lib_dir: libs
     nature:
       ratio: '16:9'
       highlightStyle: github
       highlightLines: true
-      #slideNumberFormat: '%current%' 
-      slideNumberFormat: '' 
-      countIncrementalSlides: false
+      slideNumberFormat: ''
       titleSlideClass: [center, middle]
 ---
 
@@ -21,6 +20,9 @@ knitr::opts_chunk$set(comment = "")
 
 library(tidyverse)
 library(palmerpenguins)
+# ggplot2 settings so plots scale well for slide size 
+theme_set(theme_gray(18))
+update_geom_defaults("point", list(size = 2.5))
 ```
 
 
@@ -32,6 +34,8 @@ This class:
 - Pick columns
 - Sort rows
 
+<br>
+
 --
 
 Next class:
@@ -40,59 +44,146 @@ Next class:
 - Count
 
 ---
+class: center, middle
 
-# TODO: explain the pipe
+# But first: the pipe operator `%>%`
+
+---
+class: center, middle
+
+# `%>%` is pronounced "and then"
 
 ---
 
-background-image: url(data-wrangling-1_files/filter.svg)
-background-position: 50% 60%
-background-size: 75%
+# The pipe `%>%` feeds data into functions
+
+.small-font[
+```{r}
+head(penguins)
+```
+]
+
+---
+
+# The pipe `%>%` feeds data into functions
+
+.small-font[
+```{r}
+# head(penguins)
+
+penguins %>%
+  head()
+```
+]
+
+
+---
+
+# The pipe `%>%` feeds data into functions
+
+.tiny-font[
+```{r warning=FALSE, fig.height=5}
+ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = species)) + geom_point()
+```
+]
+
+---
+
+# The pipe `%>%` feeds data into functions
+
+.tiny-font[
+```{r warning=FALSE, fig.height=5}
+# ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = species)) + geom_point()
+
+penguins %>%
+  ggplot(aes(bill_length_mm, bill_depth_mm, color = species)) + geom_point()
+```
+]
+
+---
 
 # Pick rows from a table: `filter()`
+
+<br>
+
+.center[
+<img src = "data-wrangling-1_files/filter.svg", width = 75%></img>
+]
+
 
 ---
 
 # Filter out penguins of species Gentoo
 
+.small-font[
 ```{r}
 penguins %>%
   filter(species == "Gentoo")
 ```
+]
 
 ---
 
 # Filter out penguins with bill length > 50 mm
 
+.small-font[
 ```{r}
 penguins %>%
   filter(bill_length_mm > 50)
 ```
+]
 
 ---
 
-background-image: url(data-wrangling-1_files/arrange.svg)
-background-position: 50% 60%
-background-size: 75%
+# Pick columns from a table: `select()`
+
+<br>
+
+.center[
+<img src = "data-wrangling-1_files/select.svg", width = 75%></img>
+]
+
+
+---
+
+# Pick columns `species`, `island`, and `sex`
+
+.small-font[
+```{r}
+penguins %>%
+  select(species, island, sex)
+```
+]
+
+---
 
 # Sort the rows in a table: `arrange()`
+
+<br>
+
+.center[
+<img src = "data-wrangling-1_files/arrange.svg", width = 75%></img>
+]
 
 ---
 
 # Sort penguins by bill length, ascending
 
+.small-font[
 ```{r}
 penguins %>%
   arrange(bill_length_mm)
 ```
+]
 
 ---
 
 # Sort penguins by bill length, descending
 
+.small-font[
 ```{r}
 penguins %>%
   arrange(desc(bill_length_mm))
 ```
-
+]
 

@@ -6,7 +6,7 @@
     <meta name="author" content="Claus O. Wilke" />
     <script src="libs/header-attrs/header-attrs.js"></script>
     <link href="libs/remark-css/default.css" rel="stylesheet" />
-    <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
+    <link rel="stylesheet" href="Wilke-slides-theme.css" type="text/css" />
   </head>
   <body>
     <textarea id="source">
@@ -14,7 +14,7 @@ class: center, middle, title-slide
 
 # Data wrangling 1
 ### Claus O. Wilke
-### last updated: 2020-08-29
+### last updated: 2020-08-30
 
 ---
 
@@ -30,6 +30,8 @@ This class:
 - Pick columns
 - Sort rows
 
+&lt;br&gt;
+
 --
 
 Next class:
@@ -38,21 +40,112 @@ Next class:
 - Count
 
 ---
+class: center, middle
 
-# TODO: explain the pipe
+# But first: the pipe operator `%&gt;%`
+
+---
+class: center, middle
+
+# `%&gt;%` is pronounced "and then"
 
 ---
 
-background-image: url(data-wrangling-1_files/filter.svg)
-background-position: 50% 60%
-background-size: 75%
+# The pipe `%&gt;%` feeds data into functions
+
+.small-font[
+
+```r
+head(penguins)
+```
+
+```
+# A tibble: 6 x 8
+  species island bill_length_mm bill_depth_mm flipper_length_… body_mass_g sex  
+  &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;            &lt;int&gt;       &lt;int&gt; &lt;fct&gt;
+1 Adelie  Torge…           39.1          18.7              181        3750 male 
+2 Adelie  Torge…           39.5          17.4              186        3800 fema…
+3 Adelie  Torge…           40.3          18                195        3250 fema…
+4 Adelie  Torge…           NA            NA                 NA          NA &lt;NA&gt; 
+5 Adelie  Torge…           36.7          19.3              193        3450 fema…
+6 Adelie  Torge…           39.3          20.6              190        3650 male 
+# … with 1 more variable: year &lt;int&gt;
+```
+]
+
+---
+
+# The pipe `%&gt;%` feeds data into functions
+
+.small-font[
+
+```r
+# head(penguins)
+
+penguins %&gt;%
+  head()
+```
+
+```
+# A tibble: 6 x 8
+  species island bill_length_mm bill_depth_mm flipper_length_… body_mass_g sex  
+  &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;            &lt;int&gt;       &lt;int&gt; &lt;fct&gt;
+1 Adelie  Torge…           39.1          18.7              181        3750 male 
+2 Adelie  Torge…           39.5          17.4              186        3800 fema…
+3 Adelie  Torge…           40.3          18                195        3250 fema…
+4 Adelie  Torge…           NA            NA                 NA          NA &lt;NA&gt; 
+5 Adelie  Torge…           36.7          19.3              193        3450 fema…
+6 Adelie  Torge…           39.3          20.6              190        3650 male 
+# … with 1 more variable: year &lt;int&gt;
+```
+]
+
+
+---
+
+# The pipe `%&gt;%` feeds data into functions
+
+.tiny-font[
+
+```r
+ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = species)) + geom_point()
+```
+
+![](data-wrangling-1_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+]
+
+---
+
+# The pipe `%&gt;%` feeds data into functions
+
+.tiny-font[
+
+```r
+# ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = species)) + geom_point()
+
+penguins %&gt;%
+  ggplot(aes(bill_length_mm, bill_depth_mm, color = species)) + geom_point()
+```
+
+![](data-wrangling-1_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
+]
+
+---
 
 # Pick rows from a table: `filter()`
+
+&lt;br&gt;
+
+.center[
+&lt;img src = "data-wrangling-1_files/filter.svg", width = 75%&gt;&lt;/img&gt;
+]
+
 
 ---
 
 # Filter out penguins of species Gentoo
 
+.small-font[
 
 ```r
 penguins %&gt;%
@@ -75,11 +168,13 @@ penguins %&gt;%
 10 Gentoo  Biscoe           46.8          15.4              215        5150
 # … with 114 more rows, and 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;
 ```
+]
 
 ---
 
 # Filter out penguins with bill length &gt; 50 mm
 
+.small-font[
 
 ```r
 penguins %&gt;%
@@ -102,19 +197,63 @@ penguins %&gt;%
 10 Gentoo  Biscoe           52.5          15.6              221        5450
 # … with 42 more rows, and 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;
 ```
+]
 
 ---
 
-background-image: url(data-wrangling-1_files/arrange.svg)
-background-position: 50% 60%
-background-size: 75%
+# Pick columns from a table: `select()`
+
+&lt;br&gt;
+
+.center[
+&lt;img src = "data-wrangling-1_files/select.svg", width = 75%&gt;&lt;/img&gt;
+]
+
+
+---
+
+# Pick columns `species`, `island`, and `sex`
+
+.small-font[
+
+```r
+penguins %&gt;%
+  select(species, island, sex)
+```
+
+```
+# A tibble: 344 x 3
+   species island    sex   
+   &lt;fct&gt;   &lt;fct&gt;     &lt;fct&gt; 
+ 1 Adelie  Torgersen male  
+ 2 Adelie  Torgersen female
+ 3 Adelie  Torgersen female
+ 4 Adelie  Torgersen &lt;NA&gt;  
+ 5 Adelie  Torgersen female
+ 6 Adelie  Torgersen male  
+ 7 Adelie  Torgersen female
+ 8 Adelie  Torgersen male  
+ 9 Adelie  Torgersen &lt;NA&gt;  
+10 Adelie  Torgersen &lt;NA&gt;  
+# … with 334 more rows
+```
+]
+
+---
 
 # Sort the rows in a table: `arrange()`
+
+&lt;br&gt;
+
+.center[
+&lt;img src = "data-wrangling-1_files/arrange.svg", width = 75%&gt;&lt;/img&gt;
+]
 
 ---
 
 # Sort penguins by bill length, ascending
 
+.small-font[
 
 ```r
 penguins %&gt;%
@@ -137,11 +276,13 @@ penguins %&gt;%
 10 Adelie  Biscoe           35            17.9              190        3450
 # … with 334 more rows, and 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;
 ```
+]
 
 ---
 
 # Sort penguins by bill length, descending
 
+.small-font[
 
 ```r
 penguins %&gt;%
@@ -164,7 +305,7 @@ penguins %&gt;%
 10 Chinst… Dream            52.8          20                205        4550
 # … with 334 more rows, and 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;
 ```
-
+]
 
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
@@ -173,8 +314,7 @@ penguins %&gt;%
 "ratio": "16:9",
 "highlightStyle": "github",
 "highlightLines": true,
-"slideNumberFormat": "",
-"countIncrementalSlides": false
+"slideNumberFormat": ""
 });
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   window.dispatchEvent(new Event('resize'));

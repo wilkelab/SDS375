@@ -6,7 +6,7 @@
     <meta name="author" content="Claus O. Wilke" />
     <script src="libs/header-attrs/header-attrs.js"></script>
     <link href="libs/remark-css/default.css" rel="stylesheet" />
-    <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
+    <link rel="stylesheet" href="Wilke-slides-theme.css" type="text/css" />
   </head>
   <body>
     <textarea id="source">
@@ -14,7 +14,7 @@ class: center, middle, title-slide
 
 # Data wrangling 1
 ### Claus O. Wilke
-### last updated: 2020-08-28
+### last updated: 2020-08-30
 
 ---
 
@@ -30,6 +30,8 @@ This class:
 - Pick columns
 - Sort rows
 
+&lt;br&gt;
+
 --
 
 Next class:
@@ -38,21 +40,112 @@ Next class:
 - Count
 
 ---
+class: center, middle
 
-# TODO: explain the pipe
+# But first: the pipe operator `%&gt;%`
+
+---
+class: center, middle
+
+# `%&gt;%` is pronounced "and then"
 
 ---
 
-background-image: url(data-wrangling-1_files/filter.svg)
-background-position: 50% 60%
-background-size: 75%
+# The pipe `%&gt;%` feeds data into functions
+
+.small-font[
+
+```r
+head(penguins)
+```
+
+```
+# A tibble: 6 x 8
+  species island bill_length_mm bill_depth_mm flipper_length_… body_mass_g sex  
+  &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;            &lt;int&gt;       &lt;int&gt; &lt;fct&gt;
+1 Adelie  Torge…           39.1          18.7              181        3750 male 
+2 Adelie  Torge…           39.5          17.4              186        3800 fema…
+3 Adelie  Torge…           40.3          18                195        3250 fema…
+4 Adelie  Torge…           NA            NA                 NA          NA &lt;NA&gt; 
+5 Adelie  Torge…           36.7          19.3              193        3450 fema…
+6 Adelie  Torge…           39.3          20.6              190        3650 male 
+# … with 1 more variable: year &lt;int&gt;
+```
+]
+
+---
+
+# The pipe `%&gt;%` feeds data into functions
+
+.small-font[
+
+```r
+# head(penguins)
+
+penguins %&gt;%
+  head()
+```
+
+```
+# A tibble: 6 x 8
+  species island bill_length_mm bill_depth_mm flipper_length_… body_mass_g sex  
+  &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;            &lt;int&gt;       &lt;int&gt; &lt;fct&gt;
+1 Adelie  Torge…           39.1          18.7              181        3750 male 
+2 Adelie  Torge…           39.5          17.4              186        3800 fema…
+3 Adelie  Torge…           40.3          18                195        3250 fema…
+4 Adelie  Torge…           NA            NA                 NA          NA &lt;NA&gt; 
+5 Adelie  Torge…           36.7          19.3              193        3450 fema…
+6 Adelie  Torge…           39.3          20.6              190        3650 male 
+# … with 1 more variable: year &lt;int&gt;
+```
+]
+
+
+---
+
+# The pipe `%&gt;%` feeds data into functions
+
+.tiny-font[
+
+```r
+ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = species)) + geom_point()
+```
+
+![](data-wrangling-1_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+]
+
+---
+
+# The pipe `%&gt;%` feeds data into functions
+
+.tiny-font[
+
+```r
+# ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = species)) + geom_point()
+
+penguins %&gt;%
+  ggplot(aes(bill_length_mm, bill_depth_mm, color = species)) + geom_point()
+```
+
+![](data-wrangling-1_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
+]
+
+---
 
 # Pick rows from a table: `filter()`
+
+&lt;br&gt;
+
+.center[
+&lt;img src = "data-wrangling-1_files/filter.svg", width = 75%&gt;&lt;/img&gt;
+]
+
 
 ---
 
 # Filter out penguins of species Gentoo
 
+.small-font[
 
 ```r
 penguins %&gt;%
@@ -61,25 +154,27 @@ penguins %&gt;%
 
 ```
 # A tibble: 124 x 8
-   species island bill_length_mm bill_depth_mm flipper_length_mm body_mass_g sex     year
-   &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt; &lt;fct&gt;  &lt;int&gt;
- 1 Gentoo  Biscoe           46.1          13.2               211        4500 female  2007
- 2 Gentoo  Biscoe           50            16.3               230        5700 male    2007
- 3 Gentoo  Biscoe           48.7          14.1               210        4450 female  2007
- 4 Gentoo  Biscoe           50            15.2               218        5700 male    2007
- 5 Gentoo  Biscoe           47.6          14.5               215        5400 male    2007
- 6 Gentoo  Biscoe           46.5          13.5               210        4550 female  2007
- 7 Gentoo  Biscoe           45.4          14.6               211        4800 female  2007
- 8 Gentoo  Biscoe           46.7          15.3               219        5200 male    2007
- 9 Gentoo  Biscoe           43.3          13.4               209        4400 female  2007
-10 Gentoo  Biscoe           46.8          15.4               215        5150 male    2007
-# … with 114 more rows
+   species island bill_length_mm bill_depth_mm flipper_length_… body_mass_g
+   &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;            &lt;int&gt;       &lt;int&gt;
+ 1 Gentoo  Biscoe           46.1          13.2              211        4500
+ 2 Gentoo  Biscoe           50            16.3              230        5700
+ 3 Gentoo  Biscoe           48.7          14.1              210        4450
+ 4 Gentoo  Biscoe           50            15.2              218        5700
+ 5 Gentoo  Biscoe           47.6          14.5              215        5400
+ 6 Gentoo  Biscoe           46.5          13.5              210        4550
+ 7 Gentoo  Biscoe           45.4          14.6              211        4800
+ 8 Gentoo  Biscoe           46.7          15.3              219        5200
+ 9 Gentoo  Biscoe           43.3          13.4              209        4400
+10 Gentoo  Biscoe           46.8          15.4              215        5150
+# … with 114 more rows, and 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;
 ```
+]
 
 ---
 
 # Filter out penguins with bill length &gt; 50 mm
 
+.small-font[
 
 ```r
 penguins %&gt;%
@@ -88,33 +183,77 @@ penguins %&gt;%
 
 ```
 # A tibble: 52 x 8
-   species island bill_length_mm bill_depth_mm flipper_length_mm body_mass_g sex    year
-   &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt; &lt;fct&gt; &lt;int&gt;
- 1 Gentoo  Biscoe           50.2          14.3               218        5700 male   2007
- 2 Gentoo  Biscoe           59.6          17                 230        6050 male   2007
- 3 Gentoo  Biscoe           50.5          15.9               222        5550 male   2008
- 4 Gentoo  Biscoe           50.5          15.9               225        5400 male   2008
- 5 Gentoo  Biscoe           50.1          15                 225        5000 male   2008
- 6 Gentoo  Biscoe           50.4          15.3               224        5550 male   2008
- 7 Gentoo  Biscoe           54.3          15.7               231        5650 male   2008
- 8 Gentoo  Biscoe           50.7          15                 223        5550 male   2008
- 9 Gentoo  Biscoe           51.1          16.3               220        6000 male   2008
-10 Gentoo  Biscoe           52.5          15.6               221        5450 male   2009
-# … with 42 more rows
+   species island bill_length_mm bill_depth_mm flipper_length_… body_mass_g
+   &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;            &lt;int&gt;       &lt;int&gt;
+ 1 Gentoo  Biscoe           50.2          14.3              218        5700
+ 2 Gentoo  Biscoe           59.6          17                230        6050
+ 3 Gentoo  Biscoe           50.5          15.9              222        5550
+ 4 Gentoo  Biscoe           50.5          15.9              225        5400
+ 5 Gentoo  Biscoe           50.1          15                225        5000
+ 6 Gentoo  Biscoe           50.4          15.3              224        5550
+ 7 Gentoo  Biscoe           54.3          15.7              231        5650
+ 8 Gentoo  Biscoe           50.7          15                223        5550
+ 9 Gentoo  Biscoe           51.1          16.3              220        6000
+10 Gentoo  Biscoe           52.5          15.6              221        5450
+# … with 42 more rows, and 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;
 ```
+]
 
 ---
 
-background-image: url(data-wrangling-1_files/arrange.svg)
-background-position: 50% 60%
-background-size: 75%
+# Pick columns from a table: `select()`
+
+&lt;br&gt;
+
+.center[
+&lt;img src = "data-wrangling-1_files/select.svg", width = 75%&gt;&lt;/img&gt;
+]
+
+
+---
+
+# Pick columns `species`, `island`, and `sex`
+
+.small-font[
+
+```r
+penguins %&gt;%
+  select(species, island, sex)
+```
+
+```
+# A tibble: 344 x 3
+   species island    sex   
+   &lt;fct&gt;   &lt;fct&gt;     &lt;fct&gt; 
+ 1 Adelie  Torgersen male  
+ 2 Adelie  Torgersen female
+ 3 Adelie  Torgersen female
+ 4 Adelie  Torgersen &lt;NA&gt;  
+ 5 Adelie  Torgersen female
+ 6 Adelie  Torgersen male  
+ 7 Adelie  Torgersen female
+ 8 Adelie  Torgersen male  
+ 9 Adelie  Torgersen &lt;NA&gt;  
+10 Adelie  Torgersen &lt;NA&gt;  
+# … with 334 more rows
+```
+]
+
+---
 
 # Sort the rows in a table: `arrange()`
+
+&lt;br&gt;
+
+.center[
+&lt;img src = "data-wrangling-1_files/arrange.svg", width = 75%&gt;&lt;/img&gt;
+]
 
 ---
 
 # Sort penguins by bill length, ascending
 
+.small-font[
 
 ```r
 penguins %&gt;%
@@ -123,25 +262,27 @@ penguins %&gt;%
 
 ```
 # A tibble: 344 x 8
-   species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g sex     year
-   &lt;fct&gt;   &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt; &lt;fct&gt;  &lt;int&gt;
- 1 Adelie  Dream               32.1          15.5               188        3050 female  2009
- 2 Adelie  Dream               33.1          16.1               178        2900 female  2008
- 3 Adelie  Torgersen           33.5          19                 190        3600 female  2008
- 4 Adelie  Dream               34            17.1               185        3400 female  2008
- 5 Adelie  Torgersen           34.1          18.1               193        3475 &lt;NA&gt;    2007
- 6 Adelie  Torgersen           34.4          18.4               184        3325 female  2007
- 7 Adelie  Biscoe              34.5          18.1               187        2900 female  2008
- 8 Adelie  Torgersen           34.6          21.1               198        4400 male    2007
- 9 Adelie  Torgersen           34.6          17.2               189        3200 female  2008
-10 Adelie  Biscoe              35            17.9               190        3450 female  2008
-# … with 334 more rows
+   species island bill_length_mm bill_depth_mm flipper_length_… body_mass_g
+   &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;            &lt;int&gt;       &lt;int&gt;
+ 1 Adelie  Dream            32.1          15.5              188        3050
+ 2 Adelie  Dream            33.1          16.1              178        2900
+ 3 Adelie  Torge…           33.5          19                190        3600
+ 4 Adelie  Dream            34            17.1              185        3400
+ 5 Adelie  Torge…           34.1          18.1              193        3475
+ 6 Adelie  Torge…           34.4          18.4              184        3325
+ 7 Adelie  Biscoe           34.5          18.1              187        2900
+ 8 Adelie  Torge…           34.6          21.1              198        4400
+ 9 Adelie  Torge…           34.6          17.2              189        3200
+10 Adelie  Biscoe           35            17.9              190        3450
+# … with 334 more rows, and 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;
 ```
+]
 
 ---
 
 # Sort penguins by bill length, descending
 
+.small-font[
 
 ```r
 penguins %&gt;%
@@ -150,21 +291,21 @@ penguins %&gt;%
 
 ```
 # A tibble: 344 x 8
-   species   island bill_length_mm bill_depth_mm flipper_length_mm body_mass_g sex     year
-   &lt;fct&gt;     &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt; &lt;fct&gt;  &lt;int&gt;
- 1 Gentoo    Biscoe           59.6          17                 230        6050 male    2007
- 2 Chinstrap Dream            58            17.8               181        3700 female  2007
- 3 Gentoo    Biscoe           55.9          17                 228        5600 male    2009
- 4 Chinstrap Dream            55.8          19.8               207        4000 male    2009
- 5 Gentoo    Biscoe           55.1          16                 230        5850 male    2009
- 6 Gentoo    Biscoe           54.3          15.7               231        5650 male    2008
- 7 Chinstrap Dream            54.2          20.8               201        4300 male    2008
- 8 Chinstrap Dream            53.5          19.9               205        4500 male    2008
- 9 Gentoo    Biscoe           53.4          15.8               219        5500 male    2009
-10 Chinstrap Dream            52.8          20                 205        4550 male    2008
-# … with 334 more rows
+   species island bill_length_mm bill_depth_mm flipper_length_… body_mass_g
+   &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;            &lt;int&gt;       &lt;int&gt;
+ 1 Gentoo  Biscoe           59.6          17                230        6050
+ 2 Chinst… Dream            58            17.8              181        3700
+ 3 Gentoo  Biscoe           55.9          17                228        5600
+ 4 Chinst… Dream            55.8          19.8              207        4000
+ 5 Gentoo  Biscoe           55.1          16                230        5850
+ 6 Gentoo  Biscoe           54.3          15.7              231        5650
+ 7 Chinst… Dream            54.2          20.8              201        4300
+ 8 Chinst… Dream            53.5          19.9              205        4500
+ 9 Gentoo  Biscoe           53.4          15.8              219        5500
+10 Chinst… Dream            52.8          20                205        4550
+# … with 334 more rows, and 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;
 ```
-
+]
 
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
@@ -173,8 +314,7 @@ penguins %&gt;%
 "ratio": "16:9",
 "highlightStyle": "github",
 "highlightLines": true,
-"slideNumberFormat": "",
-"countIncrementalSlides": false
+"slideNumberFormat": ""
 });
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   window.dispatchEvent(new Event('resize'));

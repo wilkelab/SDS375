@@ -4,14 +4,13 @@ author: "Claus O. Wilke"
 date: "last updated: `r Sys.Date()`"
 output:
   xaringan::moon_reader:
+    css: [default, "Wilke-slides-theme.css"]
     lib_dir: libs
     nature:
       ratio: '16:9'
       highlightStyle: github
       highlightLines: true
-      #slideNumberFormat: '%current%' 
-      slideNumberFormat: '' 
-      countIncrementalSlides: false
+      slideNumberFormat: ''
       titleSlideClass: [center, middle]
 ---
 
@@ -22,6 +21,7 @@ background-size: 15%
 
 ```{r setup, include=FALSE, echo=FALSE}
 options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(comment = "")
 
 # ggplot2 settings so plots scale well for slide size 
 library(ggplot2)
@@ -32,23 +32,18 @@ update_geom_defaults("point", list(size = 2.5))
 
 # Data set: Palmer Penguins
 
-Three penguin species:
-
-- Adélie
-- chinstrap
-- gentoo
+Three penguin species:<br>Adélie, chinstrap, gentoo
 
 --
 
-```{r eval = FALSE}
-library(palmerpenguins)
-penguins
-```
+<br>
 
-```{r echo = FALSE, include = TRUE}
+.tiny-font[
+```{r}
 library(palmerpenguins)
-knitr::kable(head(penguins), format = "html")
+head(penguins)
 ```
+]
 
 ???
 
@@ -59,7 +54,7 @@ Image credit: [Artwork by @allison_horst](https://github.com/allisonhorst/palmer
 
 # Species differ in bill and flipper lengths
 
-.pull-left[
+.pull-left[.tiny-font[
 ```{r plot-penguins, eval=FALSE}
 ggplot(penguins) + 
   aes(
@@ -73,7 +68,7 @@ ggplot(penguins) +
     Gentoo = "cyan4"
   ))
 ```
-]
+]]
 
 --
 

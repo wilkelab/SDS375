@@ -4,14 +4,13 @@ author: "Claus O. Wilke"
 date: "last updated: `r Sys.Date()`"
 output:
   xaringan::moon_reader:
+    css: [default, "Wilke-slides-theme.css"]
     lib_dir: libs
     nature:
       ratio: '16:9'
       highlightStyle: github
       highlightLines: true
-      #slideNumberFormat: '%current%' 
-      slideNumberFormat: '' 
-      countIncrementalSlides: false
+      slideNumberFormat: ''
       titleSlideClass: [center, middle]
 ---
 
@@ -32,6 +31,9 @@ Previous class:
 - Pick columns: `select()`
 - Sort rows: `arrange()`
 
+<br>
+
+
 --
 
 This class:
@@ -40,12 +42,13 @@ This class:
 - Count: `count()`
 
 ---
-
-background-image: url(data-wrangling-2_files/mutate.svg)
-background-position: 50% 60%
-background-size: 75%
-
 # Make a new table column: `mutate()`
+
+<br>
+
+.center[
+<img src = "data-wrangling-2_files/mutate.svg", width = 75%></img>
+]
 
 ---
 
@@ -59,10 +62,9 @@ penguins %>%
 
 ---
 
-# Make multiple columns at once
+# Make multiple columns in one `mutate()` statement
 
-We can create multiple columns in one `mutate()` statement:
-
+.small-font[
 ```{r}
 penguins %>%
   select(species, island, flipper_length_mm) %>%
@@ -71,6 +73,7 @@ penguins %>%
     flipper_length_in = flipper_length_mm / 25.4
   )
 ```
+]
 
 ---
 
