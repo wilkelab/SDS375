@@ -52,7 +52,16 @@ This class:
 
 ---
 
-# Make a new column
+# Example: flipper length in cm
+
+```{r}
+penguins %>%
+  select(species, island, flipper_length_mm)
+```
+
+---
+
+# Example: flipper length in cm
 
 ```{r}
 penguins %>%
@@ -62,7 +71,7 @@ penguins %>%
 
 ---
 
-# Make multiple columns in one `mutate()` statement
+# Make multiple columns at once
 
 .small-font[
 ```{r}
@@ -96,5 +105,37 @@ penguins %>%
 
 ---
 
-# TODO: combine multiple steps into pipeline
+# Use the pipe to build analysis pipelines
 
+.small-font[
+```{r}
+penguins %>%
+  filter(species == "Adelie")
+```
+]
+
+---
+
+# Use the pipe to build analysis pipelines
+
+.small-font[
+```{r}
+penguins %>%
+  filter(species == "Adelie") %>%
+  select(island, sex)
+```
+]
+
+
+---
+
+# Use the pipe to build analysis pipelines
+
+.small-font[
+```{r}
+penguins %>%
+  filter(species == "Adelie") %>%
+  select(island, sex) %>%
+  count(island, sex)
+```
+]
