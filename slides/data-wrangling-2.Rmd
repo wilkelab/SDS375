@@ -114,19 +114,6 @@ penguins %>%
 ```
 ]
 
-
----
-
-# Use the pipe to build analysis pipelines
-
-.small-font[
-```{r}
-penguins %>%
-  filter(species == "Adelie")
-```
-]
-
-
 ---
 
 # Use the pipe to build analysis pipelines
