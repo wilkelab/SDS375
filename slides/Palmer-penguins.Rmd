@@ -32,7 +32,7 @@ update_geom_defaults("point", list(size = 2.5))
 
 # Data set: Palmer Penguins
 
-Three penguin species:<br>Adélie, chinstrap, gentoo
+Three penguin species:<br>Adélie, Chinstrap, Gentoo
 
 --
 
@@ -73,7 +73,7 @@ ggplot(penguins) +
 --
 
 .pull-right[
-```{r plot-penguins-out, ref.label="plot-penguins", fig.height=5, echo=FALSE, warning=FALSE, dev = 'svg'}
+```{r plot-penguins-out, ref.label="plot-penguins", fig.height=5, echo=FALSE, warning=FALSE, dev = "svg"}
 ```
 ]
 

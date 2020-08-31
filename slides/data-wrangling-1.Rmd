@@ -21,8 +21,8 @@ knitr::opts_chunk$set(comment = "")
 library(tidyverse)
 library(palmerpenguins)
 # ggplot2 settings so plots scale well for slide size 
-theme_set(theme_gray(18))
-update_geom_defaults("point", list(size = 2.5))
+theme_set(theme_gray(16))
+update_geom_defaults("point", list(size = 2))
 ```
 
 
@@ -83,7 +83,7 @@ penguins %>%
 # The pipe `%>%` feeds data into functions
 
 .tiny-font[
-```{r warning=FALSE, fig.height=5}
+```{r warning=FALSE, fig.height=4, fig.width=6, dev = "svg"}
 ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = species)) + geom_point()
 ```
 ]
@@ -93,7 +93,7 @@ ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = species)) + geom_poi
 # The pipe `%>%` feeds data into functions
 
 .tiny-font[
-```{r warning=FALSE, fig.height=5}
+```{r warning=FALSE, fig.height=4, fig.width=6, dev = "svg"}
 # ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = species)) + geom_point()
 
 penguins %>%
