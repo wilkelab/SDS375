@@ -106,10 +106,58 @@ question("Which penguins species can be found on the island Dream?",
 
 ## Choosing data columns
 
+The function `select()` allows you to pick specific data columns by name. This is frequently useful when a dataset has many more columns than we are interested in at the time. For example, if we are only interested in the penguins' species, island, and sex, we could select these three columns:
+
+```{r select-example, echo = TRUE}
+penguins %>%
+  select(species, island, sex)
+```
+
+Try this yourself, picking the columns representing the penguin species, the bill length, and then flipper length.
+
+```{r select-exercise, exercise=TRUE}
+penguins %>%
+  select(___)
+```
+
+```{r select-exercise-solution}
+penguins %>%
+  select(species, bill_length_mm, flipper_length_mm)
+```
 
 ### Choosing columns for removal
 
-*here we discuss the `select(-column)` syntax.*
+Another situation that arises frequently is one where we want to remove specific columns. We can also do this with `select()`, but now write `select(-column)` to remove one or more columns.
+
+Try this. Remove the column `species`.
+
+```{r select-remove, exercise = TRUE}
+penguins %>%
+  select(___)
+```
+
+```{r select-remove-solution}
+penguins %>%
+  select(-species)
+```
+
+
+And now remove both `species` and `island`.
+
+```{r select-remove2, exercise = TRUE}
+penguins %>%
+  select(___)
+```
+
+```{r select-remove2-hint}
+penguins %>%
+  select(-___, -___)
+```
+
+```{r select-remove2-solution}
+penguins %>%
+  select(-species, -island)
+```
 
 ## Sorting data
 
@@ -136,7 +184,7 @@ penguins %>%
 
 ### Arranging in descending order
 
-To arrange data in descending order, enclose the data column in `desc()`. For example, `data %>% arrange(desc(x))` would sort the data by decreasing values of `x`.
+To arrange data in descending order, enclose the data column in `desc()`. For example, `data %>% arrange(desc(x))` would sort the data by decreasing values of `x`. (`desc` stands for "descending".)
 
 Try this out. Sort the penguins by body mass, from largest to smallest:
 
