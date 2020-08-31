@@ -36,7 +36,7 @@ This class draws heavily from materials presented in the following two books. Bo
 ------- --------------------------- ------------------------------
 1.      Introduction                RStudio setup online, R Markdown
 
-2.      Aesthetics                  ggplot2 quickstart
+2.      Aesthetic mappings          ggplot2 quickstart
 
 3.      Visualizing amounts         `geom_col()`, `geom_point()`,
                                     position adjustments
