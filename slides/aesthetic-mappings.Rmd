@@ -13,12 +13,16 @@ output:
       slideNumberFormat: ''
       titleSlideClass: [center, middle]
 ---
+class: center
 
 ```{r setup, include=FALSE, echo=FALSE}
 options(htmltools.dir.version = FALSE)
 knitr::opts_chunk$set(comment = "")
 
 library(tidyverse)
+library(lubridate)
+library(cowplot)
+library(here)
 # ggplot2 settings so plots scale well for slide size 
 theme_set(theme_gray(16)) # 16 for full width, 18 for half width 
 update_geom_defaults("point", list(size = 2)) # 2 for full width, 2.5 for half width
@@ -27,29 +31,81 @@ update_geom_defaults("point", list(size = 2)) # 2 for full width, 2.5 for half w
 
 # Plots map data onto graphical elements
 
-.center[
-<img src = "https://clauswilke.com/dataviz/aesthetic_mapping_files/figure-html/temp-normals-vs-time-1.png", width = 75%></img>
-]
+```{r temp-normals-vs-time, echo=FALSE, message=FALSE, fig.width = 6, fig.asp = 0.618, dev="svg"}
+temps_long <- read_csv(here("datasets", "tempnormals.csv")) %>%
+  mutate(
+    location = factor(
+      location, levels = c("Death Valley", "Houston", "San Diego", "Chicago")
+    )
+  )
 
+ggplot(temps_long, aes(x = date, y = temperature, color = location)) +
+  geom_line(size = 1) +
+  scale_x_date(
+    name = "month",
+    limits = c(ymd("0000-01-01"), ymd("0001-01-04")),
+    breaks = c(
+      ymd("0000-01-01"), ymd("0000-04-01"), ymd("0000-07-01"),
+      ymd("0000-10-01"), ymd("0001-01-01")
+    ),
+    labels = c("Jan", "Apr", "Jul", "Oct", "Jan"), expand = c(1/366, 0)
+  ) + 
+  scale_y_continuous(
+    limits = c(19.9, 107),
+    breaks = seq(20, 100, by = 20),
+    name = "temperature (°F)"
+  ) +
+  scale_color_manual(
+    name = NULL,
+    values = c("#E69F00", "#56B4E9", "#009E73", "#CC79A7")
+  ) +
+  theme_minimal_grid() +
+  theme(legend.title.align = 0.5)
+```
 
 ???
 
-Figure from: [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
-
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
 
 ---
-
+class: center
 
 # Plots map data onto graphical elements
 
 <br>
 
-.center[
-<img src = "https://clauswilke.com/dataviz/aesthetic_mapping_files/figure-html/four-locations-temps-by-month-1.png", width = 80%></img>
-]
+```{r four-locations-temps-by-month, echo = FALSE, message = FALSE, fig.width = 5.5*6/4.2, fig.asp = .3, dev = "svg"}
 
+mean_temps <- temps_long %>%
+  group_by(location, month_name) %>%
+  summarize(mean = mean(temperature)) %>%
+  mutate(
+    month_name = factor(
+      month_name,
+      levels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
+    )
+  )
+
+p <- ggplot(mean_temps, aes(x = month_name, y = location, fill = mean)) + 
+  geom_tile(width = .95, height = 0.95) + 
+  scale_fill_viridis_c(
+    option = "B", begin = 0.15, end = 0.98,
+    name = "temperature (°F)"
+  ) + 
+  scale_y_discrete(name = NULL) +
+  coord_fixed(expand = FALSE) +
+  theme_half_open() +
+  theme(
+    axis.line = element_blank(),
+    axis.ticks = element_blank(),
+    legend.title = element_text(size = 12)
+  )
+
+p
+# fix legend (make it centered)
+#ggdraw(align_legend(p))
+```
 
 ???
 
-Figure from: [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
-
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
