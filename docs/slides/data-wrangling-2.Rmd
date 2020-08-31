@@ -38,8 +38,78 @@ Previous class:
 
 This class:
 
+- Count things: `count()`
+- Create analysis pipelines: `%>%`
 - Make new columns: `mutate()`
-- Count: `count()`
+
+---
+
+# Count things
+
+.small-font[
+```{r}
+penguins
+```
+]
+
+---
+
+# Count things
+
+.small-font[
+```{r}
+penguins %>%
+  count(species)
+```
+]
+
+---
+
+# Count things
+
+.small-font[
+```{r}
+penguins %>%
+  count(species, island)
+```
+]
+
+---
+
+# Use the pipe to build analysis pipelines
+
+.small-font[
+```{r}
+penguins %>%
+  filter(species == "Adelie")
+```
+]
+
+---
+
+# Use the pipe to build analysis pipelines
+
+.small-font[
+```{r}
+penguins %>%
+  filter(species == "Adelie") %>%
+  select(island, sex)
+```
+]
+
+
+---
+
+# Use the pipe to build analysis pipelines
+
+.small-font[
+```{r}
+penguins %>%
+  filter(species == "Adelie") %>%
+  select(island, sex) %>%
+  count(island, sex)
+```
+]
 
 ---
 # Make a new table column: `mutate()`
@@ -84,58 +154,3 @@ penguins %>%
 ```
 ]
 
----
-
-# Count things
-
-```{r}
-penguins %>%
-  count(species)
-```
-
-
----
-
-# Count things
-
-```{r}
-penguins %>%
-  count(species, island)
-```
-
----
-
-# Use the pipe to build analysis pipelines
-
-.small-font[
-```{r}
-penguins %>%
-  filter(species == "Adelie")
-```
-]
-
----
-
-# Use the pipe to build analysis pipelines
-
-.small-font[
-```{r}
-penguins %>%
-  filter(species == "Adelie") %>%
-  select(island, sex)
-```
-]
-
-
----
-
-# Use the pipe to build analysis pipelines
-
-.small-font[
-```{r}
-penguins %>%
-  filter(species == "Adelie") %>%
-  select(island, sex) %>%
-  count(island, sex)
-```
-]

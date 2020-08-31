@@ -1,0 +1,145 @@
+---
+#############################################################
+#                                                           #
+# Click on "Run Document" in RStudio to run this worksheet. #
+#                                                           #
+#############################################################
+title: "Data wrangling 1"
+author: "Claus O. Wilke"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(tidyverse)
+library(palmerpenguins)
+knitr::opts_chunk$set(echo = FALSE, comment = "")
+```
+
+## Introduction
+
+In this worksheet, we will continue with basic data manipulations, now moving on to counting, pipelining, and creating new data columns. 
+
+We will be using two R packages, {tidyverse} for the data manipulation functions `%>%`, `filter()`, `select()`, `arrange()`, `mutate()`, and `count()`, and {palmerpenguins} for the `penguins` dataset.
+
+
+```{r library-calls, echo = TRUE, eval = FALSE}
+# load required libraries
+library(tidyverse)
+library(palmerpenguins)
+```
+
+## Counting
+
+## Chaining analysis steps into pipelines
+
+We can chain multiple analysis steps into a pipeline by continuing to add "and then" statements. For example, `data %>% filter(...) %>% arrange(...)` would first filter and then sort the data.
+
+Try this out by creating a new column `bill_ratio` as in the previous exercise, filter penguins whose bill ratio is > 3.45, and then sort in descending order of bill ratio.
+
+```{r analysis-chain, exercise=TRUE}
+penguins %>%
+  mutate(
+    bill_ratio = ___
+  ) %>%
+  filter(___) %>%
+  arrange(___)
+```
+
+```{r analysis-chain-hint-1}
+penguins %>%
+  mutate(
+    bill_ratio = bill_length_mm / bill_depth_mm
+  ) %>%
+  filter(___) %>%
+  arrange(___)
+```
+
+```{r analysis-chain-hint-2}
+penguins %>%
+  mutate(
+    bill_ratio = bill_length_mm / bill_depth_mm
+  ) %>%
+  filter(bill_ratio > ___) %>%
+  arrange(___(bill_ratio))
+```
+
+```{r analysis-chain-solution}
+penguins %>%
+  mutate(
+    bill_ratio = bill_length_mm / bill_depth_mm
+  ) %>%
+  filter(bill_ratio > 3.45) %>%
+  arrange(desc(bill_ratio))
+```
+
+
+```{r analysis-chain-quiz, echo=FALSE}
+question("What is the species and sex of the penguin with the largest bill ratio?",
+  answer("Adelie, female"),
+  answer("Chinstrap, female"),
+  answer("Chinstrap, male"),
+  answer("Gentoo, female"),
+  answer("Gentoo, male", correct = TRUE)
+)
+```
+
+
+## Creating new data columns
+
+The function `mutate()` allows you to add new columns to a data table. For example, `data %>% mutate(xy = x + y)` would create a new column `xy` that is the sum of the columns `x` and `y`:
+
+```{r simple-mutate-example, echo=TRUE, eval=FALSE}
+data <- tibble(x = 1:3, y = c(10, 20, 30))
+data
+```
+
+```{r simple-mutate-example-code, echo=FALSE, eval=TRUE}
+data <- tibble(x = 1:3, y = c(10, 20, 30))
+print(data)
+```
+
+```{r simple-mutate-example2, echo=TRUE, eval=FALSE}
+data %>%
+  mutate(
+    xy = x + y
+  )
+```
+
+```{r simple-mutate-example2-code, echo=FALSE, eval=TRUE}
+data %>%
+  mutate(
+    xy = x + y
+  ) %>%
+  print()
+```
+
+
+Note that the part to the left of the equals sign (here, `xy`) is the name of the new column, and the part to the right of the equals sign (here, `x + y`) is an R expression that evaluates to the values in the new column.
+
+Now apply this concept to the `penguins` dataset, and add a new column `bill_ratio` that is the ratio of bill length and bill depth:
+
+```{r mutate-bill-ratio, exercise=TRUE}
+penguins %>%
+  select(species, bill_length_mm, bill_depth_mm) %>%
+  mutate(
+    ___ = ___
+  )
+```
+
+```{r mutate-bill-ratio-hint}
+penguins %>%
+  select(species, bill_length_mm, bill_depth_mm) %>%
+  mutate(
+    bill_ratio = ___
+  )
+```
+
+```{r mutate-bill-ratio-solution}
+penguins %>%
+  select(species, bill_length_mm, bill_depth_mm) %>%
+  mutate(
+    bill_ratio = bill_length_mm / bill_depth_mm
+  )
+```

@@ -13,13 +13,13 @@ navbar:
       menu:
         - text: "Palmer penguins"
           href: slides/Palmer-penguins.html
-        - text: "Class 9: Data wrangling"
+        - text: "Class 9: Data wrangling 1"
           href: slides/data-wrangling-1.html
-        - text: "Class 10: Data wrangling"
+        - text: "Class 10: Data wrangling 2"
           href: slides/data-wrangling-2.html
     - text: "Worksheets"
       menu:
-        - text: "Class 9: Data wrangling"
+        - text: "Class 9: Data wrangling 1"
           href: worksheets/data-wrangling-1/data-wrangling-1.Rmd
     - text: "Syllabus"
       href: syllabus.html

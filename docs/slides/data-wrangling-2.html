@@ -37,8 +37,169 @@ Previous class:
 
 This class:
 
+- Count things: `count()`
+- Create analysis pipelines: `%&gt;%`
 - Make new columns: `mutate()`
-- Count: `count()`
+
+---
+
+# Count things
+
+.small-font[
+
+```r
+penguins
+```
+
+```
+# A tibble: 344 x 8
+   species island bill_length_mm bill_depth_mm flipper_length_… body_mass_g
+   &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;            &lt;int&gt;       &lt;int&gt;
+ 1 Adelie  Torge…           39.1          18.7              181        3750
+ 2 Adelie  Torge…           39.5          17.4              186        3800
+ 3 Adelie  Torge…           40.3          18                195        3250
+ 4 Adelie  Torge…           NA            NA                 NA          NA
+ 5 Adelie  Torge…           36.7          19.3              193        3450
+ 6 Adelie  Torge…           39.3          20.6              190        3650
+ 7 Adelie  Torge…           38.9          17.8              181        3625
+ 8 Adelie  Torge…           39.2          19.6              195        4675
+ 9 Adelie  Torge…           34.1          18.1              193        3475
+10 Adelie  Torge…           42            20.2              190        4250
+# … with 334 more rows, and 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;
+```
+]
+
+---
+
+# Count things
+
+.small-font[
+
+```r
+penguins %&gt;%
+  count(species)
+```
+
+```
+# A tibble: 3 x 2
+  species       n
+  &lt;fct&gt;     &lt;int&gt;
+1 Adelie      152
+2 Chinstrap    68
+3 Gentoo      124
+```
+]
+
+---
+
+# Count things
+
+.small-font[
+
+```r
+penguins %&gt;%
+  count(species, island)
+```
+
+```
+# A tibble: 5 x 3
+  species   island        n
+  &lt;fct&gt;     &lt;fct&gt;     &lt;int&gt;
+1 Adelie    Biscoe       44
+2 Adelie    Dream        56
+3 Adelie    Torgersen    52
+4 Chinstrap Dream        68
+5 Gentoo    Biscoe      124
+```
+]
+
+---
+
+# Use the pipe to build analysis pipelines
+
+.small-font[
+
+```r
+penguins %&gt;%
+  filter(species == "Adelie")
+```
+
+```
+# A tibble: 152 x 8
+   species island bill_length_mm bill_depth_mm flipper_length_… body_mass_g
+   &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;            &lt;int&gt;       &lt;int&gt;
+ 1 Adelie  Torge…           39.1          18.7              181        3750
+ 2 Adelie  Torge…           39.5          17.4              186        3800
+ 3 Adelie  Torge…           40.3          18                195        3250
+ 4 Adelie  Torge…           NA            NA                 NA          NA
+ 5 Adelie  Torge…           36.7          19.3              193        3450
+ 6 Adelie  Torge…           39.3          20.6              190        3650
+ 7 Adelie  Torge…           38.9          17.8              181        3625
+ 8 Adelie  Torge…           39.2          19.6              195        4675
+ 9 Adelie  Torge…           34.1          18.1              193        3475
+10 Adelie  Torge…           42            20.2              190        4250
+# … with 142 more rows, and 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;
+```
+]
+
+---
+
+# Use the pipe to build analysis pipelines
+
+.small-font[
+
+```r
+penguins %&gt;%
+  filter(species == "Adelie") %&gt;%
+  select(island, sex)
+```
+
+```
+# A tibble: 152 x 2
+   island    sex   
+   &lt;fct&gt;     &lt;fct&gt; 
+ 1 Torgersen male  
+ 2 Torgersen female
+ 3 Torgersen female
+ 4 Torgersen &lt;NA&gt;  
+ 5 Torgersen female
+ 6 Torgersen male  
+ 7 Torgersen female
+ 8 Torgersen male  
+ 9 Torgersen &lt;NA&gt;  
+10 Torgersen &lt;NA&gt;  
+# … with 142 more rows
+```
+]
+
+
+---
+
+# Use the pipe to build analysis pipelines
+
+.small-font[
+
+```r
+penguins %&gt;%
+  filter(species == "Adelie") %&gt;%
+  select(island, sex) %&gt;%
+  count(island, sex)
+```
+
+```
+# A tibble: 8 x 3
+  island    sex        n
+  &lt;fct&gt;     &lt;fct&gt;  &lt;int&gt;
+1 Biscoe    female    22
+2 Biscoe    male      22
+3 Dream     female    27
+4 Dream     male      28
+5 Dream     &lt;NA&gt;       1
+6 Torgersen female    24
+7 Torgersen male      23
+8 Torgersen &lt;NA&gt;       5
+```
+]
 
 ---
 # Make a new table column: `mutate()`
@@ -137,134 +298,6 @@ penguins %&gt;%
 ```
 ]
 
----
-
-# Count things
-
-
-```r
-penguins %&gt;%
-  count(species)
-```
-
-```
-# A tibble: 3 x 2
-  species       n
-  &lt;fct&gt;     &lt;int&gt;
-1 Adelie      152
-2 Chinstrap    68
-3 Gentoo      124
-```
-
-
----
-
-# Count things
-
-
-```r
-penguins %&gt;%
-  count(species, island)
-```
-
-```
-# A tibble: 5 x 3
-  species   island        n
-  &lt;fct&gt;     &lt;fct&gt;     &lt;int&gt;
-1 Adelie    Biscoe       44
-2 Adelie    Dream        56
-3 Adelie    Torgersen    52
-4 Chinstrap Dream        68
-5 Gentoo    Biscoe      124
-```
-
----
-
-# Use the pipe to build analysis pipelines
-
-.small-font[
-
-```r
-penguins %&gt;%
-  filter(species == "Adelie")
-```
-
-```
-# A tibble: 152 x 8
-   species island bill_length_mm bill_depth_mm flipper_length_… body_mass_g
-   &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;            &lt;int&gt;       &lt;int&gt;
- 1 Adelie  Torge…           39.1          18.7              181        3750
- 2 Adelie  Torge…           39.5          17.4              186        3800
- 3 Adelie  Torge…           40.3          18                195        3250
- 4 Adelie  Torge…           NA            NA                 NA          NA
- 5 Adelie  Torge…           36.7          19.3              193        3450
- 6 Adelie  Torge…           39.3          20.6              190        3650
- 7 Adelie  Torge…           38.9          17.8              181        3625
- 8 Adelie  Torge…           39.2          19.6              195        4675
- 9 Adelie  Torge…           34.1          18.1              193        3475
-10 Adelie  Torge…           42            20.2              190        4250
-# … with 142 more rows, and 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;
-```
-]
-
----
-
-# Use the pipe to build analysis pipelines
-
-.small-font[
-
-```r
-penguins %&gt;%
-  filter(species == "Adelie") %&gt;%
-  select(island, sex)
-```
-
-```
-# A tibble: 152 x 2
-   island    sex   
-   &lt;fct&gt;     &lt;fct&gt; 
- 1 Torgersen male  
- 2 Torgersen female
- 3 Torgersen female
- 4 Torgersen &lt;NA&gt;  
- 5 Torgersen female
- 6 Torgersen male  
- 7 Torgersen female
- 8 Torgersen male  
- 9 Torgersen &lt;NA&gt;  
-10 Torgersen &lt;NA&gt;  
-# … with 142 more rows
-```
-]
-
-
----
-
-# Use the pipe to build analysis pipelines
-
-.small-font[
-
-```r
-penguins %&gt;%
-  filter(species == "Adelie") %&gt;%
-  select(island, sex) %&gt;%
-  count(island, sex)
-```
-
-```
-# A tibble: 8 x 3
-  island    sex        n
-  &lt;fct&gt;     &lt;fct&gt;  &lt;int&gt;
-1 Biscoe    female    22
-2 Biscoe    male      22
-3 Dream     female    27
-4 Dream     male      28
-5 Dream     &lt;NA&gt;       1
-6 Torgersen female    24
-7 Torgersen male      23
-8 Torgersen &lt;NA&gt;       5
-```
-]
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
