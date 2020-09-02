@@ -3,11 +3,11 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto+Mono);
 
 body { 
-  font-family: 'Lato', Arial, sans;
+  font-family: 'Lato', Arial, sans-serif;
   font-size: 26px;
 }
 h1, h2, h3 {
-  font-family: 'Roboto Condensed', 'Arial Narrow OS', Arial, sans;
+  font-family: 'Roboto Condensed', 'Arial Narrow OS', Arial, sans-serif;
   font-weight: normal;
 }
 .remark-slide-content { font-size: 1em; }
@@ -17,9 +17,9 @@ h1, h2, h3 {
   color: #650C92;
 }
 
-/* Make code slightly smaller in headlines; prevents vertical jumps
-   in headlines with and without code. */
-h1 > .remark-inline-code { font-size: 0.94; line-height: 1.0; }
+/* Make inline code slightly smaller; prevents vertical jumps
+   from slides with to slides without inline code. */ 
+.remark-inline-code { font-size: 0.94em; line-height: 1.0; }
 
 .small-font { font-size: 0.86em; }
 .tiny-font { font-size: 0.66em; }
