@@ -13,7 +13,6 @@ output:
       slideNumberFormat: ''
       titleSlideClass: [center, middle]
 ---
-class: center
 
 ```{r setup, include=FALSE, echo=FALSE}
 options(htmltools.dir.version = FALSE)
@@ -31,13 +30,29 @@ update_geom_defaults("point", list(size = 2)) # 2 for full width, 2.5 for half w
 
 # Plots map data onto graphical elements
 
-```{r temp-normals-vs-time, echo=FALSE, message=FALSE, fig.width = 6, fig.asp = 0.618, dev="svg"}
+Dataset: Daily average temperatures for various locations
+
+.small-font[.center[
+```{r echo=FALSE, message=FALSE}
 temps_long <- read_csv(here("datasets", "tempnormals.csv")) %>%
   mutate(
     location = factor(
       location, levels = c("Death Valley", "Houston", "San Diego", "Chicago")
     )
   )
+
+temps_long %>%
+  select(location, station_id, month, day, temperature) %>%
+  knitr::kable("html")
+```
+]]
+
+---
+
+# Plots map data onto graphical elements
+
+.center[
+```{r temp-normals-vs-time, echo=FALSE, message=FALSE, fig.width = 6, fig.asp = 0.618, dev="svg"}
 
 ggplot(temps_long, aes(x = date, y = temperature, color = location)) +
   geom_line(size = 1) +
@@ -62,18 +77,19 @@ ggplot(temps_long, aes(x = date, y = temperature, color = location)) +
   theme_minimal_grid() +
   theme(legend.title.align = 0.5)
 ```
+]
 
 ???
 
 Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
 
 ---
-class: center
 
 # Plots map data onto graphical elements
 
 <br>
 
+.center[
 ```{r four-locations-temps-by-month, echo = FALSE, message = FALSE, fig.width = 5.5*6/4.2, fig.asp = .3, dev = "svg"}
 
 mean_temps <- temps_long %>%
@@ -105,6 +121,7 @@ p
 # fix legend (make it centered)
 #ggdraw(align_legend(p))
 ```
+]
 
 ???
 

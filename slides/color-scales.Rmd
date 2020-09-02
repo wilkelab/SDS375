@@ -1,0 +1,193 @@
+---
+title: "Color scales"
+author: "Claus O. Wilke"
+date: "last updated: `r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: [default, "Wilke-slides-theme.css"]
+    lib_dir: libs
+    nature:
+      ratio: '16:9'
+      highlightStyle: github
+      highlightLines: true
+      slideNumberFormat: ''
+      titleSlideClass: [center, middle]
+---
+
+```{r setup, include=FALSE, echo=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(comment = "")
+
+#library(tidyverse)
+#library(lubridate)
+#library(cowplot)
+#library(here)
+## ggplot2 settings so plots scale well for slide size 
+#theme_set(theme_gray(16)) # 16 for full width, 18 for half width 
+#update_geom_defaults("point", list(size = 2)) # 2 for full width, 2.5 for half width
+```
+
+
+# Uses of color in data visualization
+
+<table style = "border: none; line-height: 2.5;">
+<tr style = "background: white;">
+<td style = "text-align: left; width: 50%;">
+1. Distinguish categories (qualitative)
+</td>
+<td>
+<img src = "color-scales_files/qualitative.png" width = 100% style = "text-align: right; vertical-align: middle"></img>
+</td>
+</tr>
+</table>
+
+---
+
+# Qualitative scale example
+
+.center[
+<img src = "https://clauswilke.com/dataviz/proportional_ink_files/figure-html/RI-pop-bars-1.png", width = 60%></img>
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+# Uses of color in data visualization
+
+<table style = "border: none; line-height: 2.5;">
+<tr style = "background: white;">
+<td style = "text-align: left; width: 50%;">
+1. Distinguish categories (qualitative)
+</td>
+<td>
+<img src = "color-scales_files/qualitative.png" width = 100% style = "text-align: right; vertical-align: middle"></img>
+</td>
+</tr>
+
+<tr style = "background: white;">
+<td style = "text-align: left;">
+2. Represent numeric values (sequential)
+</td>
+<td>
+<img src = "color-scales_files/sequential.png" width = 100% style = "text-align: right; vertical-align: middle"></img>
+</td>
+</tr>
+</table>
+
+
+---
+
+# Sequential scale example
+
+<br>
+
+.center[
+<img src = "https://clauswilke.com/dataviz/aesthetic_mapping_files/figure-html/four-locations-temps-by-month-1.png", width = 85%></img>
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+
+# Uses of color in data visualization
+
+<table style = "border: none; line-height: 2.5;">
+<tr style = "background: white;">
+<td style = "text-align: left; width: 50%;">
+1. Distinguish categories (qualitative)
+</td>
+<td>
+<img src = "color-scales_files/qualitative.png" width = 100% style = "text-align: right; vertical-align: middle"></img>
+</td>
+</tr>
+
+<tr style = "background: white;">
+<td style = "text-align: left;">
+2. Represent numeric values (sequential)
+</td>
+<td>
+<img src = "color-scales_files/sequential.png" width = 100% style = "text-align: right; vertical-align: middle"></img>
+</td>
+</tr>
+
+<tr style = "background: white;">
+<td style = "text-align: left;">
+3. Represent numeric values (diverging)
+</td>
+<td>
+<img src = "color-scales_files/diverging.png" width = 100% style = "text-align: right; vertical-align: middle"></img>
+</td>
+</tr>
+</table>
+
+---
+
+# Diverging scale example
+
+.center[
+<img src = "https://clauswilke.com/dataviz/visualizing_associations_files/figure-html/forensic-correlations1-1.png", width = 40%></img>
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+# Uses of color in data visualization
+
+<table style = "border: none; line-height: 2.5;">
+<tr style = "background: white;">
+<td style = "text-align: left; width: 50%;">
+1. Distinguish categories (qualitative)
+</td>
+<td>
+<img src = "color-scales_files/qualitative.png" width = 100% style = "text-align: right; vertical-align: middle;"></img>
+</td>
+</tr>
+
+<tr style = "background: white;">
+<td style = "text-align: left;">
+2. Represent numeric values (sequential)
+</td>
+<td>
+<img src = "color-scales_files/sequential.png" width = 100% style = "text-align: right; vertical-align: middle"></img>
+</td>
+</tr>
+
+<tr style = "background: white;">
+<td style = "text-align: left;">
+3. Represent numeric values (diverging)
+</td>
+<td>
+<img src = "color-scales_files/diverging.png" width = 100% style = "text-align: right; vertical-align: middle"></img>
+</td>
+</tr>
+
+<tr style = "background: white;">
+<td style = "text-align: left;">
+4. Highlight
+</td>
+<td>
+<img src = "color-scales_files/highlight.png" width = 100% style = "text-align: right; vertical-align: middle"></img>
+</td>
+</tr>
+</table>
+
+---
+
+# Highlight example
+
+.center[
+<img src = "https://clauswilke.com/dataviz/color_basics_files/figure-html/Aus-athletes-track-1.png", width = 60%></img>
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
