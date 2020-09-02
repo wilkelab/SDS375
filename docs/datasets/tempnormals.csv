@@ -1,4 +1,4 @@
-location,station_id,temperature,month_name,month,day,date,date_numeric
+location,station_id,temperature,month_name,month,day,date,day_of_year
 Death Valley,USC00042319,51,Jan,01,1,0000-01-01,1
 Death Valley,USC00042319,51.2,Jan,01,2,0000-01-02,2
 Death Valley,USC00042319,51.3,Jan,01,3,0000-01-03,3

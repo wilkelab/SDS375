@@ -42,7 +42,8 @@ temps_long <- read_csv(here("datasets", "tempnormals.csv")) %>%
   )
 
 temps_long %>%
-  select(location, station_id, month, day, temperature) %>%
+  select(location, station_id, day_of_year, temperature) %>%
+  head(n = 15L) %>%
   knitr::kable("html")
 ```
 ]]
@@ -50,6 +51,8 @@ temps_long %>%
 ---
 
 # Plots map data onto graphical elements
+
+Temperatures mapped onto y position:
 
 .center[
 ```{r temp-normals-vs-time, echo=FALSE, message=FALSE, fig.width = 6, fig.asp = 0.618, dev="svg"}
@@ -87,7 +90,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 
 # Plots map data onto graphical elements
 
-<br>
+Temperatures mapped onto color:
 
 .center[
 ```{r four-locations-temps-by-month, echo = FALSE, message = FALSE, fig.width = 5.5*6/4.2, fig.asp = .3, dev = "svg"}
@@ -108,6 +111,7 @@ p <- ggplot(mean_temps, aes(x = month_name, y = location, fill = mean)) +
     option = "B", begin = 0.15, end = 0.98,
     name = "temperature (°F)"
   ) + 
+  scale_x_discrete(name = "month") +
   scale_y_discrete(name = NULL) +
   coord_fixed(expand = FALSE) +
   theme_half_open() +
@@ -126,3 +130,114 @@ p
 ???
 
 Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+# Commonly used aesthetics
+
+.center[
+<img src = "https://clauswilke.com/dataviz/aesthetic_mapping_files/figure-html/common-aesthetics-1.png", width = 90%></img>
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+
+# The same data values can be mapped to different aesthetics
+
+.center[
+<img src = "https://clauswilke.com/dataviz/aesthetic_mapping_files/figure-html/basic-scales-example-1.png", width = 90%></img>
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+# In ggplot, we define the mapping with `aes()`
+
+```{r echo=FALSE}
+temperatures <- temps_long %>%
+  select(location, station_id, day_of_year, month, temperature)
+```
+
+.small-font[
+```{r ggplot-temps-example, eval = FALSE}
+ggplot(
+  data = temperatures,
+  mapping = aes(x = day_of_year, y = temperature, color = location)
+) + geom_line()
+```
+]
+
+.center[
+```{r ggplot-temps-example-out, ref.label="ggplot-temps-example", echo=FALSE, fig.width = 5.5, fig.asp = 0.618, dev="svg"}
+```
+]
+
+
+---
+
+# In ggplot, we define the mapping with `aes()`
+
+.small-font[
+```{r ggplot-temps-example2, eval = FALSE}
+ggplot(
+  data = temperatures,
+  mapping = aes(x = day_of_year, y = location, color = temperature)
+) + geom_point(size = 5)
+```
+]
+
+.center[
+```{r ggplot-temps-example2-out, ref.label="ggplot-temps-example2", echo=FALSE, fig.width = 5.5*6/4.2, fig.asp = .3, dev="svg"}
+```
+]
+
+
+---
+
+# We frequently omit argument names
+
+Long form, all arguments are named:
+
+.small-font[
+```{r ggplot-temps-example3, eval = FALSE}
+ggplot(
+  data = temperatures,
+  mapping = aes(x = day_of_year, y = location, color = temperature)
+) + geom_point(size = 5)
+```
+]
+
+--
+
+Abbreviated form, common arguments remain unnamed:
+
+.small-font[
+```{r ggplot-temps-example4, eval = FALSE}
+ggplot(temperatures, aes(day_of_year, location, color = temperature)) + 
+  geom_point(size = 5)
+```
+]
+
+---
+
+# The geom determines how the data is shown
+
+.small-font[
+```{r ggplot-temps-example5, eval = FALSE}
+ggplot(temperatures, aes(month, temperature, color = location)) + 
+  geom_boxplot()
+```
+]
+
+
+.center[
+```{r ggplot-temps-example5-out, ref.label="ggplot-temps-example5", echo=FALSE, fig.width = 8, fig.asp = 0.5, dev="svg"}
+```
+]

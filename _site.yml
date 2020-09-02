@@ -13,6 +13,8 @@ navbar:
       menu:
         - text: "Palmer penguins"
           href: slides/Palmer-penguins.html
+        - text: "Class 2: Aesthetic mappings"
+          href: slides/aesthetic-mappings.html
         - text: "Class 7: Color scales"
           href: slides/color-scales.html
         - text: "Class 9: Data wrangling 1"

@@ -40,15 +40,15 @@ temps_long <- ncdc_normals %>%
     month_name = factor(month_name, levels = unname(month_names))
   ) %>%
   mutate(
-    date_numeric = month_days_cum[as.numeric(month)] + as.numeric(day)
+    day_of_year = month_days_cum[as.numeric(month)] + as.numeric(day)
   ) %>%
   select(
-    location, station_id, temperature, month_name, month, day, date, date_numeric
+    location, station_id, temperature, month_name, month, day, date, day_of_year
   )
 
 write_csv(temps_long, here("datasets", "tempnormals.csv"))
 
-ggplot(temps_long, aes(x = date_numeric, y = temperature, color = location)) +
+ggplot(temps_long, aes(x = day_of_year, y = temperature, color = location)) +
   geom_line(size = 1)
 
 mean_temps <- temps_long %>%
