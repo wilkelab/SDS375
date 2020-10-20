@@ -54,7 +54,7 @@ Image credit: [Artwork by @allison_horst](https://github.com/allisonhorst/palmer
 
 # Species differ in bill and flipper lengths
 
-.pull-left[.tiny-font[
+.pull-left.tiny-font[
 ```{r plot-penguins, eval=FALSE}
 ggplot(penguins) + 
   aes(
@@ -68,7 +68,7 @@ ggplot(penguins) +
     Gentoo = "cyan4"
   ))
 ```
-]]
+]
 
 --
 

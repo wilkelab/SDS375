@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>Palmer penguins</title>
+    <title>Dimension reduction</title>
     <meta charset="utf-8" />
     <meta name="author" content="Claus O. Wilke" />
     <script src="libs/header-attrs/header-attrs.js"></script>
@@ -12,80 +12,173 @@
     <textarea id="source">
 class: center, middle, title-slide
 
-# Palmer penguins
+# Dimension reduction
 ### Claus O. Wilke
 ### last updated: 2020-09-07
 
 ---
 
 
-background-image: url(https://raw.githubusercontent.com/allisonhorst/palmerpenguins/master/man/figures/logo.png)
-background-position: 90% 10%
-background-size: 15%
 
 
 
+# Principal Components Analysis (PCA)
 
-
-# Data set: Palmer Penguins
-
-Three penguin species:&lt;br&gt;Adélie, Chinstrap, Gentoo
-
---
-
-&lt;br&gt;
-
-.tiny-font[
-
-```r
-library(palmerpenguins)
-head(penguins)
-```
-
-```
-# A tibble: 6 x 8
-  species island bill_length_mm bill_depth_mm flipper_length_… body_mass_g sex  
-  &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;            &lt;int&gt;       &lt;int&gt; &lt;fct&gt;
-1 Adelie  Torge…           39.1          18.7              181        3750 male 
-2 Adelie  Torge…           39.5          17.4              186        3800 fema…
-3 Adelie  Torge…           40.3          18                195        3250 fema…
-4 Adelie  Torge…           NA            NA                 NA          NA &lt;NA&gt; 
-5 Adelie  Torge…           36.7          19.3              193        3450 fema…
-6 Adelie  Torge…           39.3          20.6              190        3650 male 
-# … with 1 more variable: year &lt;int&gt;
-```
+.center[
+![](dimension-reduction_files/figure-html/blue-jays-PCA-1.svg)&lt;!-- --&gt;
 ]
 
 ???
 
-Image credit: [Artwork by @allison_horst](https://github.com/allisonhorst/palmerpenguins/#artwork)
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+# Principal Components Analysis (PCA)
+
+.center[
+![](dimension-reduction_files/figure-html/blue-jays-PCA2-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
 
 
 ---
 
-# Species differ in bill and flipper lengths
+# Principal Components Analysis (PCA)
 
-.pull-left.tiny-font[
+.center[
+![](dimension-reduction_files/figure-html/blue-jays-PCA3-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+# Scaling of mumeric columns
+
+.tiny-font[
 
 ```r
-ggplot(penguins) + 
-  aes(
-    flipper_length_mm, bill_length_mm,
-    color = species
-  ) + 
-  geom_point() +
-  scale_color_manual(values = c(
-    Adelie = "darkorange",
-    Chinstrap = "purple",
-    Gentoo = "cyan4"
-  ))
+blue_jays %&gt;% 
+  mutate(across(where(is.numeric), scale)) %&gt;%  # scale all numeric columns
+  ggplot(aes(skull_size_mm, head_length_mm, color = sex)) + geom_point()
+```
+]
+
+.center[
+![](dimension-reduction_files/figure-html/blue-jays-scaled-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+# Fully worked PCA example
+
+First we run the PCA and store results as `pca_fit`:
+
+.tiny-font[
+
+```r
+pca_fit &lt;- blue_jays %&gt;% 
+  mutate(across(where(is.numeric), scale)) %&gt;%  # scale all numeric columns
+  select(where(is.numeric)) %&gt;% # retain only numeric columns
+  prcomp() # do PCA
 ```
 ]
 
 --
 
-.pull-right[
-![](Palmer-penguins_files/figure-html/plot-penguins-out-1.svg)&lt;!-- --&gt;
+Then we add PC coordinates into original dataset and plot:
+
+.tiny-font[
+
+```r
+library(broom)  # for augment(), tidy()
+
+pca_fit %&gt;%
+  augment(blue_jays) %&gt;% # add original dataset back in
+  ggplot(aes(.fittedPC1, .fittedPC2, color = sex)) + geom_point()
+```
+]
+
+---
+
+# Fully worked PCA example
+
+.tiny-font[
+
+```r
+pca_fit %&gt;%
+  augment(blue_jays) %&gt;% # add original dataset back in
+  ggplot(aes(.fittedPC1, .fittedPC2, color = sex)) + geom_point()
+```
+]
+
+.center[
+![](dimension-reduction_files/figure-html/blue-jays-pca-plot-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+# Fully worked PCA example
+
+.tiny-font[
+
+```r
+pca_fit %&gt;%
+  augment(blue_jays) %&gt;% # add original dataset back in
+  ggplot(aes(.fittedPC2, .fittedPC3, color = sex)) + geom_point()
+```
+]
+
+.center[
+![](dimension-reduction_files/figure-html/blue-jays-pca-plot2-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+# Plot the rotation matrix
+
+*pending updated broom package*
+
+.tiny-font[
+
+```r
+arrow_style &lt;- arrow(angle = 20, ends = "first", type = "closed", length = grid::unit(8, "pt"))
+
+pca_fit %&gt;%
+  tidy(matrix = "rotation") %&gt;% # extract rotation matrix
+  pivot_wider(names_from = "PC", names_prefix = "PC", values_from = "value") %&gt;%
+  ggplot(aes(PC1, PC2)) +
+  geom_segment(xend = 0, yend = 0, arrow = arrow_style) +
+  geom_text(aes(label = column), hjust = 1) +
+  xlim(-1.5, 0.5) + ylim(-1, 1) + coord_fixed()
+```
+]
+
+
+---
+
+# Plot the variance explained
+
+.tiny-font[
+
+```r
+pca_fit %&gt;%
+  tidy(matrix = "eigenvalues") %&gt;% # extract eigenvalues
+  ggplot(aes(PC, 100*percent)) + geom_col() + ylab("percent")
+```
+]
+
+.center[
+![](dimension-reduction_files/figure-html/blue-jays-pca-eigenvalues-out-1.svg)&lt;!-- --&gt;
 ]
 
     </textarea>

@@ -17,6 +17,8 @@ knitr::opts_chunk$set(echo = FALSE)
 
 This is the home page for SDS 375, Data Visualization in R. All course materials will be posted on this site.
 
+**This site is currently under construction. Materials provided are subject to change until the class starts in January 2021. Please read the [Syllabus](syllabus.html) for a rough outline of the class structure and content.**
+
 Instructor: [Claus O. Wilke](https://clauswilke.com)  
 Meeting times: TTH 9:30am to 11:00am  
 Venue: online  
@@ -31,7 +33,7 @@ To run any of the materials locally on your own machine, you will need the follo
 - A recent version of R, [download from here.](https://cloud.r-project.org/)
 - A recent version of RStudio, [download from here.](https://rstudio.com/products/rstudio/download/#download)
 - The following R packages:    
-  colorspace, cowplot, distill, gganimate, ggforce, ggdist, ggrepel, ggridges, ggtext, learnr, magick, palmerpenguins, patchwork, plotly, recipes, sf, tidyverse
+  broom, colorspace, corrr, cowplot, distill, GGally, gganimate, ggforce, ggdist, ggrepel, ggridges, ggtext, gifski, learnr, magick, palmerpenguins, patchwork, plotly, sf, tidyverse, transformr
   
   
 You can install all required R packages at once by running the following code in the R command line:
@@ -39,11 +41,10 @@ You can install all required R packages at once by running the following code in
 ```{r eval = FALSE, echo = TRUE}
 install.packages(
   c(
-    "colorspace", "cowplot", "distill", "gganimate",
-    "ggforce", "ggdist", "ggrepel", "ggridges",
-    "ggtext", "learnr", "magick", "palmerpenguins",
-    "patchwork", "plotly", "recipes", "sf",
-    "tidyverse"
+    "broom", "colorspace", "corrr", "cowplot", "distill", "GGally",
+    "gganimate", "ggforce", "ggdist", "ggrepel", "ggridges",
+    "ggtext", "gifski", "learnr", "magick", "palmerpenguins",
+    "patchwork", "plotly", "sf", "tidyverse", "transformr"
   )
 )
 ```

@@ -1,0 +1,364 @@
+---
+title: "Dimension reduction"
+author: "Claus O. Wilke"
+date: "last updated: `r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: [default, "Wilke-slides-theme.css"]
+    lib_dir: libs
+    nature:
+      ratio: '16:9'
+      highlightStyle: github
+      highlightLines: true
+      slideNumberFormat: ''
+      titleSlideClass: [center, middle]
+---
+
+```{r setup, include=FALSE, echo=FALSE, message = FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(comment = "")
+
+library(tidyverse)
+library(broom)
+library(cowplot)
+library(here)
+
+# ggplot2 settings so plots scale well for slide size 
+theme_set(theme_gray(16)) # 16 for full width, 18 for half width 
+update_geom_defaults("point", list(size = 2.0)) # 2 for full width, 2.5 for half width
+
+# blue jays dataset
+blue_jays <- read_csv(here("datasets", "blue_jays.csv"))
+```
+
+
+# Principal Components Analysis (PCA)
+
+.center[
+```{r blue-jays-PCA, echo = FALSE, fig.width = 11, fig.asp = 0.35, dev = "svg"}
+p1 <- ggplot(blue_jays, aes(skull_size_mm, head_length_mm, fill = sex)) + 
+  geom_point(pch = 21, color = "white", size = 2, stroke = 0.2) +
+  scale_x_continuous(
+    name = "skull size (mm)", limits = c(26, 36),
+    breaks = c(26, 28, 30, 32, 34, 36)
+  ) +
+  scale_y_continuous(
+    name = "head length (mm)", limits = c(51, 61),
+    breaks = c(52, 54, 56, 58, 60)
+  ) +
+  scale_fill_manual(
+    values = c(F = "#D55E00", M = "#0072B2"),
+    breaks = c("F", "M"),
+    labels = c("female birds   ", "male birds"),
+    name = NULL,
+    guide = guide_legend(
+      direction = "horizontal",
+      override.aes = list(size = 3)
+      )
+    ) +
+  coord_fixed() +
+  theme_minimal_grid(12) +
+  theme(
+    legend.position = "top",
+    legend.justification = "right",
+    legend.box.spacing = unit(3.5, "pt"), # distance between legend and plot
+    legend.text = element_text(vjust = 0.6),
+    legend.spacing.x = unit(2, "pt"),
+    legend.background = element_rect(fill = "white", color = NA),
+    legend.key.width = unit(10, "pt")
+  )
+bj_standard <- data.frame(
+  skull = scale(blue_jays$skull_size_mm),
+  head = scale(blue_jays$head_length_mm),
+  sex = blue_jays$sex
+)
+df_arrows <- data.frame(
+  x = c(-3, 2),
+  y = c(-3, -2),
+  xend = c(3, -2),
+  yend = c(3, 2)
+)
+df_labels <- data.frame(
+  x = c(3.1, -2.1),
+  y = c(3.1, 2.1),
+  hjust = c(0, 1),
+  vjust = c(0, 0),
+  label = c("PC 1", "PC 2")
+)
+p2 <- ggplot(bj_standard, aes(skull, head, fill = sex)) + 
+  geom_point(pch = 21, color = "white", size = 2, stroke = 0.2) +
+  geom_segment(
+    data = df_arrows,
+    aes(x = x, y = y, xend = xend, yend = yend),
+    color = "black",
+    arrow = arrow(angle = 15, length = grid::unit(9, "pt"), type = "closed"),
+    inherit.aes = FALSE
+  ) +
+  geom_text(
+    data = df_labels,
+    aes(x = x, y = y, hjust = hjust, vjust = vjust, label = label),
+    size = 12/.pt,
+    color = "black", inherit.aes = FALSE
+  ) +
+  scale_x_continuous(
+    name = "skull size (scaled)", limits = c(-4, 4),
+    breaks = c(-4, -2, 0, 2, 4), labels = c("-4.0", "-2.0", "0.0", "2.0", "4.0")
+  ) +
+  scale_y_continuous(
+    name = "head length (scaled)", limits = c(-4, 4),
+    breaks = c(-4, -2, 0, 2, 4), labels = c("-4.0", "-2.0", "0.0", "2.0", "4.0")
+  ) +
+  scale_fill_manual(
+    values = c(F = "#D55E00", M = "#0072B2"),
+    breaks = c("F", "M"),
+    labels = c("", ""),
+    name = NULL,
+    guide = guide_legend(
+      direction = "horizontal",
+      override.aes = list(shape = NA)
+      )
+    ) +
+  coord_fixed(ratio = 1) +
+  theme_minimal_grid(12) +
+  theme(
+    legend.position = "top",
+    legend.justification = "right",
+    legend.box.spacing = unit(3.5, "pt"), # distance between legend and plot
+    legend.text = element_text(vjust = 0.6),
+    legend.spacing.x = unit(2, "pt"),
+    legend.background = element_rect(fill = "white", color = NA),
+    legend.key.width = unit(10, "pt")
+  )
+df_arrows <- data.frame(
+  x = c(-5.2, 0),
+  y = c(0, -3.5),
+  xend = c(5.2, 0),
+  yend = c(0, 3.5)
+)
+df_labels <- data.frame(
+  x = c(5.2, 0),
+  y = c(0.4, 3.8),
+  hjust = c(0.9, 0.5),
+  vjust = c(0, 0),
+  label = c("PC 1", "PC 2")
+)
+p3 <- ggplot(bj_standard, aes(skull + head, -skull + head, fill = sex)) + 
+  geom_point(pch = 21, color = "white", size = 2, stroke = 0.2) +
+  geom_segment(
+    data = df_arrows,
+    aes(x = x, y = y, xend = xend, yend = yend),
+    color = "black",
+    arrow = arrow(angle = 15, length = grid::unit(9, "pt"), type = "closed"),
+    inherit.aes = FALSE
+  ) +
+  geom_text(
+    data = df_labels,
+    aes(x = x, y = y, hjust = hjust, vjust = vjust, label = label),
+    size = 12/.pt,
+    color = "black", inherit.aes = FALSE
+  ) +
+  scale_x_continuous(
+    name = "PC 1", limits = c(-5.2, 5.2),
+    breaks = c(-5, -2.5, 0, 2.5, 5), labels = c("-5.0", "-2.5", "0.0", "2.5", "5.0")
+) +
+  scale_y_continuous(
+    name = "PC 2", limits = c(-5.2, 5.2),
+    breaks = c(-5, -2.5, 0, 2.5, 5), labels = c("-5.0", "-2.5", "0.0", "2.5", "5.0")
+  ) +
+  scale_fill_manual(
+    values = c(F = "#D55E00", M = "#0072B2"),
+    breaks = c("F", "M"),
+    labels = c("", ""),
+    name = NULL,
+    guide = guide_legend(
+      direction = "horizontal",
+      override.aes = list(shape = NA)
+      )
+    ) +
+  coord_fixed(ratio = 1) +
+  theme_minimal_grid(12) +
+  theme(
+    legend.position = "top",
+    legend.justification = "right",
+    legend.box.spacing = unit(3.5, "pt"), # distance between legend and plot
+    legend.text = element_text(vjust = 0.6),
+    legend.spacing.x = unit(2, "pt"),
+    legend.background = element_rect(fill = "white", color = NA),
+    legend.key.width = unit(10, "pt")
+  )
+
+aligned <- align_plots(p1, p2, p3, align = "hv")
+p1 <- aligned[[1]]
+p2 <- aligned[[2]]
+p3 <- aligned[[3]]
+
+plot_grid(
+  p1, NULL, NULL, NULL, NULL,
+  nrow = 1, rel_widths = c(1, .04, 1, .04, 1),
+  labels = c("a", "", "", "", ""), label_y = 0.985
+)
+```
+]
+
+???
+
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+# Principal Components Analysis (PCA)
+
+.center[
+```{r blue-jays-PCA2, echo = FALSE, fig.width = 11, fig.asp = 0.35, dev = "svg"}
+plot_grid(
+  p1, NULL, p2, NULL, NULL,
+  nrow = 1, rel_widths = c(1, .04, 1, .04, 1),
+  labels = c("a", "", "b", "", ""), label_y = 0.985
+)
+```
+]
+
+???
+
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+
+# Principal Components Analysis (PCA)
+
+.center[
+```{r blue-jays-PCA3, echo = FALSE, fig.width = 11, fig.asp = 0.35, dev = "svg"}
+plot_grid(
+  p1, NULL, p2, NULL, p3,
+  nrow = 1, rel_widths = c(1, .04, 1, .04, 1),
+  labels = c("a", "", "b", "", "c"), label_y = 0.985
+)
+```
+]
+
+???
+
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+# Scaling of mumeric columns
+
+.tiny-font[
+```{r blue-jays-scaled, eval = FALSE}
+blue_jays %>% 
+  mutate(across(where(is.numeric), scale)) %>%  # scale all numeric columns
+  ggplot(aes(skull_size_mm, head_length_mm, color = sex)) + geom_point()
+```
+]
+
+.center[
+```{r blue-jays-scaled-out, ref.label="blue-jays-scaled", fig.width = 5, fig.asp = 0.75, echo=FALSE, warning=FALSE, dev = "svg"}
+```
+]
+
+---
+
+# Fully worked PCA example
+
+First we run the PCA and store results as `pca_fit`:
+
+.tiny-font[
+```{r}
+pca_fit <- blue_jays %>% 
+  mutate(across(where(is.numeric), scale)) %>%  # scale all numeric columns
+  select(where(is.numeric)) %>% # retain only numeric columns
+  prcomp() # do PCA
+```
+]
+
+--
+
+Then we add PC coordinates into original dataset and plot:
+
+.tiny-font[
+```{r eval = FALSE}
+library(broom)  # for augment(), tidy()
+
+pca_fit %>%
+  augment(blue_jays) %>% # add original dataset back in
+  ggplot(aes(.fittedPC1, .fittedPC2, color = sex)) + geom_point()
+```
+]
+
+---
+
+# Fully worked PCA example
+
+.tiny-font[
+```{r blue-jays-pca-plot, eval = FALSE}
+pca_fit %>%
+  augment(blue_jays) %>% # add original dataset back in
+  ggplot(aes(.fittedPC1, .fittedPC2, color = sex)) + geom_point()
+```
+]
+
+.center[
+```{r blue-jays-pca-plot-out, ref.label="blue-jays-pca-plot", fig.width=5., fig.asp = 0.75, echo=FALSE, warning=FALSE, dev = "svg"}
+```
+]
+
+---
+
+# Fully worked PCA example
+
+.tiny-font[
+```{r blue-jays-pca-plot2, eval = FALSE}
+pca_fit %>%
+  augment(blue_jays) %>% # add original dataset back in
+  ggplot(aes(.fittedPC2, .fittedPC3, color = sex)) + geom_point()
+```
+]
+
+.center[
+```{r blue-jays-pca-plot2-out, ref.label="blue-jays-pca-plot2", fig.width=5., fig.asp = 0.75, echo=FALSE, warning=FALSE, dev = "svg"}
+```
+]
+
+---
+
+# Plot the rotation matrix
+
+*pending updated broom package*
+
+.tiny-font[
+```{r blue-jays-pca-rotation, eval = FALSE}
+arrow_style <- arrow(angle = 20, ends = "first", type = "closed", length = grid::unit(8, "pt"))
+
+pca_fit %>%
+  tidy(matrix = "rotation") %>% # extract rotation matrix
+  pivot_wider(names_from = "PC", names_prefix = "PC", values_from = "value") %>%
+  ggplot(aes(PC1, PC2)) +
+  geom_segment(xend = 0, yend = 0, arrow = arrow_style) +
+  geom_text(aes(label = column), hjust = 1) +
+  xlim(-1.5, 0.5) + ylim(-1, 1) + coord_fixed()
+```
+]
+
+
+---
+
+# Plot the variance explained
+
+.tiny-font[
+```{r blue-jays-pca-eigenvalues, eval = FALSE}
+pca_fit %>%
+  tidy(matrix = "eigenvalues") %>% # extract eigenvalues
+  ggplot(aes(PC, 100*percent)) + geom_col() + ylab("percent")
+```
+]
+
+.center[
+```{r blue-jays-pca-eigenvalues-out, ref.label="blue-jays-pca-eigenvalues", fig.width=5., fig.asp = 0.75, echo=FALSE, warning=FALSE, dev = "svg"}
+```
+]
+
