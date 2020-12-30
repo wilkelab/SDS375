@@ -14,7 +14,7 @@ class: center, middle, title-slide
 
 # Dimension reduction
 ### Claus O. Wilke
-### last updated: 2020-09-07
+### last updated: 2020-12-30
 
 ---
 
@@ -62,7 +62,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 
 ---
 
-# Scaling of mumeric columns
+# Scaling of numeric columns
 
 .tiny-font[
 
@@ -87,9 +87,9 @@ First we run the PCA and store results as `pca_fit`:
 
 ```r
 pca_fit &lt;- blue_jays %&gt;% 
-  mutate(across(where(is.numeric), scale)) %&gt;%  # scale all numeric columns
   select(where(is.numeric)) %&gt;% # retain only numeric columns
-  prcomp() # do PCA
+  scale() %&gt;%       # scale to zero mean and unit variance
+  prcomp()          # do PCA
 ```
 ]
 
@@ -145,8 +145,6 @@ pca_fit %&gt;%
 ---
 
 # Plot the rotation matrix
-
-*pending updated broom package*
 
 .tiny-font[
 

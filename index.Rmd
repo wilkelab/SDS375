@@ -26,25 +26,26 @@ Venue: online
 
 ## Computing requirements
 
-For students enrolled in this course, you only need a working web browser to access the RStudio class server.
+For students enrolled in this course, you only need a working web browser to access the RStudio class server, located at: https://edupod.cns.utexas.edu/
 
 To run any of the materials locally on your own machine, you will need the following:
 
 - A recent version of R, [download from here.](https://cloud.r-project.org/)
 - A recent version of RStudio, [download from here.](https://rstudio.com/products/rstudio/download/#download)
 - The following R packages:    
-  broom, colorspace, corrr, cowplot, distill, GGally, gganimate, ggforce, ggdist, ggrepel, ggridges, ggtext, gifski, learnr, magick, palmerpenguins, patchwork, plotly, sf, tidyverse, transformr
-  
-  
+  broom, cluster, colorspace, corrr, cowplot, distill, GGally, gganimate,  ggiraph, ggdendro, ggdist, ggforce, ggpointdensity, ggraph, ggrepel, ggridges, ggtext, ggthemes, gifski, glue, knitr, learnr, lemon, magick, MASS, Matrix, palmerpenguins, patchwork, plotly, plotROC, rmarkdown, sf, tidymodels, tidyverse, transformr, treemapify, umap
+
 You can install all required R packages at once by running the following code in the R command line:
 
 ```{r eval = FALSE, echo = TRUE}
 install.packages(
   c(
-    "broom", "colorspace", "corrr", "cowplot", "distill", "GGally",
-    "gganimate", "ggforce", "ggdist", "ggrepel", "ggridges",
-    "ggtext", "gifski", "learnr", "magick", "palmerpenguins",
-    "patchwork", "plotly", "sf", "tidyverse", "transformr"
+    "broom", "cluster", "colorspace", "corrr", "cowplot", "distill", "GGally",
+    "gganimate", "ggiraph", "ggdendro", "ggdist", "ggforce", "ggpointdensity",
+    "ggraph",  "ggrepel", "ggridges", "ggtext", "ggthemes", "gifski", "glue",
+    "knitr", "learnr", "lemon", "magick", "MASS", "Matrix", "palmerpenguins",
+    "patchwork", "plotly", "plotROC", "rmarkdown", "sf", "tidymodels", "tidyverse",
+    "transformr", "treemapify", "umap"
   )
 )
 ```

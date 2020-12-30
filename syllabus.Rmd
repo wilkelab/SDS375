@@ -68,7 +68,7 @@ This class draws heavily from materials presented in the following two books. Bo
 
 13.     Visualizing trends          `geom_smooth()`
 
-14.     Dimension reduction 1       recipes package
+14.     Dimension reduction 1       PCA, broom package
 
 15.     Dimension reduction 2        
 

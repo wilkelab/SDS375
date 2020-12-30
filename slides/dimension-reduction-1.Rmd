@@ -246,7 +246,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 
 ---
 
-# Scaling of mumeric columns
+# Scaling of numeric columns
 
 .tiny-font[
 ```{r blue-jays-scaled, eval = FALSE}
@@ -270,9 +270,9 @@ First we run the PCA and store results as `pca_fit`:
 .tiny-font[
 ```{r}
 pca_fit <- blue_jays %>% 
-  mutate(across(where(is.numeric), scale)) %>%  # scale all numeric columns
   select(where(is.numeric)) %>% # retain only numeric columns
-  prcomp() # do PCA
+  scale() %>%       # scale to zero mean and unit variance
+  prcomp()          # do PCA
 ```
 ]
 
@@ -327,8 +327,6 @@ pca_fit %>%
 ---
 
 # Plot the rotation matrix
-
-*pending updated broom package*
 
 .tiny-font[
 ```{r blue-jays-pca-rotation, eval = FALSE}

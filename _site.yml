@@ -11,8 +11,6 @@ navbar:
   right:
     - text: "Slides"
       menu:
-        - text: "Palmer penguins"
-          href: slides/Palmer-penguins.html
         - text: "Class 2: Aesthetic mappings"
           href: slides/aesthetic-mappings.html
         - text: "Class 3: Visualizing amounts"
@@ -23,6 +21,8 @@ navbar:
           href: slides/data-wrangling-1.html
         - text: "Class 10: Data wrangling 2"
           href: slides/data-wrangling-2.html
+        - text: "Class 14: Dimension reduction 1"
+          href: slides/dimension-reduction.html
     - text: "Worksheets"
       menu:
         - text: "Class 9: Data wrangling 1"
