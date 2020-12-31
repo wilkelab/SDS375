@@ -1,0 +1,78 @@
+---
+#############################################################
+#                                                           #
+#   Click on "Knit" in RStudio to render this worksheet.    #
+#                                                           #
+#############################################################
+title: "Intro to R Markdown"
+author: "Claus O. Wilke"
+output: html_document
+---
+
+Much of the work in this class will be done via R Markdown documents. R Markdown documents are documents that combine text, R code, and R output, including figures. They are a great way to produce self-contained and documented statistical analyses.
+
+In this first worksheet, you will learn how to do some basic markdown editing. After you have made a change to the document, press "Knit HTML" in R Studio and see what kind of a result you get.
+
+Edit only below this line.
+
+---------------------------------------------
+
+## 1. Basic Markdown editing
+
+Try out basic R Markdown features, as described here: https://rmarkdown.rstudio.com/authoring_basics.html. Write some text that is bold, and some that is in italics. Make a numbered list and a bulleted list. Make a nested list. Try the block-quote feature.
+
+This text is **bold.**
+
+This text is *in italics.*
+
+A numbered list:
+
+1. Item 1
+2. Item 2
+3. Item 3
+
+A bulleted list:
+
+- Item 1
+- Item 2
+- Item 3
+
+A nested list:
+
+1. Item 1
+    - Item 1.1. Note that 4 spaces are required for the nesting to work properly.
+    - Item 1.2
+2. Item 2
+
+
+Block quote:
+
+> "If we knew what it was we were doing, it would not be called research, would it?" --- Albert Einstein
+
+
+## 2. Embedding R code
+
+R code embedded in R chunks will be executed and the output will be shown.
+```{r}
+# R code goes here
+x <- rnorm(100)  # random sample from normal distribution
+dens <- density(x)    # calculate density
+dens
+
+plot(dens)            # plot density
+```
+
+Now you try it. For example, take the built-in data set `cars`, which lists speed and stopping distance for cars from the 1920. Plot speed vs. distance, and/or perform a correlation analysis. Then write a few sentences describing what you see.
+
+Plot of speed vs. distance:
+```{r}
+plot(cars$dist, cars$speed)
+```
+
+Correlation analysis:
+```{r}
+cor.test(cars$dist, cars$speed)
+```
+There is a strong positive correlations. Cars with higher speed have longer stopping distances.
+
+

@@ -25,6 +25,10 @@ navbar:
           href: slides/dimension-reduction.html
     - text: "Worksheets"
       menu:
+        - text: "Class 1: Intro to R Markdown"
+          href: worksheets/intro-rmarkdown.Rmd
+        - text: "Class 1: Intro to R Markdown (Solutions)"
+          href: worksheets/intro-rmarkdown-solutions.Rmd
         - text: "Class 9: Data wrangling 1"
           href: worksheets/data-wrangling-1.Rmd
         - text: "Class 10: Data wrangling 2"
