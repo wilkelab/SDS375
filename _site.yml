@@ -11,6 +11,8 @@ navbar:
   right:
     - text: "Slides"
       menu:
+        - text: "Class 1: Introduction"
+          href: slides/introduction.html
         - text: "Class 2: Aesthetic mappings"
           href: slides/aesthetic-mappings.html
         - text: "Class 3: Visualizing amounts"

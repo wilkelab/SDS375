@@ -28,7 +28,7 @@ update_geom_defaults("point", list(size = 2)) # 2 for full width, 2.5 for half w
 ```
 
 
-# Plots map data onto graphical elements
+## Plots map data onto graphical elements
 
 Dataset: Daily average temperatures for various locations
 
@@ -50,7 +50,7 @@ temps_long %>%
 
 ---
 
-# Plots map data onto graphical elements
+## Plots map data onto graphical elements
 
 Temperatures mapped onto y position:
 
@@ -88,7 +88,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 
 ---
 
-# Plots map data onto graphical elements
+## Plots map data onto graphical elements
 
 Temperatures mapped onto color:
 
@@ -133,7 +133,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 
 ---
 
-# Commonly used aesthetics
+## Commonly used aesthetics
 
 .center[
 <img src = "https://clauswilke.com/dataviz/aesthetic_mapping_files/figure-html/common-aesthetics-1.png", width = 90%></img>
@@ -146,7 +146,7 @@ Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.
 
 ---
 
-# The same data values can be mapped to different aesthetics
+## The same data values can be mapped to different aesthetics
 
 .center[
 <img src = "https://clauswilke.com/dataviz/aesthetic_mapping_files/figure-html/basic-scales-example-1.png", width = 90%></img>
@@ -158,7 +158,7 @@ Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.
 
 ---
 
-# In ggplot, we define the mapping with `aes()`
+## In ggplot, we define the mapping with `aes()`
 
 ```{r echo=FALSE}
 temperatures <- temps_long %>%
@@ -182,7 +182,7 @@ ggplot(
 
 ---
 
-# In ggplot, we define the mapping with `aes()`
+## In ggplot, we define the mapping with `aes()`
 
 .small-font[
 ```{r ggplot-temps-example2, eval = FALSE}
@@ -201,7 +201,7 @@ ggplot(
 
 ---
 
-# We frequently omit argument names
+## We frequently omit argument names
 
 Long form, all arguments are named:
 
@@ -227,7 +227,7 @@ ggplot(temperatures, aes(day_of_year, location, color = temperature)) +
 
 ---
 
-# The geom determines how the data is shown
+## The geom determines how the data is shown
 
 .small-font[
 ```{r ggplot-temps-example5, eval = FALSE}

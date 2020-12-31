@@ -20,59 +20,103 @@ knitr::opts_chunk$set(comment = "")
 ```
 
 
-### Edupod login: https://edupod.cns.utexas.edu
+## Edupod login: https://edupod.cns.utexas.edu
 
 .center[
-<img src = "introduction_files/edupod-landing.png", width = 60%></img>
+<img src = "introduction_files/edupod-landing.png", width = 60%, style = "position:relative; top:-42px;"></img>
 ]
 
 ---
 
-### Edupod login: https://edupod.cns.utexas.edu
+## Edupod login: https://edupod.cns.utexas.edu
 
 .center[
-<img src = "introduction_files/edupod-login.png", width = 60%></img>
+<img src = "introduction_files/edupod-landing-edited.png", width = 60%, style = "position:relative; top:-42px;"></img>
 ]
 
 ---
 
-### Using RStudio
+## Edupod login: https://edupod.cns.utexas.edu
 
 .center[
-<img src = "introduction_files/RStudio-clean.png", width = 80%></img>
+<img src = "introduction_files/edupod-login.png", width = 60%, style = "position:relative; top:-42px;"></img>
 ]
 
 ---
 
-### Using RStudio
+## Using RStudio
 
 .center[
-<img src = "introduction_files/RStudio-markdown.png", width = 80%></img>
+<img src = "introduction_files/RStudio-clean.png", width = 80%, style = "position:relative; top:-52px;"></img>
+]
+
+---
+
+## Using RStudio
+
+.center[
+<img src = "introduction_files/RStudio-clean-edited.png", width = 80%, style = "position:relative; top:-52px;"></img>
+]
+
+---
+
+## Knitting an R Markdown file
+
+.center[
+<img src = "introduction_files/RStudio-markdown.png", width = 80%, style = "position:relative; top:-52px;"></img>
+]
+
+---
+
+## Knitting an R Markdown file
+
+.center[
+<img src = "introduction_files/RStudio-markdown-edited.png", width = 80%, style = "position:relative; top:-52px;"></img>
 ]
 
 ---
 
 
-### Using RStudio
+## Knitting an R Markdown file
 
 .center[
-<img src = "introduction_files/markdown-knitted.png", width = 80%></img>
+<img src = "introduction_files/markdown-knitted.png", width = 80%, style = "position:relative; top:-52px;"></img>
 ]
 
 ---
 
-### Knitting to pdf
+## Knitting to pdf
 
 .center[
-<img src = "introduction_files/markdown-knit-pdf.png", width = 80%></img>
+<img src = "introduction_files/RStudio-markdown-edited2.png", width = 80%, style = "position:relative; top:-52px;"></img>
 ]
 
 ---
 
-### Knitting to pdf
+## Knitting to pdf
 
 .center[
-<img src = "introduction_files/markdown-knitted-pdf.png", width = 80%></img>
+<img src = "introduction_files/markdown-knit-pdf-edited.png", width = 80%, style = "position:relative; top:-52px;"></img>
 ]
 
 ---
+
+## Knitting to pdf
+
+.center[
+<img src = "introduction_files/markdown-knitted-pdf.png", width = 80%, style = "position:relative; top:-52px;"></img>
+]
+
+---
+
+## Knitting to pdf
+
+.center[
+<img src = "introduction_files/markdown-knitted-pdf-edited.png", width = 80%, style = "position:relative; top:-52px;"></img>
+]
+
+---
+
+class: middle, center
+
+# Now you try it
