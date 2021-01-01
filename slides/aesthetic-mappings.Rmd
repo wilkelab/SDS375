@@ -42,7 +42,7 @@ temps_long <- read_csv(here("datasets", "tempnormals.csv")) %>%
   )
 
 temps_long %>%
-  select(location, station_id, day_of_year, temperature) %>%
+  select(location, day_of_year, month, temperature) %>%
   head(n = 15L) %>%
   knitr::kable("html")
 ```
@@ -231,6 +231,39 @@ ggplot(temperatures, aes(day_of_year, location, color = temperature)) +
 
 .small-font[
 ```{r ggplot-temps-example5, eval = FALSE}
+ggplot(temperatures, aes(day_of_year, temperature, color = location)) + 
+  geom_line()
+```
+]
+
+.center[
+```{r ggplot-temps-example5-out, ref.label="ggplot-temps-example5", echo=FALSE, fig.width = 5.5, fig.asp = 0.618, dev="svg"}
+```
+]
+
+
+---
+
+## The geom determines how the data is shown
+
+.small-font[
+```{r ggplot-temps-example6, eval = FALSE}
+ggplot(temperatures, aes(day_of_year, location, color = temperature)) +
+  geom_point(size = 5)
+```
+]
+
+.center[
+```{r ggplot-temps-example6-out, ref.label="ggplot-temps-example6", echo=FALSE, fig.width = 5.5*6/4.2, fig.asp = .3, dev="svg"}
+```
+]
+
+---
+
+## The geom determines how the data is shown
+
+.small-font[
+```{r ggplot-temps-example7, eval = FALSE}
 ggplot(temperatures, aes(month, temperature, color = location)) + 
   geom_boxplot()
 ```
@@ -238,6 +271,122 @@ ggplot(temperatures, aes(month, temperature, color = location)) +
 
 
 .center[
-```{r ggplot-temps-example5-out, ref.label="ggplot-temps-example5", echo=FALSE, fig.width = 8, fig.asp = 0.5, dev="svg"}
+```{r ggplot-temps-example7-out, ref.label="ggplot-temps-example7", echo=FALSE, fig.width = 8, fig.asp = 0.5, dev="svg"}
+```
+]
+
+---
+
+## The geom determines how the data is shown
+
+.small-font[
+```{r ggplot-temps-example8, eval = FALSE}
+ggplot(temperatures, aes(month, temperature, fill = location)) + 
+  geom_violin() + 
+  facet_wrap(vars(location)) # make separate panel per location
+```
+]
+
+
+.center[
+```{r ggplot-temps-example8-out, ref.label="ggplot-temps-example8", echo=FALSE, fig.width = 9, fig.asp = 0.44, dev="svg"}
+```
+]
+
+---
+
+## Important: `color` and `fill` apply to different things
+
+`color`<br>
+Applies color to points, lines, text, borders
+
+--
+
+`fill`<br>
+Applies color to any filled areas 
+
+---
+
+## Many geoms have both `color` and `fill` aesthetics
+
+.tiny-font[
+```{r ggplot-color-fill, eval = FALSE}
+ggplot(temperatures, aes(month, temperature, color = location)) + 
+  geom_boxplot()
+```
+]
+
+
+.center[
+```{r ggplot-color-fill-out, ref.label="ggplot-color-fill", echo=FALSE, fig.width = 8, fig.asp = 0.5, dev="svg"}
+```
+]
+
+---
+
+## Many geoms have both `color` and `fill` aesthetics
+
+.tiny-font[
+```{r ggplot-color-fill2, eval = FALSE}
+ggplot(temperatures, aes(month, temperature, fill = location)) + 
+  geom_boxplot()
+```
+]
+
+
+.center[
+```{r ggplot-color-fill2-out, ref.label="ggplot-color-fill2", echo=FALSE, fig.width = 8, fig.asp = 0.5, dev="svg"}
+```
+]
+
+---
+
+## Many geoms have both `color` and `fill` aesthetics
+
+.tiny-font[
+```{r ggplot-color-fill3, eval = FALSE}
+ggplot(temperatures, aes(month, temperature, color = location, fill = location)) + 
+  geom_boxplot()
+```
+]
+
+
+.center[
+```{r ggplot-color-fill3-out, ref.label="ggplot-color-fill3", echo=FALSE, fig.width = 8, fig.asp = 0.5, dev="svg"}
+```
+]
+
+---
+
+## Aesthetics can also be used as parameters in geoms
+
+.tiny-font[
+```{r ggplot-color-fill-params, eval = FALSE}
+ggplot(temperatures, aes(month, temperature, fill = location)) + 
+  geom_boxplot(color = "steelblue")
+```
+]
+
+
+.center[
+```{r ggplot-color-fill-params-out, ref.label="ggplot-color-fill-params", echo=FALSE, fig.width = 8, fig.asp = 0.5, dev="svg"}
+```
+]
+
+
+---
+
+## Aesthetics can also be used as parameters in geoms
+
+.tiny-font[
+```{r ggplot-color-fill-params2, eval = FALSE}
+ggplot(temperatures, aes(month, temperature, color = location)) + 
+  geom_boxplot(fill = "steelblue")
+```
+]
+
+
+.center[
+```{r ggplot-color-fill-params2-out, ref.label="ggplot-color-fill-params2", echo=FALSE, fig.width = 8, fig.asp = 0.5, dev="svg"}
 ```
 ]
