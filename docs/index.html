@@ -2042,6 +2042,7 @@ Worksheets
 <div class="nav-dropdown-content">
 <a href="worksheets/intro-rmarkdown.Rmd">Class 1: Intro to R Markdown</a>
 <a href="worksheets/intro-rmarkdown-solutions.Rmd">Class 1: Intro to R Markdown (Solutions)</a>
+<a href="worksheets/aesthetic-mappings.Rmd">Class 2: Aesthetic mappings</a>
 <a href="worksheets/data-wrangling-1.Rmd">Class 9: Data wrangling 1</a>
 <a href="worksheets/data-wrangling-2.Rmd">Class 10: Data wrangling 2</a>
 </div>
@@ -2076,19 +2077,20 @@ Venue: online</p>
 <li>A recent version of R, <a href="https://cloud.r-project.org/">download from here.</a></li>
 <li>A recent version of RStudio, <a href="https://rstudio.com/products/rstudio/download/#download">download from here.</a></li>
 <li>The following R packages:<br />
-broom, cluster, colorspace, corrr, cowplot, distill, GGally, gganimate, ggiraph, ggdendro, ggdist, ggforce, ggpointdensity, ggraph, ggrepel, ggridges, ggtext, ggthemes, gifski, glue, knitr, learnr, lemon, magick, MASS, Matrix, palmerpenguins, patchwork, plotly, plotROC, rmarkdown, sf, tidymodels, tidyverse, transformr, treemapify, umap</li>
+broom, cluster, colorspace, corrr, cowplot, distill, gapminder, GGally, gganimate, ggiraph, ggdendro, ggdist, ggforce, ggplot2movies, ggpointdensity, ggraph, ggrepel, ggridges, ggtext, ggthemes, gifski, glue, knitr, learnr, lemon, magick, MASS, Matrix, nycflights13, palmerpenguins, patchwork, plotly, plotROC, rmarkdown, sf, tidymodels, tidyverse, transformr, treemapify, umap</li>
 </ul>
 <p>You can install all required R packages at once by running the following code in the R command line:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre><code><span class='fu'><a href='https://rdrr.io/r/utils/install.packages.html'>install.packages</a></span><span class='op'>(</span>
   <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>
-    <span class='st'>"broom"</span>, <span class='st'>"cluster"</span>, <span class='st'>"colorspace"</span>, <span class='st'>"corrr"</span>, <span class='st'>"cowplot"</span>, <span class='st'>"distill"</span>, <span class='st'>"GGally"</span>,
-    <span class='st'>"gganimate"</span>, <span class='st'>"ggiraph"</span>, <span class='st'>"ggdendro"</span>, <span class='st'>"ggdist"</span>, <span class='st'>"ggforce"</span>, <span class='st'>"ggpointdensity"</span>,
-    <span class='st'>"ggraph"</span>,  <span class='st'>"ggrepel"</span>, <span class='st'>"ggridges"</span>, <span class='st'>"ggtext"</span>, <span class='st'>"ggthemes"</span>, <span class='st'>"gifski"</span>, <span class='st'>"glue"</span>,
-    <span class='st'>"knitr"</span>, <span class='st'>"learnr"</span>, <span class='st'>"lemon"</span>, <span class='st'>"magick"</span>, <span class='st'>"MASS"</span>, <span class='st'>"Matrix"</span>, <span class='st'>"palmerpenguins"</span>,
-    <span class='st'>"patchwork"</span>, <span class='st'>"plotly"</span>, <span class='st'>"plotROC"</span>, <span class='st'>"rmarkdown"</span>, <span class='st'>"sf"</span>, <span class='st'>"tidymodels"</span>, <span class='st'>"tidyverse"</span>,
-    <span class='st'>"transformr"</span>, <span class='st'>"treemapify"</span>, <span class='st'>"umap"</span>
+    <span class='st'>"broom"</span>, <span class='st'>"cluster"</span>, <span class='st'>"colorspace"</span>, <span class='st'>"corrr"</span>, <span class='st'>"cowplot"</span>, <span class='st'>"distill"</span>, <span class='st'>"gapminder"</span>, 
+    <span class='st'>"GGally"</span>, <span class='st'>"gganimate"</span>, <span class='st'>"ggiraph"</span>, <span class='st'>"ggdendro"</span>, <span class='st'>"ggdist"</span>, <span class='st'>"ggforce"</span>,
+    <span class='st'>"ggplot2movies"</span>, <span class='st'>"ggpointdensity"</span>, <span class='st'>"ggraph"</span>,  <span class='st'>"ggrepel"</span>, <span class='st'>"ggridges"</span>,
+    <span class='st'>"ggtext"</span>, <span class='st'>"ggthemes"</span>, <span class='st'>"gifski"</span>, <span class='st'>"glue"</span>, <span class='st'>"knitr"</span>, <span class='st'>"learnr"</span>, <span class='st'>"lemon"</span>, <span class='st'>"magick"</span>,
+    <span class='st'>"MASS"</span>, <span class='st'>"Matrix"</span>, <span class='st'>"nycflights13"</span>, <span class='st'>"palmerpenguins"</span>, <span class='st'>"patchwork"</span>, <span class='st'>"plotly"</span>,
+    <span class='st'>"plotROC"</span>, <span class='st'>"rmarkdown"</span>, <span class='st'>"sf"</span>, <span class='st'>"tidymodels"</span>, <span class='st'>"tidyverse"</span>, <span class='st'>"transformr"</span>,
+    <span class='st'>"treemapify"</span>, <span class='st'>"umap"</span>
   <span class='op'>)</span>
 <span class='op'>)</span>
 </code></pre>

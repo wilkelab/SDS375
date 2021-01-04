@@ -31,6 +31,8 @@ navbar:
           href: worksheets/intro-rmarkdown.Rmd
         - text: "Class 1: Intro to R Markdown (Solutions)"
           href: worksheets/intro-rmarkdown-solutions.Rmd
+        - text: "Class 2: Aesthetic mappings"
+          href: worksheets/aesthetic-mappings.Rmd
         - text: "Class 9: Data wrangling 1"
           href: worksheets/data-wrangling-1.Rmd
         - text: "Class 10: Data wrangling 2"
