@@ -25,7 +25,7 @@ update_geom_defaults("point", list(size = 2)) # 2 for full width, 2.5 for half w
 ```
 
 
-# Dataset: Highest grossing movies Dec. 2017
+## Dataset: Highest grossing movies Dec. 2017
 
 .tiny-font[
 ```{r}
@@ -45,7 +45,7 @@ boxoffice %>%
 
 ---
 
-# Visualize as a bar plot
+## Visualize as a bar plot
 
 .small-font[
 ```{r boxoffice-naive, eval = FALSE}
@@ -67,7 +67,7 @@ Do you think this is a good visualization?
 
 ---
 
-# Order by data value
+## Order by data value
 
 .small-font[
 ```{r boxoffice-ordered, eval = FALSE}
@@ -83,7 +83,7 @@ ggplot(boxoffice, aes(fct_reorder(title, amount), amount)) +
 
 ---
 
-# Order by data value, descending
+## Order by data value, descending
 
 .small-font[
 ```{r boxoffice-ordered2, eval = FALSE}
@@ -101,7 +101,7 @@ ggplot(boxoffice, aes(fct_reorder(title, -amount), amount)) +
 
 ---
 
-# Flip x and y, set custom x axis label
+## Flip x and y, set custom x axis label
 
 .small-font[
 ```{r boxoffice-ordered3, eval = FALSE}
@@ -119,13 +119,13 @@ ggplot(boxoffice, aes(amount, fct_reorder(title, amount))) +
 
 ---
 background-image: url(https://raw.githubusercontent.com/allisonhorst/palmerpenguins/master/man/figures/logo.png)
-background-position: 90% 5%
-background-size: 13%
+background-position: 95% 5%
+background-size: 8%
 
 
-# Sometimes we need to count before visualization
+## Sometimes we need to count before visualization
 
-.tiny-font[
+.small-font[
 ```{r}
 library(palmerpenguins)
 head(penguins)
@@ -140,7 +140,7 @@ Image credit: [Artwork by @allison_horst](https://github.com/allisonhorst/palmer
 
 ---
 
-# Use `geom_bar()` to count before plotting
+## Use `geom_bar()` to count before plotting
 
 .small-font[
 ```{r penguins-bars, eval = FALSE}
@@ -158,7 +158,7 @@ ggplot(penguins, aes(y = species)) + # note: no x aesthetic defined
 
 ---
 
-# Getting the bars into the right order
+## Getting the bars into the right order
 
 Option 1: Manually, using `fct_relevel()`
 
@@ -177,7 +177,7 @@ ggplot(penguins, aes(y = fct_relevel(species, "Chinstrap", "Gentoo", "Adelie")))
 
 ---
 
-# Getting the bars into the right order
+## Getting the bars into the right order
 
 Option 2: Using some R magic
 
@@ -197,9 +197,9 @@ ggplot(penguins, aes(y = fct_reorder(species, species, length))) + # Why does th
 
 ---
 
-# Display counts by species and sex
+## Display counts by species and sex
 
-.tiny-font[
+.small-font[
 ```{r penguins-sex-species, eval = FALSE}
 ggplot(penguins, aes(sex, fill = species)) +
   geom_bar()
@@ -213,13 +213,13 @@ ggplot(penguins, aes(sex, fill = species)) +
 
 ---
 
-# Remove missing values (`NA`s)
+## Remove missing values (`NA`s)
 
 .tiny-font[
 ```{r penguins-sex-species2, eval = FALSE}
-penguins_nona <- na.omit(penguins) # remove all rows with any missing values
+penguins_nomissing <- na.omit(penguins) # remove all rows with any missing values
 
-ggplot(penguins_nona, aes(sex, fill = species)) +
+ggplot(penguins_nomissing, aes(sex, fill = species)) +
   geom_bar()
 ```
 ]
@@ -231,13 +231,13 @@ ggplot(penguins_nona, aes(sex, fill = species)) +
 
 ---
 
-# Positions define how subgroups are shown
+## Positions define how subgroups are shown
 
 `position = "dodge"`: Place bars for subgroups side-by-side
 
-.tiny-font[
+.small-font[
 ```{r penguins-sex-species-dodge, eval = FALSE}
-ggplot(penguins_nona, aes(sex, fill = species)) +
+ggplot(penguins_nomissing, aes(sex, fill = species)) +
   geom_bar(position = "dodge")
 ```
 ]
@@ -250,13 +250,13 @@ ggplot(penguins_nona, aes(sex, fill = species)) +
 
 ---
 
-# Positions define how subgroups are shown
+## Positions define how subgroups are shown
 
 `position = "stack"`: Place bars for subgroups on top of each other
 
-.tiny-font[
+.small-font[
 ```{r penguins-sex-species-stack, eval = FALSE}
-ggplot(penguins_nona, aes(sex, fill = species)) +
+ggplot(penguins_nomissing, aes(sex, fill = species)) +
   geom_bar(position = "stack")
 ```
 ]
@@ -267,16 +267,15 @@ ggplot(penguins_nona, aes(sex, fill = species)) +
 ]
 
 
-
 ---
 
-# Positions define how subgroups are shown
+## Positions define how subgroups are shown
 
 `position = "fill"`: Like `"stack"`, but scale to 100%
 
-.tiny-font[
+.small-font[
 ```{r penguins-sex-species-fill, eval = FALSE}
-ggplot(penguins_nona, aes(sex, fill = species)) +
+ggplot(penguins_nomissing, aes(sex, fill = species)) +
   geom_bar(position = "fill")
 ```
 ]
@@ -285,6 +284,15 @@ ggplot(penguins_nona, aes(sex, fill = species)) +
 ```{r penguins-sex-species-fill-out, ref.label = "penguins-sex-species-fill", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
+
+---
+
+## Further reading
+
+- Fundamentals of Data Visualization: [Chapter 6: Visualizing amounts](https://clauswilke.com/dataviz/visualizing-amounts.html)
+- Data Visualization—A Practical Introduction: [Chapter 4.4: Geoms can transform data](https://socviz.co/groupfacettx.html#statfunctions)
+- ggplot2 reference documentation: [`geom_bar()`, `geom_col()`](https://ggplot2.tidyverse.org/reference/geom_bar.html)
+- ggplot2 reference documentation: [`position_stack()`, `position_fill()`](https://ggplot2.tidyverse.org/reference/position_stack.html)
 
 
 

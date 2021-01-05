@@ -14,7 +14,7 @@ class: center, middle, title-slide
 
 # Visualizing amounts
 ### Claus O. Wilke
-### last updated: 2020-09-02
+### last updated: 2021-01-04
 
 ---
 
@@ -22,7 +22,7 @@ class: center, middle, title-slide
 
 
 
-# Dataset: Highest grossing movies Dec. 2017
+## Dataset: Highest grossing movies Dec. 2017
 
 .tiny-font[
 
@@ -75,7 +75,7 @@ boxoffice &lt;- tibble(
 
 ---
 
-# Visualize as a bar plot
+## Visualize as a bar plot
 
 .small-font[
 
@@ -97,7 +97,7 @@ Do you think this is a good visualization?
 
 ---
 
-# Order by data value
+## Order by data value
 
 .small-font[
 
@@ -113,7 +113,7 @@ ggplot(boxoffice, aes(fct_reorder(title, amount), amount)) +
 
 ---
 
-# Order by data value, descending
+## Order by data value, descending
 
 .small-font[
 
@@ -131,7 +131,7 @@ ggplot(boxoffice, aes(fct_reorder(title, -amount), amount)) +
 
 ---
 
-# Flip x and y, set custom x axis label
+## Flip x and y, set custom x axis label
 
 .small-font[
 
@@ -149,13 +149,13 @@ ggplot(boxoffice, aes(amount, fct_reorder(title, amount))) +
 
 ---
 background-image: url(https://raw.githubusercontent.com/allisonhorst/palmerpenguins/master/man/figures/logo.png)
-background-position: 90% 5%
-background-size: 13%
+background-position: 95% 5%
+background-size: 8%
 
 
-# Sometimes we need to count before visualization
+## Sometimes we need to count before visualization
 
-.tiny-font[
+.small-font[
 
 ```r
 library(palmerpenguins)
@@ -164,15 +164,14 @@ head(penguins)
 
 ```
 # A tibble: 6 x 8
-  species island bill_length_mm bill_depth_mm flipper_length_… body_mass_g sex  
-  &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;            &lt;int&gt;       &lt;int&gt; &lt;fct&gt;
-1 Adelie  Torge…           39.1          18.7              181        3750 male 
-2 Adelie  Torge…           39.5          17.4              186        3800 fema…
-3 Adelie  Torge…           40.3          18                195        3250 fema…
-4 Adelie  Torge…           NA            NA                 NA          NA &lt;NA&gt; 
-5 Adelie  Torge…           36.7          19.3              193        3450 fema…
-6 Adelie  Torge…           39.3          20.6              190        3650 male 
-# … with 1 more variable: year &lt;int&gt;
+  species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g sex     year
+  &lt;fct&gt;   &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt; &lt;fct&gt;  &lt;int&gt;
+1 Adelie  Torgersen           39.1          18.7               181        3750 male    2007
+2 Adelie  Torgersen           39.5          17.4               186        3800 female  2007
+3 Adelie  Torgersen           40.3          18                 195        3250 female  2007
+4 Adelie  Torgersen           NA            NA                  NA          NA &lt;NA&gt;    2007
+5 Adelie  Torgersen           36.7          19.3               193        3450 female  2007
+6 Adelie  Torgersen           39.3          20.6               190        3650 male    2007
 ```
 ]
 
@@ -184,7 +183,7 @@ Image credit: [Artwork by @allison_horst](https://github.com/allisonhorst/palmer
 
 ---
 
-# Use `geom_bar()` to count before plotting
+## Use `geom_bar()` to count before plotting
 
 .small-font[
 
@@ -202,7 +201,7 @@ ggplot(penguins, aes(y = species)) + # note: no x aesthetic defined
 
 ---
 
-# Getting the bars into the right order
+## Getting the bars into the right order
 
 Option 1: Manually, using `fct_relevel()`
 
@@ -221,7 +220,7 @@ ggplot(penguins, aes(y = fct_relevel(species, "Chinstrap", "Gentoo", "Adelie")))
 
 ---
 
-# Getting the bars into the right order
+## Getting the bars into the right order
 
 Option 2: Using some R magic
 
@@ -241,9 +240,9 @@ ggplot(penguins, aes(y = fct_reorder(species, species, length))) + # Why does th
 
 ---
 
-# Display counts by species and sex
+## Display counts by species and sex
 
-.tiny-font[
+.small-font[
 
 ```r
 ggplot(penguins, aes(sex, fill = species)) +
@@ -257,14 +256,14 @@ ggplot(penguins, aes(sex, fill = species)) +
 
 ---
 
-# Remove missing values (`NA`s)
+## Remove missing values (`NA`s)
 
 .tiny-font[
 
 ```r
-penguins_nona &lt;- na.omit(penguins) # remove all rows with any missing values
+penguins_nomissing &lt;- na.omit(penguins) # remove all rows with any missing values
 
-ggplot(penguins_nona, aes(sex, fill = species)) +
+ggplot(penguins_nomissing, aes(sex, fill = species)) +
   geom_bar()
 ```
 ]
@@ -275,14 +274,14 @@ ggplot(penguins_nona, aes(sex, fill = species)) +
 
 ---
 
-# Positions define how subgroups are shown
+## Positions define how subgroups are shown
 
 `position = "dodge"`: Place bars for subgroups side-by-side
 
-.tiny-font[
+.small-font[
 
 ```r
-ggplot(penguins_nona, aes(sex, fill = species)) +
+ggplot(penguins_nomissing, aes(sex, fill = species)) +
   geom_bar(position = "dodge")
 ```
 ]
@@ -294,14 +293,14 @@ ggplot(penguins_nona, aes(sex, fill = species)) +
 
 ---
 
-# Positions define how subgroups are shown
+## Positions define how subgroups are shown
 
 `position = "stack"`: Place bars for subgroups on top of each other
 
-.tiny-font[
+.small-font[
 
 ```r
-ggplot(penguins_nona, aes(sex, fill = species)) +
+ggplot(penguins_nomissing, aes(sex, fill = species)) +
   geom_bar(position = "stack")
 ```
 ]
@@ -311,17 +310,16 @@ ggplot(penguins_nona, aes(sex, fill = species)) +
 ]
 
 
-
 ---
 
-# Positions define how subgroups are shown
+## Positions define how subgroups are shown
 
 `position = "fill"`: Like `"stack"`, but scale to 100%
 
-.tiny-font[
+.small-font[
 
 ```r
-ggplot(penguins_nona, aes(sex, fill = species)) +
+ggplot(penguins_nomissing, aes(sex, fill = species)) +
   geom_bar(position = "fill")
 ```
 ]
@@ -329,6 +327,15 @@ ggplot(penguins_nona, aes(sex, fill = species)) +
 .center[
 ![](visualizing-amounts_files/figure-html/penguins-sex-species-fill-out-1.svg)&lt;!-- --&gt;
 ]
+
+---
+
+## Further reading
+
+- Fundamentals of Data Visualization: [Chapter 6: Visualizing amounts](https://clauswilke.com/dataviz/visualizing-amounts.html)
+- Data Visualization—A Practical Introduction: [Chapter 4.4: Geoms can transform data](https://socviz.co/groupfacettx.html#statfunctions)
+- ggplot2 reference documentation: [`geom_bar()`, `geom_col()`](https://ggplot2.tidyverse.org/reference/geom_bar.html)
+- ggplot2 reference documentation: [`position_stack()`, `position_fill()`](https://ggplot2.tidyverse.org/reference/position_stack.html)
 
 
 

@@ -41,7 +41,7 @@ library(tidyverse)
 ```
 
 The dataset we will be working with contains the average temperature for each day of the year for Houston, TX:
-```{r temps-houston}
+```{r temps-houston, echo = TRUE}
 temps_houston
 ```
 
@@ -130,7 +130,7 @@ ggplot(temps_houston, aes(x = temperature, y = month)) +
 ## Adding color
 
 Next we will be working with the dataset `temperatures`, which is similar to `temps_houston` but contains data for three more locations:
-```{r temperatures}
+```{r temperatures, echo = TRUE}
 temperatures
 ```
 

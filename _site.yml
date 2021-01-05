@@ -33,6 +33,8 @@ navbar:
           href: worksheets/intro-rmarkdown-solutions.Rmd
         - text: "Class 2: Aesthetic mappings"
           href: worksheets/aesthetic-mappings.Rmd
+        - text: "Class 3: Visualizing amounts"
+          href: worksheets/visualizing-amounts.html
         - text: "Class 9: Data wrangling 1"
           href: worksheets/data-wrangling-1.Rmd
         - text: "Class 10: Data wrangling 2"
