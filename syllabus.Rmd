@@ -118,13 +118,52 @@ In the spring of 2021, the class will be taught entirely online. All lectures wi
 
 ## Assignments and grading
 
-The graded components of this class will be homeworks and projects. Each week either one homework or one project are due. Homeworks will be relatively short visualization problems to be solved by the student, usually involving some small amount of programming to achieve a specified goal. Projects are larger and more involved data analysis problems that involve both programming and writing. Students will have at least one week to complete each homework and two weeks to complete each project.
+The graded components of this class will be homeworks, projects, and online participation. Each week either one homework or one project are due. Homeworks will be relatively short visualization problems to be solved by the student, usually involving some small amount of programming to achieve a specified goal. Projects are larger and more involved data analysis problems that involve both programming and writing. Students will have at least one week to complete each homework and two weeks to complete each project.
 
-The exact homework and project schedule will be published soon. There will likely be 10--12 homeworks and 3--4 projects, for a total of 14--15 assignments.
+There will be ten homeworks and three projects. Both homeworks and projects need to be submitted as pdf files on Canvas. Homeworks are worth 10 points and projects are worth 100 points. The lowest-scoring homework will be dropped, so that a maximum of 90 points can be obtained from the homeworks.
+
+Online participation assignments are small tasks meant to promote discussion and engagement with the class materials. They are worth between 5 and 10 points, for a total of 60.
+
+::: l-page
+Assignment type   Number   Points per assignment  Total points
+--------------- -------- ----------------------- -------------
+Homework          9 (+1)                      10            90
+Project           3                          100           300
+Participation     9                         5-10            60
+:::
+
+Thus, in summary, each project contributes 22% to the final grade, the totality of all homeworks contributes another 20% to the final grade, and participation contributes 13%. **There are no traditional exams in this class and there is no final.**
+
+The participation assignments are meant to foster discussion about class materials on GitHub. They are as follows:
+
+::: l-page
+Participation assignment            Points      Times rewarded 
+--------------------------------- -------- -------------------
+Submit GitHub username                   5                  1x
+Make a comment in the sandbox            5                  1x
+Open an issue                           10                  2x
+Provide a constructive comment           5                  4x
+Close an issue that was answered         5                  2x
+:::
+
+The	class	will use +/- grading, and the exact grade boundaries will be determined at the end of the semester. However, the following minimum grades will be guaranteed:	
+
+::: l-page
+ Points achieved Minimum guaranteed grade
+---------------- ------------------------
+             405                       A-
+             360                       B-
+             315                       C-
+             225                       D-
+:::
 
 ## Late assignment policy
 
-TBD
+Homeworks that are submitted past the posted deadline will not be graded and will receive 0 points.
+
+Project submissions will have a 2-day grace period. Projects submitted during the grace period will have 25 points deducted from the obtained grade. After the grace period, students who haven not submitted their project will receive 0 points.
+
+Participation assignments have no deadline and are available until the last class day.
 
 ## Extra assignment for graduate course credit
 
@@ -136,3 +175,12 @@ Graduate students who are taking this class for graduate course credit will have
 
 **Religious holy days.** Students who must miss a class or an assignment to observe a religious holy day will be given an opportunity to complete the missed work within a reasonable time after the absence. According to UT Austin policy, such students must notify me of the pending absence at least fourteen days prior to the date of observance of a religious holy day. 
 
+## Sharing of Course Materials is Prohibited
+
+Any materials in this class that are not posted publicly may not be shared online or with anyone outside of the class unless you have my explicit, written permission. This includes but is not limited to lecture hand-outs, videos, assessments (quizzes, exams, papers, projects, homework assignments), in-class materials, review sheets, and additional problem sets. Unauthorized sharing of materials promotes cheating. It is a violation of the University’s Student Honor Code and an act of academic dishonesty. I am well aware of the sites used for sharing materials, and any materials found online that are associated with you, or any suspected unauthorized sharing of materials, will be reported to Student Conduct and Academic Integrity in the Office of the Dean of Students. These reports can result in sanctions, including failure in the course.
+
+Any materials posted on the public class website (https://wilkelab.org/SDS375/) are considered public and can be shared under the Creative Commons Attribution [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) license.
+
+## Class Recordings
+
+Class recordings are reserved only for students in this class for educational purposes and are protected under FERPA. The recordings should not be shared outside the class in any form. Violation of this restriction by a student could lead to Student Misconduct proceedings.
