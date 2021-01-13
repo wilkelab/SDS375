@@ -13,6 +13,23 @@ knitr::opts_chunk$set(echo = FALSE)
 
 **This site is currently under construction. Materials provided are subject to change until the class starts in January 2021.**
 
+
+## Course title and instructor
+
+**Title:** SDS 375/395 Data Visualization in R<br>
+**Unique:** 57800, 57915, TTH 9:30am--11:00am<br>
+
+
+**Instructor:** Claus	O.	Wilke<br>
+**Email:** wilke@austin.utexas.edu<br>
+**Office Hours:** Mon. 12:00pm - 1:00pm (open Zoom), or by appointment <br>
+**GitHub:** @clauswilke <br>
+
+**Teaching Assistant:** Anastasiya Kulikova<br>
+**Email:**<br>
+**Office Hours:** <br>
+**GitHub:** @akulikova64
+
 ## Purpose and contents of the class
 
 In this class, students will learn how to visualize data sets and how to reason about and communicate with data visualizations. A substantial component of this class will be dedicated to learning how to program in R. In addition, students will learn how to compile analyses and visualizations into reports, how to make the reports reproducible, and how to post reports on a website or blog.
@@ -134,7 +151,7 @@ Participation     9                         5-10            60
 
 Thus, in summary, each project contributes 22% to the final grade, the totality of all homeworks contributes another 20% to the final grade, and participation contributes 13%. **There are no traditional exams in this class and there is no final.**
 
-The participation assignments are meant to foster discussion about class materials on GitHub. They are as follows:
+The participation assignments are meant to foster discussion about class materials on GitHub. Several of them can be performed more than once and will receive the indicated points each time they are performed successfully, up to the maximum number of times the specific activity is rewarded. The following activities will be available:
 
 ::: l-page
 Participation assignment            Points      Times rewarded 
@@ -149,12 +166,12 @@ Close an issue that was answered         5                  2x
 The	class	will use +/- grading, and the exact grade boundaries will be determined at the end of the semester. However, the following minimum grades will be guaranteed:	
 
 ::: l-page
- Points achieved Minimum guaranteed grade
----------------- ------------------------
-             405                       A-
-             360                       B-
-             315                       C-
-             225                       D-
+ Points achieved  Minimum guaranteed grade
+---------------- -------------------------
+             405                        A-
+             360                        B-
+             315                        C-
+             225                        D-
 :::
 
 ## Late assignment policy
