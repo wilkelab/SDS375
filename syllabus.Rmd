@@ -23,12 +23,12 @@ knitr::opts_chunk$set(echo = FALSE)
 **Instructor:** Claus	O.	Wilke<br>
 **Email:** wilke@austin.utexas.edu<br>
 **Office Hours:** Mon. 12:00pm - 1:00pm (open Zoom), or by appointment <br>
-**GitHub:** [@clauswilke](https://github.com/clauswilke) <br>
+**GitHub:** [clauswilke](https://github.com/clauswilke) <br>
 
 **Teaching Assistant:** Anastasiya Kulikova<br>
 **Email:**<br>
 **Office Hours:** <br>
-**GitHub:** [@akulikova64](https://github.com/akulikova64)
+**GitHub:** [akulikova64](https://github.com/akulikova64)
 
 ## Purpose and contents of the class
 
