@@ -14,11 +14,10 @@ runtime: shiny_prerendered
 library(learnr)
 library(tidyverse)
 library(lubridate)
-library(here)
 knitr::opts_chunk$set(echo = FALSE, comment = "")
 
 # data prep
-temperatures <- read_csv(here("datasets", "tempnormals.csv")) %>%
+temperatures <- read_csv("https://wilkelab.org/SDS375/datasets/tempnormals.csv") %>%
   mutate(
     location = factor(
       location, levels = c("Death Valley", "Houston", "San Diego", "Chicago")

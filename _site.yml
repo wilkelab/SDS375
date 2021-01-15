@@ -6,8 +6,11 @@ output_dir: "docs"
 include: [".nojekyll"]
 navbar:
   left:
-    - text: "Home"
-      href: index.html
+    - text: "Schedule"
+      href: schedule.html
+    - text: "Syllabus"
+      href: syllabus.html
+
   right:
     - text: "Slides"
       menu:
@@ -39,6 +42,4 @@ navbar:
           href: worksheets/data-wrangling-1.Rmd
         - text: "Class 10: Data wrangling 2"
           href: worksheets/data-wrangling-2.Rmd
-    - text: "Syllabus"
-      href: syllabus.html
 output: distill::distill_article

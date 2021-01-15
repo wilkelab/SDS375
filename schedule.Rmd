@@ -1,0 +1,31 @@
+---
+title: "SDS 375 Schedule Spring 2021"
+description: ""
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 2
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Lectures
+
+### 1. Jan 19, 2021—Introduction
+
+Materials:
+
+- [Slides](slides/introduction.html)  
+- [Worksheet](worksheets/intro-rmarkdown.Rmd) (Solutions are [available here](worksheets/intro-rmarkdown-solutions.Rmd))
+
+## Homeworks
+
+All homeworks are due by 11:00pm on the day they are due. Homeworks need to be submitted as pdf files on Canvas.
+
+### Homework 1 (due Jan 25, 2021)
+
+Materials:
+
+- coming soon

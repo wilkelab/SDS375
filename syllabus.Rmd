@@ -26,8 +26,8 @@ knitr::opts_chunk$set(echo = FALSE)
 **GitHub:** [clauswilke](https://github.com/clauswilke) <br>
 
 **Teaching Assistant:** Anastasiya Kulikova<br>
-**Email:**<br>
-**Office Hours:** <br>
+**Email:** akulikova82@yahoo.com<br>
+**Office Hours:** Fri. 3:00pm - 4:00pm (open Zoom), or by appointment <br>
 **GitHub:** [akulikova64](https://github.com/akulikova64)
 
 ## Purpose and contents of the class
@@ -133,13 +133,28 @@ Programming needs to be learned by doing, and a significant portion of the in-cl
 
 In the spring of 2021, the class will be taught entirely online. All lectures will be recorded and made available via Canvas, and all slides and worksheets will be made available on this website. Students will be able to take the class synchronously or asynchronously, at their option.
 
+## Course site
+
+All materials and assignments will be posted on the course webpage at:
+https://wilkelab.org/SDS375 
+
+Assignments will be submitted and grades will be posted on Canvas at:
+https://utexas.instructure.com
+
+R compute sessions are available at:
+https://edupod.cns.utexas.edu
+
+An online discussions forum will be available at the following private GitHub repo:
+https://github.com/wilkelab/SDS375_spring2021<br>
+You will be given access to this repo during the first week of class.
+
 ## Assignments and grading
 
-The graded components of this class will be homeworks, projects, and online participation. Each week either one homework or one project are due. Homeworks will be relatively short visualization problems to be solved by the student, usually involving some small amount of programming to achieve a specified goal. Projects are larger and more involved data analysis problems that involve both programming and writing. Students will have at least one week to complete each homework and two weeks to complete each project.
+The graded components of this class will be homeworks, projects, and online participation. Each week either one homework or one project are due. Homeworks will be relatively short visualization problems to be solved by the student, usually involving some small amount of programming to achieve a specified goal. Projects are larger and more involved data analysis problems that involve both programming and writing. Students will have at least one week to complete each homework and two weeks to complete each project. The submission deadlines for homeworks and projects will be Mondays at 11pm.
 
 There will be ten homeworks and three projects. Both homeworks and projects need to be submitted as pdf files on Canvas. Homeworks are worth 10 points and projects are worth 100 points. The lowest-scoring homework will be dropped, so that a maximum of 90 points can be obtained from the homeworks.
 
-Online participation assignments are small tasks meant to promote discussion and engagement with the class materials. They are worth between 5 and 10 points, for a total of 60.
+Online participation assignments are small tasks meant to promote discussion and engagement with the class materials. They are worth between 5 and 10 points, for a maximum of 60.
 
 ::: l-page
 Assignment type   Number   Points per assignment  Total points
@@ -151,16 +166,16 @@ Participation     9                         5-10            60
 
 Thus, in summary, each project contributes 22% to the final grade, the totality of all homeworks contributes another 20% to the final grade, and participation contributes 13%. **There are no traditional exams in this class and there is no final.**
 
-The participation assignments are meant to foster discussion about class materials on GitHub. Several of them can be performed more than once and will receive the indicated points each time they are performed successfully, up to the maximum number of times the specific activity is rewarded. The following activities will be available:
+The participation assignments are meant to foster discussion about class materials on GitHub. Several of them can be performed more than once and will receive the indicated points each time they are performed successfully, up to the maximum number of times the specific activity is rewarded or the point maximum of 60, whichever is reached earlier. The following activities will be available:
 
 ::: l-page
 Participation assignment            Points      Times rewarded 
 --------------------------------- -------- -------------------
 Submit GitHub username                   5                  1x
 Make a comment in the sandbox            5                  1x
-Open an issue                           10                  2x
-Provide a constructive comment           5                  4x
-Close an issue that was answered         5                  2x
+Open an issue                           10                  3x
+Provide a constructive comment           5                  6x
+Close an issue that was answered         5                  3x
 :::
 
 The	class	will use +/- grading, and the exact grade boundaries will be determined at the end of the semester. However, the following minimum grades will be guaranteed:	
@@ -186,18 +201,45 @@ Participation assignments have no deadline and are available until the last clas
 
 Graduate students who are taking this class for graduate course credit will have to complete one additional assignment. The assignment will be to write a brief report (4-5 pages, no more than 3 figures) applying concepts from this class to a dataset of the student’s choice. This assignment will be graded pass/fail, and a failing grade on this assignment will result in a 10% penalty on the total points obtained in the class. Students who receive a failing grade can submit a revised assignment for regrading. The last day by which a revised assignment can be submitted is the last day of class in the semester.
 
+## Office hours
+
+Both the graduate TA and myself will be available for an open Zoom Q&A each week. These sessions will be recorded and shared on Canvas. In addition, for any conversations that are not appropriate for an open Zoom call, such as grade complaints or other issues of a personal nature, please request an appointment. The most effective way to request an appointment for office hours is to suggest several times that work for you.  I would suggest to write an email such as the following:
+
+    Dear Dr. Wilke,
+    
+    I would like to request a meeting with you outside of 
+    regular office hours this week. I am available Thurs.
+    between 2pm and 3:30pm or Fri. before 11am or after 4pm.
+    
+    Thanks a lot,
+      John Doe
+
+Note that we will not usually make appointments before 9am or after 5pm.
+
+## Email policy
+
+When emailing about this course, please put "SDS375" into the subject line. Emails to the instructor or TA should be restricted to organizational issues, such as requests for appointments, questions about course organization, etc. For all other issues, post an issue on GitHub, ask a question during open Zoom, or make an appointment for a one-on-one session.
+
+Specifically, we will not discuss technical issues related to assignments over email. Technical issues are questions concerning how to approach a particular problem, whether a particular solution is correct, or how to use the statistical software R. These questions should be posted as issues on GitHub. Also, we will not discuss grading-related matters over email. If you have a concern about grading, schedule a one-on-one Zoom meeting.
+
 ## Special accommodations
 
 **Students with disabilities.** Students with disabilities may request appropriate accommodations from the Division of Diversity and Community Engagement, Services for Students with Disabilities, 512-471-6259, https://diversity.utexas.edu/disability/
 
 **Religious holy days.** Students who must miss a class or an assignment to observe a religious holy day will be given an opportunity to complete the missed work within a reasonable time after the absence. According to UT Austin policy, such students must notify me of the pending absence at least fourteen days prior to the date of observance of a religious holy day. 
 
+## Academic dishonesty
+
+This course is built upon the idea that student interaction is important and a powerful way to learn. We encourage you to communicate with other students, in particular through the [discussion forums on GitHub.](https://github.com/wilkelab/SDS375_spring2021) However, there are times when you need to demonstrate your own ability to work and solve problems. In particular, your homeworks and projects are independent work, unless explicitly stated otherwise. You are allowed to confer with fellow students about general approaches to solve the problems in the assignments, but you have to do the assignments on your own and describe your work in your own words. Students who violate these expectations can expect to receive a failing grade on the assignment and will be reported to Student Judicial Services. These types of violations are reported to professional schools, should you ever decide to apply one day. Don’t do it—it’s not worth the consequences.
+
+
 ## Sharing of Course Materials is Prohibited
 
-Any materials in this class that are not posted publicly may not be shared online or with anyone outside of the class unless you have my explicit, written permission. This includes but is not limited to lecture hand-outs, videos, assessments (quizzes, exams, papers, projects, homework assignments), in-class materials, review sheets, and additional problem sets. Unauthorized sharing of materials promotes cheating. It is a violation of the University’s Student Honor Code and an act of academic dishonesty. I am well aware of the sites used for sharing materials, and any materials found online that are associated with you, or any suspected unauthorized sharing of materials, will be reported to Student Conduct and Academic Integrity in the Office of the Dean of Students. These reports can result in sanctions, including failure in the course.
+Any materials in this class that are not posted publicly may not be shared online or with anyone outside of the class unless you have my explicit, written permission. This includes but is not limited to lecture hand-outs, videos, assessments (quizzes, exams, papers, projects, homework assignments), in-class materials, review sheets, and additional problem sets. Unauthorized sharing of materials promotes cheating. It is a violation of the University’s Student Honor Code and an act of academic dishonesty. We am well aware of the sites used for sharing materials, and any materials found online that are associated with you, or any suspected unauthorized sharing of materials, will be reported to Student Conduct and Academic Integrity in the Office of the Dean of Students. These reports can result in sanctions, including failure in the course.
 
 Any materials posted on the public class website (https://wilkelab.org/SDS375/) are considered public and can be shared under the Creative Commons Attribution [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) license.
 
 ## Class Recordings
 
 Class recordings are reserved only for students in this class for educational purposes and are protected under FERPA. The recordings should not be shared outside the class in any form. Violation of this restriction by a student could lead to Student Misconduct proceedings.
+

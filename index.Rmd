@@ -17,12 +17,11 @@ knitr::opts_chunk$set(echo = FALSE)
 
 This is the home page for SDS 375, Data Visualization in R. All course materials will be posted on this site.
 
-**This site is currently under construction. Materials provided are subject to change until the class starts in January 2021. Please read the [Syllabus](syllabus.html) for a rough outline of the class structure and content.**
-
 Instructor: [Claus O. Wilke](https://clauswilke.com)  
 Meeting times: TTH 9:30am to 11:00am  
 Venue: online  
-
+Syllabus: [click here](syllabus.html)  
+Upcoming lectures and assignments: [click here](schedule.html)  
 
 ## Computing requirements
 
