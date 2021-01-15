@@ -15,11 +15,17 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ### 1. Jan 19, 2021—Introduction
 
-
 <p class="nospace">Materials:</p>
 
 - [Slides](slides/introduction.html)  
 - [Worksheet](worksheets/intro-rmarkdown.Rmd) (Solutions are [available here](worksheets/intro-rmarkdown-solutions.Rmd))
+
+### 2. Jan 21, 2021—Aesthetic mappings
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/aesthetic-mappings.html)  
+- [Worksheet](worksheets/aesthetic-mappings.Rmd)
 
 ## Homeworks
 
