@@ -35,4 +35,5 @@ All homeworks are due by 11:00pm on the day they are due. Homeworks need to be s
 
 <p class="nospace">Materials:</p>
 
-- coming soon
+- [R Markdown template](assignments/HW1.Rmd)
+- [HTML](assignments/HW1.html)

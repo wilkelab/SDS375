@@ -1,0 +1,34 @@
+```{r global_options, include=FALSE}
+library(knitr)
+library(ggplot2)
+opts_chunk$set(fig.align="center", fig.height=4, fig.width=5.5)
+```
+
+## Homework 1
+
+*Enter your name and EID here*
+
+**This homework is due on Jan. 25, 2021 at 11:00pm. Please submit as a pdf file on Canvas.**
+
+
+**Problem 1: (4 pts)** Demonstrate basic command of Markdown by creating a bulleted list with three items, a numbered list with three items, and a sentence that has one word in bold and one word in italics.
+
+*Your text goes here.*
+
+**Problem 2: (3 pts)** The `economics` dataset contains various time series data from the US economy:
+
+```{r}
+economics
+```
+
+Use ggplot to make a line plot of the number of unemployed (column `unemploy`) versus time (column `date`).
+
+```{r}
+# your code goes here
+```
+
+**Problem 3: (3 pts)** Again using the `economics` dataset, now make a scatter plot (using `geom_point()`) of the number of unemployed versus the personal savings rate (`psavert`), and color points by date.
+
+```{r}
+# your code goes here
+```
