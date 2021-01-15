@@ -15,7 +15,8 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ### 1. Jan 19, 2021—Introduction
 
-Materials:
+
+<p class="nospace">Materials:</p>
 
 - [Slides](slides/introduction.html)  
 - [Worksheet](worksheets/intro-rmarkdown.Rmd) (Solutions are [available here](worksheets/intro-rmarkdown-solutions.Rmd))
@@ -26,6 +27,6 @@ All homeworks are due by 11:00pm on the day they are due. Homeworks need to be s
 
 ### Homework 1 (due Jan 25, 2021)
 
-Materials:
+<p class="nospace">Materials:</p>
 
 - coming soon

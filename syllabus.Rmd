@@ -11,8 +11,6 @@ output:
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-**This site is currently under construction. Materials provided are subject to change until the class starts in January 2021.**
-
 
 ## Course title and instructor
 

@@ -3,6 +3,7 @@ title: "SDS 375"
 description: |
   SDS 375
 output_dir: "docs"
+theme: "theme.css"
 include: [".nojekyll"]
 navbar:
   left:
