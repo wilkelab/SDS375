@@ -148,7 +148,7 @@ You will be given access to this repo during the first week of class.
 
 ## Assignments and grading
 
-The graded components of this class will be homeworks, projects, and online participation. Each week either one homework or one project are due. Homeworks will be relatively short visualization problems to be solved by the student, usually involving some small amount of programming to achieve a specified goal. Projects are larger and more involved data analysis problems that involve both programming and writing. Students will have at least one week to complete each homework and two weeks to complete each project. The submission deadlines for homeworks and projects will be Mondays at 11pm.
+The graded components of this class will be homeworks, projects, and online participation. Each week either one homework or one project is due. Homeworks will be relatively short visualization problems to be solved by the student, usually involving some small amount of programming to achieve a specified goal. Projects are larger and more involved data analysis problems that involve both programming and writing. Students will have at least one week to complete each homework and two weeks to complete each project. The submission deadlines for homeworks and projects will be Mondays at 11pm.
 
 There will be ten homeworks and three projects. Both homeworks and projects need to be submitted as pdf files on Canvas. Homeworks are worth 10 points and projects are worth 100 points. The lowest-scoring homework will be dropped, so that a maximum of 90 points can be obtained from the homeworks.
 
@@ -181,17 +181,17 @@ The	class	will use +/- grading, and the exact grade boundaries will be determine
 ::: l-page
  Points achieved  Minimum guaranteed grade
 ---------------- -------------------------
-             405                        A-
-             360                        B-
-             315                        C-
-             225                        D-
+       405 (90%)                        A-
+       360 (80%)                        B-
+       315 (70%)                        C-
+       225 (50%)                        D-
 :::
 
 ## Late assignment policy
 
 Homeworks that are submitted past the posted deadline will not be graded and will receive 0 points.
 
-Project submissions will have a 2-day grace period. Projects submitted during the grace period will have 25 points deducted from the obtained grade. After the grace period, students who haven not submitted their project will receive 0 points.
+Project submissions will have a 2-day grace period. Projects submitted during the grace period will have 25 points deducted from the obtained grade. After the grace period, students who have not submitted their project will receive 0 points.
 
 Participation assignments have no deadline and are available until the last class day.
 
@@ -233,7 +233,7 @@ This course is built upon the idea that student interaction is important and a p
 
 ## Sharing of Course Materials is Prohibited
 
-Any materials in this class that are not posted publicly may not be shared online or with anyone outside of the class unless you have my explicit, written permission. This includes but is not limited to lecture hand-outs, videos, assessments (quizzes, exams, papers, projects, homework assignments), in-class materials, review sheets, and additional problem sets. Unauthorized sharing of materials promotes cheating. It is a violation of the University’s Student Honor Code and an act of academic dishonesty. We am well aware of the sites used for sharing materials, and any materials found online that are associated with you, or any suspected unauthorized sharing of materials, will be reported to Student Conduct and Academic Integrity in the Office of the Dean of Students. These reports can result in sanctions, including failure in the course.
+Any materials in this class that are not posted publicly may not be shared online or with anyone outside of the class unless you have my explicit, written permission. This includes but is not limited to lecture hand-outs, videos, assessments (quizzes, exams, papers, projects, homework assignments), in-class materials, review sheets, and additional problem sets. Unauthorized sharing of materials promotes cheating. It is a violation of the University’s Student Honor Code and an act of academic dishonesty. We are well aware of the sites used for sharing materials, and any materials found online that are associated with you, or any suspected unauthorized sharing of materials, will be reported to Student Conduct and Academic Integrity in the Office of the Dean of Students. These reports can result in sanctions, including failure in the course.
 
 Any materials posted on the public class website (https://wilkelab.org/SDS375/) are considered public and can be shared under the Creative Commons Attribution [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) license.
 
