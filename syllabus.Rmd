@@ -150,7 +150,7 @@ You will be given access to this repo during the first week of class.
 
 The graded components of this class will be homeworks, projects, and online participation. Each week either one homework or one project is due. Homeworks will be relatively short visualization problems to be solved by the student, usually involving some small amount of programming to achieve a specified goal. Projects are larger and more involved data analysis problems that involve both programming and writing. Students will have at least one week to complete each homework and two weeks to complete each project. The submission deadlines for homeworks and projects will be Mondays at 11pm.
 
-There will be ten homeworks and three projects. Both homeworks and projects need to be submitted as pdf files on Canvas. Homeworks are worth 10 points and projects are worth 100 points. The lowest-scoring homework will be dropped, so that a maximum of 90 points can be obtained from the homeworks.
+There will be ten homeworks and three projects. Both homeworks and projects need to be submitted electronically on Canvas. Homeworks are worth 10 points and projects are worth 100 points. The lowest-scoring homework will be dropped, so that a maximum of 90 points can be obtained from the homeworks.
 
 Online participation assignments are small tasks meant to promote discussion and engagement with the class materials. They are worth between 5 and 10 points, for a maximum of 60.
 
