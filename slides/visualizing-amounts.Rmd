@@ -38,10 +38,12 @@ boxoffice <- tibble(
 ```
 ]
 
+.center[
 ```{r echo = FALSE}
 boxoffice %>%
   knitr::kable("html")
 ```
+]
 
 ---
 

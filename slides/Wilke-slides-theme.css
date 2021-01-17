@@ -29,3 +29,11 @@ h1, h2, h3, h4 {
 a, a > code {
   color: #650C92;
 }
+
+td {
+  padding: 5px 10px;
+}
+
+table {
+  display: inline-block;
+}

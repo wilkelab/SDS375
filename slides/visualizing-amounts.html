@@ -14,7 +14,7 @@ class: center, middle, title-slide
 
 # Visualizing amounts
 ### Claus O. Wilke
-### last updated: 2021-01-04
+### last updated: 2021-01-17
 
 ---
 
@@ -36,6 +36,7 @@ boxoffice &lt;- tibble(
 ```
 ]
 
+.center[
 &lt;table&gt;
  &lt;thead&gt;
   &lt;tr&gt;
@@ -72,6 +73,7 @@ boxoffice &lt;- tibble(
   &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
+]
 
 ---
 
@@ -164,14 +166,15 @@ head(penguins)
 
 ```
 # A tibble: 6 x 8
-  species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g sex     year
-  &lt;fct&gt;   &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt; &lt;fct&gt;  &lt;int&gt;
-1 Adelie  Torgersen           39.1          18.7               181        3750 male    2007
-2 Adelie  Torgersen           39.5          17.4               186        3800 female  2007
-3 Adelie  Torgersen           40.3          18                 195        3250 female  2007
-4 Adelie  Torgersen           NA            NA                  NA          NA &lt;NA&gt;    2007
-5 Adelie  Torgersen           36.7          19.3               193        3450 female  2007
-6 Adelie  Torgersen           39.3          20.6               190        3650 male    2007
+  species island bill_length_mm bill_depth_mm flipper_length_… body_mass_g sex  
+  &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;            &lt;int&gt;       &lt;int&gt; &lt;fct&gt;
+1 Adelie  Torge…           39.1          18.7              181        3750 male 
+2 Adelie  Torge…           39.5          17.4              186        3800 fema…
+3 Adelie  Torge…           40.3          18                195        3250 fema…
+4 Adelie  Torge…           NA            NA                 NA          NA &lt;NA&gt; 
+5 Adelie  Torge…           36.7          19.3              193        3450 fema…
+6 Adelie  Torge…           39.3          20.6              190        3650 male 
+# … with 1 more variable: year &lt;int&gt;
 ```
 ]
 
