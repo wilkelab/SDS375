@@ -21,7 +21,7 @@ knitr::opts_chunk$set(echo = FALSE, comment = "")
 
 In this worksheet, we will continue with basic data manipulations, now moving on to counting, pipelining, and creating new data columns. 
 
-We will be using two R packages, {tidyverse} for the data manipulation functions `%>%`, `filter()`, `select()`, `arrange()`, `count()`, and `mutate()`, and {palmerpenguins} for the `penguins` dataset.
+We will be using two R packages, **tidyverse** for the data manipulation functions `%>%`, `filter()`, `select()`, `arrange()`, `count()`, and `mutate()`, and **palmerpenguins** for the `penguins` dataset.
 
 
 ```{r library-calls, echo = TRUE, eval = FALSE}

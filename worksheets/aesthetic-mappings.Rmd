@@ -32,7 +32,7 @@ temps_houston <- filter(temperatures, location == "Houston")
 
 In this worksheet, we will discuss a core concept of ggplot, the mapping of data values onto aesthetics.
 
-We will be using the R package {tidyverse}, which includes `ggplot()` and related functions.
+We will be using the R package **tidyverse**, which includes `ggplot()` and related functions.
 
 ```{r library-calls, echo = TRUE, eval = FALSE}
 # load required library

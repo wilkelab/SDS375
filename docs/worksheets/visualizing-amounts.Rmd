@@ -31,7 +31,7 @@ penguins_nomissing <- na.omit(penguins) # remove all rows with any missing value
 
 In this worksheet, we will discuss how to visualize amounts using bars.
 
-We will be using the R package {tidyverse}, which includes `ggplot()` and related functions.
+We will be using the R package **tidyverse**, which includes `ggplot()` and related functions.
 
 ```{r library-calls, echo = TRUE, eval = FALSE}
 # load required library

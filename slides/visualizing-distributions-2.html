@@ -21,7 +21,7 @@ class: center, middle, title-slide
 
 
 
-## Title goes here
+## Reminder: Density estimates visualize distributions
 
 .pull-left.small-font[
 Mean temperatures in Lincoln, NE, in January 2016:
@@ -72,7 +72,7 @@ Mean temperatures in Lincoln, NE, in January 2016:
 ---
 
 
-## Title goes here
+## Reminder: Density estimates visualize distributions
 
 .pull-left.small-font[
 Mean temperatures in Lincoln, NE, in January 2016:
@@ -176,7 +176,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 
 ---
 
-## If you like KDEs, use violin plots
+## If you like density plots, consider violins
    
 .center[
 ![](visualizing-distributions-2_files/figure-html/temps_violins-1.svg)&lt;!-- --&gt;
@@ -188,7 +188,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 
 --
 
-A violin plot is a KDE rotated 90 degrees and then mirrored.
+A violin plot is a density plot rotated 90 degrees and then mirrored.
 
 ---
 
@@ -202,15 +202,242 @@ A violin plot is a KDE rotated 90 degrees and then mirrored.
 
 Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
 
+---
+
+## For small datasets, you can also use a strip chart
+
+Advantage: Can see raw data points instead of abstract representation.
+
+.center[
+![](visualizing-distributions-2_files/figure-html/temps_stripchart-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+--
+
+Horizontal jittering may be necessary to avoid overlapping points.
+
+---
+
+## For small datasets, you can also use a strip chart
+
+Advantage: Can see raw data points instead of abstract representation.
+
+.center[
+![](visualizing-distributions-2_files/figure-html/temps_stripchart2-1.svg)&lt;!-- --&gt;
+]
+
+Horizontal jittering may be necessary to avoid overlapping points.
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## For small datasets, you can also use a strip chart
+
+Advantage: Can see raw data points instead of abstract representation.
+
+.center[
+![](visualizing-distributions-2_files/figure-html/temps_stripchart3-1.svg)&lt;!-- --&gt;
+]
+
+Horizontal jittering may be necessary to avoid overlapping points.
+
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## We can also jitter points into violins
+   
+.center[
+![](visualizing-distributions-2_files/figure-html/temps_sina-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+--
+
+Such plots are called sina plots, to honor [Sina Hadi Sohi.](https://clauswilke.com/dataviz/boxplots-violins.html#fig:lincoln-temp-sina)
+
+
+---
+
+## But maybe there's hope for overlapping density plots?
+
+.center[
+![](visualizing-distributions-2_files/figure-html/temps_densities_overlapping2-1.svg)&lt;!-- --&gt;
+]
+
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+--
+
+How about we stagger the densities vertically?
+
+---
+
+## Vertically staggered density plots are called ridgelines
+
+.center[
+![](visualizing-distributions-2_files/figure-html/lincoln-ridgeline-polished-1.svg)&lt;!-- --&gt;
+]
+
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+--
+
+Notice the single fill color. More colors would be distracting. 
+
+---
+
+## Making these plots in ggplot
+
+.small-font.center[
+
+Plot type    | Geom                    | Notes
+:----------- | :-----------------      | :-------------------------
+boxplot      | `geom_boxplot()`        |
+violin plot  | `geom_violin()`         |
+strip chart  | `geom_point()`          | Jittering requires `position_jitter()`
+sina plot    | `geom_sina()`           | From package **ggforce**
+ridgeline    | `geom_density_ridges()` | From package **ggridges**
+
+]
+
+---
+
+## Examples: Boxplot
+
+.tiny-font[
+
+```r
+ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
+  geom_boxplot(fill = "skyblue") 
+```
+]
+
+.center[
+![](visualizing-distributions-2_files/figure-html/temps-examples-boxplot-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Examples: Violins
+
+.tiny-font[
+
+```r
+ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
+  geom_violin(fill = "skyblue") 
+```
+]
+
+.center[
+![](visualizing-distributions-2_files/figure-html/temps-examples-violin-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Examples: Strip chart (no jitter)
+
+.tiny-font[
+
+```r
+ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
+  geom_point(size = 0.75)  # reduce point size to minimize overplotting 
+```
+]
+
+.center[
+![](visualizing-distributions-2_files/figure-html/temps-examples-stripchart-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Examples: Strip chart (w/ jitter)
+
+.tiny-font[
+
+```r
+ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
+  geom_point(size = 0.75,  # reduce point size to minimize overplotting 
+    position = position_jitter(
+      width = 0.15,  # amount of jitter in horizontal direction
+      height = 0     # amount of jitter in vertical direction (0 = none)
+    )
+  )
+```
+]
+
+.center[
+![](visualizing-distributions-2_files/figure-html/temps-examples-stripchart-jitter-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Examples: Sina plot
+
+.tiny-font[
+
+```r
+library(ggforce) # for geom_sina()
+
+ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
+  geom_violin(fill = "skyblue", color = NA) + # violins in background
+  geom_sina(size = 0.75) # sina jittered points in foreground
+```
+]
+
+.center[
+![](visualizing-distributions-2_files/figure-html/temps-examples-sina-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Examples: Ridgeline plot
+
+.tiny-font[
+
+```r
+library(ggridges) # for geom_density_ridges
+
+ggplot(lincoln_temps, aes(x = mean_temp, y = month_long)) +
+  geom_density_ridges()
+```
+]
+
+.center[
+![](visualizing-distributions-2_files/figure-html/temps-examples-ridgeline-out-1.svg)&lt;!-- --&gt;
+]
 
 ---
 
 ## Further reading
 
-- Fundamentals of Data Visualization: [Chapter 7: Visualizing distributions](https://clauswilke.com/dataviz/histograms-density-plots.html)
-- Data Visualization—A Practical Introduction: [4.6 Histograms and density plots](https://socviz.co/groupfacettx.html#histograms)
-- ggplot2 reference documentation: [`geom_histogram()`](https://ggplot2.tidyverse.org/reference/geom_histogram)
-- ggplot2 reference documentation: [`geom_density()`](https://ggplot2.tidyverse.org/reference/geom_density)
+- Fundamentals of Data Visualization: [Chapter 7: Visualizing many distributions at once](https://clauswilke.com/dataviz/boxplots-violins.html)
+- **ggplot2** reference documentation: [`geom_boxplot()`](https://ggplot2.tidyverse.org/reference/geom_histogram), [`geom_violin()`](https://ggplot2.tidyverse.org/reference/geom_violin), [`position_jitter()`](https://ggplot2.tidyverse.org/reference/position_jitter.html)
+- **ggforce** reference documentation: [`geom_sina()`](https://ggforce.data-imaginist.com/reference/geom_sina.html)
+- **ggridges** reference documentation: [`geom_density_ridges()`](https://wilkelab.org/ggridges/reference/geom_density_ridges.html)
 
 
 

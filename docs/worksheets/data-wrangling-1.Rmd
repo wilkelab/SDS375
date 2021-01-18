@@ -21,7 +21,7 @@ knitr::opts_chunk$set(echo = FALSE, comment = "")
 
 In this worksheet, we will discuss how to perform basic data manipulations, such as filtering data rows that meet certain conditions, choosing data columns, and arranging data in ascending or descending order.
 
-We will be using two R packages, {tidyverse} for the data manipulation functions `%>%`, `filter()`, `select()`, and `arrange()`, and {palmerpenguins} for the `penguins` dataset.
+We will be using two R packages, **tidyverse** for the data manipulation functions `%>%`, `filter()`, `select()`, and `arrange()`, and **palmerpenguins** for the `penguins` dataset.
 
 ```{r library-calls, echo = TRUE, eval = FALSE}
 # load required libraries

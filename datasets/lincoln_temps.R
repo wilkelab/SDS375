@@ -54,7 +54,7 @@ ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
 
 ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
   geom_violin(color = NA, fill = "gray90") + 
-  stat_sina(size = 0.75) + 
+  geom_sina(size = 0.75) + 
   xlab("month") + 
   ylab("mean temperature (°F)") +
   theme_half_open()

@@ -728,8 +728,8 @@ ggplot(titanic, aes(age)) +
 
 - Fundamentals of Data Visualization: [Chapter 7: Visualizing distributions](https://clauswilke.com/dataviz/histograms-density-plots.html)
 - Data Visualization—A Practical Introduction: [4.6 Histograms and density plots](https://socviz.co/groupfacettx.html#histograms)
-- ggplot2 reference documentation: [`geom_histogram()`](https://ggplot2.tidyverse.org/reference/geom_histogram)
-- ggplot2 reference documentation: [`geom_density()`](https://ggplot2.tidyverse.org/reference/geom_density)
+- **ggplot2** reference documentation: [`geom_histogram()`](https://ggplot2.tidyverse.org/reference/geom_histogram)
+- **ggplot2** reference documentation: [`geom_density()`](https://ggplot2.tidyverse.org/reference/geom_density)
 
 
 

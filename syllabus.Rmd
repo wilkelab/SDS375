@@ -140,7 +140,9 @@ Assignments will be submitted and grades will be posted on Canvas at:
 https://utexas.instructure.com
 
 R compute sessions are available at:
-https://edupod.cns.utexas.edu
+https://edupod.cns.utexas.edu  
+Note that edupods will be unavailable due to maintenance approximately two hours per month, usually on a Thursday afternoon between 4pm and 6pm. Specific maintenance times are published in advance here:
+https://wikis.utexas.edu/display/RCTFusers
 
 An online discussions forum will be available at the following private GitHub repo:
 https://github.com/wilkelab/SDS375_spring2021<br>

@@ -23,6 +23,8 @@ navbar:
           href: slides/visualizing-amounts.html
         - text: "Class 4: Visualizing distributions 1"
           href: slides/visualizing-distributions-1.html
+        - text: "Class 5: Visualizing distributions 2"
+          href: slides/visualizing-distributions-2.html
         - text: "Class 7: Color scales"
           href: slides/color-scales.html
         - text: "Class 8: Figure design"
