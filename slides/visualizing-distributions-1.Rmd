@@ -341,7 +341,7 @@ ggplot(gender_counts, aes(x = age, y = count, fill = gender)) +
 
 --
 
-For multiple distributions, histograms usually don't work well.
+Stacked or overlapping histograms are rarely a good choice.
 
 ???
 
@@ -373,7 +373,7 @@ Figures redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reil
 
 ---
 
-## Alternatively: KDE showing proportions of total
+## Alternatively: KDEs showing proportions of total
 
 .center[
 ```{r titanic-age-props, echo = FALSE, fig.width = 10, fig.asp = 0.45, dev = "svg"}
@@ -443,7 +443,6 @@ ggplot(titanic, aes(age)) +
 ```
 ]
 
---
 
 .center[
 ```{r titanic-hist-ggplot-demo2-out, ref.label = "titanic-hist-ggplot-demo2", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
@@ -468,7 +467,6 @@ ggplot(titanic, aes(age)) +
 ```
 ]
 
---
 
 .center[
 ```{r titanic-hist-ggplot-demo3-out, ref.label = "titanic-hist-ggplot-demo3", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
@@ -508,17 +506,34 @@ ggplot(titanic, aes(age)) +
 
 --
 
-.center.small-font[
+.center[
 ```{r titanic-dens-ggplot-demo-out, ref.label = "titanic-dens-ggplot-demo", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
 ---
 
+## Making density plots with ggplot: `geom_density()`
+
+.small-font[
+```{r titanic-dens-ggplot-demo2, eval = FALSE}
+ggplot(titanic, aes(age)) +
+  geom_density() # without fill
+```
+]
+
+.center[
+```{r titanic-dens-ggplot-demo2-out, ref.label = "titanic-dens-ggplot-demo2", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+
 ## Modifying bandwidth (`bw`) and kernel parameters
 
 .tiny-font[
-```{r titanic-dens-ggplot-demo2, eval = FALSE}
+```{r titanic-dens-ggplot-demo3, eval = FALSE}
 ggplot(titanic, aes(age)) +
   geom_density(
     fill = "skyblue",
@@ -529,8 +544,8 @@ ggplot(titanic, aes(age)) +
 ```
 ]
 
-.center.small-font[
-```{r titanic-dens-ggplot-demo2-out, ref.label = "titanic-dens-ggplot-demo2", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+.center[
+```{r titanic-dens-ggplot-demo3-out, ref.label = "titanic-dens-ggplot-demo3", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -539,7 +554,7 @@ ggplot(titanic, aes(age)) +
 ## Modifying bandwidth (`bw`) and kernel parameters
 
 .tiny-font[
-```{r titanic-dens-ggplot-demo3, eval = FALSE}
+```{r titanic-dens-ggplot-demo4, eval = FALSE}
 ggplot(titanic, aes(age)) +
   geom_density(
     fill = "skyblue",
@@ -550,8 +565,160 @@ ggplot(titanic, aes(age)) +
 ```
 ]
 
-.center.small-font[
-```{r titanic-dens-ggplot-demo3-out, ref.label = "titanic-dens-ggplot-demo3", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+.center[
+```{r titanic-dens-ggplot-demo4-out, ref.label = "titanic-dens-ggplot-demo4", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+## Statistical transformations (stats) can be set explicitly
+
+.tiny-font[
+```{r titanic-stat-demo1, eval = FALSE}
+ggplot(titanic, aes(age)) +
+  geom_density(
+    stat = "density",    # the default for geom_density()
+    fill = "skyblue"
+  )
+```
+]
+
+.center[
+```{r titanic-stat-demo1-out, ref.label = "titanic-stat-demo1", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+
+---
+
+## Statistical transformations (stats) can be set explicitly
+
+.tiny-font[
+```{r titanic-stat-demo2, eval = FALSE}
+ggplot(titanic, aes(age)) +
+  geom_area(  # geom_area() does not normally use stat = "density"
+    stat = "density",
+    fill = "skyblue"
+  )
+```
+]
+
+.center[
+```{r titanic-stat-demo2-out, ref.label = "titanic-stat-demo2", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+## Statistical transformations (stats) can be set explicitly
+
+.tiny-font[
+```{r titanic-stat-demo3, eval = FALSE}
+ggplot(titanic, aes(age)) +
+  geom_line(  # neither does geom_line()
+    stat = "density"
+  )
+```
+]
+
+.center[
+```{r titanic-stat-demo3-out, ref.label = "titanic-stat-demo3", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+## Statistical transformations (stats) can be set explicitly
+
+.tiny-font[
+```{r titanic-stat-demo4, eval = FALSE}
+ggplot(titanic, aes(age)) +
+  # we can use multiple geoms on top of each other
+  geom_area(stat = "density", fill = "skyblue") +
+  geom_line(stat = "density")
+```
+]
+
+.center[
+```{r titanic-stat-demo4-out, ref.label = "titanic-stat-demo4", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+## Parameters are handed through to the stat
+
+.pull-left.tiny-font[
+```{r titanic-stat-demo5, eval = FALSE}
+ggplot(titanic, aes(age)) +
+  geom_line(stat = "density", bw = 3)
+```
+
+.center[
+```{r titanic-stat-demo5-out, ref.label = "titanic-stat-demo5", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```
+]]
+
+.pull-right.tiny-font[
+```{r titanic-stat-demo6, eval = FALSE}
+ggplot(titanic, aes(age)) +
+  geom_line(stat = "density", bw = 0.3)
+```
+
+.center[
+```{r titanic-stat-demo6-out, ref.label = "titanic-stat-demo6", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```
+]]
+
+--
+
+Here, `bw` is a parameter of `stat_density()`, not of `geom_line()`.
+
+---
+
+## We can explicitly map results from stat computations
+
+.tiny-font[
+```{r titanic-stat-demo7, eval = FALSE}
+ggplot(titanic, aes(age)) +
+  geom_tile( # geom_tile() draws rectangular colored areas
+    aes(
+      y = 1, # draw all tiles at the same y location
+      fill = after_stat(density)  # use computed density for fill
+    ),
+    stat = "density",
+    n = 20    # number of points calculated by stat_density() 
+  ) 
+```
+]
+
+.center[
+```{r titanic-stat-demo7-out, ref.label = "titanic-stat-demo7", echo = FALSE, fig.width = 10, fig.asp = 0.3, dev = "svg"}
+```
+]
+
+
+---
+
+## We can explicitly map results from stat computations
+
+.tiny-font[
+```{r titanic-stat-demo8, eval = FALSE}
+ggplot(titanic, aes(age)) +
+  geom_tile( # geom_tile() draws rectangular colored areas
+    aes(
+      y = 1, # draw all tiles at the same y location
+      fill = after_stat(density)  # use computed density for fill
+    ),
+    stat = "density",
+    n = 200   # number of points calculated by stat_density() 
+  ) 
+```
+]
+
+.center[
+```{r titanic-stat-demo8-out, ref.label = "titanic-stat-demo8", echo = FALSE, fig.width = 10, fig.asp = 0.3, dev = "svg"}
 ```
 ]
 
@@ -560,7 +727,7 @@ ggplot(titanic, aes(age)) +
 ## Further reading
 
 - Fundamentals of Data Visualization: [Chapter 7: Visualizing distributions](https://clauswilke.com/dataviz/histograms-density-plots.html)
-- Data Visualization—A Practical Introduction: [4.6 Histograms and density plotsa](https://socviz.co/groupfacettx.html#histograms)
+- Data Visualization—A Practical Introduction: [4.6 Histograms and density plots](https://socviz.co/groupfacettx.html#histograms)
 - ggplot2 reference documentation: [`geom_histogram()`](https://ggplot2.tidyverse.org/reference/geom_histogram)
 - ggplot2 reference documentation: [`geom_density()`](https://ggplot2.tidyverse.org/reference/geom_density)
 
