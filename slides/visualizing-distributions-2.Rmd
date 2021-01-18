@@ -1,0 +1,46 @@
+---
+title: "Visualizing distributions 2"
+author: "Claus O. Wilke"
+date: "last updated: `r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: [default, "Wilke-slides-theme.css"]
+    lib_dir: libs
+    nature:
+      ratio: '16:9'
+      highlightStyle: github
+      highlightLines: true
+      slideNumberFormat: ''
+      titleSlideClass: [center, middle]
+---
+
+```{r setup, include=FALSE, echo=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(comment = "")
+
+library(tidyverse)
+library(cowplot)
+library(colorspace)
+library(ggridges)
+library(ggforce)
+library(here)
+# ggplot2 settings so plots scale well for slide size 
+theme_set(theme_gray(16)) # 16 for full width, 18 for half width 
+update_geom_defaults("point", list(size = 2)) # 2 for full width, 2.5 for half width
+
+lincoln_temps <- readRDS(here("datasets", "lincoln_temps.rds"))
+```
+
+
+---
+
+## Further reading
+
+- Fundamentals of Data Visualization: [Chapter 7: Visualizing distributions](https://clauswilke.com/dataviz/histograms-density-plots.html)
+- Data Visualization—A Practical Introduction: [4.6 Histograms and density plots](https://socviz.co/groupfacettx.html#histograms)
+- ggplot2 reference documentation: [`geom_histogram()`](https://ggplot2.tidyverse.org/reference/geom_histogram)
+- ggplot2 reference documentation: [`geom_density()`](https://ggplot2.tidyverse.org/reference/geom_density)
+
+
+
+

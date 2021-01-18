@@ -21,6 +21,11 @@ h1, h2, h3, h4 {
    from slides with to slides without inline code. */ 
 .remark-inline-code { font-size: 0.94em; line-height: 1.0; }
 
+.title-font { 
+  font-family: 'Roboto Condensed', 'Arial Narrow OS', Arial, sans-serif;
+  font-weight: normal;
+  font-size: 1.5em;
+}
 .small-font { font-size: 0.86em; }
 .tiny-font { font-size: 0.66em; }
 

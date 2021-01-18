@@ -25,6 +25,8 @@ navbar:
           href: slides/visualizing-distributions-1.html
         - text: "Class 7: Color scales"
           href: slides/color-scales.html
+        - text: "Class 8: Figure design"
+          href: slides/figure-design.html
         - text: "Class 9: Data wrangling 1"
           href: slides/data-wrangling-1.html
         - text: "Class 10: Data wrangling 2"

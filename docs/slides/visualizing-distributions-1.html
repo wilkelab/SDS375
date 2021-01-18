@@ -430,7 +430,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 
 --
 
-For multiple distributions, histograms usually don't work well.
+Stacked or overlapping histograms are rarely a good choice.
 
 ???
 
@@ -451,7 +451,7 @@ Figures redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reil
 
 ---
 
-## Alternatively: KDE showing proportions of total
+## Alternatively: KDEs showing proportions of total
 
 .center[
 ![](visualizing-distributions-1_files/figure-html/titanic-age-props-1.svg)&lt;!-- --&gt;
@@ -496,7 +496,6 @@ ggplot(titanic, aes(age)) +
 ```
 ]
 
---
 
 .center[
 ![](visualizing-distributions-1_files/figure-html/titanic-hist-ggplot-demo2-out-1.svg)&lt;!-- --&gt;
@@ -521,7 +520,6 @@ ggplot(titanic, aes(age)) +
 ```
 ]
 
---
 
 .center[
 ![](visualizing-distributions-1_files/figure-html/titanic-hist-ggplot-demo3-out-1.svg)&lt;!-- --&gt;
@@ -561,11 +559,28 @@ ggplot(titanic, aes(age)) +
 
 --
 
-.center.small-font[
+.center[
 ![](visualizing-distributions-1_files/figure-html/titanic-dens-ggplot-demo-out-1.svg)&lt;!-- --&gt;
 ]
 
 ---
+
+## Making density plots with ggplot: `geom_density()`
+
+.small-font[
+
+```r
+ggplot(titanic, aes(age)) +
+  geom_density() # without fill
+```
+]
+
+.center[
+![](visualizing-distributions-1_files/figure-html/titanic-dens-ggplot-demo2-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
 
 ## Modifying bandwidth (`bw`) and kernel parameters
 
@@ -581,8 +596,8 @@ ggplot(titanic, aes(age)) +
 ```
 ]
 
-.center.small-font[
-![](visualizing-distributions-1_files/figure-html/titanic-dens-ggplot-demo2-out-1.svg)&lt;!-- --&gt;
+.center[
+![](visualizing-distributions-1_files/figure-html/titanic-dens-ggplot-demo3-out-1.svg)&lt;!-- --&gt;
 ]
 
 ---
@@ -601,8 +616,160 @@ ggplot(titanic, aes(age)) +
 ```
 ]
 
-.center.small-font[
-![](visualizing-distributions-1_files/figure-html/titanic-dens-ggplot-demo3-out-1.svg)&lt;!-- --&gt;
+.center[
+![](visualizing-distributions-1_files/figure-html/titanic-dens-ggplot-demo4-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Statistical transformations (stats) can be set explicitly
+
+.tiny-font[
+
+```r
+ggplot(titanic, aes(age)) +
+  geom_density(
+    stat = "density",    # the default for geom_density()
+    fill = "skyblue"
+  )
+```
+]
+
+.center[
+![](visualizing-distributions-1_files/figure-html/titanic-stat-demo1-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Statistical transformations (stats) can be set explicitly
+
+.tiny-font[
+
+```r
+ggplot(titanic, aes(age)) +
+  geom_area(  # geom_area() does not normally use stat = "density"
+    stat = "density",
+    fill = "skyblue"
+  )
+```
+]
+
+.center[
+![](visualizing-distributions-1_files/figure-html/titanic-stat-demo2-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Statistical transformations (stats) can be set explicitly
+
+.tiny-font[
+
+```r
+ggplot(titanic, aes(age)) +
+  geom_line(  # neither does geom_line()
+    stat = "density"
+  )
+```
+]
+
+.center[
+![](visualizing-distributions-1_files/figure-html/titanic-stat-demo3-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Statistical transformations (stats) can be set explicitly
+
+.tiny-font[
+
+```r
+ggplot(titanic, aes(age)) +
+  # we can use multiple geoms on top of each other
+  geom_area(stat = "density", fill = "skyblue") +
+  geom_line(stat = "density")
+```
+]
+
+.center[
+![](visualizing-distributions-1_files/figure-html/titanic-stat-demo4-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Parameters are handed through to the stat
+
+.pull-left.tiny-font[
+
+```r
+ggplot(titanic, aes(age)) +
+  geom_line(stat = "density", bw = 3)
+```
+
+.center[
+![](visualizing-distributions-1_files/figure-html/titanic-stat-demo5-out-1.svg)&lt;!-- --&gt;
+]]
+
+.pull-right.tiny-font[
+
+```r
+ggplot(titanic, aes(age)) +
+  geom_line(stat = "density", bw = 0.3)
+```
+
+.center[
+![](visualizing-distributions-1_files/figure-html/titanic-stat-demo6-out-1.svg)&lt;!-- --&gt;
+]]
+
+--
+
+Here, `bw` is a parameter of `stat_density()`, not of `geom_line()`.
+
+---
+
+## We can explicitly map results from stat computations
+
+.tiny-font[
+
+```r
+ggplot(titanic, aes(age)) +
+  geom_tile( # geom_tile() draws rectangular colored areas
+    aes(
+      y = 1, # draw all tiles at the same y location
+      fill = after_stat(density)  # use computed density for fill
+    ),
+    stat = "density",
+    n = 20    # number of points calculated by stat_density() 
+  ) 
+```
+]
+
+.center[
+![](visualizing-distributions-1_files/figure-html/titanic-stat-demo7-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## We can explicitly map results from stat computations
+
+.tiny-font[
+
+```r
+ggplot(titanic, aes(age)) +
+  geom_tile( # geom_tile() draws rectangular colored areas
+    aes(
+      y = 1, # draw all tiles at the same y location
+      fill = after_stat(density)  # use computed density for fill
+    ),
+    stat = "density",
+    n = 200   # number of points calculated by stat_density() 
+  ) 
+```
+]
+
+.center[
+![](visualizing-distributions-1_files/figure-html/titanic-stat-demo8-out-1.svg)&lt;!-- --&gt;
 ]
 
 ---
@@ -610,7 +777,7 @@ ggplot(titanic, aes(age)) +
 ## Further reading
 
 - Fundamentals of Data Visualization: [Chapter 7: Visualizing distributions](https://clauswilke.com/dataviz/histograms-density-plots.html)
-- Data Visualization—A Practical Introduction: [4.6 Histograms and density plotsa](https://socviz.co/groupfacettx.html#histograms)
+- Data Visualization—A Practical Introduction: [4.6 Histograms and density plots](https://socviz.co/groupfacettx.html#histograms)
 - ggplot2 reference documentation: [`geom_histogram()`](https://ggplot2.tidyverse.org/reference/geom_histogram)
 - ggplot2 reference documentation: [`geom_density()`](https://ggplot2.tidyverse.org/reference/geom_density)
 
