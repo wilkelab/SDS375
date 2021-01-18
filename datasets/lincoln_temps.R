@@ -2,10 +2,12 @@ library(tidyverse)
 library(ggridges) # for lincoln_weather
 library(cowplot)
 library(ggforce)
+library(lubridate)
 library(here)
 
 lincoln_temps <- lincoln_weather %>%
   mutate(
+    date = ymd(CST),
     month_long = Month,
     month = fct_recode(
       Month,
@@ -24,7 +26,7 @@ lincoln_temps <- lincoln_weather %>%
     ),
     mean_temp = `Mean Temperature [F]`
   ) %>%
-  select(month, month_long, mean_temp) %>%
+  select(date, month, month_long, mean_temp) %>%
   mutate(month = fct_rev(month)) # fct_recode() places levels in reverse order 
 
 saveRDS(lincoln_temps, here("datasets", "lincoln_temps.rds"))

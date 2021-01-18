@@ -31,6 +31,194 @@ update_geom_defaults("point", list(size = 2)) # 2 for full width, 2.5 for half w
 lincoln_temps <- readRDS(here("datasets", "lincoln_temps.rds"))
 ```
 
+## Title goes here
+
+.pull-left.small-font[
+Mean temperatures in Lincoln, NE, in January 2016:
+
+.center[
+```{r echo = FALSE}
+lincoln_temps %>%
+  filter(month == "Jan") %>%
+  select(date, `mean temp` = mean_temp) %>%
+  knitr::kable()
+```
+]]
+
+.pull-right[
+```{r temps_densities_january, echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+lincoln_temps %>%
+  filter(month == "Jan") %>%
+  ggplot(aes(mean_temp)) +
+  geom_density(fill = "#56B4E9", alpha = 0.7) +
+  scale_x_continuous(
+    name = "mean temperature (°F)",
+    expand = c(0, 0)
+  ) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.06))) +
+  ggtitle("Temperature distribution") +
+  theme_minimal_grid(18) +
+  theme(
+    plot.title.position = "plot",
+    plot.title = element_text(face = "plain")
+  )
+```
+
+How can we compare distributions across months?
+]
+
+---
+
+## A bad idea: Many overlapping density plots
+
+.center[
+```{r temps_densities_overlapping, echo = FALSE, fig.width = 8, fig.asp = 0.618, dev = "svg"}
+p <- lincoln_temps %>%
+  mutate(
+    month_long = fct_rev(month_long)
+  ) %>%
+  ggplot(aes(mean_temp, fill = month)) +
+  geom_density(alpha = 0.5) +
+  scale_x_continuous(
+    name = "mean temperature (°F)",
+    expand = c(0, 0)
+  ) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.06))) +
+  scale_fill_viridis_d(option = "D") +
+  labs(subtitle = "") + # empty subtitle for some vertical space
+  theme_minimal_grid(16)
+
+stamp_bad(p)
+```
+]
+
+---
+
+## Another bad idea: Stacked density plots
+
+.center[
+```{r temps_densities_stacked, echo = FALSE, fig.width = 8, fig.asp = 0.618, dev = "svg"}
+p <- lincoln_temps %>%
+  mutate(
+    month_long = fct_rev(month_long)
+  ) %>%
+  ggplot(aes(mean_temp, fill = month)) +
+  geom_density(alpha = 0.7, position = "stack") +
+  scale_x_continuous(
+    name = "mean temperature (°F)",
+    expand = c(0, 0)
+  ) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.06))) +
+  scale_fill_viridis_d(option = "D") +
+  labs(subtitle = "") + # empty subtitle for some vertical space
+  theme_minimal_grid(16)
+
+stamp_bad(p)
+```
+]
+
+---
+
+## Somewhat better: Small multiples
+
+.center[
+```{r temps_densities, echo = FALSE, fig.width = 8, fig.asp = 0.618, dev = "svg"}
+lincoln_temps %>%
+  mutate(
+    month_long = fct_rev(month_long)
+  ) %>%
+  ggplot(aes(mean_temp)) +
+  geom_density(fill = "#56B4E9") +
+  scale_x_continuous(
+    name = "mean temperature (°F)",
+    expand = c(0, 0)
+  ) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.06))) +
+  facet_wrap(vars(month_long)) +
+  theme_minimal_grid(16, color = "gray65") +
+  theme(
+    panel.background = element_rect(fill = "gray95")
+  )
+```
+]
+
+---
+
+## A boxplot
+
+.center[
+```{r boxplot-schematic, echo = FALSE, fig.width = 8, fig.asp = 0.618, dev = "svg"}
+set.seed(3423)
+
+y <- c(rnorm(100), 3.4)
+s <- boxplot.stats(y)
+df <- tibble(
+  y = c(s$stats, max(y)),
+  x = c(1.03, 1.405, 1.405, 1.405, 1.03, 1.04),
+  label = c("minimum", "first quartile", "median", "third quartile", "maximum within upper fence", "outlier")
+)
+
+p_points <- ggplot(tibble(y), aes(x = 0, y = y)) + 
+  geom_point(position = position_jitter(width = .4, height = 0, seed = 320)) +
+  scale_x_continuous(limits = c(-1.8, .4), expand = c(0, 0)) +
+  scale_y_continuous(limits = c(-2.55, 3.5), expand = c(0, 0)) +
+  coord_cartesian(clip = "off") +
+  theme_nothing()
+
+p_boxplot <- ggplot(tibble(y), aes(x = 1, y = y)) + 
+  geom_boxplot(fill = "gray90", outlier.size = 2) +
+  geom_text(
+    data = df, aes(x, y, label = label), hjust = 0,
+    size = 16/.pt
+  ) +
+  scale_x_continuous(limits = c(0, 3.5), expand = c(0, 0)) +
+  scale_y_continuous(limits = c(-2.55, 3.5), expand = c(0, 0)) +
+  coord_cartesian(clip = "off") +
+  theme_nothing()
+
+
+plot_grid(p_points, p_boxplot, rel_widths = c(.65, 1), nrow = 1)
+```
+]
+
+---
+
+## A violin plot
+
+.center[
+```{r violin-schematic, echo = FALSE, fig.width = 8, fig.asp = 0.618, dev = "svg"}
+set.seed(3423)
+
+y <- c(rnorm(100), 3.4)
+d <- density(y)
+df <- tibble(
+  y = c(min(y), d$x[which(d$y == max(d$y))], max(y)),
+  x = c(1.1, 1.5, 1.08),
+  label = c("minimum data value", "maximum point density", "maximum data value")
+)
+
+p_points <- ggplot(tibble(y), aes(x = 0, y = y)) + 
+  geom_point(position = position_jitter(width = .4, height = 0, seed = 320)) +
+  scale_x_continuous(limits = c(-1.8, .4), expand = c(0, 0)) +
+  scale_y_continuous(limits = c(-2.55, 3.5), expand = c(0, 0)) +
+  coord_cartesian(clip = "off") +
+  theme_nothing()
+
+p_violin <- ggplot(tibble(y), aes(x = 1, y = y)) + 
+  geom_violin(fill = "gray90") +
+  geom_text(
+    data = df, aes(x, y, label = label), hjust = 0,
+    size = 16/.pt
+  ) +
+  scale_x_continuous(limits = c(0, 3.5), expand = c(0, 0)) +
+  scale_y_continuous(limits = c(-2.55, 3.5), expand = c(0, 0)) +
+  coord_cartesian(clip = "off") +
+  theme_nothing()
+
+plot_grid(p_points, p_violin, rel_widths = c(.65, 1), nrow = 1)
+```
+]
+
 
 ---
 
