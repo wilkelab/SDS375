@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>Visualizing distributions 1</title>
+    <title>Visualizing distributions 2</title>
     <meta charset="utf-8" />
     <meta name="author" content="Claus O. Wilke" />
     <script src="libs/header-attrs/header-attrs.js"></script>
@@ -12,14 +12,102 @@
     <textarea id="source">
 class: center, middle, title-slide
 
-# Visualizing distributions 1
+# Visualizing distributions 2
 ### Claus O. Wilke
-### last updated: 2021-01-17
+### last updated: 2021-01-18
 
 ---
 
 
 
+
+## Title goes here
+
+.pull-left.small-font[
+Mean temperatures in Lincoln, NE, in January 2016:
+
+.center[
+
+|date       | mean temp|
+|:----------|---------:|
+|2016-01-01 |        24|
+|2016-01-02 |        23|
+|2016-01-03 |        23|
+|2016-01-04 |        17|
+|2016-01-05 |        29|
+|2016-01-06 |        33|
+|2016-01-07 |        30|
+|2016-01-08 |        25|
+|2016-01-09 |         9|
+|2016-01-10 |        11|
+|2016-01-11 |        28|
+|2016-01-12 |        24|
+|2016-01-13 |        33|
+|2016-01-14 |        40|
+|2016-01-15 |        29|
+|2016-01-16 |        19|
+|2016-01-17 |         5|
+|2016-01-18 |        11|
+|2016-01-19 |        22|
+|2016-01-20 |        28|
+|2016-01-21 |        25|
+|2016-01-22 |        22|
+|2016-01-23 |        28|
+|2016-01-24 |        30|
+|2016-01-25 |        26|
+|2016-01-26 |        29|
+|2016-01-27 |        33|
+|2016-01-28 |        41|
+|2016-01-29 |        41|
+|2016-01-30 |        39|
+|2016-01-31 |        35|
+]]
+
+.pull-right[
+![](visualizing-distributions-2_files/figure-html/temps_densities_january-1.svg)&lt;!-- --&gt;
+
+How can we compare distributions across months?
+]
+
+---
+
+## A bad idea: Many overlapping density plots
+
+.center[
+![](visualizing-distributions-2_files/figure-html/temps_densities_overlapping-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Another bad idea: Stacked density plots
+
+.center[
+![](visualizing-distributions-2_files/figure-html/temps_densities_stacked-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Somewhat better: Small multiples
+
+.center[
+![](visualizing-distributions-2_files/figure-html/temps_densities-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## A boxplot
+
+.center[
+![](visualizing-distributions-2_files/figure-html/boxplot-schematic-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## A violin plot
+
+.center[
+![](visualizing-distributions-2_files/figure-html/violin-schematic-1.svg)&lt;!-- --&gt;
+]
 
 
 ---
