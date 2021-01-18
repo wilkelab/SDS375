@@ -37,13 +37,15 @@ lincoln_temps <- readRDS(here("datasets", "lincoln_temps.rds"))
 Mean temperatures in Lincoln, NE, in January 2016:
 
 .center[
-```{r echo = FALSE}
+```{r temps_table, echo = FALSE}
 lincoln_temps %>%
   filter(month == "Jan") %>%
   select(date, `mean temp` = mean_temp) %>%
   knitr::kable()
 ```
 ]]
+
+--
 
 .pull-right[
 ```{r temps_densities_january, echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
@@ -63,9 +65,28 @@ lincoln_temps %>%
     plot.title = element_text(face = "plain")
   )
 ```
+]
+
+---
+
+
+## Title goes here
+
+.pull-left.small-font[
+Mean temperatures in Lincoln, NE, in January 2016:
+
+.center[
+```{r temps_table2, ref.label = "temps_table", echo = FALSE}
+```
+]]
+
+.pull-right[
+```{r temps_densities_january2, ref.label = "temps_densities_january", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```
 
 How can we compare distributions across months?
 ]
+
 
 ---
 
@@ -144,7 +165,29 @@ lincoln_temps %>%
 
 ---
 
-## A boxplot
+## Instead: Show values along y, conditions along x
+   
+.center[
+```{r temps_boxplots, echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
+  geom_boxplot(fill = "gray90") + 
+  xlab("month") + 
+  ylab("mean temperature (°F)") +
+  theme_half_open()
+```
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+--
+
+A boxplot is a crude way of visualizing a distribution.
+
+---
+
+## How to read a boxplot
 
 .center[
 ```{r boxplot-schematic, echo = FALSE, fig.width = 8, fig.asp = 0.618, dev = "svg"}
@@ -160,30 +203,58 @@ df <- tibble(
 
 p_points <- ggplot(tibble(y), aes(x = 0, y = y)) + 
   geom_point(position = position_jitter(width = .4, height = 0, seed = 320)) +
+  annotate("text", label = "data", x = 0, y = 4, hjust = 0.5, vjust = 1, size = 20/.pt) +
   scale_x_continuous(limits = c(-1.8, .4), expand = c(0, 0)) +
-  scale_y_continuous(limits = c(-2.55, 3.5), expand = c(0, 0)) +
+  scale_y_continuous(limits = c(-2.55, 4), expand = c(0, 0)) +
   coord_cartesian(clip = "off") +
   theme_nothing()
 
 p_boxplot <- ggplot(tibble(y), aes(x = 1, y = y)) + 
   geom_boxplot(fill = "gray90", outlier.size = 2) +
+  annotate("text", label = "boxplot", x = 1, y = 4, hjust = 0.5, vjust = 1, size = 20/.pt) +
   geom_text(
     data = df, aes(x, y, label = label), hjust = 0,
     size = 16/.pt
   ) +
   scale_x_continuous(limits = c(0, 3.5), expand = c(0, 0)) +
-  scale_y_continuous(limits = c(-2.55, 3.5), expand = c(0, 0)) +
+  scale_y_continuous(limits = c(-2.55, 4), expand = c(0, 0)) +
   coord_cartesian(clip = "off") +
   theme_nothing()
-
 
 plot_grid(p_points, p_boxplot, rel_widths = c(.65, 1), nrow = 1)
 ```
 ]
 
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
 ---
 
-## A violin plot
+## If you like density plots, consider violins
+   
+.center[
+```{r temps_violins, echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
+  geom_violin(fill = "gray90") + 
+  xlab("month") + 
+  ylab("mean temperature (°F)") +
+  theme_half_open()
+```
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+--
+
+A violin plot is a density plot rotated 90 degrees and then mirrored.
+
+---
+
+## How to read a violin plot
 
 .center[
 ```{r violin-schematic, echo = FALSE, fig.width = 8, fig.asp = 0.618, dev = "svg"}
@@ -199,25 +270,31 @@ df <- tibble(
 
 p_points <- ggplot(tibble(y), aes(x = 0, y = y)) + 
   geom_point(position = position_jitter(width = .4, height = 0, seed = 320)) +
+  annotate("text", label = "data", x = 0, y = 4, hjust = 0.5, vjust = 1, size = 20/.pt) +
   scale_x_continuous(limits = c(-1.8, .4), expand = c(0, 0)) +
-  scale_y_continuous(limits = c(-2.55, 3.5), expand = c(0, 0)) +
+  scale_y_continuous(limits = c(-2.55, 4), expand = c(0, 0)) +
   coord_cartesian(clip = "off") +
   theme_nothing()
 
 p_violin <- ggplot(tibble(y), aes(x = 1, y = y)) + 
   geom_violin(fill = "gray90") +
+  annotate("text", label = "violin plot", x = 1, y = 4, hjust = 0.5, vjust = 1, size = 20/.pt) +
   geom_text(
     data = df, aes(x, y, label = label), hjust = 0,
     size = 16/.pt
   ) +
   scale_x_continuous(limits = c(0, 3.5), expand = c(0, 0)) +
-  scale_y_continuous(limits = c(-2.55, 3.5), expand = c(0, 0)) +
+  scale_y_continuous(limits = c(-2.55, 4), expand = c(0, 0)) +
   coord_cartesian(clip = "off") +
   theme_nothing()
 
 plot_grid(p_points, p_violin, rel_widths = c(.65, 1), nrow = 1)
 ```
 ]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
 
 
 ---

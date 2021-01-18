@@ -63,11 +63,63 @@ Mean temperatures in Lincoln, NE, in January 2016:
 |2016-01-31 |        35|
 ]]
 
+--
+
 .pull-right[
 ![](visualizing-distributions-2_files/figure-html/temps_densities_january-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+
+## Title goes here
+
+.pull-left.small-font[
+Mean temperatures in Lincoln, NE, in January 2016:
+
+.center[
+
+|date       | mean temp|
+|:----------|---------:|
+|2016-01-01 |        24|
+|2016-01-02 |        23|
+|2016-01-03 |        23|
+|2016-01-04 |        17|
+|2016-01-05 |        29|
+|2016-01-06 |        33|
+|2016-01-07 |        30|
+|2016-01-08 |        25|
+|2016-01-09 |         9|
+|2016-01-10 |        11|
+|2016-01-11 |        28|
+|2016-01-12 |        24|
+|2016-01-13 |        33|
+|2016-01-14 |        40|
+|2016-01-15 |        29|
+|2016-01-16 |        19|
+|2016-01-17 |         5|
+|2016-01-18 |        11|
+|2016-01-19 |        22|
+|2016-01-20 |        28|
+|2016-01-21 |        25|
+|2016-01-22 |        22|
+|2016-01-23 |        28|
+|2016-01-24 |        30|
+|2016-01-25 |        26|
+|2016-01-26 |        29|
+|2016-01-27 |        33|
+|2016-01-28 |        41|
+|2016-01-29 |        41|
+|2016-01-30 |        39|
+|2016-01-31 |        35|
+]]
+
+.pull-right[
+![](visualizing-distributions-2_files/figure-html/temps_densities_january2-1.svg)&lt;!-- --&gt;
 
 How can we compare distributions across months?
 ]
+
 
 ---
 
@@ -95,19 +147,60 @@ How can we compare distributions across months?
 
 ---
 
-## A boxplot
+## Instead: Show values along y, conditions along x
+   
+.center[
+![](visualizing-distributions-2_files/figure-html/temps_boxplots-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+--
+
+A boxplot is a crude way of visualizing a distribution.
+
+---
+
+## How to read a boxplot
 
 .center[
 ![](visualizing-distributions-2_files/figure-html/boxplot-schematic-1.svg)&lt;!-- --&gt;
 ]
 
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
 ---
 
-## A violin plot
+## If you like KDEs, use violin plots
+   
+.center[
+![](visualizing-distributions-2_files/figure-html/temps_violins-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+--
+
+A violin plot is a KDE rotated 90 degrees and then mirrored.
+
+---
+
+## How to read a violin plot
 
 .center[
 ![](visualizing-distributions-2_files/figure-html/violin-schematic-1.svg)&lt;!-- --&gt;
 ]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
 
 
 ---
