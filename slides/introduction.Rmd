@@ -44,6 +44,8 @@ knitr::opts_chunk$set(comment = "")
 
 ## Why me?
 
+--
+
 <img src = "https://clauswilke.com/dataviz/cover.png", width = 30%, style = "position:absolute; top: 18%; left: 13%; box-shadow: 3px 5px 3px 1px #00000080;"></img>
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
@@ -98,6 +100,8 @@ https://clauswilke.com/dataviz
 ---
 
 ## Why R?
+
+--
 
 <img src = "introduction_files/Rlogo.svg", width = 25%, style = "position:absolute; top: 18%; left: 15%;"></img>
 
