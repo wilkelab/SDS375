@@ -1,5 +1,5 @@
 ---
-title: "Introduction"
+title: "SDS 375—Data Visualization in R"
 author: "Claus O. Wilke"
 date: "last updated: `r Sys.Date()`"
 output:
@@ -19,6 +19,151 @@ options(htmltools.dir.version = FALSE)
 knitr::opts_chunk$set(comment = "")
 ```
 
+## Why Data Visualization?
+
+--
+
+<br>
+
+.center[
+<img src = "introduction_files/Data_science_venn.svg", width = 60%></img>
+]
+
+---
+
+
+## Why Data Visualization?
+
+<br>
+
+.center[
+<img src = "introduction_files/Data_visualization_venn.svg", width = 60%></img>
+]
+
+---
+
+## Why me?
+
+<img src = "https://clauswilke.com/dataviz/cover.png", width = 30%, style = "position:absolute; top: 18%; left: 13%; box-shadow: 3px 5px 3px 1px #00000080;"></img>
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+.pull-left.small-font[
+
+.center[
+https://clauswilke.com/dataviz
+]
+
+]
+
+
+--
+
+<img src = "https://clauswilke.com/dataviz/coordinate_systems_axes_files/figure-html/worldmap-four-projections-1.png", width = 30%, style = "position:absolute; top: 12%; left: 45%; box-shadow: 3px 5px 3px 1px #00000080;"></img>
+
+--
+
+<img src = "https://clauswilke.com/dataviz/nested_proportions_files/figure-html/US-states-treemap-1.png",  width = 30%, style = "position:absolute; top: 22%; left: 55%; box-shadow: 3px 5px 3px 1px #00000080;"></img>
+
+
+--
+
+<img src = "https://clauswilke.com/dataviz/geospatial_data_files/figure-html/unemployment-geofacet-1.png",  width = 30%, style = "position:absolute; top: 32%; left: 65%; box-shadow: 3px 5px 3px 1px #00000080;"></img>
+
+--
+
+<img src = "https://clauswilke.com/dataviz/redundant_coding_files/figure-html/temp-ridgeline-colorbar-1.png",  width = 30%, style = "position:absolute; top: 42%; left: 50%; box-shadow: 3px 5px 3px 1px #00000080;"></img>
+
+--
+
+<img src = "https://clauswilke.com/dataviz/multi-panel_figures_files/figure-html/athletes-composite-good-1.png",  width = 30%, style = "position:absolute; top: 52%; left: 60%; box-shadow: 3px 5px 3px 1px #00000080;"></img>
+
+
+---
+
+## Why me?
+
+.center[
+<img src = "introduction_files/ggplot2-website-title.png", width = 60%></img>
+]
+
+--
+
+.center[
+<img src = "introduction_files/ggplot2-website-footer.png", width = 60%></img>
+]
+
+
+
+---
+
+## Why R?
+
+<img src = "introduction_files/Rlogo.svg", width = 25%, style = "position:absolute; top: 18%; left: 15%;"></img>
+
+<img src = "introduction_files/Data_science_venn.svg", width = 40%, style = "position:absolute; top: 57%; left: 8%;"></img>
+
+
+--
+
+<img src = "introduction_files/package-hexlogos.svg", width = 35%, style = "position:absolute; top: 5%; left: 55%;"></img>
+
+
+---
+class: middle
+
+## Class website/syllabus: https://wilkelab.org/SDS375
+
+---
+
+## The first core concept: Markdown
+
+.small-font[
+**Input:**
+
+```
+This is a sentence in Markdown, containing `code`, **bold text**,
+and *italics*.
+```
+]
+
+
+--
+
+.small-font[
+**Output:**
+
+This is a sentence in Markdown, containing `code`, **bold text**, and *italics*.
+]
+
+
+---
+
+## The first core concept: Markdown
+
+.small-font[
+**Input:**
+
+````
+The function `rnorm()` creates normal variates.
+`r ''````{R}
+rnorm(5) # create 5 normal variates
+```
+````
+]
+
+--
+
+.small-font[
+**Output:**
+
+The function `rnorm()` creates normal variates.
+```{R}
+rnorm(5) # create 5 normal variates
+```
+]
+
+---
 
 ## Edupod login: https://edupod.cns.utexas.edu
 
@@ -114,12 +259,6 @@ knitr::opts_chunk$set(comment = "")
 .center[
 <img src = "introduction_files/markdown-knitted-pdf-edited.png", width = 80%, style = "position:relative; top:-52px;"></img>
 ]
-
----
-
-class: middle, center
-
-# Now you try it
 
 ---
 

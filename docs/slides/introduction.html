@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>Introduction</title>
+    <title>SDS 375—Data Visualization in R</title>
     <meta charset="utf-8" />
     <meta name="author" content="Claus O. Wilke" />
     <script src="libs/header-attrs/header-attrs.js"></script>
@@ -12,7 +12,7 @@
     <textarea id="source">
 class: center, middle, title-slide
 
-# Introduction
+# SDS 375—Data Visualization in R
 ### Claus O. Wilke
 ### last updated: 2021-01-18
 
@@ -21,6 +21,156 @@ class: center, middle, title-slide
 
 
 
+## Why Data Visualization?
+
+--
+
+&lt;br&gt;
+
+.center[
+&lt;img src = "introduction_files/Data_science_venn.svg", width = 60%&gt;&lt;/img&gt;
+]
+
+---
+
+
+## Why Data Visualization?
+
+&lt;br&gt;
+
+.center[
+&lt;img src = "introduction_files/Data_visualization_venn.svg", width = 60%&gt;&lt;/img&gt;
+]
+
+---
+
+## Why me?
+
+&lt;img src = "https://clauswilke.com/dataviz/cover.png", width = 30%, style = "position:absolute; top: 18%; left: 13%; box-shadow: 3px 5px 3px 1px #00000080;"&gt;&lt;/img&gt;
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+.pull-left.small-font[
+
+.center[
+https://clauswilke.com/dataviz
+]
+
+]
+
+
+--
+
+&lt;img src = "https://clauswilke.com/dataviz/coordinate_systems_axes_files/figure-html/worldmap-four-projections-1.png", width = 30%, style = "position:absolute; top: 12%; left: 45%; box-shadow: 3px 5px 3px 1px #00000080;"&gt;&lt;/img&gt;
+
+--
+
+&lt;img src = "https://clauswilke.com/dataviz/nested_proportions_files/figure-html/US-states-treemap-1.png",  width = 30%, style = "position:absolute; top: 22%; left: 55%; box-shadow: 3px 5px 3px 1px #00000080;"&gt;&lt;/img&gt;
+
+
+--
+
+&lt;img src = "https://clauswilke.com/dataviz/geospatial_data_files/figure-html/unemployment-geofacet-1.png",  width = 30%, style = "position:absolute; top: 32%; left: 65%; box-shadow: 3px 5px 3px 1px #00000080;"&gt;&lt;/img&gt;
+
+--
+
+&lt;img src = "https://clauswilke.com/dataviz/redundant_coding_files/figure-html/temp-ridgeline-colorbar-1.png",  width = 30%, style = "position:absolute; top: 42%; left: 50%; box-shadow: 3px 5px 3px 1px #00000080;"&gt;&lt;/img&gt;
+
+--
+
+&lt;img src = "https://clauswilke.com/dataviz/multi-panel_figures_files/figure-html/athletes-composite-good-1.png",  width = 30%, style = "position:absolute; top: 52%; left: 60%; box-shadow: 3px 5px 3px 1px #00000080;"&gt;&lt;/img&gt;
+
+
+---
+
+## Why me?
+
+.center[
+&lt;img src = "introduction_files/ggplot2-website-title.png", width = 60%&gt;&lt;/img&gt;
+]
+
+--
+
+.center[
+&lt;img src = "introduction_files/ggplot2-website-footer.png", width = 60%&gt;&lt;/img&gt;
+]
+
+
+
+---
+
+## Why R?
+
+&lt;img src = "introduction_files/Rlogo.svg", width = 25%, style = "position:absolute; top: 18%; left: 15%;"&gt;&lt;/img&gt;
+
+&lt;img src = "introduction_files/Data_science_venn.svg", width = 40%, style = "position:absolute; top: 57%; left: 8%;"&gt;&lt;/img&gt;
+
+
+--
+
+&lt;img src = "introduction_files/package-hexlogos.svg", width = 35%, style = "position:absolute; top: 5%; left: 55%;"&gt;&lt;/img&gt;
+
+
+---
+class: middle
+
+## Class website/syllabus: https://wilkelab.org/SDS375
+
+---
+
+## The first core concept: Markdown
+
+.small-font[
+**Input:**
+
+```
+This is a sentence in Markdown, containing `code`, **bold text**,
+and *italics*.
+```
+]
+
+
+--
+
+.small-font[
+**Output:**
+
+This is a sentence in Markdown, containing `code`, **bold text**, and *italics*.
+]
+
+
+---
+
+## The first core concept: Markdown
+
+.small-font[
+**Input:**
+
+````
+The function `rnorm()` creates normal variates.
+```{R}
+rnorm(5) # create 5 normal variates
+```
+````
+]
+
+--
+
+.small-font[
+**Output:**
+
+The function `rnorm()` creates normal variates.
+
+```r
+rnorm(5) # create 5 normal variates
+```
+
+```
+[1]  0.9827276 -1.6786228  1.7671326 -0.6460389 -1.0586512
+```
+]
+
+---
 
 ## Edupod login: https://edupod.cns.utexas.edu
 
@@ -116,12 +266,6 @@ class: center, middle, title-slide
 .center[
 &lt;img src = "introduction_files/markdown-knitted-pdf-edited.png", width = 80%, style = "position:relative; top:-52px;"&gt;&lt;/img&gt;
 ]
-
----
-
-class: middle, center
-
-# Now you try it
 
 ---
 
