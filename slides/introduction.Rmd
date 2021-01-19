@@ -103,6 +103,11 @@ https://clauswilke.com/dataviz
 
 <img src = "introduction_files/Data_science_venn.svg", width = 40%, style = "position:absolute; top: 57%; left: 8%;"></img>
 
+???
+
+The R logo [is distributed](https://www.r-project.org/logo/) under the terms of the Creative Commons Attribution-ShareAlike 4.0 International license ([CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)).
+
+RStudio hex stickers [are distributed](https://github.com/rstudio/hex-stickers) under [CC0.](https://github.com/rstudio/hex-stickers/blob/master/LICENSE.md)
 
 --
 
