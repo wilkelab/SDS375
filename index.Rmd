@@ -25,7 +25,9 @@ Upcoming lectures and assignments: [click here](schedule.html)
 
 ## Computing requirements
 
-For students enrolled in this course, you only need a working web browser to access the RStudio class server, located at: https://edupod.cns.utexas.edu/
+For students enrolled in this course, you only need a working web browser to access the edupod server, located at: https://edupod.cns.utexas.edu/
+
+**If you are using the edupod server, stop reading here. Everything is pre-installed and no further action is needed.**
 
 To run any of the materials locally on your own machine, you will need the following:
 
