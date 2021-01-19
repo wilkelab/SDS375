@@ -1,0 +1,200 @@
+---
+title: "Coordinate systems and axes"
+author: "Claus O. Wilke"
+date: "last updated: `r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: [default, "Wilke-slides-theme.css"]
+    lib_dir: libs
+    nature:
+      ratio: '16:9'
+      highlightStyle: github
+      highlightLines: true
+      slideNumberFormat: ''
+      titleSlideClass: [center, middle]
+---
+
+```{r setup, include=FALSE, echo=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(comment = "")
+
+library(tidyverse)
+library(lubridate)
+library(ggrepel)
+library(cowplot)
+library(here)
+# ggplot2 settings so plots scale well for slide size 
+theme_set(theme_gray(16)) # 16 for full width, 18 for half width 
+update_geom_defaults("point", list(size = 2)) # 2 for full width, 2.5 for half width
+
+tempnormals <- read_csv(here("datasets", "tempnormals.csv"))
+```
+
+## Title
+
+.center[
+```{r cartesian-coord, echo = FALSE, fig.width = 5.5, fig.asp = 0.8, dev = "svg"}
+df_points <- data.frame(x = c(-1, 0, 2),
+                        y = c(-1, 0, 1),
+                        label = c("(–1, –1)", "(0, 0)", "(2, 1)"),
+                        vjust = c(1.4, -.8, -.8),
+                        hjust = c(1.1, 1.1, -.1))
+df_segments <- data.frame(x0 = c(0, 2, 0, -1),
+                          x1 = c(2, 2, -1, -1),
+                          y0 = c(1, 0, -1, 0),
+                          y1 = c(1, 1, -1, -1))
+df_labels <- data.frame(x = c(-1, -.5, 1, 2),
+                        y = c(-.5, -1, 1, 0.5),
+                        vjust = c(.5, 1.3, -.3, .5),
+                        hjust = c(1.1, .5, .5, -.1),
+                        label = c("y = –1", "x = –1", "x = 2", "y = 1"))
+ggplot(df_points, aes(x, y)) +
+  geom_hline(yintercept = 0, color = "gray50") +
+  geom_vline(xintercept = 0, color = "gray50") +
+  geom_segment(data = df_segments, aes(x = x0, xend = x1, y = y0, yend = y1),
+               linetype = 2) +
+  geom_point(size = 3, color = "#0072B2") +
+  geom_text(aes(label = label, vjust = vjust, hjust = hjust),
+            size = 14/.pt) +
+  geom_text(data = df_labels, aes(label = label, hjust = hjust, vjust = vjust),
+            size = 14/.pt) +
+  coord_fixed(xlim = c(-2.2, 3.2), ylim = c(-2.2, 2.2), expand = FALSE) +
+  scale_x_continuous(
+    name = "x axis",
+    breaks = -2:3,
+    labels = c("–2", "–1", "0", "1", "2", "3")
+  ) +
+  scale_y_continuous(
+    name = "y axis",
+    breaks = -2:2,
+    labels = c("–2", "–1", "0", "1", "2")
+  ) +
+  theme_minimal_grid(16) +
+  theme(
+    axis.ticks.length = grid::unit(0, "pt")
+  )
+```
+]
+
+---
+
+## Title goes here
+
+.center[
+```{r temperature-normals-Houston, echo = FALSE, fig.width = 5*6/4.2, fig.asp = 3/4, dev = "svg"}
+temps_wide <- tempnormals %>%
+  pivot_wider(
+    id_cols = c("month_name", "month", "day", "date", "day_of_year"),
+    names_from = "location", values_from = "temperature"
+  )
+
+temps_wide_label <- mutate(
+  temps_wide,
+  label = ifelse(
+    date %in% c(ymd("0000-01-01"), ymd("0000-04-01"), ymd("0000-07-01"), ymd("0000-10-01")),
+    format(date, "%b 1st"),
+    ""
+  ),
+  nudge_x = ifelse(
+    date %in% c(ymd("0000-01-01"), ymd("0000-04-01"), ymd("0000-07-01"), ymd("0000-10-01")),
+    c(-1, -2, -2, 1)[round(month(date)/3)+1],
+    0
+  ),
+  nudge_y = ifelse(
+    date %in% c(ymd("0000-01-01"), ymd("0000-04-01"), ymd("0000-07-01"), ymd("0000-10-01")),
+    c(-2, 1, 0.5, -2)[round(month(date)/3)+1],
+    0
+  )
+)
+
+temp_plot <- ggplot(temps_wide_label, aes(x = date, y = Houston)) +
+  geom_line(size = 1, color = "#0072B2") +
+  scale_x_date(
+    name = "month",
+    limits = c(ymd("0000-01-01"), ymd("0001-01-03")),
+    breaks = c(
+      ymd("0000-01-01"), ymd("0000-04-01"), ymd("0000-07-01"),
+      ymd("0000-10-01"), ymd("0001-01-01")
+    ),
+    labels = c("Jan", "Apr", "Jul", "Oct", "Jan"),
+    expand = expansion(add = 2/366)
+  ) + 
+  scale_y_continuous(
+    limits = c(50, 90),
+    name = "temperature (°F)"
+  ) +
+  theme_minimal_grid(14)
+
+plot_grid(
+  plot_grid(
+    temp_plot, NULL, temp_plot, rel_widths = c(1, 0.06, 2),
+    nrow = 1
+  ),
+  NULL, temp_plot,
+  rel_heights = c(1.5, 0.06, 1),
+  ncol = 1
+)
+```
+]
+
+---
+
+## Title goes here
+
+.pull-left[
+```{r temperature-normals-Houston-San-Diego, echo = FALSE, fig.width = 5, fig.asp = 1, dev = "svg"}
+ggplot(temps_wide_label, aes(x = `San Diego`, y = Houston)) +
+  geom_path(size = 1, color = "#0072B2") +
+  geom_text_repel(
+    aes(label = label), point.padding = 0.4, color = "black",
+    min.segment.length = 0, size = 12/.pt,
+    nudge_x = (9/5)*temps_wide_label$nudge_x,
+    nudge_y = (9/5)*temps_wide_label$nudge_y
+  ) +
+  coord_fixed(
+    xlim = c(45, 85), ylim = c(48, 88),
+    expand = FALSE
+  ) +
+  scale_x_continuous(breaks = c(10*(5:8))) +
+  xlab("temperature in San Diego (°F)") +
+  ylab("temperature in Houston (°F)") +
+  theme_minimal_grid(16)
+```
+]
+
+--
+
+.pull-right[
+```{r temperature-normals-Houston-San-Diego-Celsius, echo = FALSE, fig.width = 5, fig.asp = 1, dev = "svg"}
+# Fahrenheit to Celsius conversion
+F2C <- function(t) {(t-32)*5/9}
+
+ggplot(temps_wide_label, aes(x = F2C(`San Diego`), y = F2C(Houston))) +
+  geom_path(size = 1, color = "#0072B2") +
+  geom_text_repel(
+    aes(label = label), point.padding = 0.4, color = "black",
+    min.segment.length = 0, size = 12/.pt,
+    nudge_x = temps_wide_label$nudge_x,
+    nudge_y = temps_wide_label$nudge_y
+  ) +
+  coord_fixed(
+    xlim = F2C(c(45, 85)), ylim = F2C(c(48, 88)),
+    expand = FALSE
+  ) +
+  scale_x_continuous(breaks = c(5*(2:6))) +
+  xlab("temperature in San Diego (°C)") +
+  ylab("temperature in Houston (°C)") +
+  theme_minimal_grid(16)
+```
+]
+
+---
+
+## Further reading
+
+- Fundamentals of Data Visualization: [Chapter 3: Coordinate systems and axes](https://clauswilke.com/dataviz/coordinate-systems-axes.html)
+- **ggplot2** reference documentation: []()
+
+
+
+
