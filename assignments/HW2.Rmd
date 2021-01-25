@@ -1,0 +1,43 @@
+```{r global_options, include=FALSE}
+library(knitr)
+library(ggplot2)
+opts_chunk$set(fig.align="center", fig.height=4, fig.width=5.5)
+```
+
+## Homework 2
+
+*Enter your name and EID here*
+
+**This homework is due on Feb. 1, 2021 at 11:00pm. Please submit as a pdf file on Canvas.**
+
+In this homework you will be working with the `iris` dataset built into R. This data set contains measurements of flowers (sepal length, sepal width, petal length, petal width) for three different *Iris* species (*I. setosa*, *I. versicolor*, *I. virginica*).
+
+```{r}
+head(iris)
+```
+
+
+**Problem 1: (3 pts)** Use ggplot to make a histogram of the `Sepal.Length` column. Manually choose appropriate values for `binwidth` and `center`. Explain your choice of values in 2-3 sentences.
+
+```{r}
+# Your code goes here.
+```
+
+*Your explanation goes here.*
+
+**Problem 2: (2 pts)** Modify the plot from Problem 1 to show one panel per species. Hint: Use `facet_wrap()`. See Slide 14 from Class 2.
+
+
+```{r}
+# Your code goes here.
+```
+
+**Problem 3: (5 pts)** Make two different strip charts of sepal length versus species, the first one without horizontal jitter and second one with horizontal jitter. Explain in 1-2 sentences why the plot without jitter is highly misleading.
+
+Hint: Make sure you do not accidentally apply vertical jitter. This is a common mistake many people make.
+
+```{r}
+# Your code goes here.
+```
+
+*Your explanation goes here.*
