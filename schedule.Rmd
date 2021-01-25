@@ -27,6 +27,19 @@ knitr::opts_chunk$set(echo = FALSE)
 - [Slides](slides/aesthetic-mappings.html)  
 - [Worksheet](worksheets/aesthetic-mappings.Rmd)
 
+### 3. Jan 26, 2021—Visualizing amounts
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/visualizing-amounts.html)  
+- [Worksheet](worksheets/visualizing-amounts.Rmd)
+
+### 4. Jan 28, 2021—Visualizing distributions 1
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/visualizing-distributions-1.html)  
+
 ## Homeworks
 
 All homeworks are due by 11:00pm on the day they are due. Homeworks need to be submitted as pdf files on Canvas.

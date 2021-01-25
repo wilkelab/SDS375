@@ -179,7 +179,7 @@ ggplot(penguins_nomissing, aes(x = species)) +
 
 Try the following additional modifications in the above code:
 
-- Map penguin species onto the y axis
+- Map penguin species onto the y axis.
 - Remove the axis label that says "species".
 - Change the order of the bars manually, using `fct_relevel()` (see slides).
 
