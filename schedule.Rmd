@@ -39,6 +39,7 @@ knitr::opts_chunk$set(echo = FALSE)
 <p class="nospace">Materials:</p>
 
 - [Slides](slides/visualizing-distributions-1.html)  
+- [Worksheet](worksheets/visualizing-distributions-1.Rmd)
 
 ## Homeworks
 

@@ -77,8 +77,7 @@ ggplot(temps_long, aes(x = date, y = temperature, color = location)) +
     name = NULL,
     values = c("#E69F00", "#56B4E9", "#009E73", "#CC79A7")
   ) +
-  theme_minimal_grid() +
-  theme(legend.title.align = 0.5)
+  theme_minimal_grid()
 ```
 ]
 
