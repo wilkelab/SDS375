@@ -388,7 +388,7 @@ titanic %>%
   scale_x_continuous(limits = c(0, 75), name = "passenger age (years)", expand = c(0, 0)) +
   scale_y_continuous(limits = c(0, 26), name = "scaled density", expand = c(0, 0)) +
   scale_fill_manual(
-    values = c("#b3b3b3a0", "#D55E00", "#0072B2"), 
+    values = c("#b3b3b3a0", "#0072B2", "#D55E00"), 
     breaks = c("all passengers", "male", "female"),
     labels = c("all passengers  ", "males  ", "females"),
     name = NULL,
@@ -482,14 +482,14 @@ ggplot(titanic, aes(age)) +
 ggplot(titanic, aes(age)) +
   geom_histogram(
     binwidth = 5,  # width of the bins
-    center = 10.5  # center of the bin containing that value
+    center = 12.5  # center of the bin containing that value
   )
 ```
 ]
 
 
 .center[
-```{r titanic-hist-ggplot-demo4-out, ref.label = "titanic-hist-ggplot-demo3", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r titanic-hist-ggplot-demo4-out, ref.label = "titanic-hist-ggplot-demo4", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
