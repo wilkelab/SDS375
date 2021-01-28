@@ -51,6 +51,7 @@ All homeworks are due by 11:00pm on the day they are due. Homeworks need to be s
 
 - [R Markdown template](assignments/HW1.Rmd)
 - [HTML](assignments/HW1.html)
+- [Solutions](assignments/HW1_solutions.html)
 
 ### Homework 2 (due Feb 1, 2021)
 
