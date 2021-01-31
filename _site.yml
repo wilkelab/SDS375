@@ -47,6 +47,8 @@ navbar:
           href: worksheets/visualizing-amounts.Rmd
         - text: "Class 4: Visualizing distributions 1"
           href: worksheets/visualizing-distributions-1.Rmd
+        - text: "Class 5: Visualizing distributions 2"
+          href: worksheets/visualizing-distributions-2.Rmd
         - text: "Class 9: Data wrangling 1"
           href: worksheets/data-wrangling-1.Rmd
         - text: "Class 10: Data wrangling 2"

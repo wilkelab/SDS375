@@ -1,10 +1,12 @@
+---
+title: "Homework 2"
+---
+
 ```{r global_options, include=FALSE}
 library(knitr)
 library(ggplot2)
 opts_chunk$set(fig.align="center", fig.height=4, fig.width=5.5)
 ```
-
-## Homework 2
 
 *Enter your name and EID here*
 
