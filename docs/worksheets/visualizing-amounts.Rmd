@@ -198,7 +198,7 @@ ggplot(penguins_nomissing, aes(x = species, fill = sex)) +
   geom_bar()
 ```
 
-By default, the bars for different `fill` values but identical `x` values will be drawn on top of one-another. But there are other possibilities, which are controled by the `position` argument to `geom_bar()`. For example, try to set the position to `"dodge"`.
+By default, the bars for different `fill` values but identical `x` values will be drawn on top of one-another. But there are other possibilities, which are controlled by the `position` argument to `geom_bar()`. For example, try to set the position to `"dodge"`.
 
 ```{r geom-bar-position, exercise=TRUE}
 ggplot(penguins_nomissing, aes(x = species, fill = ___)) +
