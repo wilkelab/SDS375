@@ -25,6 +25,8 @@ navbar:
           href: slides/visualizing-distributions-1.html
         - text: "Class 5: Visualizing distributions 2"
           href: slides/visualizing-distributions-2.html
+        - text: "Class 6: Coordinate systems and axes"
+          href: slides/coordinate-systems-axes.html
         - text: "Class 7: Color scales"
           href: slides/color-scales.html
         - text: "Class 8: Figure design"

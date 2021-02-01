@@ -14,34 +14,34 @@ class: center, middle, title-slide
 
 # Coordinate systems and axes
 ### Claus O. Wilke
-### last updated: 2021-01-25
+### last updated: 2021-02-01
 
 ---
 
 
 
 
-## Title
+## Most data visualizations use Cartesian coordinates
 
 .center[
 ![](coordinate-systems-axes_files/figure-html/cartesian-coord-1.svg)&lt;!-- --&gt;
 ]
 
----
+???
 
-## Title goes here
-
-.center[
-![](coordinate-systems-axes_files/figure-html/temperature-normals-Houston-1.svg)&lt;!-- --&gt;
-]
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
 
 ---
 
-## Title goes here
+## Changing units does not change the plot
 
 .pull-left[
 ![](coordinate-systems-axes_files/figure-html/temperature-normals-Houston-San-Diego-1.svg)&lt;!-- --&gt;
 ]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
 
 --
 
@@ -51,12 +51,305 @@ class: center, middle, title-slide
 
 ---
 
+## If scale units are unrelated, aspect ratio is arbitrary
+
+.center[
+![](coordinate-systems-axes_files/figure-html/temperature-normals-Houston-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+
+## Non-linear scales: log-scales
+
+.small-text[
+Visualize these five values: 1, 3.16, 10, 31.6, 100
+]
+
+--
+
+.center.nogap[
+![](coordinate-systems-axes_files/figure-html/linear-log-scales-1.svg)&lt;!-- --&gt;
+]
+
+--
+
+.center.nogap[
+![](coordinate-systems-axes_files/figure-html/linear-log-scales2-1.svg)&lt;!-- --&gt;
+]
+
+
+--
+
+.center.nogap[
+![](coordinate-systems-axes_files/figure-html/linear-log-scales3-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Example: Population number of Texas counties
+
+A linear scale emphasizes large counties
+
+.center.nogap[
+![](coordinate-systems-axes_files/figure-html/texas-counties-linear-1.svg)&lt;!-- --&gt;
+]
+
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+
+## Example: Population number of Texas counties
+
+A log scale shows symmetry around the median
+
+.center.nogap[
+![](coordinate-systems-axes_files/figure-html/texas-counties-log-1.svg)&lt;!-- --&gt;
+]
+
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Nonlinear coordinate systems: Polar coordinates
+
+.pull-left[
+![](coordinate-systems-axes_files/figure-html/cartesian-polar-left-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+--
+
+.pull-right[
+![](coordinate-systems-axes_files/figure-html/cartesian-polar-right-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Cartesian vs polar example
+
+.pull-left[
+![](coordinate-systems-axes_files/figure-html/temp-normals-vs-time-cartesian-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+--
+
+.pull-right[
+![](coordinate-systems-axes_files/figure-html/temp-normals-vs-time-polar-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Scale functions customize the x and y axes
+
+
+
+Recall the box-office example from class 3
+
+.pull-left.tiny-font[
+
+```r
+ggplot(boxoffice) +
+  aes(amount, fct_reorder(title, amount)) +
+  geom_col()
+```
+]
+
+--
+
+.pull-right[
+![](coordinate-systems-axes_files/figure-html/boxoffice-scale-progression1-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Scale functions customize the x and y axes
+
+Add scale functions (no change in figure so far)
+
+.pull-left.tiny-font[
+
+```r
+ggplot(boxoffice) +
+  aes(amount, fct_reorder(title, amount)) +
+  geom_col() +
+* scale_x_continuous() +
+* scale_y_discrete()
+```
+]
+
+.pull-right[
+![](coordinate-systems-axes_files/figure-html/boxoffice-scale-progression2-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Scale functions customize the x and y axes
+
+The parameter `name` sets the axis title
+
+.pull-left.tiny-font[
+
+```r
+ggplot(boxoffice) +
+  aes(amount, fct_reorder(title, amount)) +
+  geom_col() +
+  scale_x_continuous(
+*   name = "weekend gross (million USD)"
+  ) +
+  scale_y_discrete(
+*   name = NULL  # no axis title
+  )
+```
+]
+
+.pull-right[
+![](coordinate-systems-axes_files/figure-html/boxoffice-scale-progression3-out-1.svg)&lt;!-- --&gt;
+]
+
+Note: We could do the same with `xlab()` and `ylab()`
+
+---
+
+## Scale functions customize the x and y axes
+
+The parameter `limits` sets the scale limits
+
+.pull-left.tiny-font[
+
+```r
+ggplot(boxoffice) +
+  aes(amount, fct_reorder(title, amount)) +
+  geom_col() +
+  scale_x_continuous(
+    name = "weekend gross (million USD)",
+*   limits = c(0, 80)
+  ) +
+  scale_y_discrete(
+    name = NULL
+  )
+```
+]
+
+.pull-right[
+![](coordinate-systems-axes_files/figure-html/boxoffice-scale-progression4-out-1.svg)&lt;!-- --&gt;
+]
+
+Note: We could do the same with `xlim()` and `ylim()`
+
+
+---
+
+## Scale functions customize the x and y axes
+
+The parameter `breaks` sets the axis tick positions
+
+.pull-left.tiny-font[
+
+```r
+ggplot(boxoffice) +
+  aes(amount, fct_reorder(title, amount)) +
+  geom_col() +
+  scale_x_continuous(
+    name = "weekend gross (million USD)",
+    limits = c(0, 80),
+*   breaks = c(0, 25, 50, 75)
+  ) +
+  scale_y_discrete(
+    name = NULL
+  )
+```
+]
+
+.pull-right[
+![](coordinate-systems-axes_files/figure-html/boxoffice-scale-progression5-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Scale functions customize the x and y axes
+
+The parameter `labels` sets the axis tick labels
+
+.pull-left.tiny-font[
+
+```r
+ggplot(boxoffice) +
+  aes(amount, fct_reorder(title, amount)) +
+  geom_col() +
+  scale_x_continuous(
+    name = "weekend gross",
+    limits = c(0, 80),
+    breaks = c(0, 25, 50, 75),
+*   labels = c("0", "$25M", "$50M", "$75M")
+  ) +
+  scale_y_discrete(
+    name = NULL
+  )
+```
+]
+
+.pull-right[
+![](coordinate-systems-axes_files/figure-html/boxoffice-scale-progression6-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Scale functions customize the x and y axes
+
+The parameter `expand` sets the axis expansion
+
+.pull-left.tiny-font[
+
+```r
+ggplot(boxoffice) +
+  aes(amount, fct_reorder(title, amount)) +
+  geom_col() +
+  scale_x_continuous(
+    name = "weekend gross (million USD)",
+    limits = c(0, 80),
+    breaks = c(0, 25, 50, 75),
+    labels = c("0", "$25M", "$50M", "$75M"),
+*   expand = expansion(mult = c(0, 0.06))
+  ) +
+  scale_y_discrete(
+    name = NULL
+  )
+```
+]
+
+.pull-right[
+![](coordinate-systems-axes_files/figure-html/boxoffice-scale-progression7-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
 ## Further reading
 
 - Fundamentals of Data Visualization: [Chapter 3: Coordinate systems and axes](https://clauswilke.com/dataviz/coordinate-systems-axes.html)
-- **ggplot2** reference documentation: []()
-
-
+- **ggplot2** reference documentation: [Scales](https://ggplot2.tidyverse.org/reference/index.html#section-scales)
+- **ggplot2** reference documentation: [Coordinate systems](https://ggplot2.tidyverse.org/reference/index.html#section-coordinate-systems)
+- **ggplot2** book: [Position scales](https://ggplot2-book.org/scale-position.html)
+- **ggplot2** book: [Coordinate systems](https://ggplot2-book.org/coord.html)
 
 
     </textarea>
