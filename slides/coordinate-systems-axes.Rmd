@@ -25,7 +25,7 @@ library(cowplot)
 library(here)
 # ggplot2 settings so plots scale well for slide size 
 theme_set(theme_gray(16)) # 16 for full width, 18 for half width 
-update_geom_defaults("point", list(size = 2)) # 2 for full width, 2.5 for half width
+#update_geom_defaults("point", list(size = 2)) # 2 for full width, 2.5 for half width
 
 tempnormals <- read_csv(here("datasets", "tempnormals.csv"))
 ```
@@ -710,6 +710,130 @@ ggplot(boxoffice) +
 ```{r boxoffice-scale-progression7-out, ref.label = "boxoffice-scale-progression7", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
+
+---
+
+## Scale functions define transformations
+
+
+.pull-left.nogap[
+
+Linear y scale:
+
+.tiny-font[
+```{r tx-counties-ggplot-linear, fig.width = 5.5, fig.asp = 0.6, dev = "svg"}
+ggplot(tx_counties) +
+  aes(x = index, y = popratio) +
+  geom_point() +
+  scale_y_continuous()  #<<
+```
+]]
+
+--
+
+.pull-right.nogap[
+
+Log y scale:
+
+.tiny-font[
+```{r tx-counties-ggplot-log, fig.width = 5.5, fig.asp = 0.6, dev = "svg"}
+ggplot(tx_counties) +
+  aes(x = index, y = popratio) +
+  geom_point() +
+  scale_y_log10()  #<<
+```
+]]
+
+
+---
+
+## Scale parameters work the same
+
+
+.pull-left.nogap.tiny-font[
+```{r tx-counties-ggplot-linear2, fig.width = 5.5, fig.asp = 0.6, dev = "svg"}
+ggplot(tx_counties) +
+  aes(x = index, y = popratio) +
+  geom_point() +
+  scale_y_continuous(
+    name = "population number / median",
+    breaks = c(0, 100, 200),
+    labels = c("0", "100", "200")
+  )
+```
+]
+
+.pull-right.nogap.tiny-font[
+```{r tx-counties-ggplot-log2, fig.width = 5.5, fig.asp = 0.6, dev = "svg"}
+ggplot(tx_counties) +
+  aes(x = index, y = popratio) +
+  geom_point() +
+  scale_y_log10(
+    name = "population number / median",
+    breaks = c(0.01, 1, 100),
+    labels = c("0.01", "1", "100")
+  )
+```
+]
+
+---
+
+## Coords define the coordinate system
+
+```{r echo=FALSE}
+temperatures <- temps_long
+```
+
+.nogap.tiny-font[
+```{r temperatures-cartesian, eval = FALSE}
+ggplot(temperatures, aes(day_of_year, temperature, color = location)) +
+  geom_line() +
+  coord_cartesian()  # cartesian coords are the default #<<
+```
+
+.center[
+```{r temperatures-cartesian-out, echo = FALSE, ref.label="temperatures-cartesian", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+
+```
+]]
+
+
+---
+
+## Coords define the coordinate system
+
+.nogap.tiny-font[
+```{r temperatures-polar, eval = FALSE}
+ggplot(temperatures, aes(day_of_year, temperature, color = location)) +
+  geom_line() +
+  coord_polar()   # polar coords  #<<
+```
+
+.center[
+```{r temperatures-polar-out, echo = FALSE, ref.label="temperatures-polar", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+
+```
+]]
+
+
+---
+
+## Coords define the coordinate system
+
+.nogap.tiny-font[
+```{r temperatures-polar2, eval = FALSE}
+ggplot(temperatures, aes(day_of_year, temperature, color = location)) +
+  geom_line() +
+  coord_polar() + 
+  scale_y_continuous(limits = c(0, 105))  # fix up temperature limits #<<
+```
+
+.center[
+```{r temperatures-polar2-out, echo = FALSE, ref.label="temperatures-polar2", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+
+```
+]]
+
 
 ---
 
