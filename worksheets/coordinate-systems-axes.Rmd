@@ -1,0 +1,174 @@
+---
+#############################################################
+#                                                           #
+# Click on "Run Document" in RStudio to run this worksheet. #
+#                                                           #
+#############################################################
+title: "Visualizing distributions 2"
+author: "Claus O. Wilke"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(tidyverse)
+
+knitr::opts_chunk$set(echo = FALSE, comment = "")
+
+# data prep
+boxoffice <- tibble(
+  rank = 1:5,
+  title = c("Star Wars", "Jumanji", "Pitch Perfect 3", "Greatest Showman", "Ferdinand"),
+  amount = c(71.57, 36.17, 19.93, 8.81, 7.32) # million USD
+)
+
+temperatures <- read_csv("https://wilkelab.org/SDS375/datasets/tempnormals.csv") %>%
+  mutate(
+    location = factor(
+      location, levels = c("Death Valley", "Houston", "San Diego", "Chicago")
+    )
+  ) %>%
+  select(location, day_of_year, month, temperature)
+
+US_census <- read_csv("https://wilkelab.org/SDS375/datasets/US_census.csv")
+tx_counties <- US_census %>% 
+  filter(state == "Texas") %>%
+  select(name, pop2010) %>%
+  extract(name, "county", regex = "(.+) County") %>%
+  mutate(popratio = pop2010/median(pop2010)) %>%
+  arrange(desc(popratio)) %>%
+  mutate(index = 1:n())
+```
+
+## Introduction
+
+In this worksheet, we will discuss how to change and customize scales and coordinate systems.
+
+We will be using the R package **tidyverse**, which includes `ggplot()` and related functions.
+
+```{r library-calls, echo = TRUE, eval = FALSE}
+# load required library
+library(tidyverse)
+```
+
+We will be working with three different datasets, `boxoffice`, `temperatures`, and `tx_counties`. You have already seen the first two previously.
+
+The `boxoffice` dataset contains box-office gross results for Dec. 22-24, 2017.
+```{r boxoffice, echo = TRUE}
+boxoffice
+```
+
+The `temperatures` dataset contains the average temperature for each day of the year for four different locations.
+```{r temperatures, echo = TRUE}
+temperatures
+```
+
+The `tx_counties` dataset holds information about how many people lived in Texas counties in 2010. The column `popratio` is the ratio of the number of inhabitants to the median across all counties, and the column `index` simply counts the counties from most populous to least populous.
+```{r tx-counties, echo = TRUE}
+tx_counties
+```
+
+
+## Scale customizations
+
+```{r boxoffice-raw, echo = TRUE}
+ggplot(boxoffice) +
+  aes(amount, fct_reorder(title, amount)) +
+  geom_col()
+```
+
+*axis titles*
+
+```{r boxoffice-axis-title, exercise = TRUE}
+ggplot(boxoffice) +
+  aes(amount, fct_reorder(title, amount)) +
+  geom_col() +
+  ___ +
+  ___
+```
+
+```{r boxoffice-axis-title-hint}
+ggplot(boxoffice) +
+  aes(amount, fct_reorder(title, amount)) +
+  geom_col() +
+  scale_x_continuous(___) +
+  scale_y_discrete(___)
+```
+
+```{r boxoffice-axis-title-solution}
+ggplot(boxoffice) +
+  aes(amount, fct_reorder(title, amount)) +
+  geom_col() +
+  scale_x_continuous(name = "weekend gross (million USD)") +
+  scale_y_discrete(name = NULL)
+```
+
+*axis limits*
+
+
+```{r boxoffice-xlims, exercise = TRUE}
+
+```
+
+```{r boxoffice-xlims-hint}
+ggplot(boxoffice) +
+  aes(amount, fct_reorder(title, amount)) +
+  geom_col() +
+  scale_x_continuous(
+    name = "weekend gross (million USD)",
+    limits = ___
+  ) +
+  scale_y_discrete(name = NULL)
+```
+
+```{r boxoffice-xlims-solution}
+ggplot(boxoffice) +
+  aes(amount, fct_reorder(title, amount)) +
+  geom_col() +
+  scale_x_continuous(
+    name = "weekend gross (million USD)",
+    limits = c(0, 80)
+  ) +
+  scale_y_discrete(name = NULL)
+```
+
+*breaks and labels*
+
+```{r boxoffice-breaks, exercise = TRUE}
+
+```
+
+```{r boxoffice-breaks-hint}
+ggplot(boxoffice) +
+  aes(amount, fct_reorder(title, amount)) +
+  geom_col() +
+  scale_x_continuous(
+    name = "weekend gross (million USD)",
+    limits = c(0, 80),
+    breaks = ___,
+    labels = ___
+  ) +
+  scale_y_discrete(name = NULL)
+```
+
+
+```{r boxoffice-breaks-solution}
+ggplot(boxoffice) +
+  aes(amount, fct_reorder(title, amount)) +
+  geom_col() +
+  scale_x_continuous(
+    name = "weekend gross (million USD)",
+    limits = c(0, 80),
+    breaks = c(0, 25, 50, 75),
+    labels = c("0", "$25M", "$50M", "$75M")
+  ) +
+  scale_y_discrete(name = NULL)
+```
+
+
+
+## Logarithmic scales
+
+
+## Coords
