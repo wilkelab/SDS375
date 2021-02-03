@@ -14,7 +14,7 @@
 <meta name="progressive" content="false" />
 <meta name="allow-skip" content="false" />
 
-<title>Visualizing distributions 2</title>
+<title>Coordinate systems and axes</title>
 
 
 <!-- highlightjs -->
@@ -399,7 +399,7 @@ head(temps_wide)</code></pre>
     breaks = c(50, 60, 70, 80)
   )</code></pre>
 </div>
-<p>Finally, as the last example of what can be done with coords, we go back to the problem of setting limits on the box-office bar plot. Instead of setting limits with scale functions, we can also set them via the arguments <code>xlim</code> and <code>ylim</code> inside the coord, for example here <code>coord_cartesian()</code>. (This would be a good reason to explicity add <code>coord_cartesian()</code> to a plot.) When we set limits in the coord ggplot does not discard any data points. Instead it simply zooms in or out according to the limits set. Try this out by setting the x limits from 10 to 65 in the boxoffice plot.</p>
+<p>Finally, as the last example of what can be done with coords, we go back to the problem of setting limits on the box-office bar plot. Instead of setting limits with scale functions, we can also set them via the arguments <code>xlim</code> and <code>ylim</code> inside the coord, for example here <code>coord_cartesian()</code>. (This would be a good reason to explicity add <code>coord_cartesian()</code> to a plot.) When we set limits in the coord ggplot does not discard any data points. Instead it simply zooms in or out according to the limits set. Try this out by setting the x limits from 10 to 65 in the box-office plot.</p>
 <div class="tutorial-exercise" data-label="boxoffice-coord-xlims" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>ggplot(boxoffice) +
   aes(amount, fct_reorder(title, amount)) +
@@ -562,7 +562,7 @@ output$`tutorial-exercise-boxoffice-coord-xlims-output` <- renderUI({
 
 <!-- begin doc-metadata -->
 <div id="doc-metadata">
-<h2 class="title toc-ignore" style="display:none;">Visualizing distributions 2</h2>
+<h2 class="title toc-ignore" style="display:none;">Coordinate systems and axes</h2>
 <h4 class="author"><em>Claus O. Wilke</em></h4>
 </div>
 <!-- end doc-metadata -->
