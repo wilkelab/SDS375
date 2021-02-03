@@ -48,6 +48,14 @@ knitr::opts_chunk$set(echo = FALSE)
 - [Slides](slides/visualizing-distributions-2.html)  
 - [Worksheet](worksheets/visualizing-distributions-2.Rmd)
 
+### 6. Feb 6, 2021—Coordinate systems and axes
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/coordinate-systems-axes.html)  
+- [Worksheet](worksheets/coordinate-systems-axes.Rmd)
+
+
 ## Homeworks
 
 All homeworks are due by 11:00pm on the day they are due. Homeworks need to be submitted as pdf files on Canvas.
