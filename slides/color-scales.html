@@ -24,6 +24,8 @@ class: center, middle, title-slide
 
 # Uses of color in data visualization
 
+--
+
 &lt;table style = "border: none; line-height: 2.5;"&gt;
 &lt;tr style = "background: white;"&gt;
 &lt;td style = "text-align: left; width: 50%;"&gt;
@@ -193,7 +195,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 ![](color-scales_files/figure-html/forensic-correlations1-1.svg)&lt;!-- --&gt;
 ]
 
-Palette name: Earth
+Palette name: ColorBrewer PiYG
 
 ???
 
@@ -274,12 +276,454 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 # Highlight example
 
 .center[
-&lt;img src = "https://clauswilke.com/dataviz/color_basics_files/figure-html/Aus-athletes-track-1.png", width = 60%&gt;&lt;/img&gt;
+![](color-scales_files/figure-html/Aus-athletes-track-1.svg)&lt;!-- --&gt;
+]
+
+Palette name: Grays with accents
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+# Highlight example
+
+.center[
+![](color-scales_files/figure-html/Aus-athletes-track2-1.svg)&lt;!-- --&gt;
+]
+
+Palette name: Okabe-Ito accent
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+# Highlight example
+
+.center[
+![](color-scales_files/figure-html/Aus-athletes-track3-1.svg)&lt;!-- --&gt;
+]
+
+Palette name: ColorBrewer accent
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## **ggplot2** color scale functions are a bit of a mess
+
+--
+
+.small-font.center[
+
+Scale function            | Aesthetic &amp;nbsp;&amp;nbsp;&amp;nbsp;   | Data type     | Palette type
+:-----------              | :----------  | :------------ | :------------
+`scale_color_hue()` &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; | `color` | discrete  &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; | qualitative &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+]
+
+---
+
+## **ggplot2** color scale functions are a bit of a mess
+
+.small-font.center[
+
+Scale function            | Aesthetic &amp;nbsp;&amp;nbsp;&amp;nbsp;   | Data type     | Palette type
+:-----------              | :----------  | :------------ | :------------
+`scale_color_hue()` &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; | `color` | discrete  &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; | qualitative &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+`scale_fill_hue()`        | `fill `      | discrete      | qualitative
+]
+
+---
+
+## **ggplot2** color scale functions are a bit of a mess
+
+.small-font.center[
+
+Scale function            | Aesthetic &amp;nbsp;&amp;nbsp;&amp;nbsp;   | Data type     | Palette type
+:-----------              | :----------  | :------------ | :------------
+`scale_color_hue()` &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; | `color` | discrete  &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; | qualitative &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+`scale_fill_hue()`        | `fill `      | discrete      | qualitative
+`scale_color_gradient()`  | `color`      | continuous    | sequential
+]
+
+---
+
+## **ggplot2** color scale functions are a bit of a mess
+
+.small-font.center[
+
+Scale function            | Aesthetic &amp;nbsp;&amp;nbsp;&amp;nbsp;   | Data type     | Palette type
+:-----------              | :----------  | :------------ | :------------
+`scale_color_hue()` &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; | `color` | discrete  &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; | qualitative &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+`scale_fill_hue()`        | `fill `      | discrete      | qualitative
+`scale_color_gradient()`  | `color`      | continuous    | sequential
+`scale_color_gradient2()` | `color`      | continuous    | diverging
+]
+
+---
+
+## **ggplot2** color scale functions are a bit of a mess
+
+.small-font.center[
+
+Scale function            | Aesthetic &amp;nbsp;&amp;nbsp;&amp;nbsp;   | Data type     | Palette type
+:-----------              | :----------  | :------------ | :------------
+`scale_color_hue()` &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; | `color` | discrete  &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; | qualitative &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+`scale_fill_hue()`        | `fill `      | discrete      | qualitative
+`scale_color_gradient()`  | `color`      | continuous    | sequential
+`scale_color_gradient2()` | `color`      | continuous    | diverging
+`scale_fill_virids_c()`   | `color`      | continuous    | sequential
+`scale_fill_virids_d()`   | `fill`       | discrete      | sequential
+`scale_color_brewer()`    | `color`      | discrete      | qualitative, diverging, sequential
+`scale_fill_brewer()`     | `fill`       | discrete      | qualitative, diverging, sequential
+`scale_color_distiller()` | `color`      | continuous    | qualitative, diverging, sequential
+]
+
+... and there are many many more
+
+---
+
+## Examples
+
+.small-font[
+
+```r
+ggplot(temps_months, aes(x = month, y = location, fill = mean)) + 
+  geom_tile(width = 0.95, height = 0.95) + 
+  coord_fixed(expand = FALSE) +
+  theme_classic()
+  # no fill scale defined, default is scale_fill_gradient()
+```
+]
+
+.center[
+![](color-scales_files/figure-html/temps-tiles1-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Examples
+
+.small-font[
+
+```r
+ggplot(temps_months, aes(x = month, y = location, fill = mean)) + 
+  geom_tile(width = 0.95, height = 0.95) + 
+  coord_fixed(expand = FALSE) +
+  theme_classic() +
+  scale_fill_gradient()
+```
+]
+
+.center[
+![](color-scales_files/figure-html/temps-tiles2-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Examples
+
+.small-font[
+
+```r
+ggplot(temps_months, aes(x = month, y = location, fill = mean)) + 
+  geom_tile(width = 0.95, height = 0.95) + 
+  coord_fixed(expand = FALSE) +
+  theme_classic() +
+  scale_fill_viridis_c()
+```
+]
+
+.center[
+![](color-scales_files/figure-html/temps-tiles3-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Examples
+
+.small-font[
+
+```r
+ggplot(temps_months, aes(x = month, y = location, fill = mean)) + 
+  geom_tile(width = 0.95, height = 0.95) + 
+  coord_fixed(expand = FALSE) +
+  theme_classic() +
+  scale_fill_viridis_c(option = "B", begin = 0.15)
+```
+]
+
+.center[
+![](color-scales_files/figure-html/temps-tiles4-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Examples
+
+.small-font[
+
+```r
+ggplot(temps_months, aes(x = month, y = location, fill = mean)) + 
+  geom_tile(width = 0.95, height = 0.95) + 
+  coord_fixed(expand = FALSE) +
+  theme_classic() +
+  scale_fill_distiller(palette = "YlGnBu")
+```
+]
+
+.center[
+![](color-scales_files/figure-html/temps-tiles5-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## The **colorspace** package creates some order
+
+Scale name: `scale_&lt;aesthetic&gt;_&lt;datatype&gt;_&lt;colorscale&gt;()`
+
+--
+
+.small-font[
+- `&lt;aesthetic&gt;`: name of the aesthetic (`fill`, `color`, `colour`)
+- `&lt;datatype&gt;`: type of variable plotted (`discrete`, `continuous`, `binned`)
+- `colorscale`: type of the color scale (`qualitative`, `sequential`, `diverging`, `divergingx`
+]
+
+--
+
+.small-font.center[
+
+Scale function                       | Aesthetic &amp;nbsp;&amp;nbsp;&amp;nbsp; | Data type  | Palette type &amp;nbsp;&amp;nbsp;&amp;nbsp;
+:-----------                         | :--------  | :--------- | :------------
+`scale_color_discrete_qualitative()` | `color`    | discrete   | qualitative
+`scale_fill_continuous_sequential()` | `fill`     | continuous | sequential
+`scale_colour_continous_divergingx()` | `colour`   | continuous | diverging
+]
+
+---
+
+## Examples
+
+.tiny-font[
+
+```r
+ggplot(temps_months, aes(x = month, y = location, fill = mean)) + 
+  geom_tile(width = 0.95, height = 0.95) + 
+  coord_fixed(expand = FALSE) +
+  theme_classic() +
+  scale_fill_continuous_sequential(palette = "YlGnBu", rev = FALSE)
+```
+]
+
+.center[
+![](color-scales_files/figure-html/temps-tiles6-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Examples
+
+.tiny-font[
+
+```r
+ggplot(temps_months, aes(x = month, y = location, fill = mean)) + 
+  geom_tile(width = 0.95, height = 0.95) + 
+  coord_fixed(expand = FALSE) +
+  theme_classic() +
+  scale_fill_continuous_sequential(palette = "Viridis", rev = FALSE)
+```
+]
+
+.center[
+![](color-scales_files/figure-html/temps-tiles7-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Examples
+
+.tiny-font[
+
+```r
+ggplot(temps_months, aes(x = month, y = location, fill = mean)) + 
+  geom_tile(width = 0.95, height = 0.95) + 
+  coord_fixed(expand = FALSE) +
+  theme_classic() +
+  scale_fill_continuous_sequential(palette = "Inferno", begin = 0.15, rev = FALSE)
+```
+]
+
+.center[
+![](color-scales_files/figure-html/temps-tiles8-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+.tiny-font.nogap[
+
+```r
+colorspace::hcl_palettes(type = "sequential", plot = TRUE) # all sequential palettes
+```
+
+.center[
+![](color-scales_files/figure-html/colorspace-palettes-seq-out-1.svg)&lt;!-- --&gt;
+]
+]
+
+
+---
+
+.tiny-font.nogap[
+
+```r
+colorspace::hcl_palettes(type = "diverging", plot = TRUE, n = 9) # all diverging palettes
+```
+
+.center[
+![](color-scales_files/figure-html/colorspace-palettes-div-out-1.svg)&lt;!-- --&gt;
+]
+]
+
+---
+
+.tiny-font.nogap[
+
+```r
+colorspace::divergingx_palettes(plot = TRUE, n = 9) # all divergingx palettes
+```
+
+.center[
+![](color-scales_files/figure-html/colorspace-palettes-divx-out-1.svg)&lt;!-- --&gt;
+]
+]
+
+---
+
+## Discrete, qualitative scales are best set manually
+
+.tiny-font[
+
+```r
+ggplot(popgrowth, aes(x = pop2000, y = popgrowth, color = region)) +
+  geom_point() +
+  scale_x_log10()
+  # no color scale defined, default is scale_color_hue()
+```
+]
+
+.center[
+![](color-scales_files/figure-html/qual-scales-example1-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Discrete, qualitative scales are best set manually
+
+.tiny-font[
+
+```r
+ggplot(popgrowth, aes(x = pop2000, y = popgrowth, color = region)) +
+  geom_point() +
+  scale_x_log10() +
+  scale_color_hue()
+```
+]
+
+.center[
+![](color-scales_files/figure-html/qual-scales-example2-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Discrete, qualitative scales are best set manually
+
+.tiny-font[
+
+```r
+library(ggthemes)  # for scale_color_colorblind()
+
+ggplot(popgrowth, aes(x = pop2000, y = popgrowth, color = region)) +
+  geom_point() +
+  scale_x_log10() +
+  scale_color_colorblind()  # uses Okabe-Ito colors
+```
+]
+
+.center[
+![](color-scales_files/figure-html/qual-scales-example3-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Discrete, qualitative scales are best set manually
+
+.tiny-font[
+
+```r
+ggplot(popgrowth, aes(x = pop2000, y = popgrowth, color = region)) +
+  geom_point() +
+  scale_x_log10() +
+  scale_color_manual(
+    values = c(West = "#E69F00", South = "#56B4E9", Midwest = "#009E73", Northeast = "#F0E442")
+  )
+```
+]
+
+.center[
+![](color-scales_files/figure-html/qual-scales-example4-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Okabe-Ito RGB codes
+
+.center[
+&lt;img src = "https://clauswilke.com/dataviz/pitfalls_of_color_use_files/figure-html/palette-Okabe-Ito-1.png", width = 100%&gt;&lt;/img&gt;
+]
+
+.tiny-font[
+Name           | Hex code &amp;nbsp;&amp;nbsp; | R, G, B (0-255)
+:----------    | :-------  | :--------
+orange         | #E69F00   | 230, 159, 0
+sky blue	     | #56B4E9   | 86, 180, 233
+bluish green   | #009E73   | 0, 158, 115
+yellow	       | #F0E442   | 240, 228, 66
+blue	         | #0072B2   | 0, 114, 178
+vermilion	     | #D55E00   | 213, 94, 0
+reddish purple | #CC79A7   | 204, 121, 167
+black	         | #000000   | 0, 0, 0
 ]
 
 ???
 
 Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+
+---
+
+## Further reading
+
+- Fundamentals of Data Visualization: [Chapter 4: Color scales](https://clauswilke.com/dataviz/color-basics.html)
+- Fundamentals of Data Visualization: [Figure 19.10: Okabe-Ito color palette](https://clauswilke.com/dataviz/color-pitfalls.html#fig:palette-Okabe-Ito)
+- **ggplot2** book: [Colour scales and legends](https://ggplot2-book.org/scale-colour.html)
+- **ggplot2** reference documentation: [Scales](https://ggplot2.tidyverse.org/reference/index.html#section-scales)
+- **colorspace** package: [HCL-Based Color Scales for ggplot2](https://colorspace.r-forge.r-project.org/articles/ggplot2_color_scales.html)
+
+
+
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

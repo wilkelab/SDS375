@@ -136,8 +136,8 @@ All projects are due by 11:00pm on the day they are due. Projects need to be sub
 - [Instructions](assignments/project1_instructions.html)
 - [Project Template (Rmd)](assignments/project1.Rmd)
 - [Project Template (HTML)](assignments/project1.html)
-- coming soon: Grading rubric
-- coming soon: Example project
+- [Grading rubric](assignments/project1_rubric.pdf)
+- [Example project](assignments/project1_example.html)
 
 ### Project 2 (due Mar 29, 2021)
 
