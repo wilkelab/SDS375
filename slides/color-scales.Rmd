@@ -18,10 +18,12 @@ output:
 options(htmltools.dir.version = FALSE)
 knitr::opts_chunk$set(comment = "")
 
-#library(tidyverse)
-#library(lubridate)
-#library(cowplot)
-#library(here)
+library(tidyverse)
+library(cowplot)
+library(colorspace)
+library(ggrepel)
+library(here)
+
 ## ggplot2 settings so plots scale well for slide size 
 #theme_set(theme_gray(16)) # 16 for full width, 18 for half width 
 #update_geom_defaults("point", list(size = 2)) # 2 for full width, 2.5 for half width
@@ -45,13 +47,117 @@ knitr::opts_chunk$set(comment = "")
 
 # Qualitative scale example
 
-.center[
-<img src = "https://clauswilke.com/dataviz/proportional_ink_files/figure-html/RI-pop-bars-1.png", width = 60%></img>
+.center.nogap[
+```{r popgrowth-vs-popsize-colored, echo = FALSE, message = FALSE, fig.width = 7.5, fig.asp = 0.618, dev = "svg"}
+US_census <- read_csv(here("datasets", "US_census.csv"))
+US_regions <- read_csv(here("datasets", "US_regions.csv"))
+
+popgrowth_df <- left_join(US_census, US_regions) %>%
+    group_by(region, division, state) %>%
+    summarize(
+      pop2000 = sum(pop2000, na.rm = TRUE),
+      pop2010 = sum(pop2010, na.rm = TRUE),
+      popgrowth = (pop2010-pop2000)/pop2000
+    ) %>%
+    arrange(popgrowth) %>%
+    ungroup() %>%
+    mutate(
+      #state = factor(state, levels = state),
+      region = factor(region, levels = c("West", "South", "Midwest", "Northeast"))
+    )
+
+region_colors <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442")
+
+labeled_states <- c(
+  "Alaska", "Arizona", "California", "Florida", "Wisconsin", 
+  "Louisiana", "Nevada", "Michigan", "Montana", "New Mexico",
+  "Pennsylvania", "New York", "Oregon", "Rhode Island",
+  "Tennessee", "Texas", "Utah", "Vermont"
+)
+
+df_repel <- select(popgrowth_df, x = pop2000, y = popgrowth, state) %>%
+  mutate(label = ifelse(state %in% labeled_states, as.character(state), ""))
+
+p <- ggplot(popgrowth_df, aes(x = pop2000, y = popgrowth, color = region, fill = region)) +
+  geom_text_repel(
+    data = df_repel,
+    aes(x, y, label = label),
+    segment.alpha = 0.5, point.padding = 0.25,
+    box.padding = .8,
+    force = 1,
+    min.segment.length = 0.1,
+    max.overlaps = 1000,
+    size = 10/.pt,
+    seed = 7586,
+    inherit.aes = FALSE
+  ) +
+  geom_point(size = 4, color = "white") +
+  geom_point(size = 3, shape = 21) +
+  scale_x_log10(
+    breaks = c(1e6, 3e6, 1e7, 3e7),
+    labels = expression(10^6, 3 %*% 10^6, 10^7, 3 %*% 10^7)
+  ) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+  xlab("population size in 2000") +
+  ylab("population growth, 2000 to 2010") +
+  theme_minimal_grid(14)
+
+p +  
+  scale_fill_manual(values = region_colors) +
+  scale_color_manual(values = darken(region_colors, .3))
+
+```
 ]
+
+Palette name: Okabe-Ito
 
 ???
 
-Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+# Qualitative scale example
+
+.center.nogap[
+```{r popgrowth-vs-popsize-colored2, echo = FALSE, message = FALSE, fig.width = 7.5, fig.asp = 0.618, dev = "svg"}
+
+region_colors <- RColorBrewer::brewer.pal(4, "Set1")
+
+p +  
+  scale_fill_manual(values = region_colors) +
+  scale_color_manual(values = darken(region_colors, .3))
+
+```
+]
+
+Palette name: ColorBrewer Set1
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+# Qualitative scale example
+
+.center.nogap[
+```{r popgrowth-vs-popsize-colored3, echo = FALSE, message = FALSE, fig.width = 7.5, fig.asp = 0.618, dev = "svg"}
+
+region_colors <- RColorBrewer::brewer.pal(4, "Set3")
+
+p +  
+  scale_fill_manual(values = region_colors) +
+  scale_color_manual(values = darken(region_colors, .3))
+
+```
+]
+
+Palette name: ColorBrewer Set3
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
 
 ---
 
@@ -85,12 +191,87 @@ Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.
 <br>
 
 .center[
-<img src = "https://clauswilke.com/dataviz/aesthetic_mapping_files/figure-html/four-locations-temps-by-month-1.png", width = 85%></img>
+```{r four-locations-temps-by-month, echo = FALSE, message = FALSE, fig.width = 9, fig.asp = .3, dev = "svg"}
+mean_temps <- read_csv(here("datasets", "tempnormals.csv")) %>%
+  group_by(location, month_name) %>%
+  summarize(mean = mean(temperature)) %>%
+  mutate(
+    month_name = factor(
+      month_name,
+      levels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
+    ),
+    location = factor(
+      location, levels = c("Death Valley", "Houston", "San Diego", "Chicago")
+    )
+  )
+
+p <- ggplot(mean_temps, aes(x = month_name, y = location, fill = mean)) + 
+  geom_tile(width = .95, height = 0.95) + 
+  scale_x_discrete(name = "month") +
+  scale_y_discrete(name = NULL) +
+  coord_fixed(expand = FALSE) +
+  theme_half_open() +
+  theme(
+    axis.line = element_blank(),
+    axis.ticks = element_blank(),
+    legend.title = element_text(size = 12)
+  )
+
+p + scale_fill_viridis_c(
+    option = "D",
+    name = "temperature (°F)"
+  )
+```
 ]
+
+Palette name: Viridis
 
 ???
 
-Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+# Sequential scale example
+
+<br>
+
+.center[
+```{r four-locations-temps-by-month2, echo = FALSE, message = FALSE, fig.width = 9, fig.asp = .3, dev = "svg"}
+p + scale_fill_viridis_c(
+    option = "B", begin = 0.15, end = 0.98,
+    name = "temperature (°F)"
+  )
+```
+]
+
+Palette name: Inferno
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+
+# Sequential scale example
+
+<br>
+
+.center[
+```{r four-locations-temps-by-month3, echo = FALSE, message = FALSE, fig.width = 9, fig.asp = .3, dev = "svg"}
+p + scale_fill_viridis_c(
+    option = "E",
+    name = "temperature (°F)"
+  )
+```
+]
+
+Palette name: Cividis
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
 
 
 ---
@@ -130,13 +311,108 @@ Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.
 
 # Diverging scale example
 
-.center[
-<img src = "https://clauswilke.com/dataviz/visualizing_associations_files/figure-html/forensic-correlations1-1.png", width = 40%></img>
+.center.nogap[
+```{r forensic-correlations1, echo = FALSE, message = FALSE, fig.width = 4., fig.asp = 1, dev = "svg"}
+forensic_glass <- read_csv(here("datasets", "forensic_glass.csv"))
+
+cm <- cor(select(forensic_glass, -type, -RI, -Si))
+df_wide <- as.data.frame(cm)
+df_long <- stack(df_wide)
+names(df_long) <- c("cor", "var1")
+df_long <- cbind(df_long, var2 = rep(rownames(cm), length(rownames(cm))))
+clust <- hclust(as.dist(1-cm), method="average") 
+levels <- clust$labels[clust$order]
+df_long$var1 <- factor(df_long$var1, levels = levels)
+df_long$var2 <- factor(df_long$var2, levels = levels)
+
+p <- ggplot(filter(df_long, as.integer(var1) < as.integer(var2)),
+       aes(var1, var2, fill=cor)) + 
+  geom_tile(color = "white", size = 1) + 
+  scale_x_discrete(position = "top", name = NULL, expand = c(0, 0)) +
+  scale_y_discrete(name = NULL, expand = c(0, 0)) +
+  guides(
+    fill = guide_colorbar(
+      direction = "horizontal",
+      label.position = "bottom",
+      title.position = "top",
+      barwidth = grid::unit(140, "pt"),
+      barheight = grid::unit(17.5, "pt"),
+      ticks.linewidth = 1
+    )
+  ) +
+  coord_fixed() +
+  theme_half_open(rel_small = 1) +
+  theme(
+    axis.line = element_blank(),
+    axis.ticks = element_blank(),
+    axis.ticks.length = grid::unit(3, "pt"),
+    legend.position = c(.97, .0),
+    legend.justification = c(1, 0),
+    legend.title.align = 0.5
+  )
+p + scale_fill_distiller(
+  name = "correlation",
+  limits = c(-.5, .5),
+  breaks = c(-.5, 0, .5),
+  labels = c("–0.5", "0.0", "0.5"),
+  type = "div",
+  palette = "PiYG",
+  direction = 1
+)
+```
 ]
+
+Palette name: Earth
 
 ???
 
-Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+# Diverging scale example
+
+.center.nogap[
+```{r forensic-correlations2, echo = FALSE, message = FALSE, fig.width = 4., fig.asp = 1, dev = "svg"}
+p + scale_fill_continuous_divergingx(
+  name = "correlation",
+  limits = c(-.5, .5),
+  breaks = c(-.5, 0, .5),
+  labels = c("–0.5", "0.0", "0.5"),
+  palette = "Earth",
+  rev = FALSE
+)
+```
+]
+
+Palette name: Carto Earth
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+# Diverging scale example
+
+.center.nogap[
+```{r forensic-correlations3, echo = FALSE, message = FALSE, fig.width = 4., fig.asp = 1, dev = "svg"}
+p + scale_fill_continuous_diverging(
+  name = "correlation",
+  limits = c(-.5, .5),
+  breaks = c(-.5, 0, .5),
+  labels = c("–0.5", "0.0", "0.5"),
+  palette = "Blue-Red",
+  rev = TRUE
+)
+```
+]
+
+Palette name: Blue-Red
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
 
 ---
 
