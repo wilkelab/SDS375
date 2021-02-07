@@ -48,12 +48,26 @@ knitr::opts_chunk$set(echo = FALSE)
 - [Slides](slides/visualizing-distributions-2.html)  
 - [Worksheet](worksheets/visualizing-distributions-2.Rmd)
 
-### 6. Feb 6, 2021—Coordinate systems and axes
+### 6. Feb 4, 2021—Coordinate systems and axes
 
 <p class="nospace">Materials:</p>
 
 - [Slides](slides/coordinate-systems-axes.html)  
 - [Worksheet](worksheets/coordinate-systems-axes.Rmd)
+
+### 7. Feb 9, 2021—Color scales
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/color-scales.html)  
+- Worksheet coming soon
+
+### 8. Feb 11, 2021—Figure design
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/figure-design.html)  
+- Worksheet coming soon
 
 
 ## Homeworks
