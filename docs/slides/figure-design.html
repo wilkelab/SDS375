@@ -14,7 +14,7 @@ class: center, middle, title-slide
 
 # Figure design
 ### Claus O. Wilke
-### last updated: 2021-01-17
+### last updated: 2021-02-06
 
 ---
 
@@ -140,7 +140,7 @@ ggplot(lincoln_temps) +
 
 ---
 
-## Specify scale expansion and breaks
+## Specify scale expansion
 
 .pull-left.tiny-font[
 
@@ -188,7 +188,7 @@ ggplot(lincoln_temps) +
     name = NULL,
     expand = expansion(add = c(0.2, 2.6))
   ) +
-  theme_minimal_grid()  # from cowplot package
+  theme_minimal_grid()  # from cowplot
 ```
 ]
 
@@ -295,13 +295,720 @@ ggplot(lincoln_temps) +
 ![](figure-design_files/figure-html/lincoln-ridgeline-final-out-1.svg)&lt;!-- --&gt;
 ]
 
+---
 
+## Using ready-made themes
+
+.tiny-font[
+
+```r
+ggplot(penguins, aes(flipper_length_mm, body_mass_g, color = species)) +
+  geom_point()
+  # default theme is theme_gray()
+```
+]
+
+.center[
+![](figure-design_files/figure-html/penguins-complete-themes-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Using ready-made themes
+
+.tiny-font[
+
+```r
+ggplot(penguins, aes(flipper_length_mm, body_mass_g, color = species)) +
+  geom_point() +
+  theme_gray()
+```
+]
+
+.center[
+![](figure-design_files/figure-html/penguins-complete-themes2-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Using ready-made themes
+
+.tiny-font[
+
+```r
+ggplot(penguins, aes(flipper_length_mm, body_mass_g, color = species)) +
+  geom_point() +
+  theme_gray(14) # most themes take a font-size argument to scale text size
+```
+]
+
+.center[
+![](figure-design_files/figure-html/penguins-complete-themes3-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Using ready-made themes
+
+.tiny-font[
+
+```r
+ggplot(penguins, aes(flipper_length_mm, body_mass_g, color = species)) +
+  geom_point() +
+  theme_bw(14)
+```
+]
+
+.center[
+![](figure-design_files/figure-html/penguins-complete-themes4-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Using ready-made themes
+
+.tiny-font[
+
+```r
+ggplot(penguins, aes(flipper_length_mm, body_mass_g, color = species)) +
+  geom_point() +
+  theme_minimal(14)
+```
+]
+
+.center[
+![](figure-design_files/figure-html/penguins-complete-themes5-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Using ready-made themes
+
+.tiny-font[
+
+```r
+ggplot(penguins, aes(flipper_length_mm, body_mass_g, color = species)) +
+  geom_point() +
+  theme_classic(14)
+```
+]
+
+.center[
+![](figure-design_files/figure-html/penguins-complete-themes6-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Using ready-made themes
+
+.tiny-font[
+
+```r
+ggplot(penguins, aes(flipper_length_mm, body_mass_g, color = species)) +
+  geom_point() +
+  theme_half_open()  # from package cowplot
+```
+]
+
+.center[
+![](figure-design_files/figure-html/penguins-complete-themes7-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Using ready-made themes
+
+.tiny-font[
+
+```r
+ggplot(penguins, aes(flipper_length_mm, body_mass_g, color = species)) +
+  geom_point() +
+  theme_minimal_grid()  # from package cowplot
+```
+]
+
+.center[
+![](figure-design_files/figure-html/penguins-complete-themes8-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Using ready-made themes
+
+.tiny-font[
+
+```r
+ggplot(penguins, aes(flipper_length_mm, body_mass_g, color = species)) +
+  geom_point() +
+  theme_minimal_hgrid()  # from package cowplot
+```
+]
+
+.center[
+![](figure-design_files/figure-html/penguins-complete-themes9-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Using ready-made themes
+
+.tiny-font[
+
+```r
+ggplot(penguins, aes(flipper_length_mm, body_mass_g, color = species)) +
+  geom_point() +
+  theme_minimal_vgrid()  # from package cowplot
+```
+]
+
+.center[
+![](figure-design_files/figure-html/penguins-complete-themes10-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Using ready-made themes
+
+
+.tiny-font[
+
+```r
+ggplot(penguins, aes(flipper_length_mm, body_mass_g, color = species)) +
+  geom_point() +
+  theme_economist(14)       # from package ggthemes
+```
+]
+
+.center[
+![](figure-design_files/figure-html/penguins-complete-themes11-out-1.svg)&lt;!-- --&gt;
+]
+
+
+
+---
+
+## Using ready-made themes
+
+.tiny-font[
+
+```r
+ggplot(penguins, aes(flipper_length_mm, body_mass_g, color = species)) +
+  geom_point() +
+  theme_economist(14) + scale_color_economist() # from package ggthemes
+```
+]
+
+.center[
+![](figure-design_files/figure-html/penguins-complete-themes12-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Using ready-made themes
+
+.tiny-font[
+
+```r
+ggplot(penguins, aes(flipper_length_mm, body_mass_g, color = species)) +
+  geom_point() +
+  theme_fivethirtyeight(14) + scale_color_fivethirtyeight() # from package ggthemes
+```
+]
+
+.center[
+![](figure-design_files/figure-html/penguins-complete-themes13-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Customizing theme elements
+
+.pull-left.tiny-font[
+
+```r
+ggplot(penguins) +
+  aes(flipper_length_mm, body_mass_g) +
+  geom_point(aes(color = species)) +
+  theme_minimal_grid()
+```
+]
+
+.pull-right[
+![](figure-design_files/figure-html/penguins-theme-elements1-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Customizing theme elements
+
+.pull-left.tiny-font[
+
+```r
+ggplot(penguins) +
+  aes(flipper_length_mm, body_mass_g) +
+  geom_point(aes(color = species)) +
+  theme_minimal_grid() +
+  theme(
+    # change overall font family
+    text = element_text(family = "mono")
+  )
+```
+]
+
+.pull-right[
+![](figure-design_files/figure-html/penguins-theme-elements2-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Customizing theme elements
+
+.pull-left.tiny-font[
+
+```r
+ggplot(penguins) +
+  aes(flipper_length_mm, body_mass_g) +
+  geom_point(aes(color = species)) +
+  theme_minimal_grid() +
+  theme(
+    # change color of axis titles
+    axis.title = element_text(
+      color = "royalblue2"
+    )
+  )
+```
+]
+
+.pull-right[
+![](figure-design_files/figure-html/penguins-theme-elements3-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Customizing theme elements
+
+.pull-left.tiny-font[
+
+```r
+ggplot(penguins) +
+  aes(flipper_length_mm, body_mass_g) +
+  geom_point(aes(color = species)) +
+  theme_minimal_grid() +
+  theme(
+    # change color of only the x axis title
+    axis.title.x = element_text(
+      color = "royalblue2"
+    )
+  )
+```
+]
+
+.pull-right[
+![](figure-design_files/figure-html/penguins-theme-elements4-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Customizing theme elements
+
+.pull-left.tiny-font[
+
+```r
+ggplot(penguins) +
+  aes(flipper_length_mm, body_mass_g) +
+  geom_point(aes(color = species)) +
+  theme_minimal_grid() +
+  theme(
+    # change all text colors?
+    # why does it not work?
+    text = element_text(color = "royalblue2")
+  )
+```
+]
+
+.pull-right[
+![](figure-design_files/figure-html/penguins-theme-elements5-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Customizing theme elements
+
+.pull-left.tiny-font[
+
+```r
+ggplot(penguins) +
+  aes(flipper_length_mm, body_mass_g) +
+  geom_point(aes(color = species)) +
+  theme_minimal_grid() +
+  theme(
+    text = element_text(color = "royalblue2"),
+    axis.text = element_text(
+      color = "royalblue2"
+    )
+  )
+```
+]
+
+.pull-right[
+![](figure-design_files/figure-html/penguins-theme-elements6-out-1.svg)&lt;!-- --&gt;
+]
+
+--
+
+.small-font[
+The element `axis.text` has its own color set in the theme. Therefore it doesn't inherit from `text`.
+]
+
+---
+
+## Horizontal and vertical alignment
+
+.pull-left.tiny-font[
+
+```r
+ggplot(penguins) +
+  aes(flipper_length_mm, body_mass_g) +
+  geom_point(aes(color = species)) +
+  theme_minimal_grid() +
+  theme(
+    axis.title.x = element_text(
+      # horizontal justification
+      # (0 = left)
+      hjust = 0
+    )
+  )
+```
+]
+
+.pull-right[
+![](figure-design_files/figure-html/penguins-theme-elements7-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Horizontal and vertical alignment
+
+.pull-left.tiny-font[
+
+```r
+ggplot(penguins) +
+  aes(flipper_length_mm, body_mass_g) +
+  geom_point(aes(color = species)) +
+  theme_minimal_grid() +
+  theme(
+    axis.title.x = element_text(
+      # horizontal justification
+      # (0.5 = center)
+      hjust = 0.5
+    )
+  )
+```
+]
+
+.pull-right[
+![](figure-design_files/figure-html/penguins-theme-elements8-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Horizontal and vertical alignment
+
+.pull-left.tiny-font[
+
+```r
+ggplot(penguins) +
+  aes(flipper_length_mm, body_mass_g) +
+  geom_point(aes(color = species)) +
+  theme_minimal_grid() +
+  theme(
+    axis.title.x = element_text(
+      # horizontal justification
+      # (1 = right)
+      hjust = 1
+    )
+  )
+```
+]
+
+.pull-right[
+![](figure-design_files/figure-html/penguins-theme-elements9-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Horizontal and vertical alignment
+
+.pull-left.tiny-font[
+
+```r
+ggplot(penguins) +
+  aes(flipper_length_mm, body_mass_g) +
+  geom_point(aes(color = species)) +
+  theme_minimal_grid() +
+  theme(
+    axis.text.y = element_text(
+      # vertical justification
+      # (0 = bottom)
+      vjust = 0
+    )
+  )
+```
+]
+
+.pull-right[
+![](figure-design_files/figure-html/penguins-theme-elements10-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Horizontal and vertical alignment
+
+.pull-left.tiny-font[
+
+```r
+ggplot(penguins) +
+  aes(flipper_length_mm, body_mass_g) +
+  geom_point(aes(color = species)) +
+  theme_minimal_grid() +
+  theme(
+    axis.text.y = element_text(
+      # vertical justification
+      # (0.5 = center)
+      vjust = 0.5
+    )
+  )
+```
+]
+
+.pull-right[
+![](figure-design_files/figure-html/penguins-theme-elements11-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Horizontal and vertical alignment
+
+.pull-left.tiny-font[
+
+```r
+ggplot(penguins) +
+  aes(flipper_length_mm, body_mass_g) +
+  geom_point(aes(color = species)) +
+  theme_minimal_grid() +
+  theme(
+    axis.text.y = element_text(
+      # vertical justification
+      # (1 = top)
+      vjust = 1
+    )
+  )
+```
+]
+
+.pull-right[
+![](figure-design_files/figure-html/penguins-theme-elements12-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Remove elements entirely: `element_blank()`
+
+.pull-left.tiny-font[
+
+```r
+ggplot(penguins) +
+  aes(flipper_length_mm, body_mass_g) +
+  geom_point(aes(color = species)) +
+  theme_minimal_grid() +
+  theme(
+    # all text gone
+    text = element_blank()
+  )
+```
+]
+
+.pull-right[
+![](figure-design_files/figure-html/penguins-theme-elements13-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Remove elements entirely: `element_blank()`
+
+.pull-left.tiny-font[
+
+```r
+ggplot(penguins) +
+  aes(flipper_length_mm, body_mass_g) +
+  geom_point(aes(color = species)) +
+  theme_minimal_grid() +
+  theme(
+    # no axis titles
+    axis.title = element_blank()
+  )
+```
+]
+
+.pull-right[
+![](figure-design_files/figure-html/penguins-theme-elements14-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Set background color: `element_rect()`
+
+.pull-left.tiny-font[
+
+```r
+ggplot(penguins) +
+  aes(flipper_length_mm, body_mass_g) +
+  geom_point(aes(color = species)) +
+  theme_minimal_grid() +
+  theme(
+    plot.background = element_rect(
+      fill = "aliceblue"
+    )
+  )
+```
+]
+
+.pull-right[
+![](figure-design_files/figure-html/penguins-theme-elements15-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Set background color: `element_rect()`
+
+.pull-left.tiny-font[
+
+```r
+ggplot(penguins) +
+  aes(flipper_length_mm, body_mass_g) +
+  geom_point(aes(color = species)) +
+  theme_minimal_grid() +
+  theme(
+    panel.background = element_rect(
+      fill = "aliceblue"
+    )
+  )
+```
+]
+
+.pull-right[
+![](figure-design_files/figure-html/penguins-theme-elements16-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Set background color: `element_rect()`
+
+.pull-left.tiny-font[
+
+```r
+ggplot(penguins) +
+  aes(flipper_length_mm, body_mass_g) +
+  geom_point(aes(color = species)) +
+  theme_minimal_grid() +
+  theme(
+    legend.box.background = element_rect(
+      fill = "aliceblue",
+      color = "steelblue4" # line color
+    )
+  )
+```
+]
+
+.pull-right[
+![](figure-design_files/figure-html/penguins-theme-elements17-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Set background color: `element_rect()`
+
+.pull-left.tiny-font[
+
+```r
+ggplot(penguins) +
+  aes(flipper_length_mm, body_mass_g) +
+  geom_point(aes(color = species)) +
+  theme_minimal_grid() +
+  theme(
+    legend.box.background = element_rect(
+      fill = "aliceblue",
+      color = "steelblue4" # line color
+    ),
+    legend.box.margin = margin(7, 7, 7, 7)
+  )
+```
+]
+
+.pull-right[
+![](figure-design_files/figure-html/penguins-theme-elements18-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Move the legend: `legend.position`
+
+.pull-left.tiny-font[
+
+```r
+ggplot(penguins) +
+  aes(flipper_length_mm, body_mass_g) +
+  geom_point(aes(color = species)) +
+  theme_minimal_grid() +
+  theme(
+    legend.box.background = element_rect(
+      fill = "aliceblue",
+      color = "steelblue4" # line color
+    ),
+    legend.box.margin = margin(7, 7, 7, 7),
+    # relative position inside plot panel
+    legend.position = c(1, 0),
+    # justification relative to position
+    legend.justification = c(1, 0)
+  )
+```
+]
+
+.pull-right[
+![](figure-design_files/figure-html/penguins-theme-elements19-out-1.svg)&lt;!-- --&gt;
+]
 
 ---
 ## Further reading
 
 - Fundamentals of Data Visualization: [Chapter 23: Balance the data and the context](https://clauswilke.com/dataviz/balance-data-context.html)
-- Data Visualization—A Practical Introduction: [4.6 Histograms and density plots](https://socviz.co/refineplots.html#change-the-appearance-of-plots-with-themes)
+- Data Visualization—A Practical Introduction: [Chapter 8.3: Change the appearance of plots with themes](https://socviz.co/refineplots.html#change-the-appearance-of-plots-with-themes)
 - ggplot2 reference documentation: [Complete themes](https://ggplot2.tidyverse.org/reference/ggtheme.html)
 - ggplot2 reference documentation: [Modify components of a theme](https://ggplot2.tidyverse.org/reference/theme.html)
 

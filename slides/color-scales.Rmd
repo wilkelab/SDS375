@@ -868,7 +868,7 @@ ggplot(popgrowth, aes(x = pop2000, y = popgrowth, color = region)) +
 ]
 
 .center[
-```{r qual-scales-example1, ref.label = "qual-scales-example1", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r qual-scales-example1-out, ref.label = "qual-scales-example1", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -887,7 +887,7 @@ ggplot(popgrowth, aes(x = pop2000, y = popgrowth, color = region)) +
 ]
 
 .center[
-```{r qual-scales-example2, ref.label = "qual-scales-example2", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r qual-scales-example2-out, ref.label = "qual-scales-example2", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -908,7 +908,7 @@ ggplot(popgrowth, aes(x = pop2000, y = popgrowth, color = region)) +
 ]
 
 .center[
-```{r qual-scales-example3, ref.label = "qual-scales-example3", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r qual-scales-example3-out, ref.label = "qual-scales-example3", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -929,7 +929,7 @@ ggplot(popgrowth, aes(x = pop2000, y = popgrowth, color = region)) +
 ]
 
 .center[
-```{r qual-scales-example4, ref.label = "qual-scales-example4", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r qual-scales-example4-out, ref.label = "qual-scales-example4", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
