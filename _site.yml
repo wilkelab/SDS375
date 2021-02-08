@@ -53,6 +53,8 @@ navbar:
           href: worksheets/visualizing-distributions-2.Rmd
         - text: "Class 6: Coordinate systems and axes"
           href: worksheets/coordinate-systems-axes.Rmd
+        - text: "Class 7: Color scales"
+          href: worksheets/color-scales.Rmd
         - text: "Class 9: Data wrangling 1"
           href: worksheets/data-wrangling-1.Rmd
         - text: "Class 10: Data wrangling 2"

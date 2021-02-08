@@ -60,7 +60,7 @@ knitr::opts_chunk$set(echo = FALSE)
 <p class="nospace">Materials:</p>
 
 - [Slides](slides/color-scales.html)  
-- Worksheet coming soon
+- [Worksheet](worksheets/color-scales.Rmd)
 
 ### 8. Feb 11, 2021—Figure design
 
