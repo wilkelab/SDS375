@@ -101,7 +101,8 @@ All homeworks are due by 11:00pm on the day they are due. Homeworks need to be s
 
 <p class="nospace">Materials:</p>
 
-- coming soon
+- [R Markdown template](assignments/HW4.Rmd)
+- [HTML](assignments/HW4.html)
 
 ### Homework 5 (due Mar 1, 2021)
 
