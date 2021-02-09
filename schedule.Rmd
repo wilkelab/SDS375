@@ -67,8 +67,7 @@ knitr::opts_chunk$set(echo = FALSE)
 <p class="nospace">Materials:</p>
 
 - [Slides](slides/figure-design.html)  
-- Worksheet coming soon
-
+- [Worksheet](worksheets/figure-design.Rmd)
 
 ## Homeworks
 

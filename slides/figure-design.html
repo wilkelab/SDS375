@@ -14,7 +14,7 @@ class: center, middle, title-slide
 
 # Figure design
 ### Claus O. Wilke
-### last updated: 2021-02-06
+### last updated: 2021-02-09
 
 ---
 
@@ -563,7 +563,10 @@ ggplot(penguins) +
   theme_minimal_grid() +
   theme(
     # change overall font family
-    text = element_text(family = "mono")
+    # (requires font to be available)
+    text = element_text(
+      family = "Comic Sans MS"
+    )
   )
 ```
 ]

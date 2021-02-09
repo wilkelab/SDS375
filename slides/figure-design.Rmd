@@ -595,7 +595,10 @@ ggplot(penguins) +
   theme_minimal_grid() +
   theme(
     # change overall font family
-    text = element_text(family = "mono")
+    # (requires font to be available)
+    text = element_text(
+      family = "Comic Sans MS"
+    )
   )
 ```
 ]

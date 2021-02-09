@@ -55,6 +55,8 @@ navbar:
           href: worksheets/coordinate-systems-axes.Rmd
         - text: "Class 7: Color scales"
           href: worksheets/color-scales.Rmd
+        - text: "Class 8: Figure design"
+          href: worksheets/figure-design.Rmd
         - text: "Class 9: Data wrangling 1"
           href: worksheets/data-wrangling-1.Rmd
         - text: "Class 10: Data wrangling 2"
