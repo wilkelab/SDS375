@@ -743,7 +743,7 @@ Scale name: `scale_<aesthetic>_<datatype>_<colorscale>()`
 .small-font[
 - `<aesthetic>`: name of the aesthetic (`fill`, `color`, `colour`)
 - `<datatype>`: type of variable plotted (`discrete`, `continuous`, `binned`)
-- `colorscale`: type of the color scale (`qualitative`, `sequential`, `diverging`, `divergingx`
+- `<colorscale>`: type of the color scale (`qualitative`, `sequential`, `diverging`, `divergingx`)
 ]
 
 --
