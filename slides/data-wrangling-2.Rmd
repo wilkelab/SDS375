@@ -23,7 +23,7 @@ library(palmerpenguins)
 ```
 
 
-# Elementary data manipulations
+## Elementary data manipulations
 
 Previous class:
 
@@ -44,9 +44,9 @@ This class:
 
 ---
 
-# Count things
+## Count things
 
-.small-font[
+.tiny-font[
 ```{r}
 penguins
 ```
@@ -54,20 +54,30 @@ penguins
 
 ---
 
-# Count things
+## Count things
 
-.small-font[
-```{r}
+.tiny-font[
+```{r eval = FALSE}
 penguins %>%
   count(species)
+```
+
+```{r echo = FALSE}
+# for some reason this data frame has row names, which are indicated with
+# an asterisk, which shows up as a highlighted row
+x <- penguins %>%
+  count(species)
+
+row.names(x) <- NULL
+x
 ```
 ]
 
 ---
 
-# Count things
+## Count things
 
-.small-font[
+.tiny-font[
 ```{r}
 penguins %>%
   count(species, island)
@@ -76,9 +86,9 @@ penguins %>%
 
 ---
 
-# Use the pipe to build analysis pipelines
+## Use the pipe to build analysis pipelines
 
-.small-font[
+.tiny-font[
 ```{r}
 penguins %>%
   filter(species == "Adelie")
@@ -87,9 +97,9 @@ penguins %>%
 
 ---
 
-# Use the pipe to build analysis pipelines
+## Use the pipe to build analysis pipelines
 
-.small-font[
+.tiny-font[
 ```{r}
 penguins %>%
   filter(species == "Adelie") %>%
@@ -100,9 +110,9 @@ penguins %>%
 
 ---
 
-# Use the pipe to build analysis pipelines
+## Use the pipe to build analysis pipelines
 
-.small-font[
+.tiny-font[
 ```{r}
 penguins %>%
   filter(species == "Adelie") %>%
@@ -112,7 +122,7 @@ penguins %>%
 ]
 
 ---
-# Make a new table column: `mutate()`
+## Make a new table column: `mutate()`
 
 <br>
 
@@ -122,28 +132,32 @@ penguins %>%
 
 ---
 
-# Example: flipper length in cm
+## Example: flipper length in cm
 
+.tiny-font[
 ```{r}
 penguins %>%
   select(species, island, flipper_length_mm)
 ```
+]
 
 ---
 
-# Example: flipper length in cm
+## Example: flipper length in cm
 
+.tiny-font[
 ```{r}
 penguins %>%
   select(species, island, flipper_length_mm) %>%
   mutate(flipper_length_cm = flipper_length_mm / 10)
 ```
+]
 
 ---
 
-# Make multiple columns at once
+## Make multiple columns at once
 
-.small-font[
+.tiny-font[
 ```{r}
 penguins %>%
   select(species, island, flipper_length_mm) %>%

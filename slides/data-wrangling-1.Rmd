@@ -26,23 +26,27 @@ update_geom_defaults("point", list(size = 2))
 ```
 
 
-# Elementary data manipulations
-
-This class:
-
-- Pick rows: `filter()`
-- Pick columns: `select()`
-- Sort rows: `arrange()`
-
-<br>
+## Elementary data manipulations
 
 --
 
-Next class:
+- Pick rows: `filter()`
 
-- Count things
-- Create analysis pipelines
-- Make new columns
+--
+
+- Pick columns: `select()`
+
+--
+
+- Sort rows: `arrange()`
+
+--
+
+- Count things: `count()`
+
+--
+
+- Make new columns: `mutate()`
 
 ---
 class: center, middle
@@ -56,9 +60,9 @@ class: center, middle
 
 ---
 
-# The pipe `%>%` feeds data into functions
+## The pipe `%>%` feeds data into functions
 
-.small-font[
+.tiny-font[
 ```{r}
 head(penguins)
 ```
@@ -66,9 +70,9 @@ head(penguins)
 
 ---
 
-# The pipe `%>%` feeds data into functions
+## The pipe `%>%` feeds data into functions
 
-.small-font[
+.tiny-font[
 ```{r}
 # head(penguins)
 
@@ -80,20 +84,26 @@ penguins %>%
 
 ---
 
-# The pipe `%>%` feeds data into functions
+## The pipe `%>%` feeds data into functions
 
 .tiny-font[
-```{r warning=FALSE, fig.height=4, fig.width=6, dev = "svg"}
+```{r penguins-scatter, eval = FALSE}
 ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = species)) + geom_point()
 ```
 ]
 
+.center[
+```{r penguins-scatter-out, ref.label = "penguins-scatter", echo = FALSE, warning=FALSE, fig.width=6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+
 ---
 
-# The pipe `%>%` feeds data into functions
+## The pipe `%>%` feeds data into functions
 
 .tiny-font[
-```{r warning=FALSE, fig.height=4, fig.width=6, dev = "svg"}
+```{r penguins-scatter2, eval = FALSE}
 # ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = species)) + geom_point()
 
 penguins %>%
@@ -101,9 +111,14 @@ penguins %>%
 ```
 ]
 
+.center[
+```{r penguins-scatter2-out, ref.label = "penguins-scatter2", echo = FALSE, warning=FALSE, fig.width=6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
 ---
 
-# Pick rows from a table: `filter()`
+## Pick rows from a table: `filter()`
 
 <br>
 
@@ -114,9 +129,9 @@ penguins %>%
 
 ---
 
-# Filter out penguins of species Gentoo
+## Filter out penguins of species Gentoo
 
-.small-font[
+.tiny-font[
 ```{r}
 penguins %>%
   filter(species == "Gentoo")
@@ -125,9 +140,9 @@ penguins %>%
 
 ---
 
-# Filter out penguins with bill length > 50 mm
+## Filter out penguins with bill length > 50 mm
 
-.small-font[
+.tiny-font[
 ```{r}
 penguins %>%
   filter(bill_length_mm > 50)
@@ -136,7 +151,7 @@ penguins %>%
 
 ---
 
-# Pick columns from a table: `select()`
+## Pick columns from a table: `select()`
 
 <br>
 
@@ -147,9 +162,9 @@ penguins %>%
 
 ---
 
-# Pick columns `species`, `island`, and `sex`
+## Pick columns `species`, `island`, and `sex`
 
-.small-font[
+.tiny-font[
 ```{r}
 penguins %>%
   select(species, island, sex)
@@ -158,7 +173,7 @@ penguins %>%
 
 ---
 
-# Sort the rows in a table: `arrange()`
+## Sort the rows in a table: `arrange()`
 
 <br>
 
@@ -168,9 +183,9 @@ penguins %>%
 
 ---
 
-# Sort penguins by bill length, ascending
+## Sort penguins by bill length, ascending
 
-.small-font[
+.tiny-font[
 ```{r}
 penguins %>%
   arrange(bill_length_mm)
@@ -179,12 +194,148 @@ penguins %>%
 
 ---
 
-# Sort penguins by bill length, descending
+## Sort penguins by bill length, descending
 
-.small-font[
+.tiny-font[
 ```{r}
 penguins %>%
   arrange(desc(bill_length_mm))
 ```
 ]
 
+
+---
+
+## Count things
+
+.tiny-font[
+```{r}
+penguins
+```
+]
+
+---
+
+## Count things
+
+.tiny-font[
+```{r eval = FALSE}
+penguins %>%
+  count(species)
+```
+
+```{r echo = FALSE}
+# for some reason this data frame has row names, which are indicated with
+# an asterisk, which shows up as a highlighted row
+x <- penguins %>%
+  count(species)
+
+row.names(x) <- NULL
+x
+```
+]
+
+---
+
+## Count things
+
+.tiny-font[
+```{r}
+penguins %>%
+  count(species, island)
+```
+]
+
+---
+
+## Use the pipe to build analysis pipelines
+
+.tiny-font[
+```{r}
+penguins %>%
+  filter(species == "Adelie")
+```
+]
+
+---
+
+## Use the pipe to build analysis pipelines
+
+.tiny-font[
+```{r}
+penguins %>%
+  filter(species == "Adelie") %>%
+  select(island, sex)
+```
+]
+
+
+---
+
+## Use the pipe to build analysis pipelines
+
+.tiny-font[
+```{r}
+penguins %>%
+  filter(species == "Adelie") %>%
+  select(island, sex) %>%
+  count(island, sex)
+```
+]
+
+---
+## Make a new table column: `mutate()`
+
+<br>
+
+.center[
+<img src = "data-wrangling-2_files/mutate.svg", width = 75%></img>
+]
+
+---
+
+## Example: flipper length in cm
+
+.tiny-font[
+```{r}
+penguins %>%
+  select(species, island, flipper_length_mm)
+```
+]
+
+---
+
+## Example: flipper length in cm
+
+.tiny-font[
+```{r}
+penguins %>%
+  select(species, island, flipper_length_mm) %>%
+  mutate(flipper_length_cm = flipper_length_mm / 10)
+```
+]
+
+---
+
+## Make multiple columns at once
+
+.tiny-font[
+```{r}
+penguins %>%
+  select(species, island, flipper_length_mm) %>%
+  mutate(
+    flipper_length_cm = flipper_length_mm / 10,  # <- notice the comma
+    flipper_length_in = flipper_length_mm / 25.4
+  )
+```
+]
+
+
+---
+
+## Further reading
+
+- R for Data Science: [Chapter 5: Data transformation](https://r4ds.had.co.nz/transform.html)
+- R for Data Science: [Chapter 18: Pipes](https://r4ds.had.co.nz/pipes.html)
+- **dplyr** documentation: [Introduction to dplyr](https://dplyr.tidyverse.org/articles/dplyr.html)
+- **dplyr** reference documentation: [One table verbs](https://dplyr.tidyverse.org/reference/index.html#section-one-table-verbs)
