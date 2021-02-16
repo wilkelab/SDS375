@@ -14,7 +14,7 @@ class: center, middle, title-slide
 
 # Data wrangling 2
 ### Claus O. Wilke
-### last updated: 2020-08-30
+### last updated: 2021-02-12
 
 ---
 
@@ -22,7 +22,7 @@ class: center, middle, title-slide
 
 
 
-# Elementary data manipulations
+## Elementary data manipulations
 
 Previous class:
 
@@ -43,9 +43,9 @@ This class:
 
 ---
 
-# Count things
+## Count things
 
-.small-font[
+.tiny-font[
 
 ```r
 penguins
@@ -71,14 +71,15 @@ penguins
 
 ---
 
-# Count things
+## Count things
 
-.small-font[
+.tiny-font[
 
 ```r
 penguins %&gt;%
   count(species)
 ```
+
 
 ```
 # A tibble: 3 x 2
@@ -92,9 +93,9 @@ penguins %&gt;%
 
 ---
 
-# Count things
+## Count things
 
-.small-font[
+.tiny-font[
 
 ```r
 penguins %&gt;%
@@ -115,9 +116,9 @@ penguins %&gt;%
 
 ---
 
-# Use the pipe to build analysis pipelines
+## Use the pipe to build analysis pipelines
 
-.small-font[
+.tiny-font[
 
 ```r
 penguins %&gt;%
@@ -144,9 +145,9 @@ penguins %&gt;%
 
 ---
 
-# Use the pipe to build analysis pipelines
+## Use the pipe to build analysis pipelines
 
-.small-font[
+.tiny-font[
 
 ```r
 penguins %&gt;%
@@ -175,9 +176,9 @@ penguins %&gt;%
 
 ---
 
-# Use the pipe to build analysis pipelines
+## Use the pipe to build analysis pipelines
 
-.small-font[
+.tiny-font[
 
 ```r
 penguins %&gt;%
@@ -202,7 +203,7 @@ penguins %&gt;%
 ]
 
 ---
-# Make a new table column: `mutate()`
+## Make a new table column: `mutate()`
 
 &lt;br&gt;
 
@@ -212,8 +213,9 @@ penguins %&gt;%
 
 ---
 
-# Example: flipper length in cm
+## Example: flipper length in cm
 
+.tiny-font[
 
 ```r
 penguins %&gt;%
@@ -236,11 +238,13 @@ penguins %&gt;%
 10 Adelie  Torgersen               190
 # … with 334 more rows
 ```
+]
 
 ---
 
-# Example: flipper length in cm
+## Example: flipper length in cm
 
+.tiny-font[
 
 ```r
 penguins %&gt;%
@@ -264,12 +268,13 @@ penguins %&gt;%
 10 Adelie  Torgersen               190              19  
 # … with 334 more rows
 ```
+]
 
 ---
 
-# Make multiple columns at once
+## Make multiple columns at once
 
-.small-font[
+.tiny-font[
 
 ```r
 penguins %&gt;%

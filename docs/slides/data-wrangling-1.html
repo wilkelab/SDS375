@@ -14,7 +14,7 @@ class: center, middle, title-slide
 
 # Data wrangling 1
 ### Claus O. Wilke
-### last updated: 2020-09-02
+### last updated: 2021-02-12
 
 ---
 
@@ -22,23 +22,27 @@ class: center, middle, title-slide
 
 
 
-# Elementary data manipulations
-
-This class:
-
-- Pick rows: `filter()`
-- Pick columns: `select()`
-- Sort rows: `arrange()`
-
-&lt;br&gt;
+## Elementary data manipulations
 
 --
 
-Next class:
+- Pick rows: `filter()`
 
-- Count things
-- Create analysis pipelines
-- Make new columns
+--
+
+- Pick columns: `select()`
+
+--
+
+- Sort rows: `arrange()`
+
+--
+
+- Count things: `count()`
+
+--
+
+- Make new columns: `mutate()`
 
 ---
 class: center, middle
@@ -52,9 +56,9 @@ class: center, middle
 
 ---
 
-# The pipe `%&gt;%` feeds data into functions
+## The pipe `%&gt;%` feeds data into functions
 
-.small-font[
+.tiny-font[
 
 ```r
 head(penguins)
@@ -76,9 +80,9 @@ head(penguins)
 
 ---
 
-# The pipe `%&gt;%` feeds data into functions
+## The pipe `%&gt;%` feeds data into functions
 
-.small-font[
+.tiny-font[
 
 ```r
 # head(penguins)
@@ -104,20 +108,23 @@ penguins %&gt;%
 
 ---
 
-# The pipe `%&gt;%` feeds data into functions
+## The pipe `%&gt;%` feeds data into functions
 
 .tiny-font[
 
 ```r
 ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = species)) + geom_point()
 ```
-
-![](data-wrangling-1_files/figure-html/unnamed-chunk-3-1.svg)&lt;!-- --&gt;
 ]
+
+.center[
+![](data-wrangling-1_files/figure-html/penguins-scatter-out-1.svg)&lt;!-- --&gt;
+]
+
 
 ---
 
-# The pipe `%&gt;%` feeds data into functions
+## The pipe `%&gt;%` feeds data into functions
 
 .tiny-font[
 
@@ -127,13 +134,15 @@ ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = species)) + geom_poi
 penguins %&gt;%
   ggplot(aes(bill_length_mm, bill_depth_mm, color = species)) + geom_point()
 ```
+]
 
-![](data-wrangling-1_files/figure-html/unnamed-chunk-4-1.svg)&lt;!-- --&gt;
+.center[
+![](data-wrangling-1_files/figure-html/penguins-scatter2-out-1.svg)&lt;!-- --&gt;
 ]
 
 ---
 
-# Pick rows from a table: `filter()`
+## Pick rows from a table: `filter()`
 
 &lt;br&gt;
 
@@ -144,9 +153,9 @@ penguins %&gt;%
 
 ---
 
-# Filter out penguins of species Gentoo
+## Filter out penguins of species Gentoo
 
-.small-font[
+.tiny-font[
 
 ```r
 penguins %&gt;%
@@ -173,9 +182,9 @@ penguins %&gt;%
 
 ---
 
-# Filter out penguins with bill length &gt; 50 mm
+## Filter out penguins with bill length &gt; 50 mm
 
-.small-font[
+.tiny-font[
 
 ```r
 penguins %&gt;%
@@ -202,7 +211,7 @@ penguins %&gt;%
 
 ---
 
-# Pick columns from a table: `select()`
+## Pick columns from a table: `select()`
 
 &lt;br&gt;
 
@@ -213,9 +222,9 @@ penguins %&gt;%
 
 ---
 
-# Pick columns `species`, `island`, and `sex`
+## Pick columns `species`, `island`, and `sex`
 
-.small-font[
+.tiny-font[
 
 ```r
 penguins %&gt;%
@@ -242,7 +251,7 @@ penguins %&gt;%
 
 ---
 
-# Sort the rows in a table: `arrange()`
+## Sort the rows in a table: `arrange()`
 
 &lt;br&gt;
 
@@ -252,9 +261,9 @@ penguins %&gt;%
 
 ---
 
-# Sort penguins by bill length, ascending
+## Sort penguins by bill length, ascending
 
-.small-font[
+.tiny-font[
 
 ```r
 penguins %&gt;%
@@ -281,9 +290,9 @@ penguins %&gt;%
 
 ---
 
-# Sort penguins by bill length, descending
+## Sort penguins by bill length, descending
 
-.small-font[
+.tiny-font[
 
 ```r
 penguins %&gt;%
@@ -308,6 +317,278 @@ penguins %&gt;%
 ```
 ]
 
+
+---
+
+## Count things
+
+.tiny-font[
+
+```r
+penguins
+```
+
+```
+# A tibble: 344 x 8
+   species island bill_length_mm bill_depth_mm flipper_length_… body_mass_g
+   &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;            &lt;int&gt;       &lt;int&gt;
+ 1 Adelie  Torge…           39.1          18.7              181        3750
+ 2 Adelie  Torge…           39.5          17.4              186        3800
+ 3 Adelie  Torge…           40.3          18                195        3250
+ 4 Adelie  Torge…           NA            NA                 NA          NA
+ 5 Adelie  Torge…           36.7          19.3              193        3450
+ 6 Adelie  Torge…           39.3          20.6              190        3650
+ 7 Adelie  Torge…           38.9          17.8              181        3625
+ 8 Adelie  Torge…           39.2          19.6              195        4675
+ 9 Adelie  Torge…           34.1          18.1              193        3475
+10 Adelie  Torge…           42            20.2              190        4250
+# … with 334 more rows, and 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;
+```
+]
+
+---
+
+## Count things
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  count(species)
+```
+
+
+```
+# A tibble: 3 x 2
+  species       n
+  &lt;fct&gt;     &lt;int&gt;
+1 Adelie      152
+2 Chinstrap    68
+3 Gentoo      124
+```
+]
+
+---
+
+## Count things
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  count(species, island)
+```
+
+```
+# A tibble: 5 x 3
+  species   island        n
+  &lt;fct&gt;     &lt;fct&gt;     &lt;int&gt;
+1 Adelie    Biscoe       44
+2 Adelie    Dream        56
+3 Adelie    Torgersen    52
+4 Chinstrap Dream        68
+5 Gentoo    Biscoe      124
+```
+]
+
+---
+
+## Use the pipe to build analysis pipelines
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  filter(species == "Adelie")
+```
+
+```
+# A tibble: 152 x 8
+   species island bill_length_mm bill_depth_mm flipper_length_… body_mass_g
+   &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;            &lt;int&gt;       &lt;int&gt;
+ 1 Adelie  Torge…           39.1          18.7              181        3750
+ 2 Adelie  Torge…           39.5          17.4              186        3800
+ 3 Adelie  Torge…           40.3          18                195        3250
+ 4 Adelie  Torge…           NA            NA                 NA          NA
+ 5 Adelie  Torge…           36.7          19.3              193        3450
+ 6 Adelie  Torge…           39.3          20.6              190        3650
+ 7 Adelie  Torge…           38.9          17.8              181        3625
+ 8 Adelie  Torge…           39.2          19.6              195        4675
+ 9 Adelie  Torge…           34.1          18.1              193        3475
+10 Adelie  Torge…           42            20.2              190        4250
+# … with 142 more rows, and 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;
+```
+]
+
+---
+
+## Use the pipe to build analysis pipelines
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  filter(species == "Adelie") %&gt;%
+  select(island, sex)
+```
+
+```
+# A tibble: 152 x 2
+   island    sex   
+   &lt;fct&gt;     &lt;fct&gt; 
+ 1 Torgersen male  
+ 2 Torgersen female
+ 3 Torgersen female
+ 4 Torgersen &lt;NA&gt;  
+ 5 Torgersen female
+ 6 Torgersen male  
+ 7 Torgersen female
+ 8 Torgersen male  
+ 9 Torgersen &lt;NA&gt;  
+10 Torgersen &lt;NA&gt;  
+# … with 142 more rows
+```
+]
+
+
+---
+
+## Use the pipe to build analysis pipelines
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  filter(species == "Adelie") %&gt;%
+  select(island, sex) %&gt;%
+  count(island, sex)
+```
+
+```
+# A tibble: 8 x 3
+  island    sex        n
+  &lt;fct&gt;     &lt;fct&gt;  &lt;int&gt;
+1 Biscoe    female    22
+2 Biscoe    male      22
+3 Dream     female    27
+4 Dream     male      28
+5 Dream     &lt;NA&gt;       1
+6 Torgersen female    24
+7 Torgersen male      23
+8 Torgersen &lt;NA&gt;       5
+```
+]
+
+---
+## Make a new table column: `mutate()`
+
+&lt;br&gt;
+
+.center[
+&lt;img src = "data-wrangling-2_files/mutate.svg", width = 75%&gt;&lt;/img&gt;
+]
+
+---
+
+## Example: flipper length in cm
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  select(species, island, flipper_length_mm)
+```
+
+```
+# A tibble: 344 x 3
+   species island    flipper_length_mm
+   &lt;fct&gt;   &lt;fct&gt;                 &lt;int&gt;
+ 1 Adelie  Torgersen               181
+ 2 Adelie  Torgersen               186
+ 3 Adelie  Torgersen               195
+ 4 Adelie  Torgersen                NA
+ 5 Adelie  Torgersen               193
+ 6 Adelie  Torgersen               190
+ 7 Adelie  Torgersen               181
+ 8 Adelie  Torgersen               195
+ 9 Adelie  Torgersen               193
+10 Adelie  Torgersen               190
+# … with 334 more rows
+```
+]
+
+---
+
+## Example: flipper length in cm
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  select(species, island, flipper_length_mm) %&gt;%
+  mutate(flipper_length_cm = flipper_length_mm / 10)
+```
+
+```
+# A tibble: 344 x 4
+   species island    flipper_length_mm flipper_length_cm
+   &lt;fct&gt;   &lt;fct&gt;                 &lt;int&gt;             &lt;dbl&gt;
+ 1 Adelie  Torgersen               181              18.1
+ 2 Adelie  Torgersen               186              18.6
+ 3 Adelie  Torgersen               195              19.5
+ 4 Adelie  Torgersen                NA              NA  
+ 5 Adelie  Torgersen               193              19.3
+ 6 Adelie  Torgersen               190              19  
+ 7 Adelie  Torgersen               181              18.1
+ 8 Adelie  Torgersen               195              19.5
+ 9 Adelie  Torgersen               193              19.3
+10 Adelie  Torgersen               190              19  
+# … with 334 more rows
+```
+]
+
+---
+
+## Make multiple columns at once
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  select(species, island, flipper_length_mm) %&gt;%
+  mutate(
+    flipper_length_cm = flipper_length_mm / 10,  # &lt;- notice the comma
+    flipper_length_in = flipper_length_mm / 25.4
+  )
+```
+
+```
+# A tibble: 344 x 5
+   species island    flipper_length_mm flipper_length_cm flipper_length_in
+   &lt;fct&gt;   &lt;fct&gt;                 &lt;int&gt;             &lt;dbl&gt;             &lt;dbl&gt;
+ 1 Adelie  Torgersen               181              18.1              7.13
+ 2 Adelie  Torgersen               186              18.6              7.32
+ 3 Adelie  Torgersen               195              19.5              7.68
+ 4 Adelie  Torgersen                NA              NA               NA   
+ 5 Adelie  Torgersen               193              19.3              7.60
+ 6 Adelie  Torgersen               190              19                7.48
+ 7 Adelie  Torgersen               181              18.1              7.13
+ 8 Adelie  Torgersen               195              19.5              7.68
+ 9 Adelie  Torgersen               193              19.3              7.60
+10 Adelie  Torgersen               190              19                7.48
+# … with 334 more rows
+```
+]
+
+
+---
+
+## Further reading
+
+- R for Data Science: [Chapter 5: Data transformation](https://r4ds.had.co.nz/transform.html)
+- R for Data Science: [Chapter 18: Pipes](https://r4ds.had.co.nz/pipes.html)
+- **dplyr** documentation: [Introduction to dplyr](https://dplyr.tidyverse.org/articles/dplyr.html)
+- **dplyr** reference documentation: [One table verbs](https://dplyr.tidyverse.org/reference/index.html#section-one-table-verbs)
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

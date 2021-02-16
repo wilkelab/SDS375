@@ -32,7 +32,7 @@ blue_jays <- read_csv(here("datasets", "blue_jays.csv"))
 ```
 
 
-# Principal Components Analysis (PCA)
+## Principal Components Analysis (PCA)
 
 .center[
 ```{r blue-jays-PCA, echo = FALSE, fig.width = 11, fig.asp = 0.35, dev = "svg"}
@@ -207,7 +207,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 
 ---
 
-# Principal Components Analysis (PCA)
+## Principal Components Analysis (PCA)
 
 .center[
 ```{r blue-jays-PCA2, echo = FALSE, fig.width = 11, fig.asp = 0.35, dev = "svg"}
@@ -227,7 +227,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 
 ---
 
-# Principal Components Analysis (PCA)
+## Principal Components Analysis (PCA)
 
 .center[
 ```{r blue-jays-PCA3, echo = FALSE, fig.width = 11, fig.asp = 0.35, dev = "svg"}
@@ -246,7 +246,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 
 ---
 
-# Scaling of numeric columns
+## Scaling of numeric columns
 
 .tiny-font[
 ```{r blue-jays-scaled, eval = FALSE}
@@ -263,7 +263,7 @@ blue_jays %>%
 
 ---
 
-# Fully worked PCA example
+## Fully worked PCA example
 
 First we run the PCA and store results as `pca_fit`:
 
@@ -292,7 +292,7 @@ pca_fit %>%
 
 ---
 
-# Fully worked PCA example
+## Fully worked PCA example
 
 .tiny-font[
 ```{r blue-jays-pca-plot, eval = FALSE}
@@ -309,7 +309,7 @@ pca_fit %>%
 
 ---
 
-# Fully worked PCA example
+## Fully worked PCA example
 
 .tiny-font[
 ```{r blue-jays-pca-plot2, eval = FALSE}
@@ -326,7 +326,7 @@ pca_fit %>%
 
 ---
 
-# Plot the rotation matrix
+## Plot the rotation matrix
 
 .tiny-font[
 ```{r blue-jays-pca-rotation, eval = FALSE}
@@ -345,7 +345,7 @@ pca_fit %>%
 
 ---
 
-# Plot the variance explained
+## Plot the variance explained
 
 .tiny-font[
 ```{r blue-jays-pca-eigenvalues, eval = FALSE}

@@ -56,7 +56,7 @@ penguins %>% head()
 ```
 
 
-## Filtering data
+## Choosing data rows
 
 The function `filter()` allows you to find rows in a dataset that meet one or more specific conditions. The syntax is `data %>% filter(condition)`, where condition is a logical condition. For example, `filter(x > 5)` would pick all rows for which the value in column `x` is greater than 5.
 
