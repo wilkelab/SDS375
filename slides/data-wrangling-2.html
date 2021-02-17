@@ -309,6 +309,7 @@ penguins %&gt;%
 
 `count(...)` is a short-cut for `group_by(...) %&gt;% summarize(n = n())`
 
+--
 
 .tiny-font.pull-left[
 
@@ -329,6 +330,8 @@ penguins %&gt;%
 ```
 
 ]
+
+--
 
 .tiny-font.pull-right[
 
@@ -352,6 +355,8 @@ penguins %&gt;%
 ```
 
 ]
+
+--
 
 The output is exactly the same
 
@@ -638,14 +643,277 @@ penguins_wide %&gt;%
 
 ---
 
+## Example: band members and their instruments
+
+.tiny-font.pull-left[
+
+```r
+# some members of famous bands
+band_members
+```
+
+```
+# A tibble: 3 x 2
+  name  band   
+  &lt;chr&gt; &lt;chr&gt;  
+1 Mick  Stones 
+2 John  Beatles
+3 Paul  Beatles
+```
+]
+
+--
+
+.tiny-font.pull-right[
+
+```r
+# instruments played by some band members
+band_instruments
+```
+
+```
+# A tibble: 3 x 2
+  name  plays 
+  &lt;chr&gt; &lt;chr&gt; 
+1 John  guitar
+2 Paul  bass  
+3 Keith guitar
+```
+]
+
+--
+
+.tiny-font[
+
+```r
+left_join(band_members, band_instruments) # add right table to left
+```
+
+```
+Joining, by = "name"
+```
+
+```
+# A tibble: 3 x 3
+  name  band    plays 
+  &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt; 
+1 Mick  Stones  &lt;NA&gt;  
+2 John  Beatles guitar
+3 Paul  Beatles bass  
+```
+]
+
+---
+
+## Example: band members and their instruments
+
+.tiny-font.pull-left[
+
+```r
+# some members of famous bands
+band_members
+```
+
+```
+# A tibble: 3 x 2
+  name  band   
+  &lt;chr&gt; &lt;chr&gt;  
+1 Mick  Stones 
+2 John  Beatles
+3 Paul  Beatles
+```
+]
+
+.tiny-font.pull-right[
+
+```r
+# instruments played by some band members
+band_instruments
+```
+
+```
+# A tibble: 3 x 2
+  name  plays 
+  &lt;chr&gt; &lt;chr&gt; 
+1 John  guitar
+2 Paul  bass  
+3 Keith guitar
+```
+]
+
+.tiny-font[
+
+```r
+right_join(band_members, band_instruments) # add left table to right
+```
+
+```
+Joining, by = "name"
+```
+
+```
+# A tibble: 3 x 3
+  name  band    plays 
+  &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt; 
+1 John  Beatles guitar
+2 Paul  Beatles bass  
+3 Keith &lt;NA&gt;    guitar
+```
+]
+
+
+---
+
+## Example: band members and their instruments
+
+.tiny-font.pull-left[
+
+```r
+# some members of famous bands
+band_members
+```
+
+```
+# A tibble: 3 x 2
+  name  band   
+  &lt;chr&gt; &lt;chr&gt;  
+1 Mick  Stones 
+2 John  Beatles
+3 Paul  Beatles
+```
+]
+
+.tiny-font.pull-right[
+
+```r
+# instruments played by some band members
+band_instruments
+```
+
+```
+# A tibble: 3 x 2
+  name  plays 
+  &lt;chr&gt; &lt;chr&gt; 
+1 John  guitar
+2 Paul  bass  
+3 Keith guitar
+```
+]
+
+.tiny-font[
+
+```r
+inner_join(band_members, band_instruments) # keep intersection only
+```
+
+```
+Joining, by = "name"
+```
+
+```
+# A tibble: 2 x 3
+  name  band    plays 
+  &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt; 
+1 John  Beatles guitar
+2 Paul  Beatles bass  
+```
+]
+
+
+---
+
+## Example: band members and their instruments
+
+.tiny-font.pull-left[
+
+```r
+# some members of famous bands
+band_members
+```
+
+```
+# A tibble: 3 x 2
+  name  band   
+  &lt;chr&gt; &lt;chr&gt;  
+1 Mick  Stones 
+2 John  Beatles
+3 Paul  Beatles
+```
+]
+
+.tiny-font.pull-right[
+
+```r
+# instruments played by some band members
+band_instruments
+```
+
+```
+# A tibble: 3 x 2
+  name  plays 
+  &lt;chr&gt; &lt;chr&gt; 
+1 John  guitar
+2 Paul  bass  
+3 Keith guitar
+```
+]
+
+.tiny-font[
+
+```r
+full_join(band_members, band_instruments) # merge all cases
+```
+
+```
+Joining, by = "name"
+```
+
+```
+# A tibble: 4 x 3
+  name  band    plays 
+  &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt; 
+1 Mick  Stones  &lt;NA&gt;  
+2 John  Beatles guitar
+3 Paul  Beatles bass  
+4 Keith &lt;NA&gt;    guitar
+```
+]
+
+
+---
+
+## The different joins at a glance
+
+.center[
+&lt;img src = "data-wrangling-2_files/joins-venn.svg", width = 65%&gt;&lt;/img&gt;
+]
+
+
+---
+
+## The different joins at a glance
+
+&lt;img src = "data-wrangling-2_files/joins-venn2.svg", width = 35%, style = "position:absolute; top: 5%; left: 62%;"&gt;&lt;/img&gt;
+
+&lt;br&gt;
+
+**Tip:** In case of doubt, use `left_join()`
+
+--
+
+In my experience, `left_join()` is the right choice  
+70–80% of the time
+
+---
+
 ## Further reading
 
+- R for Data Science: [Chapter 5.6: Grouped summaries with `summarise()`](https://r4ds.had.co.nz/transform.html?q=group_by#grouped-summaries-with-summarise)
 - R for Data Science: [Chapter 12.3: Pivoting](https://r4ds.had.co.nz/tidy-data.html?q=pivot#pivoting)
 - R for Data Science: [Chapter 13: Relational data](https://r4ds.had.co.nz/relational-data.html)
-- R for Data Science: [Chapter 5.6: Grouped summaries with `summarise()`](https://r4ds.had.co.nz/transform.html?q=group_by#grouped-summaries-with-summarise)
 - **dplyr** documentation: [Grouped data](https://dplyr.tidyverse.org/articles/grouping.html)
 - **tidyr** documentation: [Pivoting](https://tidyr.tidyverse.org/articles/pivot.html)
-
+- **dplyr** documentation: [Mutating joins](https://dplyr.tidyverse.org/articles/two-table.html#mutating-joins-1)
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

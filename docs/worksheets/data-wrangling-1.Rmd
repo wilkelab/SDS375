@@ -108,7 +108,7 @@ penguins %>%
   select(species, island, sex)
 ```
 
-Try this yourself, picking the columns representing the penguin species, the bill length, and then flipper length.
+Try this yourself, picking the columns representing the penguin species (`species`), the bill length (`bill_length_mm`), and then flipper length (`flipper_length_mm`).
 
 ```{r select-exercise, exercise=TRUE}
 
@@ -192,25 +192,25 @@ penguins %>%
 
 To arrange data in descending order, enclose the data column in `desc()`. For example, `data %>% arrange(desc(x))` would sort the data by decreasing values of `x`. (`desc` stands for "descending".)
 
-Try this out. Sort the penguins by body mass, from largest to smallest:
+Try this out. Sort the penguins by bill length, from largest to smallest:
 
-```{r arrange-body-mass, exercise=TRUE}
+```{r arrange-bill-length-desc, exercise=TRUE}
 
 ```
 
-```{r arrange-body-mass-hint-1}
+```{r arrange-bill-length-desc-hint-1}
 penguins %>%
   arrange(___)
 ```
 
-```{r arrange-body-mass-hint-2}
+```{r arrange-bill-length-desc-hint-2}
 penguins %>%
-  arrange(___(body_mass_g))
+  arrange(___(bill_length_mm))
 ```
 
-```{r arrange-body-mass-solution}
+```{r arrange-bill-length-desc-solution}
 penguins %>%
-  arrange(desc(body_mass_g))
+  arrange(desc(bill_length_mm))
 ```
 
 
@@ -247,7 +247,7 @@ We can also perform more fine-grained counts, by providing the `count()` functio
 
 ```{r count-complex-hint}
 penguins %>%
-  count(___, ___)
+  count(___, sex)
 ```
 
 ```{r count-complex-solution}
@@ -263,7 +263,7 @@ Now count how many penguins of each species the dataset contains for each island
 
 ```{r count-complex2-hint}
 penguins %>%
-  count(___, ___)
+  count(___, species)
 ```
 
 
@@ -301,7 +301,7 @@ penguins %>%
   arrange(n)
 ```
 
-You may remember from the previous class that the default sorting is from the smallest to the largest value. Repeat the previous exercise but now arrange the penguin species from the most frequent to the least frequent:
+You may remember from before that the default sorting is from the smallest to the largest value. Repeat the previous exercise but now arrange the penguin species from the most frequent to the least frequent:
 
 ```{r analysis-chain2, exercise=TRUE}
 

@@ -237,6 +237,7 @@ penguins %>%
 
 `count(...)` is a short-cut for `group_by(...) %>% summarize(n = n())`
 
+--
 
 .tiny-font.pull-left[
 
@@ -255,6 +256,8 @@ x
 ```
 
 ]
+
+--
 
 .tiny-font.pull-right[
 
@@ -279,6 +282,8 @@ x
 ```
 
 ]
+
+--
 
 The output is exactly the same
 
@@ -487,11 +492,138 @@ penguins_wide %>%
 
 ---
 
+## Example: band members and their instruments
+
+.tiny-font.pull-left[
+```{r}
+# some members of famous bands
+band_members
+```
+]
+
+--
+
+.tiny-font.pull-right[
+```{r}
+# instruments played by some band members
+band_instruments
+```
+]
+
+--
+
+.tiny-font[
+```{r}
+left_join(band_members, band_instruments) # add right table to left
+```
+]
+
+---
+
+## Example: band members and their instruments
+
+.tiny-font.pull-left[
+```{r}
+# some members of famous bands
+band_members
+```
+]
+
+.tiny-font.pull-right[
+```{r}
+# instruments played by some band members
+band_instruments
+```
+]
+
+.tiny-font[
+```{r}
+right_join(band_members, band_instruments) # add left table to right
+```
+]
+
+
+---
+
+## Example: band members and their instruments
+
+.tiny-font.pull-left[
+```{r}
+# some members of famous bands
+band_members
+```
+]
+
+.tiny-font.pull-right[
+```{r}
+# instruments played by some band members
+band_instruments
+```
+]
+
+.tiny-font[
+```{r}
+inner_join(band_members, band_instruments) # keep intersection only
+```
+]
+
+
+---
+
+## Example: band members and their instruments
+
+.tiny-font.pull-left[
+```{r}
+# some members of famous bands
+band_members
+```
+]
+
+.tiny-font.pull-right[
+```{r}
+# instruments played by some band members
+band_instruments
+```
+]
+
+.tiny-font[
+```{r}
+full_join(band_members, band_instruments) # merge all cases
+```
+]
+
+
+---
+
+## The different joins at a glance
+
+.center[
+<img src = "data-wrangling-2_files/joins-venn.svg", width = 65%></img>
+]
+
+
+---
+
+## The different joins at a glance
+
+<img src = "data-wrangling-2_files/joins-venn2.svg", width = 35%, style = "position:absolute; top: 5%; left: 62%;"></img>
+
+<br>
+
+**Tip:** In case of doubt, use `left_join()`
+
+--
+
+In my experience, `left_join()` is the right choice  
+70–80% of the time
+
+---
+
 ## Further reading
 
+- R for Data Science: [Chapter 5.6: Grouped summaries with `summarise()`](https://r4ds.had.co.nz/transform.html?q=group_by#grouped-summaries-with-summarise)
 - R for Data Science: [Chapter 12.3: Pivoting](https://r4ds.had.co.nz/tidy-data.html?q=pivot#pivoting)
 - R for Data Science: [Chapter 13: Relational data](https://r4ds.had.co.nz/relational-data.html)
-- R for Data Science: [Chapter 5.6: Grouped summaries with `summarise()`](https://r4ds.had.co.nz/transform.html?q=group_by#grouped-summaries-with-summarise)
 - **dplyr** documentation: [Grouped data](https://dplyr.tidyverse.org/articles/grouping.html)
 - **tidyr** documentation: [Pivoting](https://tidyr.tidyverse.org/articles/pivot.html)
-
+- **dplyr** documentation: [Mutating joins](https://dplyr.tidyverse.org/articles/two-table.html#mutating-joins-1)
