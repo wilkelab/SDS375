@@ -28,6 +28,7 @@ h1, h2, h3, h4 {
 }
 .small-font { font-size: 0.86em; }
 .tiny-font { font-size: 0.66em; }
+.xtiny-font { font-size: 0.60em; }
 
 .white { color: white; }
 

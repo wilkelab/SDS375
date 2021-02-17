@@ -1,0 +1,282 @@
+---
+title: "Getting things into the right order"
+author: "Claus O. Wilke"
+date: "last updated: `r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: [default, "Wilke-slides-theme.css"]
+    lib_dir: libs
+    nature:
+      ratio: '16:9'
+      highlightStyle: github
+      highlightLines: true
+      slideNumberFormat: ''
+      titleSlideClass: [center, middle]
+---
+
+```{r setup, include=FALSE, echo=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(comment = "")
+
+library(tidyverse)
+library(palmerpenguins)
+# ggplot2 settings so plots scale well for slide size 
+theme_set(theme_gray(16)) # 16 for full width, 18 for half width 
+update_geom_defaults("point", list(size = 2)) # 2 for full width, 2.5 for half width
+```
+
+
+## Remember from "Visualizing amounts"
+
+.tiny-font[
+```{r penguins-ordered, eval = FALSE}
+ggplot(penguins, aes(y = fct_relevel(species, "Chinstrap", "Gentoo", "Adelie"))) +
+  geom_bar()
+```
+]
+
+.center[
+```{r penguins-ordered-out, ref.label = "penguins-ordered", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+## Title
+
+.tiny-font[
+```{r penguins-ordered-pipe, eval = FALSE}
+penguins %>%
+  mutate(species = fct_relevel(species, "Chinstrap", "Gentoo", "Adelie")) %>%
+  ggplot(aes(y = species)) +
+  geom_bar()
+```
+]
+
+.center[
+```{r penguins-ordered-pipe-out, ref.label = "penguins-ordered-pipe", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+## Title
+
+.tiny-font[
+```{r}
+penguins %>%
+  mutate(species = fct_relevel(species)) %>%
+  slice(1:30) %>%   # get first 30 rows
+  pull(species)     # pull out just the `species` column
+```
+]
+
+
+---
+
+## Title
+
+.tiny-font[
+```{r}
+penguins %>%
+  mutate(species = fct_relevel(species, "Gentoo")) %>%
+  slice(1:30) %>%   # get first 30 rows
+  pull(species)     # pull out just the `species` column
+```
+]
+
+
+---
+
+## Title
+
+.tiny-font[
+```{r}
+penguins %>%
+  mutate(species = fct_relevel(species, "Chinstrap", "Gentoo")) %>%
+  slice(1:30) %>%   # get first 30 rows
+  pull(species)     # pull out just the `species` column
+```
+
+]
+
+---
+
+## Title
+
+.tiny-font[
+```{r}
+penguins %>%
+  mutate(species = fct_relevel(species, "Chinstrap", "Adelie", "Gentoo")) %>%
+  slice(1:30) %>%   # get first 30 rows
+  pull(species)     # pull out just the `species` column
+```
+
+]
+
+---
+
+## Title
+
+.tiny-font[
+```{r}
+penguins %>%
+  mutate(species = fct_relevel(species, "Gentoo", "Chinstrap", "Adelie")) %>%
+  slice(1:30) %>%   # get first 30 rows
+  pull(species)     # pull out just the `species` column
+```
+
+]
+
+---
+
+## Title
+
+.tiny-font[
+```{r eval = FALSE}
+penguins %>%
+  count(species)
+```
+
+```{r echo = FALSE}
+# remove row names
+x <- penguins %>%
+  count(species)
+
+row.names(x) <- NULL
+x
+```
+
+
+]
+
+---
+
+## Title
+
+.tiny-font[
+```{r}
+penguins %>%
+  count(species) %>%
+  mutate(species = fct_reorder(species, n)) %>%
+  pull(species)     # pull out just the `species` column
+```
+
+]
+
+---
+
+## Title
+
+.tiny-font[
+```{r penguins-ordered-pipe2, eval = FALSE}
+penguins %>%
+  count(species) %>%
+  mutate(species = fct_reorder(species, n)) %>%
+  ggplot(aes(n, species)) + geom_col()
+```
+
+]
+
+.center[
+```{r penguins-ordered-pipe2-out, ref.label = "penguins-ordered-pipe2", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+
+---
+
+## Title
+
+.tiny-font[
+```{r}
+penguins %>%
+  mutate(species = fct_reorder(species, species, length)) %>%
+  slice(1:30) %>%   # get first 30 rows
+  pull(species)     # pull out just the `species` column
+```
+
+]
+
+
+---
+
+## Title
+
+.tiny-font[
+```{r penguins-ordered-pipe3, eval = FALSE}
+penguins %>%
+  mutate(species = fct_reorder(species, species, length)) %>%
+  ggplot(aes(y = species)) + geom_bar()
+```
+
+]
+
+.center[
+```{r penguins-ordered-pipe3-out, ref.label = "penguins-ordered-pipe3", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+## Compare the difference
+
+.xtiny-font.pull-left[
+```{r eval = FALSE}
+penguins %>%
+  count(species) %>%
+  mutate(species = fct_reorder(species, n))
+```
+
+```{r echo = FALSE}
+# remove row names
+x <- penguins %>%
+  count(species) %>%
+  mutate(species = fct_reorder(species, n))
+
+row.names(x) <- NULL
+x
+```
+
+]
+
+.xtiny-font.pull-right[
+```{r}
+penguins %>% 
+  mutate(species = 
+    fct_reorder(species, species, length))
+```
+]
+
+---
+
+## Compare the difference
+
+.xtiny-font.pull-left[
+```{r penguins-geom-col, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+penguins %>%
+  count(species) %>%
+  mutate(species = fct_reorder(species, n)) %>%
+  ggplot(aes(n, species)) + geom_col()
+```
+
+]
+
+.xtiny-font.pull-right[
+```{r penguins-geom-bar, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+penguins %>% 
+  mutate(species = 
+    fct_reorder(species, species, length)) %>%
+  ggplot(aes(y = species)) + geom_bar()
+```
+]
+
+---
+
+## Further reading
+
+- **forcats** reference documentation: [Change order of levels](https://forcats.tidyverse.org/reference/index.html#section-change-order-of-levels)
+
+
+
+
