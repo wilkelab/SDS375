@@ -273,6 +273,48 @@ penguins %>%
 
 ---
 
+## Other examples
+
+```{r include = FALSE}
+library(ggridges)
+library(nycflights13)
+
+flights %>%
+  group_by(carrier) %>% summarize(mean_delay = mean(arr_delay, na.rm = TRUE)) %>%
+  left_join(airlines) %>%
+  ggplot(aes(mean_delay, fct_reorder(name, mean_delay))) + geom_col()
+
+
+flights %>%
+  left_join(airlines) %>%
+  ggplot(aes(y = fct_rev(fct_infreq(name)))) + geom_bar()
+
+flights %>%
+  left_join(airlines) %>%
+  ggplot(aes(y = fct_rev(fct_infreq(fct_lump(name, 9))))) + geom_bar()
+
+flights %>%
+  left_join(airlines) %>%
+  mutate(
+    name = fct_reorder(name, arr_delay, na.rm = TRUE)
+  ) %>%
+  ggplot(aes(arr_delay)) + 
+  geom_density(fill = "cornsilk") +
+  facet_wrap(vars(name)) +
+  xlim(-50, 200)
+
+flights %>%
+  left_join(airlines) %>%
+  mutate(
+    name = fct_reorder(name, arr_delay, na.rm = TRUE)
+  ) %>%
+  ggplot(aes(arr_delay, name)) + 
+  geom_density_ridges(fill = "cornsilk") +
+  xlim(-50, 200)
+```
+
+---
+
 ## Further reading
 
 - **forcats** reference documentation: [Change order of levels](https://forcats.tidyverse.org/reference/index.html#section-change-order-of-levels)
