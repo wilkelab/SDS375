@@ -35,8 +35,6 @@ navbar:
           href: slides/data-wrangling-1.html
         - text: "Class 10: Data wrangling 2"
           href: slides/data-wrangling-2.html
-        - text: "Class 14: Dimension reduction 1"
-          href: slides/dimension-reduction.html
     - text: "Worksheets"
       menu:
         - text: "Class 1: Intro to R Markdown"

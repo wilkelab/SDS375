@@ -289,7 +289,7 @@ penguins %>%
 <br>
 
 .center[
-<img src = "data-wrangling-2_files/mutate.svg", width = 75%></img>
+<img src = "data-wrangling-1_files/mutate.svg", width = 75%></img>
 ]
 
 ---
