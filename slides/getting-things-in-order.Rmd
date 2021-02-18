@@ -293,6 +293,8 @@ flights %>%
   left_join(airlines) %>%
   ggplot(aes(y = fct_rev(fct_infreq(fct_lump(name, 9))))) + geom_bar()
 
+# maybe use penguins here? also make stacked or dodged bar plots
+
 flights %>%
   left_join(airlines) %>%
   mutate(

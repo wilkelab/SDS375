@@ -1,0 +1,286 @@
+---
+title: "Visualizing proportions"
+author: "Claus O. Wilke"
+date: "last updated: `r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: [default, "Wilke-slides-theme.css"]
+    lib_dir: libs
+    nature:
+      ratio: '16:9'
+      highlightStyle: github
+      highlightLines: true
+      slideNumberFormat: ''
+      titleSlideClass: [center, middle]
+---
+
+```{r setup, include=FALSE, echo=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(comment = "")
+
+library(tidyverse)
+library(ggforce)
+library(cowplot)
+# ggplot2 settings so plots scale well for slide size 
+theme_set(theme_gray(16)) # 16 for full width, 18 for half width 
+update_geom_defaults("point", list(size = 2)) # 2 for full width, 2.5 for half width
+```
+
+
+## Title
+
+```{r echo = FALSE}
+bundestag <- tibble(
+  party = c("CDU/CSU", "SPD", "FDP"),
+  seats = c(243, 214, 39),
+  colors = c("#4E4E4E", "#B6494A", "#E7D739")
+)
+```
+
+.center[
+```{r bundestag-pie, echo = FALSE, fig.width = 8, fig.asp = 0.58, dev = "svg"}
+bund_pie <- bundestag %>%
+  arrange(seats) %>%
+  mutate(
+    end_angle = 2*pi*cumsum(seats)/sum(seats),   # ending angle for each pie slice
+    start_angle = lag(end_angle, default = 0),   # starting angle for each pie slice
+    mid_angle = 0.5*(start_angle + end_angle),   # middle of each pie slice, for the text label
+    # horizontal and vertical justifications depend on whether we're to the left/right
+    # or top/bottom of the pie
+    hjust = ifelse(mid_angle > pi, 1, 0),
+    vjust = ifelse(mid_angle < pi/2 | mid_angle > 3*pi/2, 0, 1)
+  )
+
+# radius of the pie and radius for outside and inside labels
+rpie <- 1
+rlabel_out <- 1.05 * rpie
+rlabel_in <- 0.6 * rpie
+
+bt_pie_base <- ggplot(bund_pie) +
+  geom_arc_bar(
+    aes(
+      x0 = 0, y0 = 0, r0 = 0, r = rpie,
+      start = start_angle, end = end_angle, fill = colors
+    ),
+    color = "white"
+  ) +
+  geom_text(
+    aes(
+      x = rlabel_in * sin(mid_angle),
+      y = rlabel_in * cos(mid_angle),
+      label = seats
+    ),
+    size = 14/.pt,
+    color = c("black", "white", "white")
+  ) +
+  scale_x_continuous(
+    name = NULL,
+    limits = c(-1.7, 1.4),
+    expand = c(0, 0)
+  ) +
+  scale_y_continuous(
+    name = NULL,
+    limits = c(-1.05, 1.15),
+    expand = c(0, 0)
+  ) +
+  scale_fill_identity() +
+  coord_fixed() +
+  theme_map()
+
+# save for later with 12 pt font
+bt_pie <- bt_pie_base +
+  geom_text(
+    aes(
+      x = rlabel_out * sin(mid_angle),
+      y = rlabel_out * cos(mid_angle),
+      label = party,
+      hjust = hjust, vjust = vjust
+    ),
+    size = 12/.pt
+  ) +
+  theme(
+    plot.margin = margin(7, 0, 7, 14)
+  )
+
+# output now with 14 pt font
+bt_pie_base +
+  geom_text(
+    aes(
+      x = rlabel_out * sin(mid_angle),
+      y = rlabel_out * cos(mid_angle),
+      label = party,
+      hjust = hjust, vjust = vjust
+    ),
+    size = 14/.pt
+  )
+
+```
+]
+
+---
+
+## Pie chart vs stacked bars vs side-by-side bars
+
+<br>
+
+```{r bundestag-stacked, echo = FALSE}
+bundestag_stacked <- bundestag %>%
+  mutate(
+    label_y = cumsum(seats) - seats/2,
+    colors = factor(colors, levels = rev(colors))
+  )
+
+bt_stacked <- 
+  ggplot(bundestag_stacked, aes(x = 1, y = seats, fill = colors)) + 
+  geom_col(position = "stack", color = "white") + 
+  geom_text(
+    aes(x = 1., y = label_y, label = seats), 
+    size = 14/.pt,
+    color = c("white", "white", "black")
+  ) +
+  scale_y_continuous(
+    expand = expansion(mult = c(0, 0)),
+    breaks = c(0, 100, 200, 300, 400),
+    sec.axis = dup_axis(
+      breaks = bundestag_stacked$label_y,
+      labels = bundestag_stacked$party
+    )
+  ) +
+  scale_x_discrete(expand = c(0, 0), limits = "1", name = NULL) +
+  scale_fill_identity() +
+  coord_cartesian(clip = "off") +
+  theme_minimal_hgrid() +
+  theme(
+    axis.ticks = element_line(color = "gray70"),
+    axis.line.y.right = element_blank(),
+    axis.ticks.y.right = element_blank(),
+    axis.text.y.right = element_text(size = 12),
+    axis.line.x = element_blank(),
+    axis.ticks.x = element_blank(),
+    axis.text.x = element_text(color = NA),
+    axis.title.y.right = element_blank(),
+    plot.margin = margin(7, 14, 7, 14)
+  )
+```
+
+.center[
+```{r bundestag-various, echo = FALSE, fig.width = 10.5, fig.asp = 0.3, dev = "svg"}
+bt_bars <- bundestag %>%
+  mutate(party = factor(party, levels = party)) %>%
+  ggplot(aes(x = party, y = seats, fill = colors)) + 
+  geom_col() + 
+  geom_text(
+    aes(label = seats),
+    size = 14/.pt,
+    vjust = 2,
+    color = c("white", "white", "black")
+  ) +
+  scale_x_discrete(name = NULL) +
+  scale_y_continuous(
+    expand = expansion(mult = c(0, 0.05)),
+    breaks = c(0, 50, 100, 150, 200)
+  ) +
+  scale_fill_identity() + 
+  coord_cartesian(clip = "off") +
+  theme_minimal_hgrid() +
+  theme(
+    axis.line.x = element_blank(),
+    axis.ticks.x = element_blank()
+  )
+
+plot_grid(
+  bt_pie, bt_stacked, bt_bars,
+  nrow = 1, rel_widths = c(1.05, .65, .9)
+)
+```
+]
+
+---
+
+## Pros and cons of different visualizations
+
+.small-font.center[
+               | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Pie chart &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; Stacked bars &nbsp;&nbsp;&nbsp; | Side-by-side bars
+:----------    | :-------: | :----------: | :---------------:
+Allows easy comparison of relative proportions   | ✖ | ✖ | ✔ 
+]
+
+---
+
+## Pros and cons of different visualizations
+
+.small-font.center[
+               | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Pie chart &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; Stacked bars &nbsp;&nbsp;&nbsp; | Side-by-side bars
+:----------    | :-------: | :----------: | :---------------:
+Allows easy comparison of relative proportions   | ✖ | ✖ | ✔ 
+Shows data as proportions of a whole             | ✔ | ✔ | ✖
+]
+
+---
+
+## Pros and cons of different visualizations
+
+.small-font.center[
+               | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Pie chart &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; Stacked bars &nbsp;&nbsp;&nbsp; | Side-by-side bars
+:----------    | :-------: | :----------: | :---------------:
+Allows easy comparison of relative proportions   | ✖ | ✖ | ✔ 
+Shows data as proportions of a whole             | ✔ | ✔ | ✖
+Emphasizes simple fractions (1/2, 1/3, ...) | ✔ | ✖ | ✖
+]
+
+---
+
+## Pros and cons of different visualizations
+
+.small-font.center[
+               | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Pie chart &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; Stacked bars &nbsp;&nbsp;&nbsp; | Side-by-side bars
+:----------    | :-------: | :----------: | :---------------:
+Allows easy comparison of relative proportions   | ✖ | ✖ | ✔ 
+Shows data as proportions of a whole             | ✔ | ✔ | ✖
+Emphasizes simple fractions (1/2, 1/3, ...) | ✔ | ✖ | ✖
+Visually applealing for small datasets | ✔ | ✖ | ✔
+]
+
+
+---
+
+## Pros and cons of different visualizations
+
+.small-font.center[
+               | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Pie chart &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; Stacked bars &nbsp;&nbsp;&nbsp; | Side-by-side bars
+:----------    | :-------: | :----------: | :---------------:
+Allows easy comparison of relative proportions   | ✖ | ✖ | ✔ 
+Shows data as proportions of a whole             | ✔ | ✔ | ✖
+Emphasizes simple fractions (1/2, 1/3, ...) | ✔ | ✖ | ✖
+Visually applealing for small datasets | ✔ | ✖ | ✔
+Works well for large number of fractional parts | ✖ | ✖ | ✔ 
+]
+
+---
+
+## Pros and cons of different visualizations
+
+.small-font.center[
+               | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Pie chart &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; Stacked bars &nbsp;&nbsp;&nbsp; | Side-by-side bars
+:----------    | :-------: | :----------: | :---------------:
+Allows easy comparison of relative proportions   | ✖ | ✖ | ✔ 
+Shows data as proportions of a whole             | ✔ | ✔ | ✖
+Emphasizes simple fractions (1/2, 1/3, ...) | ✔ | ✖ | ✖
+Visually applealing for small datasets | ✔ | ✖ | ✔
+Works well for large number of fractional parts | ✖ | ✖ | ✔ 
+Works well for many sets of proportions | ✖ | ✔ | ✖
+]
+
+--
+
+No one visualization fits all scenarios!
+
+---
+
+## Further reading
+
+- **ggforce** reference documentation: [`geom_arc_bar()`](https://ggforce.data-imaginist.com/reference/geom_arc_bar.html)
+
+
+
+
