@@ -329,8 +329,8 @@ bundestag <- tibble(
 )
 
 # make bar chart
-bundestag %>%
-  ggplot(aes(seats, "YY", fill = party)) + 
+ggplot(bundestag) +
+  aes(seats, "YY", fill = party) + 
   geom_col()
 ```
 ]
@@ -354,8 +354,8 @@ bundestag <- tibble(
 )
 
 # make bar chart in polar coords
-bundestag %>%
-  ggplot(aes(seats, "YY", fill = party)) + 
+ggplot(bundestag) +
+  aes(seats, "YY", fill = party) + 
   geom_col() +
   coord_polar()
 ```
@@ -380,8 +380,8 @@ bundestag <- tibble(
 )
 
 # make bar chart in polar coords
-bundestag %>%
-  ggplot(aes(seats, "YY", fill = party)) + 
+ggplot(bundestag) +
+  aes(seats, "YY", fill = party) + 
   geom_col() +
   coord_polar() +
   scale_x_continuous(
@@ -409,8 +409,7 @@ bundestag %>%
 ```{r bundestag-stat-pie1, eval = FALSE}
 library(ggforce)
 
-bundestag %>%
-  ggplot() +
+ggplot(bundestag) +
   aes(
     x0 = 0, y0 = 0, # position of pie center
     r0 = 0, r = 1,  # inner and outer radius
@@ -435,8 +434,7 @@ bundestag %>%
 ```{r bundestag-stat-pie2, eval = FALSE}
 library(ggforce)
 
-bundestag %>%
-  ggplot() +
+ggplot(bundestag) +
   aes(
     x0 = 0, y0 = 0, # position of pie center
     r0 = 0, r = 1,  # inner and outer radius
@@ -462,8 +460,7 @@ bundestag %>%
 ```{r bundestag-stat-pie3, eval = FALSE}
 library(ggforce)
 
-bundestag %>%
-  ggplot() +
+ggplot(bundestag) +
   aes(
     x0 = 0, y0 = 0, # position of pie center
     r0 = 0, r = 1,  # inner and outer radius
@@ -471,8 +468,9 @@ bundestag %>%
     fill = party
   ) + 
   geom_arc_bar(stat = "pie") +
-  coord_fixed() +
-  xlim(-1, 3) + ylim(-1, 3)
+  coord_fixed(
+    xlim = c(-1, 3), ylim = c(-1, 3)
+  )
 ```
 ]
 
@@ -490,8 +488,7 @@ bundestag %>%
 ```{r bundestag-stat-pie4, eval = FALSE}
 library(ggforce)
 
-bundestag %>%
-  ggplot() +
+ggplot(bundestag) +
   aes(
     x0 = 1, y0 = 1, # position of pie center
     r0 = 0, r = 1,  # inner and outer radius
@@ -499,8 +496,9 @@ bundestag %>%
     fill = party
   ) + 
   geom_arc_bar(stat = "pie") +
-  coord_fixed() +
-  xlim(-1, 3) + ylim(-1, 3)
+  coord_fixed(
+    xlim = c(-1, 3), ylim = c(-1, 3)
+  )
 ```
 ]
 
@@ -517,8 +515,7 @@ bundestag %>%
 ```{r bundestag-stat-pie5, eval = FALSE}
 library(ggforce)
 
-bundestag %>%
-  ggplot() +
+ggplot(bundestag) +
   aes(
     x0 = 1, y0 = 1, # position of pie center
     r0 = 1, r = 2,  # inner and outer radius
@@ -526,8 +523,9 @@ bundestag %>%
     fill = party
   ) + 
   geom_arc_bar(stat = "pie") +
-  coord_fixed() +
-  xlim(-1, 3) + ylim(-1, 3)
+  coord_fixed(
+    xlim = c(-1, 3), ylim = c(-1, 3)
+  )
 ```
 ]
 
@@ -627,6 +625,219 @@ pie_data <- bundestag %>%
 pie_data
 ```
 ]
+
+---
+
+## Making pie charts with ggplot: **ggforce** manual
+
+.pull-left.tiny-font[
+```{r bundestag-arc-bar1, eval = FALSE}
+ggplot(pie_data) +
+  aes(
+    x0 = 0, y0 = 0, r0 = 0, r = 1,
+    start = start_angle, end = end_angle,
+    fill = party
+  ) +
+  geom_arc_bar() +
+  coord_fixed()
+```
+]
+
+.pull-right[
+```{r bundestag-arc-bar1-out, ref.label = "bundestag-arc-bar1", echo = FALSE, message = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+## Making pie charts with ggplot: **ggforce** manual
+
+.pull-left.tiny-font[
+```{r bundestag-arc-bar2, eval = FALSE}
+ggplot(pie_data) +
+  aes(
+    x0 = 0, y0 = 0, r0 = 0, r = 1,
+    start = start_angle, end = end_angle,
+    fill = party
+  ) +
+  geom_arc_bar() +
+  geom_text( # place amounts inside the pie
+    aes(
+      x = 0.6 * sin(mid_angle),
+      y = 0.6 * cos(mid_angle),
+      label = seats
+    )
+  ) +
+  coord_fixed()
+```
+]
+
+.pull-right[
+```{r bundestag-arc-bar2-out, ref.label = "bundestag-arc-bar2", echo = FALSE, message = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+## Making pie charts with ggplot: **ggforce** manual
+
+.pull-left.tiny-font[
+```{r bundestag-arc-bar3, eval = FALSE}
+ggplot(pie_data) +
+  aes(
+    x0 = 0, y0 = 0, r0 = 0, r = 1,
+    start = start_angle, end = end_angle,
+    fill = party
+  ) +
+  geom_arc_bar() +
+  geom_text( # place amounts inside the pie
+    aes(
+      x = 0.2 * sin(mid_angle),
+      y = 0.2 * cos(mid_angle),
+      label = seats
+    )
+  ) +
+  coord_fixed()
+```
+]
+
+.pull-right[
+```{r bundestag-arc-bar3-out, ref.label = "bundestag-arc-bar3", echo = FALSE, message = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+## Making pie charts with ggplot: **ggforce** manual
+
+.pull-left.tiny-font[
+```{r bundestag-arc-bar4, eval = FALSE}
+ggplot(pie_data) +
+  aes(
+    x0 = 0, y0 = 0, r0 = 0, r = 1,
+    start = start_angle, end = end_angle,
+    fill = party
+  ) +
+  geom_arc_bar() +
+  geom_text( # place amounts inside the pie
+    aes(
+      x = 0.8 * sin(mid_angle),
+      y = 0.8 * cos(mid_angle),
+      label = seats
+    )
+  ) +
+  coord_fixed()
+```
+]
+
+.pull-right[
+```{r bundestag-arc-bar4-out, ref.label = "bundestag-arc-bar4", echo = FALSE, message = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+## Making pie charts with ggplot: **ggforce** manual
+
+.pull-left.tiny-font[
+```{r bundestag-arc-bar5, eval = FALSE}
+ggplot(pie_data) +
+  aes(
+    x0 = 0, y0 = 0, r0 = 0, r = 1,
+    start = start_angle, end = end_angle,
+    fill = party
+  ) +
+  geom_arc_bar() +
+  geom_text( # place amounts inside the pie
+    aes(
+      x = 0.6 * sin(mid_angle),
+      y = 0.6 * cos(mid_angle),
+      label = seats
+    )
+  ) +
+  coord_fixed()
+```
+]
+
+.pull-right[
+```{r bundestag-arc-bar5-out, ref.label = "bundestag-arc-bar5", echo = FALSE, message = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+## Making pie charts with ggplot: **ggforce** manual
+
+.pull-left.xtiny-font[
+```{r bundestag-arc-bar6, eval = FALSE}
+ggplot(pie_data) +
+  aes(
+    x0 = 0, y0 = 0, r0 = 0, r = 1,
+    start = start_angle, end = end_angle,
+    fill = party
+  ) +
+  geom_arc_bar() +
+  geom_text( # place amounts inside the pie
+    aes(
+      x = 0.6 * sin(mid_angle),
+      y = 0.6 * cos(mid_angle),
+      label = seats
+    )
+  ) +
+  geom_text( # place party outside the pie
+    aes(
+      x = 1.05 * sin(mid_angle),
+      y = 1.05 * cos(mid_angle),
+      label = party,
+      hjust = hjust, vjust = vjust
+    )
+  ) +
+  coord_fixed()
+```
+]
+
+.pull-right[
+```{r bundestag-arc-bar6-out, ref.label = "bundestag-arc-bar6", echo = FALSE, message = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+## Making pie charts with ggplot: **ggforce** manual
+
+.pull-left.xtiny-font[
+```{r bundestag-arc-bar7, eval = FALSE}
+ggplot(pie_data) +
+  aes(
+    x0 = 0, y0 = 0, r0 = 0, r = 1,
+    start = start_angle, end = end_angle,
+    fill = party
+  ) +
+  geom_arc_bar() +
+  geom_text( # place amounts inside the pie
+    aes(
+      x = 0.6 * sin(mid_angle),
+      y = 0.6 * cos(mid_angle),
+      label = seats
+    )
+  ) +
+  geom_text( # place party outside the pie
+    aes(
+      x = 1.05 * sin(mid_angle),
+      y = 1.05 * cos(mid_angle),
+      label = party,
+      hjust = hjust, vjust = vjust
+    )
+  ) +
+  coord_fixed(xlim = c(-1.8, 1.3))
+```
+]
+
+.pull-right[
+```{r bundestag-arc-bar7-out, ref.label = "bundestag-arc-bar7", echo = FALSE, message = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```
+]
+
 
 ---
 
