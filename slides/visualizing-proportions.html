@@ -44,6 +44,40 @@ class: center, middle, title-slide
 
 ---
 
+## Title
+
+.center[
+![](visualizing-proportions_files/figure-html/marketshare-side-by-side-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Title
+
+.center[
+![](visualizing-proportions_files/figure-html/marketshare-stacked-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Title
+
+&lt;br&gt;
+
+.center[
+![](visualizing-proportions_files/figure-html/marketshare-pies-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Title
+
+.center[
+![](visualizing-proportions_files/figure-html/women-parliament-1.svg)&lt;!-- --&gt;
+]
+
+---
+
 ## Pros and cons of different visualizations
 
 .small-font.center[
@@ -692,7 +726,7 @@ ggplot(pie_data) +
       label = seats
     )
   ) +
-  geom_text( # place party outside the pie
+  geom_text( # place party name outside the pie
     aes(
       x = 1.05 * sin(mid_angle),
       y = 1.05 * cos(mid_angle),
@@ -729,7 +763,7 @@ ggplot(pie_data) +
       label = seats
     )
   ) +
-  geom_text( # place party outside the pie
+  geom_text( # place party name outside the pie
     aes(
       x = 1.05 * sin(mid_angle),
       y = 1.05 * cos(mid_angle),

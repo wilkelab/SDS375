@@ -19,6 +19,7 @@ options(htmltools.dir.version = FALSE)
 knitr::opts_chunk$set(comment = "")
 
 library(tidyverse)
+library(here)
 library(ggforce)
 library(cowplot)
 # ggplot2 settings so plots scale well for slide size 
@@ -192,6 +193,166 @@ plot_grid(
   bt_pie, bt_stacked, bt_bars,
   nrow = 1, rel_widths = c(1.05, .65, .9)
 )
+```
+]
+
+---
+
+## Title
+
+.center[
+```{r marketshare-side-by-side, echo = FALSE, message = FALSE, fig.width = 7, fig.asp = 0.618, dev = "svg"}
+marketshare <- read_csv(here("datasets", "marketshare.csv"))
+
+ggplot(marketshare, aes(x = company, y = percent, fill = company)) + 
+  geom_col() + 
+  facet_wrap(~year) +
+  scale_y_continuous(
+    name = "market share",
+    labels = scales::percent_format(accuracy = 1, scale = 1),
+    expand = c(0, 0)
+  ) +
+  scale_fill_manual(
+    values = c("#E69F00", "#56B4E9", "#009E73", "#0072B2", "#F0E442"),
+    guide = "none"
+  ) + 
+  theme_half_open(16) +
+  theme(strip.background = element_blank())
+```
+]
+
+---
+
+## Title
+
+.center[
+```{r marketshare-stacked, echo = FALSE, fig.width = 7, fig.asp = 0.618, dev = "svg"}
+ggplot(marketshare, aes(x = year, y = percent, fill = company)) + 
+  geom_col(position = "stack") + 
+  scale_y_continuous(
+    name = "market share",
+    labels = scales::percent_format(accuracy = 1, scale = 1),
+    expand = c(0, 0)
+  ) +
+  scale_fill_manual(
+    values = c("#E69F00", "#56B4E9", "#009E73", "#0072B2", "#F0E442")
+  ) + 
+  theme_half_open(16)
+```
+]
+
+---
+
+## Title
+
+<br>
+
+.center[
+```{r marketshare-pies, echo = FALSE, fig.width = 8.5, fig.asp = .35, dev = "svg"}
+market_pies_df <- marketshare %>%
+  group_by(year) %>%
+  mutate(
+    total = sum(percent),
+    end_angle = 2*pi*cumsum(percent)/total,      # ending angle for each pie slice
+    start_angle = lag(end_angle, default = 0),   # starting angle for each pie slice
+    mid_angle = 0.5*(start_angle + end_angle),   # middle of each pie slice, for the text label
+    hjust = ifelse(mid_angle>pi, 1, 0),
+    vjust = ifelse(mid_angle<pi/2 | mid_angle>3*pi/2, 0, 1)
+  )
+
+rpie = 1
+rlabel = 1.05 * rpie
+
+ggplot(market_pies_df) + 
+  geom_arc_bar(
+    aes(
+      x0 = 0, y0 = 0, r0 = 0, r = rpie,
+      start = start_angle, end = end_angle, fill = company
+    ),
+    color = NA
+  ) +
+  geom_text(
+    aes(x = rlabel*sin(mid_angle), y = rlabel*cos(mid_angle), label = company, hjust = hjust, vjust = vjust),
+    size = 13.7/.pt
+  ) +
+  coord_fixed() +
+  facet_wrap(~year) +
+  scale_x_continuous(
+    limits = c(-1.2, 1.2), expand = c(0, 0),
+    name = NULL, breaks = NULL, labels = NULL
+  ) +
+  scale_y_continuous(
+    limits = c(-1.2, 1.2), expand = c(0, 0),
+    name = NULL, breaks = NULL, labels = NULL
+  ) +
+  scale_fill_manual(
+    values = c("#E69F00", "#56B4E9", "#009E73", "#0072B2", "#F0E442"),
+    guide = "none"
+  ) + 
+  theme_half_open(16) +
+  theme(
+    axis.line = element_blank(),
+    axis.title = element_blank(),
+    axis.ticks = element_blank(),
+    axis.ticks.length = grid::unit(0, "pt"),
+    legend.position = "none",
+    strip.background = element_blank(),
+    strip.text.x = element_text(size = 16, margin = margin(0, 0, 0.1, 0))
+  )
+```
+]
+
+---
+
+## Title
+
+.center[
+```{r women-parliament, echo = FALSE, message = FALSE, fig.width = 7.5, fig.asp = .55, dev = "svg"}
+ccode = "RWA" # Rwanda
+
+women_parliaments <- read_csv(here("datasets", "women_parliaments.csv"))
+
+rwanda_data <- women_parliaments %>%
+  filter(country_code == ccode & year > 1990) %>%
+  mutate(women = perc_women, men = 100 - perc_women) %>%
+  select(-perc_women) %>%
+  pivot_longer(cols = c(women, men), names_to = "gender", values_to = "percent") %>%
+  mutate(gender = factor(gender, levels = c("women", "men")))
+
+# calculate label position
+rwanda_labels <- filter(rwanda_data, year == max(year)) %>%
+  mutate(pos = 100 - cumsum(percent) + 0.5*percent)
+
+ggplot(rwanda_data, aes(x = year, y = percent, fill = gender)) +
+    geom_col(
+      position = "stack",
+      width = 1, color = "#FFFFFF",
+      size = 0.75, alpha = 0.8
+    ) +
+    geom_hline(
+      yintercept = 50,
+      color = "#000000FF", size = 0.4, linetype = 2
+    ) +
+    geom_hline(yintercept = 100, color = "black") +
+    scale_x_continuous(expand = c(0, 0)) +
+    scale_y_continuous(
+      name = "relative proportion",
+      labels = scales::percent_format(accuracy = 1, scale = 1),
+      expand = c(0, 0),
+      sec.axis = dup_axis(
+        breaks = rwanda_labels$pos,
+        labels = rwanda_labels$gender
+      )
+    ) +
+    scale_fill_manual(values = c("#D55E00E0", "#0072B2E0"), guide = "none") +
+    coord_cartesian(clip = "off") +
+    theme_half_open(16) + 
+    theme(
+      axis.line.y = element_blank(),
+      axis.ticks.y.right = element_blank(),
+      axis.text.y.right = element_text(size = 16),
+      axis.title.y.right = element_blank()
+    )
 ```
 ]
 
@@ -784,7 +945,7 @@ ggplot(pie_data) +
       label = seats
     )
   ) +
-  geom_text( # place party outside the pie
+  geom_text( # place party name outside the pie
     aes(
       x = 1.05 * sin(mid_angle),
       y = 1.05 * cos(mid_angle),
@@ -821,7 +982,7 @@ ggplot(pie_data) +
       label = seats
     )
   ) +
-  geom_text( # place party outside the pie
+  geom_text( # place party name outside the pie
     aes(
       x = 1.05 * sin(mid_angle),
       y = 1.05 * cos(mid_angle),
@@ -843,6 +1004,7 @@ ggplot(pie_data) +
 
 ## Further reading
 
+- Fundamentals of Data Visualization: [Chapter 10: Visualizing proportions](https://clauswilke.com/dataviz/visualizing-proportions.html)
 - **ggforce** reference documentation: [`geom_arc_bar()`](https://ggforce.data-imaginist.com/reference/geom_arc_bar.html)
 
 
