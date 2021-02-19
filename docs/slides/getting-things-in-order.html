@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Getting things into the right order</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Claus O. Wilke" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="Wilke-slides-theme.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, title-slide
+
+# Getting things into the right order
+### Claus O. Wilke
+### last updated: 2021-02-17
+
+---
+
+
+
+
+
+## Remember from "Visualizing amounts"
+
+.tiny-font[
+
+```r
+ggplot(penguins, aes(y = fct_relevel(species, "Chinstrap", "Gentoo", "Adelie"))) +
+  geom_bar()
+```
+]
+
+.center[
+![](getting-things-in-order_files/figure-html/penguins-ordered-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Title
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  mutate(species = fct_relevel(species, "Chinstrap", "Gentoo", "Adelie")) %&gt;%
+  ggplot(aes(y = species)) +
+  geom_bar()
+```
+]
+
+.center[
+![](getting-things-in-order_files/figure-html/penguins-ordered-pipe-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Title
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  mutate(species = fct_relevel(species)) %&gt;%
+  slice(1:30) %&gt;%   # get first 30 rows
+  pull(species)     # pull out just the `species` column
+```
+
+```
+ [1] Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie
+[11] Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie
+[21] Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie
+Levels: Adelie Chinstrap Gentoo
+```
+]
+
+
+---
+
+## Title
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  mutate(species = fct_relevel(species, "Gentoo")) %&gt;%
+  slice(1:30) %&gt;%   # get first 30 rows
+  pull(species)     # pull out just the `species` column
+```
+
+```
+ [1] Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie
+[11] Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie
+[21] Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie
+Levels: Gentoo Adelie Chinstrap
+```
+]
+
+
+---
+
+## Title
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  mutate(species = fct_relevel(species, "Chinstrap", "Gentoo")) %&gt;%
+  slice(1:30) %&gt;%   # get first 30 rows
+  pull(species)     # pull out just the `species` column
+```
+
+```
+ [1] Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie
+[11] Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie
+[21] Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie
+Levels: Chinstrap Gentoo Adelie
+```
+
+]
+
+---
+
+## Title
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  mutate(species = fct_relevel(species, "Chinstrap", "Adelie", "Gentoo")) %&gt;%
+  slice(1:30) %&gt;%   # get first 30 rows
+  pull(species)     # pull out just the `species` column
+```
+
+```
+ [1] Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie
+[11] Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie
+[21] Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie
+Levels: Chinstrap Adelie Gentoo
+```
+
+]
+
+---
+
+## Title
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  mutate(species = fct_relevel(species, "Gentoo", "Chinstrap", "Adelie")) %&gt;%
+  slice(1:30) %&gt;%   # get first 30 rows
+  pull(species)     # pull out just the `species` column
+```
+
+```
+ [1] Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie
+[11] Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie
+[21] Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie
+Levels: Gentoo Chinstrap Adelie
+```
+
+]
+
+---
+
+## Title
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  count(species)
+```
+
+
+```
+# A tibble: 3 x 2
+  species       n
+  &lt;fct&gt;     &lt;int&gt;
+1 Adelie      152
+2 Chinstrap    68
+3 Gentoo      124
+```
+
+
+]
+
+---
+
+## Title
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  count(species) %&gt;%
+  mutate(species = fct_reorder(species, n)) %&gt;%
+  pull(species)     # pull out just the `species` column
+```
+
+```
+[1] Adelie    Chinstrap Gentoo   
+Levels: Chinstrap Gentoo Adelie
+```
+
+]
+
+---
+
+## Title
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  count(species) %&gt;%
+  mutate(species = fct_reorder(species, n)) %&gt;%
+  ggplot(aes(n, species)) + geom_col()
+```
+
+]
+
+.center[
+![](getting-things-in-order_files/figure-html/penguins-ordered-pipe2-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Title
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  mutate(species = fct_reorder(species, species, length)) %&gt;%
+  slice(1:30) %&gt;%   # get first 30 rows
+  pull(species)     # pull out just the `species` column
+```
+
+```
+ [1] Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie
+[11] Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie
+[21] Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie
+Levels: Chinstrap Gentoo Adelie
+```
+
+]
+
+
+---
+
+## Title
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  mutate(species = fct_reorder(species, species, length)) %&gt;%
+  ggplot(aes(y = species)) + geom_bar()
+```
+
+]
+
+.center[
+![](getting-things-in-order_files/figure-html/penguins-ordered-pipe3-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Compare the difference
+
+.xtiny-font.pull-left[
+
+```r
+penguins %&gt;%
+  count(species) %&gt;%
+  mutate(species = fct_reorder(species, n))
+```
+
+
+```
+# A tibble: 3 x 2
+  species       n
+  &lt;fct&gt;     &lt;int&gt;
+1 Adelie      152
+2 Chinstrap    68
+3 Gentoo      124
+```
+
+]
+
+.xtiny-font.pull-right[
+
+```r
+penguins %&gt;% 
+  mutate(species = 
+    fct_reorder(species, species, length))
+```
+
+```
+# A tibble: 344 x 8
+   species island bill_length_mm bill_depth_mm flipper_length_… body_mass_g
+   &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;            &lt;int&gt;       &lt;int&gt;
+ 1 Adelie  Torge…           39.1          18.7              181        3750
+ 2 Adelie  Torge…           39.5          17.4              186        3800
+ 3 Adelie  Torge…           40.3          18                195        3250
+ 4 Adelie  Torge…           NA            NA                 NA          NA
+ 5 Adelie  Torge…           36.7          19.3              193        3450
+ 6 Adelie  Torge…           39.3          20.6              190        3650
+ 7 Adelie  Torge…           38.9          17.8              181        3625
+ 8 Adelie  Torge…           39.2          19.6              195        4675
+ 9 Adelie  Torge…           34.1          18.1              193        3475
+10 Adelie  Torge…           42            20.2              190        4250
+# … with 334 more rows, and 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;
+```
+]
+
+---
+
+## Compare the difference
+
+.xtiny-font.pull-left[
+
+```r
+penguins %&gt;%
+  count(species) %&gt;%
+  mutate(species = fct_reorder(species, n)) %&gt;%
+  ggplot(aes(n, species)) + geom_col()
+```
+
+![](getting-things-in-order_files/figure-html/penguins-geom-col-1.svg)&lt;!-- --&gt;
+
+]
+
+.xtiny-font.pull-right[
+
+```r
+penguins %&gt;% 
+  mutate(species = 
+    fct_reorder(species, species, length)) %&gt;%
+  ggplot(aes(y = species)) + geom_bar()
+```
+
+![](getting-things-in-order_files/figure-html/penguins-geom-bar-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Further reading
+
+- **forcats** reference documentation: [Change order of levels](https://forcats.tidyverse.org/reference/index.html#section-change-order-of-levels)
+
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"slideNumberFormat": ""
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

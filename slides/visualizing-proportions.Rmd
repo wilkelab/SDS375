@@ -28,7 +28,7 @@ update_geom_defaults("point", list(size = 2)) # 2 for full width, 2.5 for half w
 ```
 
 
-## Title
+## The archetypal visualization of proportions: pie chart
 
 ```{r echo = FALSE}
 bundestag <- tibble(
@@ -38,8 +38,8 @@ bundestag <- tibble(
 )
 ```
 
-.center[
-```{r bundestag-pie, echo = FALSE, fig.width = 8, fig.asp = 0.58, dev = "svg"}
+.small-font.center[
+```{r bundestag-pie, echo = FALSE, fig.width = 7, fig.asp = 0.58, dev = "svg"}
 bund_pie <- bundestag %>%
   arrange(seats) %>%
   mutate(
@@ -100,7 +100,7 @@ bt_pie <- bt_pie_base +
     size = 12/.pt
   ) +
   theme(
-    plot.margin = margin(7, 0, 7, 14)
+    plot.margin = margin(0, 0, 21, 14)
   )
 
 # output now with 14 pt font
@@ -116,7 +116,13 @@ bt_pie_base +
   )
 
 ```
+
+Party composition of the 8th German Bundestag, 1976–1980
 ]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
 
 ---
 
@@ -196,9 +202,14 @@ plot_grid(
 ```
 ]
 
+???
+
+Figures redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
 ---
 
-## Title
+## Example where side-by-side bars are preferred
 
 .center[
 ```{r marketshare-side-by-side, echo = FALSE, message = FALSE, fig.width = 7, fig.asp = 0.618, dev = "svg"}
@@ -221,9 +232,17 @@ ggplot(marketshare, aes(x = company, y = percent, fill = company)) +
 ```
 ]
 
+.xtiny-font.right[
+Inspired by: https://en.wikipedia.org/wiki/File:Piecharts.svg
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
 ---
 
-## Title
+## Example where side-by-side bars are preferred
 
 .center[
 ```{r marketshare-stacked, echo = FALSE, fig.width = 7, fig.asp = 0.618, dev = "svg"}
@@ -241,14 +260,20 @@ ggplot(marketshare, aes(x = year, y = percent, fill = company)) +
 ```
 ]
 
+.xtiny-font.right[
+Inspired by: https://en.wikipedia.org/wiki/File:Piecharts.svg
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
 ---
 
-## Title
-
-<br>
+## Example where side-by-side bars are preferred
 
 .center[
-```{r marketshare-pies, echo = FALSE, fig.width = 8.5, fig.asp = .35, dev = "svg"}
+```{r marketshare-pies, echo = FALSE, fig.width = 8.5, fig.asp = 7*.618/8.5, dev = "svg"}
 market_pies_df <- marketshare %>%
   group_by(year) %>%
   mutate(
@@ -302,11 +327,51 @@ ggplot(market_pies_df) +
 ```
 ]
 
+.xtiny-font.right[
+Inspired by: https://en.wikipedia.org/wiki/File:Piecharts.svg
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
 ---
 
-## Title
+## Example where side-by-side bars are preferred
 
 .center[
+```{r marketshare-side-by-side2, echo = FALSE, message = FALSE, fig.width = 7, fig.asp = 0.618, dev = "svg"}
+ggplot(marketshare, aes(x = company, y = percent, fill = company)) + 
+  geom_col() + 
+  facet_wrap(~year) +
+  scale_y_continuous(
+    name = "market share",
+    labels = scales::percent_format(accuracy = 1, scale = 1),
+    expand = c(0, 0)
+  ) +
+  scale_fill_manual(
+    values = c("#E69F00", "#56B4E9", "#009E73", "#0072B2", "#F0E442"),
+    guide = "none"
+  ) + 
+  theme_half_open(16) +
+  theme(strip.background = element_blank())
+```
+]
+
+.xtiny-font.right[
+Inspired by: https://en.wikipedia.org/wiki/File:Piecharts.svg
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+
+## Example where stacked bars are preferred
+
+.small-font.center[
 ```{r women-parliament, echo = FALSE, message = FALSE, fig.width = 7.5, fig.asp = .55, dev = "svg"}
 ccode = "RWA" # Rwanda
 
@@ -354,11 +419,18 @@ ggplot(rwanda_data, aes(x = year, y = percent, fill = gender)) +
       axis.title.y.right = element_blank()
     )
 ```
+
+Change in the gender composition of the Rwandan parliament from 1997 to 2016
+
 ]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
 
 ---
 
-## Pros and cons of different visualizations
+## Pros and cons of different approaches
 
 .small-font.center[
                | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Pie chart &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; Stacked bars &nbsp;&nbsp;&nbsp; | Side-by-side bars
@@ -368,7 +440,7 @@ Allows easy comparison of relative proportions   | ✖ | ✖ | ✔
 
 ---
 
-## Pros and cons of different visualizations
+## Pros and cons of different approaches
 
 .small-font.center[
                | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Pie chart &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; Stacked bars &nbsp;&nbsp;&nbsp; | Side-by-side bars
@@ -379,19 +451,7 @@ Shows data as proportions of a whole             | ✔ | ✔ | ✖
 
 ---
 
-## Pros and cons of different visualizations
-
-.small-font.center[
-               | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Pie chart &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; Stacked bars &nbsp;&nbsp;&nbsp; | Side-by-side bars
-:----------    | :-------: | :----------: | :---------------:
-Allows easy comparison of relative proportions   | ✖ | ✖ | ✔ 
-Shows data as proportions of a whole             | ✔ | ✔ | ✖
-Emphasizes simple fractions (1/2, 1/3, ...) | ✔ | ✖ | ✖
-]
-
----
-
-## Pros and cons of different visualizations
+## Pros and cons of different approaches
 
 .small-font.center[
                | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Pie chart &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; Stacked bars &nbsp;&nbsp;&nbsp; | Side-by-side bars
@@ -399,13 +459,11 @@ Emphasizes simple fractions (1/2, 1/3, ...) | ✔ | ✖ | ✖
 Allows easy comparison of relative proportions   | ✖ | ✖ | ✔ 
 Shows data as proportions of a whole             | ✔ | ✔ | ✖
 Emphasizes simple fractions (1/2, 1/3, ...) | ✔ | ✖ | ✖
-Visually applealing for small datasets | ✔ | ✖ | ✔
 ]
-
 
 ---
 
-## Pros and cons of different visualizations
+## Pros and cons of different approaches
 
 .small-font.center[
                | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Pie chart &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; Stacked bars &nbsp;&nbsp;&nbsp; | Side-by-side bars
@@ -413,13 +471,13 @@ Visually applealing for small datasets | ✔ | ✖ | ✔
 Allows easy comparison of relative proportions   | ✖ | ✖ | ✔ 
 Shows data as proportions of a whole             | ✔ | ✔ | ✖
 Emphasizes simple fractions (1/2, 1/3, ...) | ✔ | ✖ | ✖
-Visually applealing for small datasets | ✔ | ✖ | ✔
-Works well for large number of fractional parts | ✖ | ✖ | ✔ 
+Visually appealing for small datasets | ✔ | ✖ | ✔
 ]
+
 
 ---
 
-## Pros and cons of different visualizations
+## Pros and cons of different approaches
 
 .small-font.center[
                | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Pie chart &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; Stacked bars &nbsp;&nbsp;&nbsp; | Side-by-side bars
@@ -427,9 +485,23 @@ Works well for large number of fractional parts | ✖ | ✖ | ✔
 Allows easy comparison of relative proportions   | ✖ | ✖ | ✔ 
 Shows data as proportions of a whole             | ✔ | ✔ | ✖
 Emphasizes simple fractions (1/2, 1/3, ...) | ✔ | ✖ | ✖
-Visually applealing for small datasets | ✔ | ✖ | ✔
-Works well for large number of fractional parts | ✖ | ✖ | ✔ 
-Works well for many sets of proportions | ✖ | ✔ | ✖
+Visually appealing for small datasets | ✔ | ✖ | ✔
+Works well for a large number of subsets | ✖ | ✖ | ✔ 
+]
+
+---
+
+## Pros and cons of different approaches
+
+.small-font.center[
+               | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Pie chart &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; Stacked bars &nbsp;&nbsp;&nbsp; | Side-by-side bars
+:----------    | :-------: | :----------: | :---------------:
+Allows easy comparison of relative proportions   | ✖ | ✖ | ✔ 
+Shows data as proportions of a whole             | ✔ | ✔ | ✖
+Emphasizes simple fractions (1/2, 1/3, ...) | ✔ | ✖ | ✖
+Visually appealing for small datasets | ✔ | ✖ | ✔
+Works well for a large number of subsets | ✖ | ✖ | ✔ 
+Works well for time series and similar | ✖ | ✔ | ✖
 ]
 
 --
@@ -697,7 +769,7 @@ ggplot(bundestag) +
 
 ---
 
-## Making pie charts with ggplot: **ggforce** manual
+## Making pie charts with ggplot: **ggforce** manual comp.
 
 .tiny-font[
 ```{r}
@@ -712,7 +784,7 @@ pie_data
 
 ---
 
-## Making pie charts with ggplot: **ggforce** manual
+## Making pie charts with ggplot: **ggforce** manual comp.
 
 .tiny-font[
 ```{r}
@@ -730,7 +802,7 @@ pie_data
 
 ---
 
-## Making pie charts with ggplot: **ggforce** manual
+## Making pie charts with ggplot: **ggforce** manual comp.
 
 .tiny-font[
 ```{r}
@@ -748,7 +820,7 @@ pie_data
 
 ---
 
-## Making pie charts with ggplot: **ggforce** manual
+## Making pie charts with ggplot: **ggforce** manual comp.
 
 .tiny-font[
 ```{r}
@@ -767,7 +839,7 @@ pie_data
 
 ---
 
-## Making pie charts with ggplot: **ggforce** manual
+## Making pie charts with ggplot: **ggforce** manual comp.
 
 .tiny-font[
 ```{r}
@@ -789,7 +861,7 @@ pie_data
 
 ---
 
-## Making pie charts with ggplot: **ggforce** manual
+## Making pie charts with ggplot: **ggforce** manual comp.
 
 .pull-left.tiny-font[
 ```{r bundestag-arc-bar1, eval = FALSE}
@@ -811,7 +883,7 @@ ggplot(pie_data) +
 
 ---
 
-## Making pie charts with ggplot: **ggforce** manual
+## Making pie charts with ggplot: **ggforce** manual comp.
 
 .pull-left.tiny-font[
 ```{r bundestag-arc-bar2, eval = FALSE}
@@ -840,7 +912,7 @@ ggplot(pie_data) +
 
 ---
 
-## Making pie charts with ggplot: **ggforce** manual
+## Making pie charts with ggplot: **ggforce** manual comp.
 
 .pull-left.tiny-font[
 ```{r bundestag-arc-bar3, eval = FALSE}
@@ -869,7 +941,7 @@ ggplot(pie_data) +
 
 ---
 
-## Making pie charts with ggplot: **ggforce** manual
+## Making pie charts with ggplot: **ggforce** manual comp.
 
 .pull-left.tiny-font[
 ```{r bundestag-arc-bar4, eval = FALSE}
@@ -898,7 +970,7 @@ ggplot(pie_data) +
 
 ---
 
-## Making pie charts with ggplot: **ggforce** manual
+## Making pie charts with ggplot: **ggforce** manual comp.
 
 .pull-left.tiny-font[
 ```{r bundestag-arc-bar5, eval = FALSE}
@@ -927,7 +999,7 @@ ggplot(pie_data) +
 
 ---
 
-## Making pie charts with ggplot: **ggforce** manual
+## Making pie charts with ggplot: **ggforce** manual comp.
 
 .pull-left.xtiny-font[
 ```{r bundestag-arc-bar6, eval = FALSE}
@@ -964,7 +1036,7 @@ ggplot(pie_data) +
 
 ---
 
-## Making pie charts with ggplot: **ggforce** manual
+## Making pie charts with ggplot: **ggforce** manual comp.
 
 .pull-left.xtiny-font[
 ```{r bundestag-arc-bar7, eval = FALSE}
@@ -996,6 +1068,43 @@ ggplot(pie_data) +
 
 .pull-right[
 ```{r bundestag-arc-bar7-out, ref.label = "bundestag-arc-bar7", echo = FALSE, message = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+## Making pie charts with ggplot: **ggforce** manual comp.
+
+.pull-left.xtiny-font[
+```{r bundestag-arc-bar8, eval = FALSE}
+ggplot(pie_data) +
+  aes(
+    x0 = 0, y0 = 0, r0 = 0.4, r = 1,
+    start = start_angle, end = end_angle,
+    fill = party
+  ) +
+  geom_arc_bar() +
+  geom_text( # place amounts inside the pie
+    aes(
+      x = 0.7 * sin(mid_angle),
+      y = 0.7 * cos(mid_angle),
+      label = seats
+    )
+  ) +
+  geom_text( # place party name outside the pie
+    aes(
+      x = 1.05 * sin(mid_angle),
+      y = 1.05 * cos(mid_angle),
+      label = party,
+      hjust = hjust, vjust = vjust
+    )
+  ) +
+  coord_fixed(xlim = c(-1.8, 1.3))
+```
+]
+
+.pull-right[
+```{r bundestag-arc-bar8-out, ref.label = "bundestag-arc-bar8", echo = FALSE, message = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 

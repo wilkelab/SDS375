@@ -35,6 +35,8 @@ navbar:
           href: slides/data-wrangling-1.html
         - text: "Class 10: Data wrangling 2"
           href: slides/data-wrangling-2.html
+        - text: "Class 12: Visualizing proportions"
+          href: slides/visualizing-proportions.html
     - text: "Worksheets"
       menu:
         - text: "Class 1: Intro to R Markdown"
