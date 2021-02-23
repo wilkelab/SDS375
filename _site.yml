@@ -4,8 +4,10 @@ description: |
   SDS 375
 output_dir: "docs"
 theme: "theme.css"
+repository_url: https://github.com/wilkelab/SDS375
 include: [".nojekyll"]
 navbar:
+  source_url: true
   left:
     - text: "Schedule"
       href: schedule.html
