@@ -69,18 +69,19 @@ knitr::opts_chunk$set(echo = FALSE)
 - [Slides](slides/figure-design.html)  
 - [Worksheet](worksheets/figure-design.Rmd)
 
-### 9. Feb 23, 2021—Data wrangling 1
+### 9. Feb 25, 2021—Data wrangling 1
 
 <p class="nospace">Materials:</p>
 
 - [Slides](slides/data-wrangling-1.html)  
 - [Worksheet](worksheets/data-wrangling-1.Rmd)
 
-### 10. Feb 25, 2021—Data wrangling 2
+### 10. Mar 2, 2021—Data wrangling 2
 
 <p class="nospace">Materials:</p>
 
 - [Slides](slides/data-wrangling-2.html)  
+- [Worksheet](worksheets/data-wrangling-2.Rmd)
 
 
 ## Homeworks

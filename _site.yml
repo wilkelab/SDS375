@@ -61,4 +61,6 @@ navbar:
           href: worksheets/figure-design.Rmd
         - text: "Class 9: Data wrangling 1"
           href: worksheets/data-wrangling-1.Rmd
+        - text: "Class 10: Data wrangling 2"
+          href: worksheets/data-wrangling-2.Rmd
 output: distill::distill_article
