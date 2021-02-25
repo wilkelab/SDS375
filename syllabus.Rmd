@@ -150,21 +150,23 @@ You will be given access to this repo during the first week of class.
 
 ## Assignments and grading
 
+**Note: This section was updated on 02/25/2021 due to the university closure from 02/14/2021 to 02/24/2021. The total number of homeworks was reduced from 10 to 9 and minimum guaranteed grades were adjusted accordingly.**
+
 The graded components of this class will be homeworks, projects, and online participation. Each week either one homework or one project is due. Homeworks will be relatively short visualization problems to be solved by the student, usually involving some small amount of programming to achieve a specified goal. Projects are larger and more involved data analysis problems that involve both programming and writing. Students will have at least one week to complete each homework and two weeks to complete each project. The submission deadlines for homeworks and projects will be Mondays at 11pm.
 
-There will be ten homeworks and three projects. Both homeworks and projects need to be submitted electronically on Canvas. Homeworks are worth 10 points and projects are worth 100 points. The lowest-scoring homework will be dropped, so that a maximum of 90 points can be obtained from the homeworks.
+There will be nine homeworks and three projects. Both homeworks and projects need to be submitted electronically on Canvas. Homeworks are worth 10 points and projects are worth 100 points. The lowest-scoring homework will be dropped, so that a maximum of 80 points can be obtained from the homeworks.
 
 Online participation assignments are small tasks meant to promote discussion and engagement with the class materials. They are worth between 5 and 10 points, for a maximum of 60.
 
 ::: l-page
 Assignment type   Number   Points per assignment  Total points
 --------------- -------- ----------------------- -------------
-Homework          9 (+1)                      10            90
+Homework          8 (+1)                      10            80
 Project           3                          100           300
 Participation     9                         5-10            60
 :::
 
-Thus, in summary, each project contributes 22% to the final grade, the totality of all homeworks contributes another 20% to the final grade, and participation contributes 13%. **There are no traditional exams in this class and there is no final.**
+Thus, in summary, each project contributes 23% to the final grade, the totality of all homeworks contributes another 18% to the final grade, and participation contributes 13%. **There are no traditional exams in this class and there is no final.**
 
 The participation assignments are meant to foster discussion about class materials on GitHub. Several of them can be performed more than once and will receive the indicated points each time they are performed successfully, up to the maximum number of times the specific activity is rewarded or the point maximum of 60, whichever is reached earlier. The following activities will be available:
 
@@ -183,10 +185,10 @@ The	class	will use +/- grading, and the exact grade boundaries will be determine
 ::: l-page
  Points achieved  Minimum guaranteed grade
 ---------------- -------------------------
-       405 (90%)                        A-
-       360 (80%)                        B-
-       315 (70%)                        C-
-       225 (50%)                        D-
+       396 (90%)                        A-
+       352 (80%)                        B-
+       308 (70%)                        C-
+       220 (50%)                        D-
 :::
 
 ## Late assignment policy
