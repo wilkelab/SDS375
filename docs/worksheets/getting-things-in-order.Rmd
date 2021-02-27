@@ -1,0 +1,56 @@
+---
+#############################################################
+#                                                           #
+# Click on "Run Document" in RStudio to run this worksheet. #
+#                                                           #
+#############################################################
+title: "Getting things into the right order"
+author: "Claus O. Wilke"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(tidyverse)
+library(palmerpenguins)
+library(gapminder)
+knitr::opts_chunk$set(echo = FALSE, comment = "")
+```
+
+## Introduction
+
+In this worksheet, we will continue with basic data manipulations, now moving on to grouping and summarizing, making data tables wider or longer, and joining data tables.
+
+We will be using two R packages, **tidyverse** for various data manipulation functions and **palmerpenguins** and **gapminder** for the `penguins` and `gapminder` datasets, respectively.
+
+
+```{r library-calls, echo = TRUE, eval = FALSE}
+# load required libraries
+library(tidyverse)
+library(palmerpenguins)
+library(gapminder)
+```
+
+
+We will be working with the dataset `penguins` containing data on individual penguins on Antarctica.
+```{r echo = TRUE}
+penguins
+```
+
+
+**gapminder**
+```{r echo = TRUE}
+gapminder
+```
+
+## Title
+
+```{r echo = TRUE, eval = FALSE}
+gapminder %>%
+  filter(continent == "Asia") %>%
+  #filter(country %in% c("Norway", "Portugal", "Spain", "Austria")) %>%
+  mutate(country = fct_reorder(country, lifeExp, min)) %>%
+  ggplot(aes(year, country, fill = lifeExp)) + geom_tile() +
+  scale_fill_viridis_c(option = "E")
+```

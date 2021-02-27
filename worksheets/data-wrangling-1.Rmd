@@ -30,7 +30,7 @@ library(palmerpenguins)
 ```
 
 We will be working with the dataset `penguins` containing data on individual penguins on Antarctica.
-```{r temperatures, echo = TRUE}
+```{r echo = TRUE}
 penguins
 ```
 
