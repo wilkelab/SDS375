@@ -37,6 +37,8 @@ navbar:
           href: slides/data-wrangling-1.html
         - text: "Class 10: Data wrangling 2"
           href: slides/data-wrangling-2.html
+        - text: "Class 11: Getting things into the right order"
+          href: slides/getting-things-in-order.html
         - text: "Class 12: Visualizing proportions"
           href: slides/visualizing-proportions.html
     - text: "Worksheets"

@@ -83,6 +83,11 @@ knitr::opts_chunk$set(echo = FALSE)
 - [Slides](slides/data-wrangling-2.html)  
 - [Worksheet](worksheets/data-wrangling-2.Rmd)
 
+### 11. Mar 4, 2021—Getting things into the right order
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/getting-things-in-order.html)  
 
 ## Homeworks
 
