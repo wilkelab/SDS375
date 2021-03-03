@@ -88,6 +88,7 @@ knitr::opts_chunk$set(echo = FALSE)
 <p class="nospace">Materials:</p>
 
 - [Slides](slides/getting-things-in-order.html)  
+- [Worksheet](worksheets/getting-things-in-order.Rmd)
 
 ## Homeworks
 
