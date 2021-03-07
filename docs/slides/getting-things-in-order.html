@@ -14,7 +14,7 @@ class: center, middle, title-slide
 
 # Getting things into the right order
 ### Claus O. Wilke
-### last updated: 2021-02-26
+### last updated: 2021-03-04
 
 ---
 
@@ -921,7 +921,7 @@ Ordering by frequency is better, but do we need to show all airlines?
 flight_data %&gt;%
   mutate(
     # keep only the 7 most common airlines
-    name = fct_lump(name, 7)
+    name = fct_lump_n(name, 7)
   ) %&gt;%
   ggplot(aes(y = fct_rev(name))) + 
   geom_bar()
@@ -950,7 +950,7 @@ Now the ordering is again alphabetic...
 flight_data %&gt;%
   mutate(
     # order after lumping
-    name = fct_infreq(fct_lump(name, 7))
+    name = fct_infreq(fct_lump_n(name, 7))
   ) %&gt;%
   ggplot(aes(y = fct_rev(name))) + 
   geom_bar()
@@ -971,7 +971,7 @@ flight_data %&gt;%
 flight_data %&gt;%
   mutate(
     # order before lumping
-    name = fct_lump(fct_infreq(name), 7)
+    name = fct_lump_n(fct_infreq(name), 7)
   ) %&gt;%
   ggplot(aes(y = fct_rev(name))) + 
   geom_bar()
@@ -1000,7 +1000,7 @@ In most cases, you will want to order before lumping
 flight_data %&gt;%
   mutate(
     # order before lumping
-    name = fct_lump(fct_infreq(name), 7)
+    name = fct_lump_n(fct_infreq(name), 7)
   ) %&gt;%
   ggplot(aes(y = fct_rev(name))) + 
   geom_bar()
@@ -1025,7 +1025,7 @@ Can we visually separate the "Other" category?
 ```r
 flight_data %&gt;%
   mutate(
-    name = fct_lump(fct_infreq(name), 7),
+    name = fct_lump_n(fct_infreq(name), 7),
     # Use `fct_other()` to manually lump all
     # levels not called "Other" into "Named"
     highlight = fct_other(
@@ -1063,7 +1063,7 @@ One annoying issue: The legend is in the wrong order
 ```r
 flight_data %&gt;%
   mutate(
-    name = fct_lump(fct_infreq(name), 7),
+    name = fct_lump_n(fct_infreq(name), 7),
     # Use `fct_other()` to manually lump all
     # levels not called "Other" into "Named"
     highlight = fct_other(
@@ -1096,7 +1096,7 @@ flight_data %&gt;%
 ```r
 flight_data %&gt;%
   mutate(
-    name = fct_lump(fct_infreq(name), 7),
+    name = fct_lump_n(fct_infreq(name), 7),
     highlight = fct_other(
       name, keep = "Other", other_level = "Named"
     )
