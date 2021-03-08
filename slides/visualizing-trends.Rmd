@@ -1,0 +1,589 @@
+---
+title: "Visualizing trends"
+author: "Claus O. Wilke"
+date: "last updated: `r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: [default, "Wilke-slides-theme.css"]
+    lib_dir: libs
+    nature:
+      ratio: '16:9'
+      highlightStyle: github
+      highlightLines: true
+      slideNumberFormat: ''
+      titleSlideClass: [center, middle]
+---
+
+```{r setup, include=FALSE, echo=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(comment = "")
+
+library(tidyverse)
+library(here)
+library(ggforce)
+library(cowplot)
+# ggplot2 settings so plots scale well for slide size 
+theme_set(theme_gray(16)) # 16 for full width, 18 for half width 
+update_geom_defaults("point", list(size = 2)) # 2 for full width, 2.5 for half width
+
+blue_jays <- read_csv(here("datasets", "blue_jays.csv"))
+preprints <- read_csv(here("datasets", "preprints.csv"))
+```
+
+
+## Title
+
+.center[
+```{r blue-jays-scatter-female, echo = FALSE, message = FALSE, fig.width = 6, fig.asp = 3.2/4, dev = "svg"}
+blue_jays %>%
+  filter(sex == "F") %>%
+  ggplot(aes(body_mass_g, head_length_mm, color = sex, fill = sex)) + 
+  geom_point(pch = 21, color = "white", size = 2.5) +
+  scale_x_continuous(name = "body mass (g)", limits = c(58.7, 81.6)) +
+  scale_y_continuous(name = "head length (mm)", limits = c(51.5, 60.8)) +
+  scale_fill_manual(
+    values = c(F = "#D55E00C0", M = "#0072B2C0"),
+    breaks = c("F", "M"),
+    labels = c("female birds   ", "male birds"),
+    name = NULL,
+    guide = guide_legend(
+      direction = "horizontal",
+      override.aes = list(size = 3, linetype = 0)
+    )
+  ) +
+  scale_color_manual(
+    values = c(F = "#D55E00", M = "#0072B2"),
+    breaks = c("F", "M"),
+    labels = c("female birds   ", "male birds"),
+    name = NULL
+  ) +
+  theme_minimal_grid() +
+  theme(
+    legend.position = "top",
+    legend.justification = "right",
+    legend.box.spacing = unit(3.5, "pt"), # distance between legend and plot
+    legend.text = element_text(vjust = 0.6),
+    legend.spacing.x = unit(2, "pt"),
+    legend.background = element_rect(fill = "white", color = NA),
+    legend.key.width = unit(10, "pt")
+  )
+```
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+
+## Title
+
+.center[
+```{r blue-jays-scatter-line-female, echo = FALSE, message = FALSE, fig.width = 6, fig.asp = 3.2/4, dev = "svg"}
+blue_jays %>%
+  filter(sex == "F") %>%
+  ggplot(aes(body_mass_g, head_length_mm, color = sex, fill = sex)) + 
+  geom_point(pch = 21, color = "white", size = 2.5) +
+  geom_smooth(method = "lm", size = 0.75, se = FALSE, fullrange = TRUE) +
+  scale_x_continuous(name = "body mass (g)", limits = c(58.7, 81.6)) +
+  scale_y_continuous(name = "head length (mm)", limits = c(51.5, 60.8)) +
+  scale_fill_manual(
+    values = c(F = "#D55E00C0", M = "#0072B2C0"),
+    breaks = c("F", "M"),
+    labels = c("female birds   ", "male birds"),
+    name = NULL,
+    guide = guide_legend(
+      direction = "horizontal",
+      override.aes = list(size = 3, linetype = 0)
+    )
+  ) +
+  scale_color_manual(
+    values = c(F = "#D55E00", M = "#0072B2"),
+    breaks = c("F", "M"),
+    labels = c("female birds   ", "male birds"),
+    name = NULL
+  ) +
+  theme_minimal_grid() +
+  theme(
+    legend.position = "top",
+    legend.justification = "right",
+    legend.box.spacing = unit(3.5, "pt"), # distance between legend and plot
+    legend.text = element_text(vjust = 0.6),
+    legend.spacing.x = unit(2, "pt"),
+    legend.background = element_rect(fill = "white", color = NA),
+    legend.key.width = unit(10, "pt")
+  )
+```
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+
+## Title
+
+.center[
+```{r blue-jays-scatter-male, echo = FALSE, message = FALSE, fig.width = 6, fig.asp = 3.2/4, dev = "svg"}
+blue_jays %>%
+  filter(sex == "M") %>%
+  ggplot(aes(body_mass_g, head_length_mm, color = sex, fill = sex)) + 
+  geom_point(pch = 21, color = "white", size = 2.5) +
+  scale_x_continuous(name = "body mass (g)", limits = c(58.7, 81.6)) +
+  scale_y_continuous(name = "head length (mm)", limits = c(51.5, 60.8)) +
+  scale_fill_manual(
+    values = c(F = "#D55E00C0", M = "#0072B2C0"),
+    breaks = c("F", "M"),
+    labels = c("female birds   ", "male birds"),
+    name = NULL,
+    guide = guide_legend(
+      direction = "horizontal",
+      override.aes = list(size = 3, linetype = 0)
+    )
+  ) +
+  scale_color_manual(
+    values = c(F = "#D55E00", M = "#0072B2"),
+    breaks = c("F", "M"),
+    labels = c("female birds   ", "male birds"),
+    name = NULL
+  ) +
+  theme_minimal_grid() +
+  theme(
+    legend.position = "top",
+    legend.justification = "right",
+    legend.box.spacing = unit(3.5, "pt"), # distance between legend and plot
+    legend.text = element_text(vjust = 0.6),
+    legend.spacing.x = unit(2, "pt"),
+    legend.background = element_rect(fill = "white", color = NA),
+    legend.key.width = unit(10, "pt")
+  )
+```
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+
+## Title
+
+.center[
+```{r blue-jays-scatter-line-male, echo = FALSE, message = FALSE, fig.width = 6, fig.asp = 3.2/4, dev = "svg"}
+blue_jays %>%
+  filter(sex == "M") %>%
+  ggplot(aes(body_mass_g, head_length_mm, color = sex, fill = sex)) + 
+  geom_point(pch = 21, color = "white", size = 2.5) +
+  geom_smooth(method = "lm", size = 0.75, se = FALSE, fullrange = TRUE) +
+  scale_x_continuous(name = "body mass (g)", limits = c(58.7, 81.6)) +
+  scale_y_continuous(name = "head length (mm)", limits = c(51.5, 60.8)) +
+  scale_fill_manual(
+    values = c(F = "#D55E00C0", M = "#0072B2C0"),
+    breaks = c("F", "M"),
+    labels = c("female birds   ", "male birds"),
+    name = NULL,
+    guide = guide_legend(
+      direction = "horizontal",
+      override.aes = list(size = 3, linetype = 0)
+    )
+  ) +
+  scale_color_manual(
+    values = c(F = "#D55E00", M = "#0072B2"),
+    breaks = c("F", "M"),
+    labels = c("female birds   ", "male birds"),
+    name = NULL
+  ) +
+  theme_minimal_grid() +
+  theme(
+    legend.position = "top",
+    legend.justification = "right",
+    legend.box.spacing = unit(3.5, "pt"), # distance between legend and plot
+    legend.text = element_text(vjust = 0.6),
+    legend.spacing.x = unit(2, "pt"),
+    legend.background = element_rect(fill = "white", color = NA),
+    legend.key.width = unit(10, "pt")
+  )
+```
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Title
+
+.center[
+```{r blue-jays-scatter-line, echo = FALSE, message = FALSE, fig.width = 6, fig.asp = 3.2/4, dev = "svg"}
+blue_jays %>%
+  ggplot(aes(body_mass_g, head_length_mm, color = sex, fill = sex)) + 
+  geom_point(pch = 21, color = "white", size = 2.5) +
+  geom_smooth(method = "lm", size = 0.75, se = FALSE, fullrange = TRUE) +
+  scale_x_continuous(name = "body mass (g)", limits = c(58.7, 81.6)) +
+  scale_y_continuous(name = "head length (mm)", limits = c(51.5, 60.8)) +
+  scale_fill_manual(
+    values = c(F = "#D55E00C0", M = "#0072B2C0"),
+    breaks = c("F", "M"),
+    labels = c("female birds   ", "male birds"),
+    name = NULL,
+    guide = guide_legend(
+      direction = "horizontal",
+      override.aes = list(size = 3, linetype = 0)
+    )
+  ) +
+  scale_color_manual(
+    values = c(F = "#D55E00", M = "#0072B2"),
+    breaks = c("F", "M"),
+    labels = c("female birds   ", "male birds"),
+    name = NULL
+  ) +
+  theme_minimal_grid() +
+  theme(
+    legend.position = "top",
+    legend.justification = "right",
+    legend.box.spacing = unit(3.5, "pt"), # distance between legend and plot
+    legend.text = element_text(vjust = 0.6),
+    legend.spacing.x = unit(2, "pt"),
+    legend.background = element_rect(fill = "white", color = NA),
+    legend.key.width = unit(10, "pt")
+  )
+```
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Title
+
+.center[
+```{r biorxiv-nofit, echo = FALSE, fig.width = 7, fig.asp = 0.618, dev = "svg"}
+biorxiv_growth <- preprints %>%
+  filter(archive == "bioRxiv", count > 0)
+
+ggplot(biorxiv_growth, aes(date_dec, count)) + 
+  geom_line(aes(color = "data"), size = .5) +
+  geom_point(aes(fill = "data"), color = "white", shape = 21, size = 2) +
+  scale_y_continuous(
+    limits = c(0, 1550),
+    breaks = c(0, 500, 1000, 1500),
+    expand = c(0, 0),
+    name = "preprints / month"
+  ) + 
+  scale_x_continuous(name = NULL) +
+  scale_color_manual(
+    name = NULL,
+    values = "#0072B2",
+    breaks = "data",
+    labels = "actual counts"
+  ) +
+  scale_fill_manual(
+    name = NULL,
+    values = "#0072B2",
+    breaks = "data",
+    labels = "actual counts"
+  ) +
+  theme_half_open() +
+  theme(
+    legend.position = c(.05, 1),
+    legend.justification = c(0, 1),
+    legend.spacing.x = unit(3, "pt"),
+    legend.title = element_blank() 
+  )
+
+```
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+
+## Title
+
+.center[
+```{r biorxiv-expfit, echo = FALSE, fig.width = 7, fig.asp = 0.618, dev = "svg"}
+biorxiv_growth <- preprints %>%
+  filter(archive == "bioRxiv", count > 0)
+
+expfit.out <- nls(
+  count ~ a*exp(b*(date_dec-2014)),
+  data = biorxiv_growth,
+  start = c(a = 60.004, b = .773)
+)
+linfit.out <- nls(
+  log(count) ~ log(a) + b*(date_dec-2014),
+  data = biorxiv_growth,
+  start = c(a = 42.576, b = .878)
+)
+date_seq = seq(min(biorxiv_growth$date_dec), max(biorxiv_growth$date_dec), by = 0.1)
+expfit.df <- data.frame(
+  date_dec = date_seq,
+  count = predict(expfit.out, data.frame(date_dec = date_seq))
+)
+linfit.df <- data.frame(
+  date_dec = date_seq,
+  count = exp(predict(linfit.out, data.frame(date_dec = date_seq)))
+)
+
+ggplot(biorxiv_growth, aes(date_dec, count)) + 
+  geom_line(data = expfit.df, aes(color = "expfit"), size = .5, linetype = 2) +
+  geom_point(aes(fill = "expfit"), shape = NA, na.rm = TRUE) + # dummy for legend
+  geom_line(aes(color = "data"), size = .5) +
+  geom_point(aes(fill = "data"), color = "white", shape = 21, size = 2) +
+  scale_y_continuous(
+    limits = c(0, 1550),
+    breaks = c(0, 500, 1000, 1500),
+    expand = c(0, 0),
+    name = "preprints / month"
+  ) + 
+  scale_x_continuous(name = NULL) +
+  scale_color_manual(
+    name = NULL,
+    values = c(data = "#0072B2", expfit = "black"),
+    breaks = c("data", "expfit"),
+    labels = c("actual counts", "exponential fit"),
+    guide = guide_legend(
+      override.aes = list(
+        color = c("white", "black"),
+        shape = c(21, NA),
+        size = c(2, 0.5),
+        linetype = c(0, 2)
+      )
+    )
+  ) +
+  scale_fill_manual(
+    name = NULL,
+    values = c(data = "#0072B2", expfit = "black"),
+    breaks = c("data", "expfit"),
+    labels = c("actual counts", "exponential fit")
+  ) +
+  theme_half_open() +
+  theme(
+    legend.position = c(.05, 1),
+    legend.justification = c(0, 1),
+    legend.spacing.x = unit(3, "pt"),
+    legend.title = element_blank() 
+  )
+
+```
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Title
+
+.center[
+```{r biorxiv-expfit-logscale, echo = FALSE, fig.width = 7, fig.asp = 0.618, dev = "svg"}
+biorxiv_growth <- preprints %>%
+  filter(archive == "bioRxiv", count > 0)
+
+expfit.out <- nls(
+  count ~ a*exp(b*(date_dec-2014)),
+  data = biorxiv_growth,
+  start = c(a = 60.004, b = .773)
+)
+linfit.out <- nls(
+  log(count) ~ log(a) + b*(date_dec-2014),
+  data = biorxiv_growth,
+  start = c(a = 42.576, b = .878)
+)
+date_seq = seq(min(biorxiv_growth$date_dec), max(biorxiv_growth$date_dec), by = 0.1)
+expfit.df <- data.frame(
+  date_dec = date_seq,
+  count = predict(expfit.out, data.frame(date_dec = date_seq))
+)
+linfit.df <- data.frame(
+  date_dec = date_seq,
+  count = exp(predict(linfit.out, data.frame(date_dec = date_seq)))
+)
+
+ggplot(biorxiv_growth, aes(date_dec, count)) + 
+  geom_line(data = expfit.df, aes(color = "expfit"), size = .5, linetype = 2) +
+  geom_point(aes(fill = "expfit"), shape = NA, na.rm = TRUE) + # dummy for legend
+  geom_line(aes(color = "data"), size = .5) +
+  geom_point(aes(fill = "data"), color = "white", shape = 21, size = 2) +
+  scale_y_log10(
+    limits = c(30, 1670),
+    breaks = c(10*(3:9), 100*(1:9), 1000*(1:2)),
+    labels = c(
+      "", "", "50", "", "", "", "", "100", "", "", "", "500",
+      "", "", "", "", "1000", ""
+    ),
+    expand = c(0, 0),
+    name = "preprints / month"
+  ) + 
+  scale_x_continuous(name = NULL) +
+  scale_color_manual(
+    name = NULL,
+    values = c(data = "#0072B2", expfit = "black"),
+    breaks = c("data", "expfit"),
+    labels = c("actual counts", "exponential fit"),
+    guide = guide_legend(
+      override.aes = list(
+        color = c("white", "black"),
+        shape = c(21, NA),
+        size = c(2, 0.5),
+        linetype = c(0, 2)
+      )
+    )
+  ) +
+  scale_fill_manual(
+    name = NULL,
+    values = c(data = "#0072B2", expfit = "black"),
+    breaks = c("data", "expfit"),
+    labels = c("actual counts", "exponential fit")
+  ) +
+  theme_half_open() +
+  theme(
+    legend.position = c(.05, 1),
+    legend.justification = c(0, 1),
+    legend.spacing.x = unit(3, "pt"),
+    legend.title = element_blank() 
+  )
+
+```
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+
+## Title
+
+.center[
+```{r biorxiv-logscale, echo = FALSE, fig.width = 7, fig.asp = 0.618, dev = "svg"}
+ggplot(biorxiv_growth, aes(date_dec, count)) +
+  geom_line(data = expfit.df, aes(color = "expfit"), size = .5, linetype = 2) +
+  geom_point(aes(fill = "expfit"), shape = NA, na.rm = TRUE) + # dummy for legend
+  geom_line(data = linfit.df, aes(color = "linfit"), size = .5) +
+  geom_point(aes(fill = "linfit"), shape = NA, na.rm = TRUE) + # dummy for legend
+  geom_line(aes(color = "data"), size = .5) +
+  geom_point(aes(fill = "data"), color = "white", shape = 21, size = 2) +
+  scale_y_log10(
+    limits = c(30, 1670),
+    breaks = c(10*(3:9), 100*(1:9), 1000*(1:2)),
+    labels = c(
+      "", "", "50", "", "", "", "", "100", "", "", "", "500",
+      "", "", "", "", "1000", ""
+    ),
+    expand = c(0, 0),
+    name = "preprints / month"
+  ) + 
+  scale_x_continuous(name = NULL) +
+  scale_color_manual(
+    name = NULL,
+    values = c(data = "#0072B2", expfit = "black", linfit = "black"),
+    breaks = c("data", "expfit", "linfit"),
+    labels = c("actual counts", "exponential fit", "linear fit, log-transformed data"),
+    guide = guide_legend(
+      override.aes = list(
+        color = c("white", "black", "black"),
+        shape = c(21, NA, NA),
+        size = c(2, 0.5, 0.5),
+        linetype = c(0, 2, 1)
+      )
+    )
+  ) +
+  scale_fill_manual(
+    name = NULL,
+    values = c(data = "#0072B2", expfit = "black", linfit = "black"),
+    breaks = c("data", "expfit", "linfit"),
+    labels = c("actual counts", "exponential fit", "linear fit, log-transformed data")
+  ) +
+  theme_half_open() +
+  theme(
+    legend.position = c(.05, 1),
+    legend.justification = c(0, 1),
+    legend.spacing.x = unit(3, "pt"),
+    legend.title = element_blank()
+  )
+
+```
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Title
+
+.center[
+```{r biorxiv-logscale-doublefit, echo = FALSE, warning = FALSE, fig.width = 7, fig.asp = 0.618, dev = "svg"}
+ggplot(biorxiv_growth, aes(date_dec, count)) +
+  geom_line(data = expfit.df, aes(color = "expfit"), size = .5, linetype = 2) +
+  geom_point(aes(fill = "expfit"), shape = NA, na.rm = TRUE) + # dummy for legend
+  geom_line(data = linfit.df, aes(color = "linfit"), size = .5) +
+  geom_point(aes(fill = "linfit"), shape = NA, na.rm = TRUE) + # dummy for legend
+  geom_line(aes(color = "data"), size = .5) +
+  geom_point(aes(fill = "data"), color = "white", shape = 21, size = 2) +
+  scale_y_continuous(
+    limits = c(0, 1550),
+    breaks = c(0, 500, 1000, 1500),
+    expand = c(0, 0),
+    name = "preprints / month"
+  ) + 
+  scale_x_continuous(name = NULL) +
+  scale_color_manual(
+    name = NULL,
+    values = c(data = "#0072B2", expfit = "black", linfit = "black"),
+    breaks = c("data", "expfit", "linfit"),
+    labels = c("actual counts", "exponential fit", "linear fit, log-transformed data"),
+    guide = guide_legend(
+      override.aes = list(
+        color = c("white", "black", "black"),
+        shape = c(21, NA, NA),
+        size = c(2, 0.5, 0.5),
+        linetype = c(0, 2, 1)
+      )
+    )
+  ) +
+  scale_fill_manual(
+    name = NULL,
+    values = c(data = "#0072B2", expfit = "black", linfit = "black"),
+    breaks = c("data", "expfit", "linfit"),
+    labels = c("actual counts", "exponential fit", "linear fit, log-transformed data")
+  ) +
+  theme_half_open() +
+  theme(
+    legend.position = c(.05, 1),
+    legend.justification = c(0, 1),
+    legend.spacing.x = unit(3, "pt"),
+    legend.title = element_blank()
+  )
+
+```
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+
+## Further reading
+
+- Fundamentals of Data Visualization: [Chapter 14: Visualizing trends](https://clauswilke.com/dataviz/visualizing-trends.html)
+
+
+
+
