@@ -67,5 +67,8 @@ navbar:
           href: worksheets/data-wrangling-2.Rmd
         - text: "Class 11: Getting things into the right order"
           href: worksheets/getting-things-in-order.Rmd
+        - text: "Class 12: Visualizing proportions"
+          href: worksheets/visualizing-proportions.Rmd
+
  
 output: distill::distill_article
