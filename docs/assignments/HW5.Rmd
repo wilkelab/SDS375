@@ -1,0 +1,54 @@
+---
+title: "Homework 5"
+---
+
+```{r global_options, include=FALSE}
+library(knitr)
+library(tidyverse)
+library(colorspace)
+library(cowplot)
+
+opts_chunk$set(fig.align="center", fig.height=4.326, fig.width=7)
+```
+
+*Enter your name and EID here*
+
+**This homework is due on March 22, 2021 at 11:00pm. Please submit as a pdf file on Canvas.**
+
+For both problems in this homework, we will work with the `internet` dataset. It contains the number of internet users over time for 20 select countries. Internet users are reported as percentages.
+
+```{r message = FALSE}
+internet <- read_csv("https://wilkelab.org/SDS375/datasets/internet.csv")
+internet
+```
+
+**Problem 1: (5 pts)** 
+
+Take the following plot and make two modifications:
+
+1. Put the countries into a meaningful order
+2. Use scale and theme functions to improve the visual design of the plot
+
+Grading rubric: 2 pts for ordering, 3 pts for visual design
+
+```{r}
+internet %>%
+  ggplot(aes(x = year, y = country, fill = users)) +
+  geom_tile()
+```
+
+**Problem 2: (5 pts)** Take the plot from the previous problem and make the following modifications:
+
+1. Select a subset of 6 countries, using arbitrary criteria
+2. Use `geom_line()` to show internet users over time, and use facets to show the different countries
+3. Use a different ordering than you used in Problem 1.
+4. Modify the visual design so it is appropriate for your new plot
+
+**Hint:** To get started, see slides 33 to 43 in the class on getting things into the right order: https://wilkelab.org/SDS375/slides/getting-things-in-order.html#33
+
+Grading rubric: 3 pts for making the right plot, 2 pts for visual design
+
+```{r}
+# your code goes here
+```
+
