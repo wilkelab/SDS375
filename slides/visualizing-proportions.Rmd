@@ -1114,6 +1114,9 @@ ggplot(pie_data) +
 ## Further reading
 
 - Fundamentals of Data Visualization: [Chapter 10: Visualizing proportions](https://clauswilke.com/dataviz/visualizing-proportions.html)
+- Fundamentals of Data Visualization: [Chapter 11: Visualizing nested proportions](https://clauswilke.com/dataviz/nested-proportions.html)
+- **ggplot2** reference documentation: [`position_stack()`, `position_fill()`](https://ggplot2.tidyverse.org/reference/position_stack.html)
+- **ggplot2** reference documentation: [`position_dodge()`](https://ggplot2.tidyverse.org/reference/position_dodge.html)
 - **ggforce** reference documentation: [`geom_arc_bar()`](https://ggforce.data-imaginist.com/reference/geom_arc_bar.html)
 
 
