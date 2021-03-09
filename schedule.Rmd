@@ -90,13 +90,18 @@ knitr::opts_chunk$set(echo = FALSE)
 - [Slides](slides/getting-things-in-order.html)  
 - [Worksheet](worksheets/getting-things-in-order.Rmd)
 
-### 11. Mar 9, 2021—Visualizing proportions
+### 12. Mar 9, 2021—Visualizing proportions
 
 <p class="nospace">Materials:</p>
 
 - [Slides](slides/visualizing-proportions.html)  
 - [Worksheet](worksheets/visualizing-proportions.Rmd)
 
+### 13. Mar 11, 2021—Visualizing proportions
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/visualizing-trends.html)  
 
 ## Homeworks
 

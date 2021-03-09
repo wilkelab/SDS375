@@ -29,17 +29,106 @@ update_geom_defaults("point", list(size = 2)) # 2 for full width, 2.5 for half w
 blue_jays <- read_csv(here("datasets", "blue_jays.csv"))
 preprints <- read_csv(here("datasets", "preprints.csv"))
 hpi_trends <- read_csv(here("datasets", "hpi_trends.csv"))
+cars93 <- read_csv(here("datasets", "cars93.csv"))
 ```
 
-
-## Title
+## We visualize linear trends with regression lines
 
 .center[
-```{r blue-jays-scatter-female, echo = FALSE, message = FALSE, fig.width = 6, fig.asp = 3.2/4, dev = "svg"}
+```{r blue-jays-scatter, echo = FALSE, message = FALSE, fig.width = 6, fig.asp = 3.2/4, dev = "svg"}
 blue_jays %>%
-  filter(sex == "F") %>%
-  ggplot(aes(body_mass_g, head_length_mm, color = sex, fill = sex)) + 
-  geom_point(pch = 21, color = "white", size = 2.5) +
+  ggplot(aes(body_mass_g, head_length_mm)) + 
+  geom_point(aes(fill = "blue jay birds"), pch = 21, color = "white", size = 2.5) +
+  scale_fill_manual(
+    values = c(`blue jay birds` = "black", `regression line` = "black"),
+    breaks = c("blue jay birds", "regression line"),
+    labels = c("blue jay birds   ", "regression line"),
+    name = NULL,
+    guide = guide_legend(
+      direction = "horizontal",
+      override.aes = list(size = 2.5, linetype = 0)
+    )
+  ) +
+  scale_color_manual(
+    values = c(`blue jay birds` = "black", `regression line` = "black"),
+    breaks = c("blue jay birds", "regression line"),
+    labels = c("blue jay birds   ", "regression line"),
+    name = NULL
+  ) +
+  scale_x_continuous(name = "body mass (g)", limits = c(58.7, 81.6)) +
+  scale_y_continuous(name = "head length (mm)", limits = c(51.5, 60.8)) +
+  theme_minimal_grid() +
+  theme(
+    legend.position = "top",
+    legend.justification = "right",
+    legend.box.spacing = unit(3.5, "pt"), # distance between legend and plot
+    legend.text = element_text(vjust = 0.6),
+    legend.spacing.x = unit(2, "pt"),
+    legend.background = element_rect(fill = "white", color = NA),
+    legend.key.width = unit(10, "pt")
+  )
+```
+]
+
+???
+
+Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## We visualize linear trends with regression lines
+
+.center[
+```{r blue-jays-scatter-lm, echo = FALSE, message = FALSE, fig.width = 6, fig.asp = 3.2/4, dev = "svg"}
+blue_jays %>%
+  ggplot(aes(body_mass_g, head_length_mm)) + 
+  geom_point(aes(fill = "blue jay birds"), pch = 21, color = "white", size = 2.5) +
+  geom_smooth(aes(color = "regression line"), method = "lm", size = 0.75, se = FALSE, fullrange = TRUE) +
+  scale_fill_manual(
+    values = c(`blue jay birds` = "black", `regression line` = "black"),
+    breaks = c("blue jay birds", "regression line"),
+    labels = c("blue jay birds   ", "regression line"),
+    name = NULL,
+    guide = guide_legend(
+      direction = "horizontal",
+      override.aes = list(size = 2.5, linetype = 0)
+    )
+  ) +
+  scale_color_manual(
+    values = c(`blue jay birds` = "black", `regression line` = "black"),
+    breaks = c("blue jay birds", "regression line"),
+    labels = c("blue jay birds   ", "regression line"),
+    name = NULL
+  ) +
+  scale_x_continuous(name = "body mass (g)", limits = c(58.7, 81.6)) +
+  scale_y_continuous(name = "head length (mm)", limits = c(51.5, 60.8)) +
+  theme_minimal_grid() +
+  theme(
+    legend.position = "top",
+    legend.justification = "right",
+    legend.box.spacing = unit(3.5, "pt"), # distance between legend and plot
+    legend.text = element_text(vjust = 0.6),
+    legend.spacing.x = unit(2, "pt"),
+    legend.background = element_rect(fill = "white", color = NA),
+    legend.key.width = unit(10, "pt")
+  )
+```
+]
+
+???
+
+Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## We visualize linear trends with regression lines
+
+.center[
+```{r blue-jays-scatter-line-sex, echo = FALSE, message = FALSE, fig.width = 6, fig.asp = 3.2/4, dev = "svg"}
+blue_jays %>%
+  ggplot(aes(body_mass_g, head_length_mm)) + 
+  geom_point(aes(fill = sex), pch = 21, color = "white", size = 2.5) +
+  #geom_smooth(method = "lm", size = 0.75, se = FALSE, color = "black", fullrange = TRUE) +
   scale_x_continuous(name = "body mass (g)", limits = c(58.7, 81.6)) +
   scale_y_continuous(name = "head length (mm)", limits = c(51.5, 60.8)) +
   scale_fill_manual(
@@ -49,7 +138,7 @@ blue_jays %>%
     name = NULL,
     guide = guide_legend(
       direction = "horizontal",
-      override.aes = list(size = 3, linetype = 0)
+      override.aes = list(size = 2.5, linetype = 0)
     )
   ) +
   scale_color_manual(
@@ -73,12 +162,59 @@ blue_jays %>%
 
 ???
 
-Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
 
 
 ---
 
-## Title
+
+## We visualize linear trends with regression lines
+
+.center[
+```{r blue-jays-scatter-female, echo = FALSE, message = FALSE, fig.width = 6, fig.asp = 3.2/4, dev = "svg"}
+blue_jays %>%
+  filter(sex == "F") %>%
+  ggplot(aes(body_mass_g, head_length_mm, color = sex, fill = sex)) + 
+  geom_point(pch = 21, color = "white", size = 2.5) +
+  scale_x_continuous(name = "body mass (g)", limits = c(58.7, 81.6)) +
+  scale_y_continuous(name = "head length (mm)", limits = c(51.5, 60.8)) +
+  scale_fill_manual(
+    values = c(F = "#D55E00C0", M = "#0072B2C0"),
+    breaks = c("F", "M"),
+    labels = c("female birds   ", "male birds"),
+    name = NULL,
+    guide = guide_legend(
+      direction = "horizontal",
+      override.aes = list(size = 2.5, linetype = 0)
+    )
+  ) +
+  scale_color_manual(
+    values = c(F = "#D55E00", M = "#0072B2"),
+    breaks = c("F", "M"),
+    labels = c("female birds   ", "male birds"),
+    name = NULL
+  ) +
+  theme_minimal_grid() +
+  theme(
+    legend.position = "top",
+    legend.justification = "right",
+    legend.box.spacing = unit(3.5, "pt"), # distance between legend and plot
+    legend.text = element_text(vjust = 0.6),
+    legend.spacing.x = unit(2, "pt"),
+    legend.background = element_rect(fill = "white", color = NA),
+    legend.key.width = unit(10, "pt")
+  )
+```
+]
+
+???
+
+Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+
+## We visualize linear trends with regression lines
 
 .center[
 ```{r blue-jays-scatter-line-female, echo = FALSE, message = FALSE, fig.width = 6, fig.asp = 3.2/4, dev = "svg"}
@@ -96,7 +232,7 @@ blue_jays %>%
     name = NULL,
     guide = guide_legend(
       direction = "horizontal",
-      override.aes = list(size = 3, linetype = 0)
+      override.aes = list(size = 2.5, linetype = 0)
     )
   ) +
   scale_color_manual(
@@ -120,12 +256,12 @@ blue_jays %>%
 
 ???
 
-Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
 
 
 ---
 
-## Title
+## We visualize linear trends with regression lines
 
 .center[
 ```{r blue-jays-scatter-male, echo = FALSE, message = FALSE, fig.width = 6, fig.asp = 3.2/4, dev = "svg"}
@@ -142,7 +278,7 @@ blue_jays %>%
     name = NULL,
     guide = guide_legend(
       direction = "horizontal",
-      override.aes = list(size = 3, linetype = 0)
+      override.aes = list(size = 2.5, linetype = 0)
     )
   ) +
   scale_color_manual(
@@ -166,12 +302,12 @@ blue_jays %>%
 
 ???
 
-Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
 
 
 ---
 
-## Title
+## We visualize linear trends with regression lines
 
 .center[
 ```{r blue-jays-scatter-line-male, echo = FALSE, message = FALSE, fig.width = 6, fig.asp = 3.2/4, dev = "svg"}
@@ -189,7 +325,7 @@ blue_jays %>%
     name = NULL,
     guide = guide_legend(
       direction = "horizontal",
-      override.aes = list(size = 3, linetype = 0)
+      override.aes = list(size = 2.5, linetype = 0)
     )
   ) +
   scale_color_manual(
@@ -213,14 +349,14 @@ blue_jays %>%
 
 ???
 
-Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
 
 ---
 
-## Title
+## We visualize linear trends with regression lines
 
 .center[
-```{r blue-jays-scatter-line, echo = FALSE, message = FALSE, fig.width = 6, fig.asp = 3.2/4, dev = "svg"}
+```{r blue-jays-scatter-sex-line, echo = FALSE, message = FALSE, fig.width = 6, fig.asp = 3.2/4, dev = "svg"}
 blue_jays %>%
   ggplot(aes(body_mass_g, head_length_mm, color = sex, fill = sex)) + 
   geom_point(pch = 21, color = "white", size = 2.5) +
@@ -234,7 +370,7 @@ blue_jays %>%
     name = NULL,
     guide = guide_legend(
       direction = "horizontal",
-      override.aes = list(size = 3, linetype = 0)
+      override.aes = list(size = 2.5, linetype = 0)
     )
   ) +
   scale_color_manual(
@@ -258,11 +394,11 @@ blue_jays %>%
 
 ???
 
-Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
 
 ---
 
-## Title
+## Exponential trends are linear trends on a log scale
 
 .center[
 ```{r biorxiv-nofit, echo = FALSE, fig.width = 7, fig.asp = 0.618, dev = "svg"}
@@ -304,12 +440,12 @@ ggplot(biorxiv_growth, aes(date_dec, count)) +
 
 ???
 
-Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
 
 
 ---
 
-## Title
+## Exponential trends are linear trends on a log scale
 
 .center[
 ```{r biorxiv-expfit, echo = FALSE, fig.width = 7, fig.asp = 0.618, dev = "svg"}
@@ -381,11 +517,11 @@ ggplot(biorxiv_growth, aes(date_dec, count)) +
 
 ???
 
-Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
 
 ---
 
-## Title
+## Exponential trends are linear trends on a log scale
 
 .center[
 ```{r biorxiv-expfit-logscale, echo = FALSE, fig.width = 7, fig.asp = 0.618, dev = "svg"}
@@ -461,12 +597,12 @@ ggplot(biorxiv_growth, aes(date_dec, count)) +
 
 ???
 
-Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
 
 
 ---
 
-## Title
+## Exponential trends are linear trends on a log scale
 
 .center[
 ```{r biorxiv-logscale, echo = FALSE, fig.width = 7, fig.asp = 0.618, dev = "svg"}
@@ -521,11 +657,11 @@ ggplot(biorxiv_growth, aes(date_dec, count)) +
 
 ???
 
-Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
 
 ---
 
-## Title
+## Exponential trends are linear trends on a log scale
 
 .center[
 ```{r biorxiv-logscale-doublefit, echo = FALSE, warning = FALSE, fig.width = 7, fig.asp = 0.618, dev = "svg"}
@@ -576,14 +712,14 @@ ggplot(biorxiv_growth, aes(date_dec, count)) +
 
 ???
 
-Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
 
 ---
 
-## Title
+## Detrending: Removing the underlying trend
 
 .center[
-```{r hpi-no-trendline, echo = FALSE, warning = FALSE, fig.width = 7, fig.asp = 0.618, dev = "svg"}
+```{r hpi-no-trendline, echo = FALSE, warning = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
 
 hpi_trends %>%
   filter(state %in% c("California", "Nevada", "West Virginia", "Texas")) %>%
@@ -605,17 +741,29 @@ hpi_trends %>%
 ```
 ]
 
+--
+
+.small-font[
+Did housing prices in California decline substantially from 1990 to 1998?
+]
+
+--
+
+.small-font[
+Did housing prices in Nevada recover by 2017?
+]
+
 ???
 
-Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
 
 
 ---
 
-## Title
+## Detrending: Removing the underlying trend
 
 .center[
-```{r hpi-trends, echo = FALSE, warning = FALSE, fig.width = 7, fig.asp = 0.618, dev = "svg"}
+```{r hpi-trends, echo = FALSE, warning = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
 
 hpi_trends %>%
   filter(state %in% c("California", "Nevada", "West Virginia", "Texas")) %>%
@@ -638,17 +786,25 @@ hpi_trends %>%
 ```
 ]
 
+.small-font[
+Did housing prices in California decline substantially from 1990 to 1998?
+]
+
+.small-font[
+Did housing prices in Nevada recover by 2017?
+]
+
 ???
 
-Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
 
 
 ---
 
-## Title
+## Detrending: Removing the underlying trend
 
 .center[
-```{r hpi-detrended, echo = FALSE, warning = FALSE, fig.width = 7, fig.asp = 0.618, dev = "svg"}
+```{r hpi-detrended, echo = FALSE, warning = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
 
 hpi_trends %>%
   filter(state %in% c("California", "Nevada", "West Virginia", "Texas")) %>%
@@ -675,15 +831,443 @@ hpi_trends %>%
 ```
 ]
 
+.small-font[
+Did housing prices in California decline substantially from 1990 to 1998?
+]
+
+.small-font[
+Did housing prices in Nevada recover by 2017?
+]
+
 ???
 
-Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+class: middle, center
+
+# Creating trendlines in **ggplot2**
+
+
+---
+
+## We add trend lines with `geom_smooth()`
+
+.tiny-font.pull-left[
+```{r blue-jays-scatter-gg, eval = FALSE}
+ggplot(blue_jays) +
+  aes(body_mass_g, head_length_mm) + 
+  geom_point() + theme_bw(14)
+```
+]
+
+.xtiny-font.pull-right[
+```{r blue-jays-scatter-gg-out, ref.label = "blue-jays-scatter-gg", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+.small-font[
+Scatter plot only
+]
+
+
+---
+
+## We add trend lines with `geom_smooth()`
+
+.tiny-font.pull-left[
+```{r blue-jays-scatter-gg-smooth, eval = FALSE}
+ggplot(blue_jays) +
+  aes(body_mass_g, head_length_mm) + 
+  geom_point() + theme_bw(14) +
+  geom_smooth()
+```
+]
+
+.xtiny-font.pull-right[
+```{r blue-jays-scatter-gg-smooth-out, ref.label = "blue-jays-scatter-gg-smooth", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+.small-font[
+Scatter plot with loess smooth
+]
+
+---
+
+## We add trend lines with `geom_smooth()`
+
+.tiny-font.pull-left[
+```{r blue-jays-scatter-gg-lm, eval = FALSE}
+ggplot(blue_jays) +
+  aes(body_mass_g, head_length_mm) + 
+  geom_point() + theme_bw(14) +
+  geom_smooth(
+    # smooth using linear model
+    method = "lm",
+  )
+```
+]
+
+.xtiny-font.pull-right[
+```{r blue-jays-scatter-gg-lm-out, ref.label = "blue-jays-scatter-gg-lm", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+.small-font[
+Scatter plot with linear regression
+]
+
+
+---
+
+## We add trend lines with `geom_smooth()`
+
+.tiny-font.pull-left[
+```{r blue-jays-scatter-gg-lm-nose, eval = FALSE}
+ggplot(blue_jays) +
+  aes(body_mass_g, head_length_mm) + 
+  geom_point() + theme_bw(14) +
+  geom_smooth(
+    # smooth using linear model
+    method = "lm",
+    # suppress confidence band
+    se = FALSE
+  )
+```
+]
+
+.xtiny-font.pull-right[
+```{r blue-jays-scatter-gg-lm-nose-out, ref.label = "blue-jays-scatter-gg-lm-nose", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+.small-font[
+Scatter plot with linear regression, no confidence band
+]
+
+---
+
+## We add trend lines with `geom_smooth()`
+
+.tiny-font.pull-left[
+```{r blue-jays-scatter-gg-sex, eval = FALSE}
+ggplot(blue_jays) +
+  aes(
+    body_mass_g, head_length_mm,
+    color = sex
+  ) + 
+  geom_point() + theme_bw(14) +
+  geom_smooth(
+    # smooth using linear model
+    method = "lm",
+    # suppress confidence band
+    se = FALSE
+  )
+```
+]
+
+.xtiny-font.pull-right[
+```{r blue-jays-scatter-gg-sex-out, ref.label = "blue-jays-scatter-gg-sex", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+.small-font[
+Scatter plot with linear regression by sex
+]
+
+---
+class: middle, center
+
+# Linear regression can be nonsensical
+
+---
+
+## Example: Fuel-tank capacity versus price in cars
+
+.tiny-font.pull-left[
+```{r cars-lm, eval = FALSE}
+ggplot(cars93) +
+  aes(x = Price, y = Fuel.tank.capacity) +
+  geom_point() + theme_bw(14) +
+  geom_smooth(method = "lm")
+```
+]
+
+.xtiny-font.pull-right[
+```{r cars-lm-out, ref.label = "cars-lm", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+--
+
+.small-font[
+Do more expensive cars have a larger fuel tank?
+]
+
+---
+
+## Example: Fuel-tank capacity versus price in cars
+
+.tiny-font.pull-left[
+```{r cars-loess, eval = FALSE}
+ggplot(cars93) +
+  aes(x = Price, y = Fuel.tank.capacity) +
+  geom_point() + theme_bw(14) +
+  # default: loess smoothing
+  geom_smooth(
+    se = FALSE
+  )
+```
+]
+
+.xtiny-font.pull-right[
+```{r cars-loess-out, ref.label = "cars-loess", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+## Example: Fuel-tank capacity versus price in cars
+
+.tiny-font.pull-left[
+```{r cars-loess2, eval = FALSE}
+ggplot(cars93) +
+  aes(x = Price, y = Fuel.tank.capacity) +
+  geom_point() + theme_bw(14) +
+  # loess smoothing
+  geom_smooth(
+    se = FALSE,
+    method = "loess",
+    formula = y ~ x
+  )
+```
+]
+
+.xtiny-font.pull-right[
+```{r cars-loess2-out, ref.label = "cars-loess2", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+--
+
+.small-font[
+Caution: Exact shape of smoothing line depends on method details
+]
+
+
+---
+
+## Example: Fuel-tank capacity versus price in cars
+
+.tiny-font.pull-left[
+```{r cars-loess3, eval = FALSE}
+ggplot(cars93) +
+  aes(x = Price, y = Fuel.tank.capacity) +
+  geom_point() + theme_bw(14) +
+  # loess smoothing
+  geom_smooth(
+    se = FALSE,
+    method = "loess",
+    formula = y ~ x,
+    span = 0.25
+  )
+```
+]
+
+.xtiny-font.pull-right[
+```{r cars-loess3-out, ref.label = "cars-loess3", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+.small-font[
+Caution: Exact shape of smoothing line depends on method details
+]
+
+
+---
+
+## Example: Fuel-tank capacity versus price in cars
+
+.tiny-font.pull-left[
+```{r cars-loess4, eval = FALSE}
+ggplot(cars93) +
+  aes(x = Price, y = Fuel.tank.capacity) +
+  geom_point() + theme_bw(14) +
+  # loess smoothing
+  geom_smooth(
+    se = FALSE,
+    method = "loess",
+    formula = y ~ x,
+    span = 0.75 # default value
+  )
+```
+]
+
+.xtiny-font.pull-right[
+```{r cars-loess4-out, ref.label = "cars-loess4", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+.small-font[
+Caution: Exact shape of smoothing line depends on method details
+]
+
+
+---
+
+## Example: Fuel-tank capacity versus price in cars
+
+.tiny-font.pull-left[
+```{r cars-loess5, eval = FALSE}
+ggplot(cars93) +
+  aes(x = Price, y = Fuel.tank.capacity) +
+  geom_point() + theme_bw(14) +
+  # loess smoothing
+  geom_smooth(
+    se = FALSE,
+    method = "loess",
+    formula = y ~ x,
+    span = 1.0
+  )
+```
+]
+
+.xtiny-font.pull-right[
+```{r cars-loess5-out, ref.label = "cars-loess5", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+.small-font[
+Caution: Exact shape of smoothing line depends on method details
+]
+
+---
+
+## Example: Fuel-tank capacity versus price in cars
+
+.tiny-font.pull-left[
+```{r cars-loess6, eval = FALSE}
+ggplot(cars93) +
+  aes(x = Price, y = Fuel.tank.capacity) +
+  geom_point() + theme_bw(14) +
+  # loess smoothing
+  geom_smooth(
+    se = FALSE,
+    method = "loess",
+    formula = y ~ x,
+    span = 1.5
+  )
+```
+]
+
+.xtiny-font.pull-right[
+```{r cars-loess6-out, ref.label = "cars-loess6", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+.small-font[
+Caution: Exact shape of smoothing line depends on method details
+]
+
+---
+
+## Example: Fuel-tank capacity versus price in cars
+
+.tiny-font.pull-left[
+```{r cars-gam, eval = FALSE}
+ggplot(cars93) +
+  aes(x = Price, y = Fuel.tank.capacity) +
+  geom_point() + theme_bw(14) +
+  # cubic spline, 5 knots
+  geom_smooth(
+    se = FALSE,
+    method = "gam",
+    formula = y ~ s(x, k = 5, bs = 'cr')
+  )
+```
+]
+
+.xtiny-font.pull-right[
+```{r cars-gam-out, ref.label = "cars-gam", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+.small-font[
+Caution: Exact shape of smoothing line depends on method details
+]
+
+---
+
+## Example: Fuel-tank capacity versus price in cars
+
+.tiny-font.pull-left[
+```{r cars-gam2, eval = FALSE}
+ggplot(cars93) +
+  aes(x = Price, y = Fuel.tank.capacity) +
+  geom_point() + theme_bw(14) +
+  # thin-plate spline, 3 knots
+  geom_smooth(
+    se = FALSE,
+    method = "gam",
+    formula = y ~ s(x, k = 3)
+  )
+```
+]
+
+.xtiny-font.pull-right[
+```{r cars-gam2-out, ref.label = "cars-gam2", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+.small-font[
+Caution: Exact shape of smoothing line depends on method details
+]
+
+
+---
+
+## Example: Fuel-tank capacity versus price in cars
+
+.tiny-font.pull-left[
+```{r cars-gam3, eval = FALSE}
+ggplot(cars93) +
+  aes(x = Price, y = Fuel.tank.capacity) +
+  geom_point() + theme_bw(14) +
+  # Gaussian process spline, 6 knots
+  geom_smooth(
+    se = FALSE,
+    method = "gam",
+    formula = y ~ s(x, k = 6, bs = 'gp')
+  )
+```
+]
+
+.xtiny-font.pull-right[
+```{r cars-gam3-out, ref.label = "cars-gam3", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+.small-font[
+Caution: Exact shape of smoothing line depends on method details
+]
+
+--
+
+.small-font[
+Smoothing lines are particularly unreliable near their endpoints
+]
 
 ---
 
 ## Further reading
 
 - Fundamentals of Data Visualization: [Chapter 14: Visualizing trends](https://clauswilke.com/dataviz/visualizing-trends.html)
+- Data Visualization—A Practical Introduction: [Chapter 6: Work with models](https://socviz.co/modeling.html)
+- **ggplot2** reference documentation: [`geom_smooth()`](https://ggplot2.tidyverse.org/reference/geom_smooth.html)
+- **mgcv** reference documentation (for gam smoothing): [pdf document](https://cran.r-project.org/web/packages/mgcv/mgcv.pdf)
+
 
 
 

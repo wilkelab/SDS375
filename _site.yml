@@ -41,6 +41,9 @@ navbar:
           href: slides/getting-things-in-order.html
         - text: "Class 12: Visualizing proportions"
           href: slides/visualizing-proportions.html
+        - text: "Class 13: Visualizing trends"
+          href: slides/visualizing-trends.html
+
     - text: "Worksheets"
       menu:
         - text: "Class 1: Intro to R Markdown"
@@ -69,6 +72,5 @@ navbar:
           href: worksheets/getting-things-in-order.Rmd
         - text: "Class 12: Visualizing proportions"
           href: worksheets/visualizing-proportions.Rmd
-
  
 output: distill::distill_article
