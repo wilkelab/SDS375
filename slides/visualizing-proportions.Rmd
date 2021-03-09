@@ -646,7 +646,7 @@ ggplot(bundestag) +
   aes(
     x0 = 0, y0 = 0, # position of pie center
     r0 = 0, r = 1,  # inner and outer radius
-    amount = seats, # size of pie slizes
+    amount = seats, # size of pie slices
     fill = party
   ) + 
   geom_arc_bar(stat = "pie")
@@ -671,7 +671,7 @@ ggplot(bundestag) +
   aes(
     x0 = 0, y0 = 0, # position of pie center
     r0 = 0, r = 1,  # inner and outer radius
-    amount = seats, # size of pie slizes
+    amount = seats, # size of pie slices
     fill = party
   ) + 
   geom_arc_bar(stat = "pie") +
@@ -697,7 +697,7 @@ ggplot(bundestag) +
   aes(
     x0 = 0, y0 = 0, # position of pie center
     r0 = 0, r = 1,  # inner and outer radius
-    amount = seats, # size of pie slizes
+    amount = seats, # size of pie slices
     fill = party
   ) + 
   geom_arc_bar(stat = "pie") +
@@ -725,7 +725,7 @@ ggplot(bundestag) +
   aes(
     x0 = 1, y0 = 1, # position of pie center
     r0 = 0, r = 1,  # inner and outer radius
-    amount = seats, # size of pie slizes
+    amount = seats, # size of pie slices
     fill = party
   ) + 
   geom_arc_bar(stat = "pie") +
@@ -752,7 +752,7 @@ ggplot(bundestag) +
   aes(
     x0 = 1, y0 = 1, # position of pie center
     r0 = 1, r = 2,  # inner and outer radius
-    amount = seats, # size of pie slizes
+    amount = seats, # size of pie slices
     fill = party
   ) + 
   geom_arc_bar(stat = "pie") +
