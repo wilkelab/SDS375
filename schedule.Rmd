@@ -97,7 +97,7 @@ knitr::opts_chunk$set(echo = FALSE)
 - [Slides](slides/visualizing-proportions.html)  
 - [Worksheet](worksheets/visualizing-proportions.Rmd)
 
-### 13. Mar 11, 2021—Visualizing proportions
+### 13. Mar 11, 2021—Visualizing trends
 
 <p class="nospace">Materials:</p>
 
