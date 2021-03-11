@@ -72,5 +72,7 @@ navbar:
           href: worksheets/getting-things-in-order.Rmd
         - text: "Class 12: Visualizing proportions"
           href: worksheets/visualizing-proportions.Rmd
+        - text: "Class 13: Visualizing trends"
+          href: worksheets/visualizing-trends.Rmd
  
 output: distill::distill_article
