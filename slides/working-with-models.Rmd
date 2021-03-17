@@ -30,7 +30,7 @@ update_geom_defaults("point", list(size = 2)) # 2 for full width, 2.5 for half w
 ## Title
 
 .tiny-font[
-```{r penguins-fits, message = FALSE, warning = FALSE, fig.width = 10, fig.asp = 0.4}
+```{r penguins-fits, message = FALSE, warning = FALSE, fig.width = 10, fig.asp = 0.4, dev = "svg"}
 penguins %>%
   ggplot(aes(body_mass_g, flipper_length_mm)) +
   geom_point() +
@@ -57,7 +57,7 @@ summary(lm_out)
 
 ## Title
 
-.tiny-font[
+.small-font[
 ```{r}
 penguins %>%
   nest(data = -species) # nest all data except species column
@@ -68,7 +68,7 @@ penguins %>%
 
 ## Title
 
-.tiny-font[
+.small-font[
 ```{r}
 penguins %>%
   nest(data = -species) %>%
@@ -83,7 +83,7 @@ penguins %>%
 
 ## Title
 
-.tiny-font[
+.small-font[
 ```{r}
 lm_data <- penguins %>%
   nest(data = -species) %>%
@@ -147,6 +147,7 @@ class: center middle
 
 ## Title
 
+.small-font[
 ```{r}
 library(broom)
 
@@ -154,11 +155,13 @@ library(broom)
 # in tidy format
 glance(lm_out)
 ```
+]
 
 ---
 
 ## Title
 
+.small-font[
 ```{r}
 library(broom)
 
@@ -166,50 +169,120 @@ library(broom)
 # in tidy format
 tidy(lm_out)
 ```
+]
 
 ---
 
 ## Title
 
+.small-font[
 ```{r}
 lm_data %>%
   mutate(
     glance_out = map(fit, glance)
   )
 ```
+]
 
 ---
 
 ## Title
 
+.small-font[
 ```{r}
 lm_data %>%
   mutate(
     glance_out = map(fit, ~glance(.x)) # same as just `glance`
   )
 ```
+]
 
 ---
 
 ## Title
 
+.small-font[
 ```{r}
 lm_data %>%
   mutate(
     glance_out = map(fit, glance)
   )
 ```
+]
 
 ---
 
 ## Title
 
+.small-font[
 ```{r}
 lm_data %>%
   mutate(glance_out = map(fit, glance)) %>%
   select(species, glance_out) %>%
   unnest(cols = glance_out)
 ```
+]
+
+
+---
+
+## All in one pipeline
+
+.tiny-font[
+```{r}
+lm_summary <- penguins %>%
+  nest(data = -species) %>%
+  mutate(
+    fit = map(data, ~lm(flipper_length_mm ~ body_mass_g, data = .x)),
+    glance_out = map(fit, glance)
+  ) %>%
+  select(species, glance_out) %>%
+  unnest(cols = glance_out)
+
+lm_summary
+```
+]
+
+
+---
+
+## Make label data
+
+.tiny-font[
+```{r}
+library(glue)
+
+label_data <- lm_summary %>%
+  mutate(
+    rsqr = signif(r.squared, 2),  # round to 2 significant digits
+    pval = signif(p.value, 2),
+    label = glue(
+      "R^2 = {rsqr}, P = {pval}"
+    ),
+    body_mass_g = 2700,
+    flipper_length_mm = 225
+  ) %>%
+  select(species, label, body_mass_g, flipper_length_mm)
+
+label_data
+```
+]
+---
+
+## And plot
+
+.tiny-font[
+```{r penguins-fit-w-labels, message = FALSE, warning = FALSE, fig.width = 9, fig.asp = 0.4, dev = "svg"}
+ggplot(penguins, aes(body_mass_g, flipper_length_mm)) + geom_point() +
+  geom_text(
+    data = label_data, aes(label = label),
+    size = 9/.pt, hjust = 0  # 9pt, left-justified
+  ) +
+  geom_smooth(method = "lm", se = FALSE) + facet_wrap(vars(species))
+```
+]
+
+
 
 ---
 
