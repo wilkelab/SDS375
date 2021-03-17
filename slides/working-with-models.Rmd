@@ -1,0 +1,222 @@
+---
+title: "Working with models"
+author: "Claus O. Wilke"
+date: "last updated: `r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: [default, "Wilke-slides-theme.css"]
+    lib_dir: libs
+    nature:
+      ratio: '16:9'
+      highlightStyle: github
+      highlightLines: true
+      slideNumberFormat: ''
+      titleSlideClass: [center, middle]
+---
+
+```{r setup, include=FALSE, echo=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(comment = "")
+
+library(tidyverse)
+library(here)
+library(palmerpenguins)
+library(cowplot)
+# ggplot2 settings so plots scale well for slide size 
+theme_set(theme_gray(16)) # 16 for full width, 18 for half width 
+update_geom_defaults("point", list(size = 2)) # 2 for full width, 2.5 for half width
+```
+
+## Title
+
+.tiny-font[
+```{r penguins-fits, message = FALSE, warning = FALSE, fig.width = 10, fig.asp = 0.4}
+penguins %>%
+  ggplot(aes(body_mass_g, flipper_length_mm)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  facet_wrap(vars(species))
+```
+]
+
+---
+
+## Title
+
+.tiny-font[
+```{r}
+penguins_adelie <- filter(penguins, species == "Adelie")
+
+lm_out <- lm(flipper_length_mm ~ body_mass_g, data = penguins_adelie)
+summary(lm_out)
+```
+]
+
+
+---
+
+## Title
+
+.tiny-font[
+```{r}
+penguins %>%
+  nest(data = -species) # nest all data except species column
+```
+]
+
+---
+
+## Title
+
+.tiny-font[
+```{r}
+penguins %>%
+  nest(data = -species) %>%
+  mutate(
+    # apply linear model to each nested data frame
+    lm_out = map(data, ~lm(flipper_length_mm ~ body_mass_g, data = .x))
+  )
+```
+]
+
+---
+
+## Title
+
+.tiny-font[
+```{r}
+lm_data <- penguins %>%
+  nest(data = -species) %>%
+  mutate(
+    # apply linear model to each nested data frame
+    fit = map(data, ~lm(flipper_length_mm ~ body_mass_g, data = .x))
+  )
+
+lm_data$fit[[1]]  # first model fit, for Adelie species
+```
+]
+
+
+---
+
+.tiny-font[
+```{r}
+summary(lm_data$fit[[1]]) # summarize the first model, which is for Adelie
+```
+]
+
+---
+
+.tiny-font[
+```{r}
+summary(lm_out)
+```
+]
+
+
+---
+
+.tiny-font[
+```{r}
+summary(lm_data$fit[[1]]) # summarize the first model, which is for Adelie
+```
+]
+
+---
+
+.tiny-font[
+```{r}
+summary(lm_data$fit[[2]]) # second model, Chinstrap
+```
+]
+
+---
+
+.tiny-font[
+```{r}
+summary(lm_data$fit[[3]]) # third model, Gentoo
+```
+]
+
+---
+class: center middle
+
+## How do we get this information into a data table?
+
+---
+
+## Title
+
+```{r}
+library(broom)
+
+# `glance()` provides model-wide summary estimates
+# in tidy format
+glance(lm_out)
+```
+
+---
+
+## Title
+
+```{r}
+library(broom)
+
+# `tidy()` provides information about regression coefficients
+# in tidy format
+tidy(lm_out)
+```
+
+---
+
+## Title
+
+```{r}
+lm_data %>%
+  mutate(
+    glance_out = map(fit, glance)
+  )
+```
+
+---
+
+## Title
+
+```{r}
+lm_data %>%
+  mutate(
+    glance_out = map(fit, ~glance(.x)) # same as just `glance`
+  )
+```
+
+---
+
+## Title
+
+```{r}
+lm_data %>%
+  mutate(
+    glance_out = map(fit, glance)
+  )
+```
+
+---
+
+## Title
+
+```{r}
+lm_data %>%
+  mutate(glance_out = map(fit, glance)) %>%
+  select(species, glance_out) %>%
+  unnest(cols = glance_out)
+```
+
+---
+
+## Further reading
+
+- **ggdendro2** reference documentation: 
+
+
+
+

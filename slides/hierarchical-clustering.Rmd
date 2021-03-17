@@ -1,5 +1,5 @@
 ---
-title: "Visualizing trends"
+title: "Hierarchical clustering"
 author: "Claus O. Wilke"
 date: "last updated: `r Sys.Date()`"
 output:
