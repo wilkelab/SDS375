@@ -27,7 +27,7 @@ theme_set(theme_gray(16)) # 16 for full width, 18 for half width
 update_geom_defaults("point", list(size = 2)) # 2 for full width, 2.5 for half width
 ```
 
-## Title
+## How do we obtain information about model fits?
 
 .tiny-font[
 ```{r penguins-fits, message = FALSE, warning = FALSE, fig.width = 10, fig.asp = 0.4, dev = "svg"}
@@ -41,7 +41,9 @@ penguins %>%
 
 ---
 
-## Title
+## We can fit a linear model with `lm()`
+
+--
 
 .tiny-font[
 ```{r}
@@ -55,7 +57,7 @@ summary(lm_out)
 
 ---
 
-## Title
+## Use `map()` to fit models to groups of data
 
 .small-font[
 ```{r}
@@ -66,7 +68,7 @@ penguins %>%
 
 ---
 
-## Title
+## Use `map()` to fit models to groups of data
 
 .small-font[
 ```{r}
@@ -74,14 +76,14 @@ penguins %>%
   nest(data = -species) %>%
   mutate(
     # apply linear model to each nested data frame
-    lm_out = map(data, ~lm(flipper_length_mm ~ body_mass_g, data = .x))
+    fit = map(data, ~lm(flipper_length_mm ~ body_mass_g, data = .x))
   )
 ```
 ]
 
 ---
 
-## Title
+## Use `map()` to fit models to groups of data
 
 .small-font[
 ```{r}
@@ -145,35 +147,58 @@ class: center middle
 
 ---
 
-## Title
+## The **broom** package cleans model output: `glance()`
+
+.small-font[
+`glance()` provides model-wide summary estimates in tidy format
+]
+
+--
 
 .small-font[
 ```{r}
 library(broom)
 
-# `glance()` provides model-wide summary estimates
-# in tidy format
 glance(lm_out)
 ```
 ]
 
 ---
 
-## Title
+## The **broom** package cleans model output: `tidy()`
+
+.small-font[
+`tidy()` provides information about regression coefficients in tidy format
+]
+
+--
 
 .small-font[
 ```{r}
 library(broom)
 
-# `tidy()` provides information about regression coefficients
-# in tidy format
 tidy(lm_out)
 ```
 ]
 
+
 ---
 
-## Title
+## Apply these functions to multiple models with `map()`
+
+--
+
+.small-font[
+Reminder: This is the nested table with fitted models
+```{r}
+lm_data
+```
+]
+
+
+---
+
+## Apply these functions to multiple models with `map()`
 
 .small-font[
 ```{r}
@@ -186,7 +211,7 @@ lm_data %>%
 
 ---
 
-## Title
+## Apply these functions to multiple models with `map()`
 
 .small-font[
 ```{r}
@@ -199,7 +224,7 @@ lm_data %>%
 
 ---
 
-## Title
+## Apply these functions to multiple models with `map()`
 
 .small-font[
 ```{r}
@@ -212,12 +237,28 @@ lm_data %>%
 
 ---
 
-## Title
+## And unnest
 
 .small-font[
 ```{r}
 lm_data %>%
-  mutate(glance_out = map(fit, glance)) %>%
+  mutate(
+    glance_out = map(fit, glance)
+  ) %>%
+  select(species, glance_out)
+```
+]
+
+---
+
+## And unnest
+
+.small-font[
+```{r}
+lm_data %>%
+  mutate(
+    glance_out = map(fit, glance)
+  ) %>%
   select(species, glance_out) %>%
   unnest(cols = glance_out)
 ```
@@ -249,8 +290,8 @@ lm_summary
 ## Make label data
 
 .tiny-font[
-```{r}
-library(glue)
+```{r message = FALSE}
+library(glue)  # for easy text formatting
 
 label_data <- lm_summary %>%
   mutate(
@@ -259,8 +300,8 @@ label_data <- lm_summary %>%
     label = glue(
       "R^2 = {rsqr}, P = {pval}"
     ),
-    body_mass_g = 2700,
-    flipper_length_mm = 225
+    body_mass_g = 6400,
+    flipper_length_mm = 175
   ) %>%
   select(species, label, body_mass_g, flipper_length_mm)
 
@@ -272,24 +313,29 @@ label_data
 ## And plot
 
 .tiny-font[
-```{r penguins-fit-w-labels, message = FALSE, warning = FALSE, fig.width = 9, fig.asp = 0.4, dev = "svg"}
+```{r penguins-fit-w-labels, eval = FALSE}
 ggplot(penguins, aes(body_mass_g, flipper_length_mm)) + geom_point() +
   geom_text(
     data = label_data, aes(label = label),
-    size = 9/.pt, hjust = 0  # 9pt, left-justified
+    size = 10/.pt, hjust = 1  # 10pt, right-justified
   ) +
   geom_smooth(method = "lm", se = FALSE) + facet_wrap(vars(species))
 ```
 ]
 
+.center[
+```{r penguins-fit-w-labels-out, ref.label = "penguins-fit-w-labels", echo = FALSE, message = FALSE, warning = FALSE, fig.width = 9, fig.asp = 0.4, dev = "svg"}
+```
+]
 
 
 ---
 
 ## Further reading
 
-- **ggdendro2** reference documentation: 
-
+- Data Visualization—A Practical Introduction: [Chapter 6.5: Tidy model objects with broom](https://socviz.co/modeling.html#tidy-model-objects-with-broom)
+- **broom** reference documentation: https://broom.tidymodels.org/
+- Article on using **broom** with **dplyr**: [**broom** and **dplyr**](https://broom.tidymodels.org/articles/broom_and_dplyr.html)
 
 
 

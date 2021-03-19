@@ -14,14 +14,14 @@ class: center, middle, title-slide
 
 # Working with models
 ### Claus O. Wilke
-### last updated: 2021-03-17
+### last updated: 2021-03-19
 
 ---
 
 
 
 
-## Title
+## How do we obtain information about model fits?
 
 .tiny-font[
 
@@ -38,7 +38,9 @@ penguins %&gt;%
 
 ---
 
-## Title
+## We can fit a linear model with `lm()`
+
+--
 
 .tiny-font[
 
@@ -75,7 +77,7 @@ F-statistic: 41.83 on 1 and 149 DF,  p-value: 1.343e-09
 
 ---
 
-## Title
+## Use `map()` to fit models to groups of data
 
 .small-font[
 
@@ -96,7 +98,7 @@ penguins %&gt;%
 
 ---
 
-## Title
+## Use `map()` to fit models to groups of data
 
 .small-font[
 
@@ -105,13 +107,13 @@ penguins %&gt;%
   nest(data = -species) %&gt;%
   mutate(
     # apply linear model to each nested data frame
-    lm_out = map(data, ~lm(flipper_length_mm ~ body_mass_g, data = .x))
+    fit = map(data, ~lm(flipper_length_mm ~ body_mass_g, data = .x))
   )
 ```
 
 ```
 # A tibble: 3 x 3
-  species   data               lm_out
+  species   data               fit   
   &lt;fct&gt;     &lt;list&gt;             &lt;list&gt;
 1 Adelie    &lt;tibble [152 × 7]&gt; &lt;lm&gt;  
 2 Gentoo    &lt;tibble [124 × 7]&gt; &lt;lm&gt;  
@@ -121,7 +123,7 @@ penguins %&gt;%
 
 ---
 
-## Title
+## Use `map()` to fit models to groups of data
 
 .small-font[
 
@@ -310,15 +312,19 @@ class: center middle
 
 ---
 
-## Title
+## The **broom** package cleans model output: `glance()`
+
+.small-font[
+`glance()` provides model-wide summary estimates in tidy format
+]
+
+--
 
 .small-font[
 
 ```r
 library(broom)
 
-# `glance()` provides model-wide summary estimates
-# in tidy format
 glance(lm_out)
 ```
 
@@ -333,15 +339,19 @@ glance(lm_out)
 
 ---
 
-## Title
+## The **broom** package cleans model output: `tidy()`
+
+.small-font[
+`tidy()` provides information about regression coefficients in tidy format
+]
+
+--
 
 .small-font[
 
 ```r
 library(broom)
 
-# `tidy()` provides information about regression coefficients
-# in tidy format
 tidy(lm_out)
 ```
 
@@ -354,9 +364,34 @@ tidy(lm_out)
 ```
 ]
 
+
 ---
 
-## Title
+## Apply these functions to multiple models with `map()`
+
+--
+
+.small-font[
+Reminder: This is the nested table with fitted models
+
+```r
+lm_data
+```
+
+```
+# A tibble: 3 x 3
+  species   data               fit   
+  &lt;fct&gt;     &lt;list&gt;             &lt;list&gt;
+1 Adelie    &lt;tibble [152 × 7]&gt; &lt;lm&gt;  
+2 Gentoo    &lt;tibble [124 × 7]&gt; &lt;lm&gt;  
+3 Chinstrap &lt;tibble [68 × 7]&gt;  &lt;lm&gt;  
+```
+]
+
+
+---
+
+## Apply these functions to multiple models with `map()`
 
 .small-font[
 
@@ -379,7 +414,7 @@ lm_data %&gt;%
 
 ---
 
-## Title
+## Apply these functions to multiple models with `map()`
 
 .small-font[
 
@@ -402,7 +437,7 @@ lm_data %&gt;%
 
 ---
 
-## Title
+## Apply these functions to multiple models with `map()`
 
 .small-font[
 
@@ -425,13 +460,39 @@ lm_data %&gt;%
 
 ---
 
-## Title
+## And unnest
 
 .small-font[
 
 ```r
 lm_data %&gt;%
-  mutate(glance_out = map(fit, glance)) %&gt;%
+  mutate(
+    glance_out = map(fit, glance)
+  ) %&gt;%
+  select(species, glance_out)
+```
+
+```
+# A tibble: 3 x 2
+  species   glance_out       
+  &lt;fct&gt;     &lt;list&gt;           
+1 Adelie    &lt;tibble [1 × 12]&gt;
+2 Gentoo    &lt;tibble [1 × 12]&gt;
+3 Chinstrap &lt;tibble [1 × 12]&gt;
+```
+]
+
+---
+
+## And unnest
+
+.small-font[
+
+```r
+lm_data %&gt;%
+  mutate(
+    glance_out = map(fit, glance)
+  ) %&gt;%
   select(species, glance_out) %&gt;%
   unnest(cols = glance_out)
 ```
@@ -488,21 +549,8 @@ lm_summary
 .tiny-font[
 
 ```r
-library(glue)
-```
+library(glue)  # for easy text formatting
 
-```
-
-Attaching package: 'glue'
-```
-
-```
-The following object is masked from 'package:dplyr':
-
-    collapse
-```
-
-```r
 label_data &lt;- lm_summary %&gt;%
   mutate(
     rsqr = signif(r.squared, 2),  # round to 2 significant digits
@@ -510,8 +558,8 @@ label_data &lt;- lm_summary %&gt;%
     label = glue(
       "R^2 = {rsqr}, P = {pval}"
     ),
-    body_mass_g = 2700,
-    flipper_length_mm = 225
+    body_mass_g = 6400,
+    flipper_length_mm = 175
   ) %&gt;%
   select(species, label, body_mass_g, flipper_length_mm)
 
@@ -522,9 +570,9 @@ label_data
 # A tibble: 3 x 4
   species   label                   body_mass_g flipper_length_mm
   &lt;fct&gt;     &lt;glue&gt;                        &lt;dbl&gt;             &lt;dbl&gt;
-1 Adelie    R^2 = 0.22, P = 1.3e-09        2700               225
-2 Gentoo    R^2 = 0.49, P = 1.3e-19        2700               225
-3 Chinstrap R^2 = 0.41, P = 3.7e-09        2700               225
+1 Adelie    R^2 = 0.22, P = 1.3e-09        6400               175
+2 Gentoo    R^2 = 0.49, P = 1.3e-19        6400               175
+3 Chinstrap R^2 = 0.41, P = 3.7e-09        6400               175
 ```
 ]
 ---
@@ -537,22 +585,24 @@ label_data
 ggplot(penguins, aes(body_mass_g, flipper_length_mm)) + geom_point() +
   geom_text(
     data = label_data, aes(label = label),
-    size = 9/.pt, hjust = 0  # 9pt, left-justified
+    size = 10/.pt, hjust = 1  # 10pt, right-justified
   ) +
   geom_smooth(method = "lm", se = FALSE) + facet_wrap(vars(species))
 ```
-
-![](working-with-models_files/figure-html/penguins-fit-w-labels-1.svg)&lt;!-- --&gt;
 ]
 
+.center[
+![](working-with-models_files/figure-html/penguins-fit-w-labels-out-1.svg)&lt;!-- --&gt;
+]
 
 
 ---
 
 ## Further reading
 
-- **ggdendro2** reference documentation: 
-
+- Data Visualization—A Practical Introduction: [Chapter 6.5: Tidy model objects with broom](https://socviz.co/modeling.html#tidy-model-objects-with-broom)
+- **broom** reference documentation: https://broom.tidymodels.org/
+- Article on using **broom** with **dplyr**: [**broom** and **dplyr**](https://broom.tidymodels.org/articles/broom_and_dplyr.html)
 
 
 
