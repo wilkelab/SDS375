@@ -1,0 +1,62 @@
+---
+title: "Homework 6"
+---
+
+```{r global_options, include=FALSE}
+library(knitr)
+library(tidyverse)
+library(colorspace)
+library(cowplot)
+
+opts_chunk$set(fig.align="center", fig.height=4.326, fig.width=7)
+```
+
+*Enter your name and EID here*
+
+**This homework is due on March 29, 2021 at 11:00pm. Please submit as a pdf file on Canvas.**
+
+For all problems in this homework, we will work with the `BA_degrees` dataset. It contains the proportions of Bachelor’s degrees awarded in the US between 1970 and 2015.
+
+```{r message = FALSE}
+BA_degrees <- read_csv("https://wilkelab.org/SDS375/datasets/BA_degrees.csv")
+BA_degrees
+```
+
+**Problem 1: (3 pts)** 
+
+Consider the Bachelor’s degrees awarded in 2015. There are 32 different areas:
+
+```{r}
+BA_degrees_2015 <- BA_degrees %>%
+  filter(year == 2015) %>%
+  arrange(desc(perc))
+
+print(BA_degrees_2015, n = nrow(BA_degrees_2015))
+```
+
+If you wanted to visualize the relative proportion of these different degree areas, which plot would be most appropriate? A pie chart, a stacked bar chart, or side-by-side bars? Please explain your reasoning. You do not have to make the chart.
+
+**Answer:** *Your answer goes here.*
+
+**Problem 2: (5 pts)** Now make a pie chart of the `BA_degrees_2015` dataset, but show only the four most common areas, plus all others lumped together into "Other". (The code to prepare this lumped dataset has been provided for your convenience.) Make sure the pie slices are arranged in a reasonable order. Choose a reasonable color scale and a clean theme that avoids distracting visual elements.
+
+Grading rubric: 3 pts for making the right plot, 2 pts for visual design
+
+```{r}
+# data preparation
+top_four <- BA_degrees_2015$field[1:4]  # works because we sorted by perc in Problem 1
+BA_degrees_lumped <- BA_degrees_2015 %>%
+  mutate(field = ifelse(field %in% top_four, field, "Other")) %>%
+  group_by(field) %>%
+  summarize(perc = sum(perc))
+  
+# your code goes here
+```
+
+**Problem 3: (2 pts)** Now go back to the entire dataset `BA_degrees` but focus only on the degree field `"Parks, recreation, leisure, and fitness studies"`. Plot a time series of the proportion of degrees (colum `perc`) in this field  over time. Also plot a straight line fit to the data. What do you observe?
+
+```{r}
+# your code goes here
+```
+
+*Your answer goes here.*
