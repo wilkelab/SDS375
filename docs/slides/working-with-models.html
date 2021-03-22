@@ -555,11 +555,8 @@ label_data &lt;- lm_summary %&gt;%
   mutate(
     rsqr = signif(r.squared, 2),  # round to 2 significant digits
     pval = signif(p.value, 2),
-    label = glue(
-      "R^2 = {rsqr}, P = {pval}"
-    ),
-    body_mass_g = 6400,
-    flipper_length_mm = 175
+    label = glue("R^2 = {rsqr}, P = {pval}"),
+    body_mass_g = 6400, flipper_length_mm = 175 # label position in plot
   ) %&gt;%
   select(species, label, body_mass_g, flipper_length_mm)
 

@@ -551,7 +551,14 @@ Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.
 
 ---
 
-## Title
+## Marginal effects example: Height reached on Everest
+
+--
+
+Average height reached relative to:<br>
+a male climber who climbed with oxygen, summited, and survived
+
+--
 
 .center[
 ```{r everest_margins, echo = FALSE, fig.width = 8, fig.asp = 0.5, dev = "svg"}
@@ -578,7 +585,7 @@ everest_data <- everest %>%
 evrst_out <- lm(highpoint_metres ~ died + sex + success + oxygen_used, data = everest_data)
 #summary(evrst_out)
 
-#evrst_marg <- margins(evrst_out)
+evrst_marg <- margins(evrst_out)
 #evrst_marg
 
 evrst_gg <- as_tibble(summary(evrst_marg)) %>%
@@ -596,19 +603,89 @@ evrst_gg <- as_tibble(summary(evrst_marg)) %>%
 
 ggplot(evrst_gg) +
   aes(
-    y = fct_reorder(factor, AME),
+    y = factor,
     x = AME, xmin = lower, xmax = upper
   ) +
   geom_vline(xintercept = 0, color = "gray20") +
   geom_pointrange(color = "#0072B2", size = 1) +
-  labs(x = "average height reached below summit (meters)", y = NULL) +
+  scale_x_continuous(
+    name = "average height reached below summit (meters)",
+    limits = c(-1600, 200)
+  ) +
+  scale_y_discrete(name = NULL) +
   theme_minimal_grid(16, rel_small = 1) +
   theme(axis.ticks.length.x = grid::unit(0, "pt"))
 ```
 ]
 
 ---
+
+## Marginal effects example: Height reached on Everest
+
+Other visualization options: halfeye
+
+.center[
+```{r everest_margins2, echo = FALSE, fig.width = 8, fig.asp = 0.5, dev = "svg"}
+library(ggdist)
+library(distributional)
+
+ggplot(evrst_gg) +
+  aes(y = factor, x = AME) +
+  geom_vline(xintercept = 0, color = "gray20") +
+  stat_dist_halfeye(
+    aes(dist = dist_normal(mu = AME, sigma = SE)),
+    color = "#0072B2",
+    fill =  "#0072B288",
+    alpha = NA,
+    point_size = 4
+  ) +
+  scale_x_continuous(
+    name = "average height reached below summit (meters)",
+    limits = c(-1600, 200)
+  ) +
+  scale_y_discrete(name = NULL) +
+  theme_minimal_grid(16, rel_small = 1) +
+  theme(axis.ticks.length.x = grid::unit(0, "pt"))
+```
+]
+
+
+---
+
+## Marginal effects example: Height reached on Everest
+
+Other visualization options: gradient interval
+
+.center[
+```{r everest_margins3, echo = FALSE, fig.width = 8, fig.asp = 0.5, dev = "svg"}
+library(ggdist)
+library(distributional) # for dist_normal()
+
+ggplot(evrst_gg) +
+  aes(y = factor, x = AME) +
+  geom_vline(xintercept = 0, color = "gray20") +
+  stat_dist_gradientinterval(
+    aes(dist = dist_normal(mu = AME, sigma = SE)),
+    color = "#0072B2",
+    fill =  "#0072B288",
+    alpha = NA,
+    point_size = 4
+  ) +
+  scale_x_continuous(
+    name = "average height reached below summit (meters)",
+    limits = c(-1600, 200)
+  ) +
+  scale_y_discrete(name = NULL) +
+  theme_minimal_grid(16, rel_small = 1) +
+  theme(axis.ticks.length.x = grid::unit(0, "pt"))
+```
+]
+
+
+---
 ## Making a plot with error bars in R
+
+--
 
 .tiny-font[
 ```{r}
@@ -746,15 +823,82 @@ Figure and code idea from [Kieran Healy. Data Visualization: A practical introdu
 
 ---
 
-## Further reading
+## Halfeyes, gradient intervals, etc
 
-**needs updating**
+--
+
+The **ggdist** package provides many different visualizations of uncertainty
+
+--
+
+.tiny-font.pull-left[
+```{r gapminder-halfeye, eval = FALSE}
+library(ggdist)
+library(distributional) # for dist_normal()
+
+lm_data %>%
+  filter(year == 1952) %>%
+  mutate(
+    continent = 
+      fct_reorder(continent, estimate) 
+  ) %>%
+  ggplot(aes(x = estimate, y = continent)) +
+  stat_dist_halfeye(
+    aes(dist = dist_normal(
+      mu = estimate, sigma = std.error
+    )),
+    point_size = 4
+  )
+```
+]
+
+.pull-right[
+```{r gapminder-halfeye-out, ref.label = "gapminder-halfeye", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+## Halfeyes, gradient intervals, etc
+
+The **ggdist** package provides many different visualizations of uncertainty
+
+.tiny-font.pull-left[
+```{r gapminder-gradinterval, eval = FALSE}
+library(ggdist)
+library(distributional) # for dist_normal()
+
+lm_data %>%
+  filter(year == 1952) %>%
+  mutate(
+    continent = 
+      fct_reorder(continent, estimate) 
+  ) %>%
+  ggplot(aes(x = estimate, y = continent)) +
+  stat_dist_gradientinterval(
+    aes(dist = dist_normal(
+      mu = estimate, sigma = std.error
+    )),
+    point_size = 4,
+    fill = "skyblue"
+  )
+```
+]
+
+.pull-right[
+```{r gapminder-gradinterval-out, ref.label = "gapminder-gradinterval", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+## Further reading
 
 - Fundamentals of Data Visualization: [Chapter 16: Visualizing uncertainty](https://clauswilke.com/dataviz/visualizing-uncertainty.html)
 - Data Visualization—A Practical Introduction: [Chapter 6.6: Grouped analysis and list columns](https://socviz.co/modeling.html#grouped-analysis-and-list-columns)
 - Data Visualization—A Practical Introduction: [Chapter 6.7: Plot marginal effects](https://socviz.co/modeling.html#plot-marginal-effects)
-- **broom** reference documentation: https://broom.tidymodels.org/
-- Article on using **broom** with **dplyr**: [**broom** and **dplyr**](https://broom.tidymodels.org/articles/broom_and_dplyr.html)
+- **ggdist** reference documentation: https://mjskay.github.io/ggdist/index.html
+- **ggdist** vignette: [Frequentist uncertainty visualization](https://mjskay.github.io/ggdist/articles/freq-uncertainty-vis.html)
 
 
 

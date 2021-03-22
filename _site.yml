@@ -45,6 +45,8 @@ navbar:
           href: slides/visualizing-trends.html
         - text: "Class 14: Working with models"
           href: slides/working-with-models.html
+        - text: "Class 15: Visualizing uncertainty"
+          href: slides/visualizing-uncertainty.html
 
     - text: "Worksheets"
       menu:
