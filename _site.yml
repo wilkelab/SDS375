@@ -78,5 +78,7 @@ navbar:
           href: worksheets/visualizing-proportions.Rmd
         - text: "Class 13: Visualizing trends"
           href: worksheets/visualizing-trends.Rmd
+        - text: "Class 14: Working with models"
+          href: worksheets/working-with-models.Rmd
  
 output: distill::distill_article

@@ -109,6 +109,7 @@ knitr::opts_chunk$set(echo = FALSE)
 <p class="nospace">Materials:</p>
 
 - [Slides](slides/working-with-models.html)
+- [Worksheet](worksheets/working-with-models.Rmd)
 
 ### 14. Mar 25, 2021—Visualizing uncertainty
 

@@ -4,7 +4,7 @@
 # Click on "Run Document" in RStudio to run this worksheet. #
 #                                                           #
 #############################################################
-title: "Visualizing proportions"
+title: "Visualizing trends"
 author: "Claus O. Wilke"
 output: learnr::tutorial
 runtime: shiny_prerendered
