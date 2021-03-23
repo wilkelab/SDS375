@@ -204,7 +204,9 @@ All projects are due by 11:00pm on the day they are due. Projects need to be sub
 
 <p class="nospace">Materials:</p>
 
-- coming soon
+- [Instructions](assignments/project2_instructions.html)
+- [Project Template (Rmd)](assignments/project2.Rmd)
+- [Project Template (HTML)](assignments/project2.html)
 
 ### Project 3 (due May 3, 2021)
 

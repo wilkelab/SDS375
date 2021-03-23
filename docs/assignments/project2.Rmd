@@ -1,0 +1,72 @@
+---
+title: "Project 2"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(colorspace)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+*Enter your name and EID here*
+
+This is the dataset you will be working with:
+
+```{r message = FALSE}
+bank_churners <- readr::read_csv("https://wilkelab.org/SDS375/datasets/bank_churners.csv")
+
+bank_churners
+```
+
+More information about the dataset can be found here:
+https://www.kaggle.com/sakshigoyal7/credit-card-customers
+
+### **Part 1**
+
+**Question:** Is attrition rate related to income level?
+
+To answer this question, create a summary table and one visualization. The summary table should have three columns, income category, existing customers, and attrited customers, where the last two columns show the number of customers for the respective category.
+
+The visualization should show the relative proportion of existing and attrited customers at each income level.
+
+For both the table and the visualization, make sure that income categories are presented in a meaningful order. For simplicity, you can eliminate the income level "Unknown" from your analysis.
+
+**Hints:**
+
+1. To make sure that the income levels are in a meaningful order, use `fct_relevel()`. Note that `arrange()` will order based on factor levels if you arrange by a factor.
+
+2. To generate the summary table, you will have to use `pivot_wider()` at the very end of your processing pipeline.
+
+
+**Introduction:** *Your introduction here.*
+
+**Approach:** *Your approach here.*
+
+**Analysis:**
+
+```{r }
+
+# Your R code here
+
+```
+
+**Discussion:** *Your discussion of results here.*
+
+### **Part 2**
+
+**Question:** *Your question here.*
+
+**Introduction:** *Your introduction here.*
+
+**Approach:** *Your approach here.*
+
+**Analysis:**
+
+```{r }
+
+# Your R code here
+
+```
+
+**Discussion:** *Your discussion of results here.*
