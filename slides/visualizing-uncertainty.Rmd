@@ -622,7 +622,7 @@ ggplot(evrst_gg) +
 
 ## Marginal effects example: Height reached on Everest
 
-Other visualization options: halfeye
+Other visualization options: half-eye
 
 .center[
 ```{r everest_margins2, echo = FALSE, fig.width = 8, fig.asp = 0.5, dev = "svg"}
@@ -823,7 +823,7 @@ Figure and code idea from [Kieran Healy. Data Visualization: A practical introdu
 
 ---
 
-## Halfeyes, gradient intervals, etc
+## Half-eyes, gradient intervals, etc
 
 --
 
@@ -859,7 +859,7 @@ lm_data %>%
 
 ---
 
-## Halfeyes, gradient intervals, etc
+## Half-eyes, gradient intervals, etc
 
 The **ggdist** package provides many different visualizations of uncertainty
 

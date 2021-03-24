@@ -80,5 +80,7 @@ navbar:
           href: worksheets/visualizing-trends.Rmd
         - text: "Class 14: Working with models"
           href: worksheets/working-with-models.Rmd
+        - text: "Class 15: Visualizing uncertainty"
+          href: worksheets/visualizing-uncertainty.Rmd
  
 output: distill::distill_article
