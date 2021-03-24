@@ -508,7 +508,7 @@ ggplot(CI_df, aes(estimate, type)) +
   geom_label(
     data = filter(CI_df, type == "sample"),
     aes(estimate, label = "mean"),
-    hjust = 0.2, vjust = 0, nudge_y = 0.2,
+    hjust = 0.2, vjust = 0, nudge_y = 0.1,
     size = 16/.pt,
     fill = "#FFFFFFA0",
     label.size = 0
