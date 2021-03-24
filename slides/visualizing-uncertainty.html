@@ -212,6 +212,37 @@ Other visualization options: gradient interval
 ![](visualizing-uncertainty_files/figure-html/everest_margins3-1.svg)&lt;!-- --&gt;
 ]
 
+---
+
+## Marginal effects example: Height reached on Everest
+
+Other visualization options: quantile dotplot
+
+.center[
+![](visualizing-uncertainty_files/figure-html/everest_margins4-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Marginal effects example: Height reached on Everest
+
+Other visualization options: quantile dotplot
+
+.center[
+![](visualizing-uncertainty_files/figure-html/everest_margins5-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Marginal effects example: Height reached on Everest
+
+Other visualization options: quantile dotplot
+
+.center[
+![](visualizing-uncertainty_files/figure-html/everest_margins6-1.svg)&lt;!-- --&gt;
+]
+
 
 ---
 ## Making a plot with error bars in R
@@ -528,6 +559,41 @@ lm_data %&gt;%
 .pull-right[
 ![](visualizing-uncertainty_files/figure-html/gapminder-gradinterval-out-1.svg)&lt;!-- --&gt;
 ]
+
+---
+
+## Half-eyes, gradient intervals, etc
+
+The **ggdist** package provides many different visualizations of uncertainty
+
+.tiny-font.pull-left[
+
+```r
+library(ggdist)
+library(distributional) # for dist_normal()
+
+lm_data %&gt;%
+  filter(year == 1952) %&gt;%
+  mutate(
+    continent = 
+      fct_reorder(continent, estimate) 
+  ) %&gt;%
+  ggplot(aes(x = estimate, y = continent)) +
+  stat_dist_dotsinterval(
+    aes(dist = dist_normal(
+      mu = estimate, sigma = std.error
+    )),
+    point_size = 4,
+    fill = "skyblue",
+    quantiles = 20
+  )
+```
+]
+
+.pull-right[
+![](visualizing-uncertainty_files/figure-html/gapminder-quantiledots-out-1.svg)&lt;!-- --&gt;
+]
+
 
 ---
 

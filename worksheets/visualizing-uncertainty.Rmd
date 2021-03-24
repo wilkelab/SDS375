@@ -171,7 +171,7 @@ lm_data %>%
 
 ## Half-eyes, gradient intervals, etc.
 
-If we want to go beyond simple error bars, the **ggdist** package provides many more sophisticated approaches to visualizing uncertainty distributions. These include `stat_dist_halfeye()`, `stat_dist_gradientinterval()`, and `stat_dist_dotsinterval()` to draw half-eyes, gradient intervals, and dot plots, respectively. All these functions take an unusual `aes()` argument of the form `aes(dist = <distribution function>)`. Here, `<distribution function>` is a distribution function from the **distributional** package converting the parameter estimate and standard error (and possibly other values, such as the residual degrees of freedom) into an error distribution. For example, the following mapping would use the `estimate` and `std.error` columns in the data to create a normal error distribution.
+If we want to go beyond simple error bars, the **ggdist** package provides many more sophisticated approaches to visualizing uncertainty distributions. These include `stat_dist_halfeye()`, `stat_dist_gradientinterval()`, and `stat_dist_dotsinterval()` to draw half-eyes, gradient intervals, and quantile dotplots, respectively. All these functions take an unusual `aes()` argument of the form `aes(dist = <distribution function>)`. Here, `<distribution function>` is a distribution function from the **distributional** package converting the parameter estimate and standard error (and possibly other values, such as the residual degrees of freedom) into an error distribution. For example, the following mapping would use the `estimate` and `std.error` columns in the data to create a normal error distribution.
 
 ```{r echo = TRUE, eval = FALSE}
 aes(dist = dist_normal(mu = estimate, sigma = std.error))
@@ -224,7 +224,7 @@ lm_data %>%
   )
 ```
 
-And finally use `stat_dist_dotsinterval()`. This stat takes an additional parameter `quantiles` that determines the number of dots to draw. Try `quantiles = 20`.
+And finally use `stat_dist_dotsinterval()`. This stat takes an additional parameter `quantiles` that determines the number of quantile dots to draw. Try `quantiles = 20`.
 
 ```{r dotsinterval-exercise, exercise = TRUE}
 
@@ -254,4 +254,4 @@ lm_data %>%
   )
 ```
 
-Change both the year and the number of quantiles to see how dot-interval plots look in a variety of different scenarios. The possible year values range from 1952 to 2007 in five-year increments.
+Change both the year and the number of quantiles to see how quantile dotplots look in a variety of different scenarios. The possible year values range from 1952 to 2007 in five-year increments.

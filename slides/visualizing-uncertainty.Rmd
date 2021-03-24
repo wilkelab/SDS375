@@ -681,6 +681,103 @@ ggplot(evrst_gg) +
 ```
 ]
 
+---
+
+## Marginal effects example: Height reached on Everest
+
+Other visualization options: quantile dotplot
+
+.center[
+```{r everest_margins4, echo = FALSE, fig.width = 8, fig.asp = 0.5, dev = "svg"}
+library(ggdist)
+library(distributional) # for dist_normal()
+
+ggplot(evrst_gg) +
+  aes(y = factor, x = AME) +
+  geom_vline(xintercept = 0, color = "gray20") +
+  stat_dist_dotsinterval(
+    aes(dist = dist_normal(mu = AME, sigma = SE)),
+    color = "#0072B2",
+    fill =  "#0072B288",
+    alpha = NA,
+    point_size = 4,
+    quantiles = 20
+  ) +
+  scale_x_continuous(
+    name = "average height reached below summit (meters)",
+    limits = c(-1600, 200)
+  ) +
+  scale_y_discrete(name = NULL) +
+  theme_minimal_grid(16, rel_small = 1) +
+  theme(axis.ticks.length.x = grid::unit(0, "pt"))
+```
+]
+
+---
+
+## Marginal effects example: Height reached on Everest
+
+Other visualization options: quantile dotplot
+
+.center[
+```{r everest_margins5, echo = FALSE, fig.width = 8, fig.asp = 0.5, dev = "svg"}
+library(ggdist)
+library(distributional) # for dist_normal()
+
+ggplot(evrst_gg) +
+  aes(y = factor, x = AME) +
+  geom_vline(xintercept = 0, color = "gray20") +
+  stat_dist_dotsinterval(
+    aes(dist = dist_normal(mu = AME, sigma = SE)),
+    color = "#0072B2",
+    fill =  "#0072B288",
+    alpha = NA,
+    point_size = 4,
+    quantiles = 7
+  ) +
+  scale_x_continuous(
+    name = "average height reached below summit (meters)",
+    limits = c(-1600, 200)
+  ) +
+  scale_y_discrete(name = NULL) +
+  theme_minimal_grid(16, rel_small = 1) +
+  theme(axis.ticks.length.x = grid::unit(0, "pt"))
+```
+]
+
+
+---
+
+## Marginal effects example: Height reached on Everest
+
+Other visualization options: quantile dotplot
+
+.center[
+```{r everest_margins6, echo = FALSE, fig.width = 8, fig.asp = 0.5, dev = "svg"}
+library(ggdist)
+library(distributional) # for dist_normal()
+
+ggplot(evrst_gg) +
+  aes(y = factor, x = AME) +
+  geom_vline(xintercept = 0, color = "gray20") +
+  stat_dist_dotsinterval(
+    aes(dist = dist_normal(mu = AME, sigma = SE)),
+    color = "#0072B2",
+    fill =  "#0072B288",
+    alpha = NA,
+    point_size = 4,
+    quantiles = 50
+  ) +
+  scale_x_continuous(
+    name = "average height reached below summit (meters)",
+    limits = c(-1600, 200)
+  ) +
+  scale_y_discrete(name = NULL) +
+  theme_minimal_grid(16, rel_small = 1) +
+  theme(axis.ticks.length.x = grid::unit(0, "pt"))
+```
+]
+
 
 ---
 ## Making a plot with error bars in R
@@ -889,6 +986,41 @@ lm_data %>%
 ```{r gapminder-gradinterval-out, ref.label = "gapminder-gradinterval", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
+
+---
+
+## Half-eyes, gradient intervals, etc
+
+The **ggdist** package provides many different visualizations of uncertainty
+
+.tiny-font.pull-left[
+```{r gapminder-quantiledots, eval = FALSE}
+library(ggdist)
+library(distributional) # for dist_normal()
+
+lm_data %>%
+  filter(year == 1952) %>%
+  mutate(
+    continent = 
+      fct_reorder(continent, estimate) 
+  ) %>%
+  ggplot(aes(x = estimate, y = continent)) +
+  stat_dist_dotsinterval(
+    aes(dist = dist_normal(
+      mu = estimate, sigma = std.error
+    )),
+    point_size = 4,
+    fill = "skyblue",
+    quantiles = 20
+  )
+```
+]
+
+.pull-right[
+```{r gapminder-quantiledots-out, ref.label = "gapminder-quantiledots", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
 
 ---
 
