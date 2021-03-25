@@ -428,6 +428,19 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 
 ---
 
+## Frequency interpretation of a confidence interval
+
+.center[
+<img src = "https://clauswilke.com/dataviz/visualizing_uncertainty_files/figure-html/ci-frequentist-expl-1.png" width = "500" />
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+
 ## Example: Highest point reached on Everest in 2019
 
 .center[
@@ -536,18 +549,6 @@ ggplot(CI_df, aes(estimate, type)) +
 ]
 
 Includes only climbers and expedition members who **did not** summit
-
----
-
-## Frequency interpretation of a confidence interval
-
-.center[
-<img src = "https://clauswilke.com/dataviz/visualizing_uncertainty_files/figure-html/ci-frequentist-expl-1.png" width = "500" />
-]
-
-???
-
-Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
 
 ---
 
@@ -778,11 +779,114 @@ ggplot(evrst_gg) +
 ```
 ]
 
-
 ---
+
 ## Making a plot with error bars in R
 
 --
+
+.small-font[
+Example: Relationship between life expectancy and GDP per capita
+]
+
+.center[
+```{r gapminder-regressions, echo = FALSE, message = FALSE, fig.width = 7, fig.asp = 0.65, dev = "svg"}
+gapminder %>%
+  filter(
+    continent != "Oceania",
+    year %in% c(1952, 1967, 1982, 1997)
+  ) %>%
+  mutate(
+    continent = fct_relevel(continent,  "Americas", "Europe", "Asia",  "Africa")
+  ) %>%
+  ggplot(aes(log(gdpPercap), lifeExp)) +
+  geom_point(size = 0.5, color = "#0072B2") +
+  geom_smooth(method = "lm", color = "black") +
+  xlab("log GDP per capita") +
+  scale_y_continuous(
+    name = "life expectancy",
+    breaks = c(40, 60, 80)
+  ) +
+  facet_grid(year ~ continent) +
+  theme_minimal_grid(14, rel_small = 1) +
+  panel_border(color = "black")
+```
+]
+
+---
+
+## Making a plot with error bars in R
+
+.small-font[
+Example: Relationship between life expectancy and GDP per capita
+]
+
+.pull-left[
+```{r gapminder-regressions2, echo = FALSE, message = FALSE, fig.width = 7, fig.asp = 0.65, dev = "svg"}
+gapminder %>%
+  filter(
+    continent != "Oceania",
+    year %in% c(1952, 1967, 1982, 1997)
+  ) %>%
+  mutate(
+    continent = fct_relevel(continent,  "Americas", "Europe", "Asia",  "Africa")
+  ) %>%
+  ggplot(aes(log(gdpPercap), lifeExp)) +
+  geom_point(size = 0.5, color = "#0072B2") +
+  geom_smooth(method = "lm", color = "black") +
+  xlab("log GDP per capita") +
+  scale_y_continuous(
+    name = "life expectancy",
+    breaks = c(40, 60, 80)
+  ) +
+  facet_grid(year ~ continent) +
+  theme_minimal_grid(14, rel_small = 1) +
+  panel_border(color = "black")
+```
+]
+
+.pull-right[
+<br>
+```{r gapminder-summary, echo = FALSE, message = FALSE, fig.width = 7, fig.asp = 0.5, dev = "svg"}
+gapminder %>%
+  nest(data = -c(continent, year)) %>%
+  mutate(
+    fit = map(data, ~lm(lifeExp ~ log(gdpPercap), data = .x)),
+    tidy_out = map(fit, tidy)
+  ) %>%
+  unnest(cols = tidy_out) %>%
+  filter(term != "(Intercept)", continent != "Oceania") %>%
+  mutate(
+    continent = fct_relevel(continent, "Americas", "Europe", "Asia",  "Africa")
+  ) %>%
+  ggplot() +
+  aes(
+    x = year, y = estimate,
+    ymin = estimate - 1.96*std.error,
+    ymax = estimate + 1.96*std.error,
+    color = continent
+  ) +
+  geom_pointrange(
+    position = position_dodge(width = 1)
+  ) +
+  scale_x_continuous(
+    breaks = c(1952, 1962, 1972, 1982, 1992, 2002)
+  ) + 
+  scale_y_continuous(
+    name = "regression slope"
+  ) +
+  scale_color_manual(
+    values = c(Africa = "#009E73", Americas = "#0072B2", Asia = "#D55E00", Europe = "#F0E442")
+  ) +
+  theme_minimal_grid(16, rel_small = 1) +
+  theme(legend.position = "top")
+```
+
+]
+
+---
+
+## Making a plot with error bars in R
 
 .tiny-font[
 ```{r}
@@ -792,7 +896,6 @@ lm_data <- gapminder %>%
 lm_data
 ```
 ]
-
 
 ---
 
@@ -895,8 +998,8 @@ lm_data
 ggplot(lm_data) +
   aes(
     x = year, y = estimate,
-    ymin = estimate - 2*std.error,
-    ymax = estimate + 2*std.error,
+    ymin = estimate - 1.96*std.error,
+    ymax = estimate + 1.96*std.error,
     color = continent
   ) +
   geom_pointrange(
@@ -1018,6 +1121,40 @@ lm_data %>%
 
 .pull-right[
 ```{r gapminder-quantiledots-out, ref.label = "gapminder-quantiledots", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+## Half-eyes, gradient intervals, etc
+
+The **ggdist** package provides many different visualizations of uncertainty
+
+.tiny-font.pull-left[
+```{r gapminder-quantiledots2, eval = FALSE}
+library(ggdist)
+library(distributional) # for dist_normal()
+
+lm_data %>%
+  filter(year == 1952) %>%
+  mutate(
+    continent = 
+      fct_reorder(continent, estimate) 
+  ) %>%
+  ggplot(aes(x = estimate, y = continent)) +
+  stat_dist_dotsinterval(
+    aes(dist = dist_normal(
+      mu = estimate, sigma = std.error
+    )),
+    point_size = 4,
+    fill = "skyblue",
+    quantiles = 10
+  )
+```
+]
+
+.pull-right[
+```{r gapminder-quantiledots2-out, ref.label = "gapminder-quantiledots2", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 

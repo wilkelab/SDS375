@@ -156,16 +156,6 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 
 ---
 
-## Example: Highest point reached on Everest in 2019
-
-.center[
-![](visualizing-uncertainty_files/figure-html/everest-highest-point-1.svg)&lt;!-- --&gt;
-]
-
-Includes only climbers and expedition members who **did not** summit
-
----
-
 ## Frequency interpretation of a confidence interval
 
 .center[
@@ -175,6 +165,17 @@ Includes only climbers and expedition members who **did not** summit
 ???
 
 Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+
+## Example: Highest point reached on Everest in 2019
+
+.center[
+![](visualizing-uncertainty_files/figure-html/everest-highest-point-1.svg)&lt;!-- --&gt;
+]
+
+Includes only climbers and expedition members who **did not** summit
 
 ---
 
@@ -243,11 +244,41 @@ Other visualization options: quantile dotplot
 ![](visualizing-uncertainty_files/figure-html/everest_margins6-1.svg)&lt;!-- --&gt;
 ]
 
-
 ---
+
 ## Making a plot with error bars in R
 
 --
+
+.small-font[
+Example: Relationship between life expectancy and GDP per capita
+]
+
+.center[
+![](visualizing-uncertainty_files/figure-html/gapminder-regressions-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Making a plot with error bars in R
+
+.small-font[
+Example: Relationship between life expectancy and GDP per capita
+]
+
+.pull-left[
+![](visualizing-uncertainty_files/figure-html/gapminder-regressions2-1.svg)&lt;!-- --&gt;
+]
+
+.pull-right[
+&lt;br&gt;
+![](visualizing-uncertainty_files/figure-html/gapminder-summary-1.svg)&lt;!-- --&gt;
+
+]
+
+---
+
+## Making a plot with error bars in R
 
 .tiny-font[
 
@@ -275,7 +306,6 @@ lm_data
 # … with 50 more rows
 ```
 ]
-
 
 ---
 
@@ -469,8 +499,8 @@ lm_data
 ggplot(lm_data) +
   aes(
     x = year, y = estimate,
-    ymin = estimate - 2*std.error,
-    ymax = estimate + 2*std.error,
+    ymin = estimate - 1.96*std.error,
+    ymax = estimate + 1.96*std.error,
     color = continent
   ) +
   geom_pointrange(
@@ -592,6 +622,40 @@ lm_data %&gt;%
 
 .pull-right[
 ![](visualizing-uncertainty_files/figure-html/gapminder-quantiledots-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Half-eyes, gradient intervals, etc
+
+The **ggdist** package provides many different visualizations of uncertainty
+
+.tiny-font.pull-left[
+
+```r
+library(ggdist)
+library(distributional) # for dist_normal()
+
+lm_data %&gt;%
+  filter(year == 1952) %&gt;%
+  mutate(
+    continent = 
+      fct_reorder(continent, estimate) 
+  ) %&gt;%
+  ggplot(aes(x = estimate, y = continent)) +
+  stat_dist_dotsinterval(
+    aes(dist = dist_normal(
+      mu = estimate, sigma = std.error
+    )),
+    point_size = 4,
+    fill = "skyblue",
+    quantiles = 10
+  )
+```
+]
+
+.pull-right[
+![](visualizing-uncertainty_files/figure-html/gapminder-quantiledots2-out-1.svg)&lt;!-- --&gt;
 ]
 
 
