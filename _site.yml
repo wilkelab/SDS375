@@ -47,6 +47,8 @@ navbar:
           href: slides/working-with-models.html
         - text: "Class 15: Visualizing uncertainty"
           href: slides/visualizing-uncertainty.html
+        - text: "Class 16: Dimension reduction 1"
+          href: slides/dimension-reduction-1.html
 
     - text: "Worksheets"
       menu:

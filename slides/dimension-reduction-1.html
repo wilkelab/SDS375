@@ -219,7 +219,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 
 --
 
-Male birds tend to have larger skulls and longer heads than female birds
+PCA aligns the major axes with directions of maximum variation in the data
 
 ???
 
@@ -280,7 +280,7 @@ PC2 represents the difference between bill length and skull size
 
 - Male birds are larger than female birds
 
-- Both male and female birds have long and short bills
+- Both male and female birds have long and short bills relative to their overall size
 
 ---
 
@@ -293,26 +293,79 @@ PC2 represents the difference between bill length and skull size
 .medium-font[
 PC 1 captures over 50% of the total variance in the dataset
 ]
+
 ---
 
-## Scaling of numeric columns
+## We also plot the variance explained by each PC
+
+.center[
+![](dimension-reduction-1_files/figure-html/pca-eigenvalues-1.svg)
+]
+
+
+.medium-font[
+Overall bird size explains &gt;50% of the variation in the various measurements
+]
+
+---
+class: center middle
+
+## Doing a principal components analysis (PCA) in R
+
+---
+
+## Prerequisite: Scaling of numeric columns
+
+.pull-left.width-50[
+
+.medium-font[
+Plot without scaling
+]
 
 .tiny-font[
 
 ```r
 blue_jays %&gt;% 
-  mutate(across(where(is.numeric), scale)) %&gt;%  # scale all numeric columns
-  ggplot(aes(skull_size_mm, head_length_mm, color = sex)) + geom_point()
+  ggplot() +
+  aes(skull_size_mm, head_length_mm) + 
+  geom_point(aes(color = sex))
 ```
+]]
+
+.pull-right[
+![](dimension-reduction-1_files/figure-html/blue-jays-unscaled-out-1.svg)&lt;!-- --&gt;
 ]
 
-.center[
+
+---
+
+## Prerequisite: Scaling of numeric columns
+
+.pull-left.width-50[
+
+.medium-font[
+Plot with scaling
+]
+
+.tiny-font[
+
+```r
+blue_jays %&gt;% 
+  # scale all numeric columns
+  mutate(across(where(is.numeric), scale)) %&gt;%
+  ggplot() +
+  aes(skull_size_mm, head_length_mm) + 
+  geom_point(aes(color = sex))
+```
+]]
+
+.pull-right[
 ![](dimension-reduction-1_files/figure-html/blue-jays-scaled-out-1.svg)&lt;!-- --&gt;
 ]
 
 ---
 
-## Fully worked PCA example
+## Calculate the components and plot
 
 First we run the PCA and store results as `pca_fit`:
 
@@ -321,8 +374,8 @@ First we run the PCA and store results as `pca_fit`:
 ```r
 pca_fit &lt;- blue_jays %&gt;% 
   select(where(is.numeric)) %&gt;% # retain only numeric columns
-  scale() %&gt;%       # scale to zero mean and unit variance
-  prcomp()          # do PCA
+  scale() %&gt;%                   # scale to zero mean and unit variance
+  prcomp()                      # do PCA
 ```
 ]
 
@@ -336,20 +389,25 @@ Then we add PC coordinates into original dataset and plot:
 library(broom)  # for augment(), tidy()
 
 pca_fit %&gt;%
-  augment(blue_jays) %&gt;% # add original dataset back in
+  augment(blue_jays) %&gt;% # add PCs to the original dataset
   ggplot(aes(.fittedPC1, .fittedPC2, color = sex)) + geom_point()
 ```
 ]
 
 ---
 
-## Fully worked PCA example
+
+## Calculate the components and plot
+
+.medium-font[
+Plot PC 2 against PC 1
+]
 
 .tiny-font[
 
 ```r
 pca_fit %&gt;%
-  augment(blue_jays) %&gt;% # add original dataset back in
+  augment(blue_jays) %&gt;% # add PCs to the original dataset
   ggplot(aes(.fittedPC1, .fittedPC2, color = sex)) + geom_point()
 ```
 ]
@@ -360,13 +418,18 @@ pca_fit %&gt;%
 
 ---
 
-## Fully worked PCA example
+## Calculate the components and plot
+
+.medium-font[
+Plot PC 3 against PC 2
+]
+
 
 .tiny-font[
 
 ```r
 pca_fit %&gt;%
-  augment(blue_jays) %&gt;% # add original dataset back in
+  augment(blue_jays) %&gt;% # add PCs to the original dataset
   ggplot(aes(.fittedPC2, .fittedPC3, color = sex)) + geom_point()
 ```
 ]
@@ -379,7 +442,7 @@ pca_fit %&gt;%
 
 ## Plot the rotation matrix
 
-.tiny-font.pull-left[
+.tiny-font.pull-left.width-50[
 
 ```r
 arrow_style &lt;- arrow(
@@ -404,7 +467,7 @@ pca_fit %&gt;%
   coord_fixed()
 ```
 ]
-.pull-right[
+.pull-right.width-50[
 ![](dimension-reduction-1_files/figure-html/blue-jays-pca-rotation-out-1.svg)&lt;!-- --&gt;
 ]
 
@@ -418,7 +481,7 @@ pca_fit %&gt;%
 ```r
 pca_fit %&gt;%
   tidy(matrix = "eigenvalues") %&gt;% # extract eigenvalues
-  ggplot(aes(PC, 100*percent)) + geom_col() + ylab("percent")
+  ggplot(aes(PC, 100*percent)) + geom_col() + ylab("% variance explained")
 ```
 ]
 
@@ -431,6 +494,10 @@ pca_fit %&gt;%
 ## Further reading
 
 - Fundamentals of Data Visualization: [Chapter 12.3: Dimension reduction](https://clauswilke.com/dataviz/visualizing-associations.html#dimension-reduction)
+- Blogpost on PCA: [Principal Component Analysis
+Explained Visually](https://setosa.io/ev/principal-component-analysis/)
+- PCA tutorial with mathematical background: [A Tutorial on Principal Component Analysis](https://arxiv.org/pdf/1404.1100.pdf)
+
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
