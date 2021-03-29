@@ -75,7 +75,7 @@ US_states$label_x <- label_coords[, 1]
 US_states$label_y <- label_coords[, 2]
 
 # manually adjust label positions
-US_states2 <- US_states %>%
+US_states <- US_states %>%
   mutate(
     label_x = case_when(
       state_code == "HI" ~ label_x + 180000,
@@ -90,9 +90,9 @@ US_states2 <- US_states %>%
     )
   )
 
-saveRDS(US_states2, here("datasets", "US_states.rds"))
+saveRDS(US_states, here("datasets", "US_states.rds"))
 
-ggplot(US_states2) + 
+ggplot(US_states) + 
   geom_sf() +
   geom_text(
     aes(x = label_x, y = label_y, label = state_code),
