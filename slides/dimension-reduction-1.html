@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>Dimension reduction</title>
+    <title>Dimension reduction 1</title>
     <meta charset="utf-8" />
     <meta name="author" content="Claus O. Wilke" />
     <script src="libs/header-attrs/header-attrs.js"></script>
@@ -12,7 +12,7 @@
     <textarea id="source">
 class: center, middle, title-slide
 
-# Dimension reduction
+# Dimension reduction 1
 ### Claus O. Wilke
 ### last updated: 2021-03-29
 
@@ -163,7 +163,7 @@ Example: blue jays dataset
 ## All-by-all scatter plots are hard to read 
 
 .center[
-
+![](dimension-reduction-1_files/figure-html/blue-jays-scattermatrix-1.svg)&lt;!-- --&gt;
 ]
 
 ---
@@ -234,10 +234,65 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 ![](dimension-reduction-1_files/figure-html/pca-scatter-1.svg)&lt;!-- --&gt;
 ]
 
+--
+
 .small-font[
 Male and female birds separate along PC1
 ]
 
+---
+
+## The rotation matrix allows us to interpret the PCs
+
+.center[
+![](dimension-reduction-1_files/figure-html/pca-rotation-1.svg)&lt;!-- --&gt;
+]
+
+--
+
+.small-font[
+All variables contribute negatively to PC1; it represents the overall size of the bird
+]
+
+---
+
+## The rotation matrix allows us to interpret the PCs
+
+.center[
+![](dimension-reduction-1_files/figure-html/pca-rotation-1.svg)
+]
+
+.small-font[
+PC2 represents the difference between bill length and skull size
+]
+
+---
+
+## The rotation matrix allows us to interpret the PCs
+
+.pull-left.width-50[
+![](dimension-reduction-1_files/figure-html/pca-scatter-1.svg)
+]
+
+.pull-right.width-50[
+![](dimension-reduction-1_files/figure-html/pca-rotation-1.svg)
+]
+
+- Male birds are larger than female birds
+
+- Both male and female birds have long and short bills
+
+---
+
+## We also plot the variance explained by each PC
+
+.center[
+![](dimension-reduction-1_files/figure-html/pca-eigenvalues-1.svg)&lt;!-- --&gt;
+]
+
+.medium-font[
+PC 1 captures over 50% of the total variance in the dataset
+]
 ---
 
 ## Scaling of numeric columns

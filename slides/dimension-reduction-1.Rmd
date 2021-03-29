@@ -1,5 +1,5 @@
 ---
-title: "Dimension reduction"
+title: "Dimension reduction 1"
 author: "Claus O. Wilke"
 date: "last updated: `r Sys.Date()`"
 output:
@@ -51,7 +51,7 @@ knitr::kable(blue_jays)
 ## All-by-all scatter plots are hard to read 
 
 .center[
-```{r blue-jays-scattermatrix, eval = FALSE, echo = FALSE, message = FALSE, fig.width = 10, fig.asp = 0.5, dev = "svg"}
+```{r blue-jays-scattermatrix, echo = FALSE, message = FALSE, cache = TRUE, fig.width = 10, fig.asp = 0.5, dev = "svg"}
 blue_jays %>% 
   ggpairs(
     mapping = aes(color = sex),
@@ -360,10 +360,131 @@ pca_fit %>%
 ```
 ]
 
+--
+
 .small-font[
 Male and female birds separate along PC1
 ]
 
+---
+
+## The rotation matrix allows us to interpret the PCs
+
+.center[
+```{r pca-rotation, fig.width=7., fig.asp = .618, echo=FALSE, message = FALSE, warning=FALSE, dev = "svg"}
+arrow_style <- arrow(
+  angle = 20, length = grid::unit(8, "pt"),
+  ends = "first", type = "closed"
+)
+
+nudge_df <- tibble(
+  column = c(
+    "bill_depth_mm", "bill_width_mm", "bill_length_mm",
+    "head_length_mm", "body_mass_g", "skull_size_mm"
+  ),
+  nudge_y = c(0, 0.03, 0, -0.02, 0, 0),
+  name = c(
+    "bill depth", "bill width", "bill length",
+    "head length", "body mass", "skull size"
+  )
+)
+
+pca_fit %>%
+  # extract rotation matrix
+  tidy(matrix = "rotation") %>%
+  pivot_wider(
+    names_from = "PC", values_from = "value",
+    names_prefix = "PC"
+  ) %>%
+  left_join(nudge_df) %>%
+  ggplot(aes(PC1, PC2)) +
+  geom_segment(
+    xend = 0, yend = 0,
+    arrow = arrow_style
+  ) +
+  geom_text(
+    aes(y = PC2 + nudge_y, label = name),
+    hjust = 1,
+    nudge_x = -0.03,
+    size = 14/.pt
+    
+  ) +
+  scale_x_continuous(
+    name = "PC 1",
+    limits = c(-1.5, .5)
+  ) +
+  scale_y_continuous(
+    name = "PC 2",
+    limits = c(-1., 1)
+  ) +
+  coord_fixed() +
+  theme_minimal_grid(16)
+```
+]
+
+--
+
+.small-font[
+All variables contribute negatively to PC1; it represents the overall size of the bird
+]
+
+---
+
+## The rotation matrix allows us to interpret the PCs
+
+.center[
+![](`r knitr::fig_chunk("pca-rotation", "svg")`)
+]
+
+.small-font[
+PC2 represents the difference between bill length and skull size
+]
+
+---
+
+## The rotation matrix allows us to interpret the PCs
+
+.pull-left.width-50[
+![](`r knitr::fig_chunk("pca-scatter", "svg")`)
+]
+
+.pull-right.width-50[
+![](`r knitr::fig_chunk("pca-rotation", "svg")`)
+]
+
+- Male birds are larger than female birds
+
+- Both male and female birds have long and short bills
+
+---
+
+## We also plot the variance explained by each PC
+
+.center[
+```{r pca-eigenvalues, fig.width=7., fig.asp = .618, echo=FALSE, message = FALSE, warning=FALSE, dev = "svg"}
+pca_fit %>%
+  tidy(matrix = "eigenvalues") %>% # extract eigenvalues
+  ggplot(aes(PC, 100*percent)) + 
+  geom_col(
+    fill = "#56B4E9",
+    alpha = 0.9
+  ) + 
+  scale_x_continuous(
+    name = "principal component",
+    breaks = 1:6,
+    expand = expansion(mult = 0, add = 0.1)
+  ) +
+  scale_y_continuous(
+    name = "% variance explained",
+    expand = expansion(mult = c(0, 0.05))
+  ) +
+  theme_minimal_hgrid(16)
+```
+]
+
+.medium-font[
+PC 1 captures over 50% of the total variance in the dataset
+]
 ---
 
 ## Scaling of numeric columns
