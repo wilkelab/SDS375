@@ -1,3 +1,5 @@
+library(tidyverse)
+
 n <- 100
 
 t <- seq(from = 3.5*pi, to = 5*pi, length.out = n)
@@ -23,7 +25,7 @@ library(Rtsne)
 
 ## Run the t-SNE algorithm and store the results into an object called tsne_results
 set.seed(1234)
-tsne_results <- Rtsne(spirals[, 1:2], perplexity = 20, theta = 0.3, check_duplicates = FALSE)
+tsne_results <- Rtsne(spirals[, 1:2], perplexity = 5, theta = 0.3, check_duplicates = FALSE)
 
 out_tsne <- data.frame(as.data.frame(tsne_results$Y), group = spirals$group)
 
