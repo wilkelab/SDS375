@@ -84,5 +84,8 @@ navbar:
           href: worksheets/working-with-models.Rmd
         - text: "Class 15: Visualizing uncertainty"
           href: worksheets/visualizing-uncertainty.Rmd
+        - text: "Class 16: Dimension reduction 1"
+          href: worksheets/dimension-reduction-1.Rmd
+
  
 output: distill::distill_article

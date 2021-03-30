@@ -472,7 +472,7 @@ PC2 represents the difference between bill length and skull size
 ```{r pca-eigenvalues, fig.width=7., fig.asp = .618, echo=FALSE, message = FALSE, warning=FALSE, dev = "svg"}
 pca_fit %>%
   tidy(matrix = "eigenvalues") %>% # extract eigenvalues
-  ggplot(aes(PC, 100*percent)) + 
+  ggplot(aes(PC, percent)) + 
   geom_col(
     fill = "#56B4E9",
     alpha = 0.9
@@ -483,7 +483,8 @@ pca_fit %>%
     expand = expansion(mult = 0, add = 0.1)
   ) +
   scale_y_continuous(
-    name = "% variance explained",
+    name = "variance explained",
+    label = scales::label_percent(accuracy = 1),
     expand = expansion(mult = c(0, 0.05))
   ) +
   theme_minimal_hgrid(16)
@@ -565,6 +566,20 @@ blue_jays %>%
 
 ---
 
+## We perform a PCA with `prcomp()`
+
+.tiny-font[
+```{r}
+blue_jays %>% 
+  select(where(is.numeric)) %>% # retain only numeric columns
+  scale() %>%                   # scale to zero mean and unit variance
+  prcomp()                      # do PCA
+```
+]
+
+
+---
+
 ## Calculate the components and plot
 
 First we run the PCA and store results as `pca_fit`:
@@ -587,8 +602,10 @@ Then we add PC coordinates into original dataset and plot:
 library(broom)  # for augment(), tidy()
 
 pca_fit %>%
-  augment(blue_jays) %>% # add PCs to the original dataset
-  ggplot(aes(.fittedPC1, .fittedPC2, color = sex)) + geom_point()
+  # add PCs to the original dataset
+  augment(blue_jays) %>%
+  ggplot(aes(.fittedPC1, .fittedPC2)) +
+  geom_point(aes(color = sex))
 ```
 ]
 
@@ -597,6 +614,7 @@ pca_fit %>%
 
 ## Calculate the components and plot
 
+.pull-left[
 .medium-font[
 Plot PC 2 against PC 1
 ]
@@ -604,12 +622,14 @@ Plot PC 2 against PC 1
 .tiny-font[
 ```{r blue-jays-pca-plot, eval = FALSE}
 pca_fit %>%
-  augment(blue_jays) %>% # add PCs to the original dataset
-  ggplot(aes(.fittedPC1, .fittedPC2, color = sex)) + geom_point()
+  # add PCs to the original dataset
+  augment(blue_jays) %>%
+  ggplot(aes(.fittedPC1, .fittedPC2)) +
+  geom_point(aes(color = sex))
 ```
-]
+]]
 
-.center[
+.pull-right[
 ```{r blue-jays-pca-plot-out, ref.label="blue-jays-pca-plot", fig.width=5., fig.asp = 0.75, echo=FALSE, warning=FALSE, dev = "svg"}
 ```
 ]
@@ -618,6 +638,7 @@ pca_fit %>%
 
 ## Calculate the components and plot
 
+.pull-left[
 .medium-font[
 Plot PC 3 against PC 2
 ]
@@ -626,12 +647,14 @@ Plot PC 3 against PC 2
 .tiny-font[
 ```{r blue-jays-pca-plot2, eval = FALSE}
 pca_fit %>%
-  augment(blue_jays) %>% # add PCs to the original dataset
-  ggplot(aes(.fittedPC2, .fittedPC3, color = sex)) + geom_point()
+  # add PCs to the original dataset
+  augment(blue_jays) %>%
+  ggplot(aes(.fittedPC2, .fittedPC3)) +
+  geom_point(aes(color = sex))
 ```
-]
+]]
 
-.center[
+.pull-right[
 ```{r blue-jays-pca-plot2-out, ref.label="blue-jays-pca-plot2", fig.width=5., fig.asp = 0.75, echo=FALSE, warning=FALSE, dev = "svg"}
 ```
 ]
@@ -674,15 +697,26 @@ pca_fit %>%
 
 ## Plot the variance explained
 
-.tiny-font[
+.pull-left.tiny-font.width-50[
 ```{r blue-jays-pca-eigenvalues, eval = FALSE}
 pca_fit %>%
-  tidy(matrix = "eigenvalues") %>% # extract eigenvalues
-  ggplot(aes(PC, 100*percent)) + geom_col() + ylab("% variance explained")
+  # extract eigenvalues
+  tidy(matrix = "eigenvalues") %>%
+  ggplot(aes(PC, percent)) + 
+  geom_col() + 
+  scale_x_continuous(
+    # create one axis tick per PC
+    breaks = 1:6
+  ) +
+  scale_y_continuous(
+    name = "variance explained",
+    # format y axis ticks as percent values
+    label = scales::label_percent(accuracy = 1)
+  )
 ```
 ]
 
-.center[
+.pull-right[
 ```{r blue-jays-pca-eigenvalues-out, ref.label="blue-jays-pca-eigenvalues", fig.width=5., fig.asp = 0.75, echo=FALSE, warning=FALSE, dev = "svg"}
 ```
 ]

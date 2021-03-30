@@ -123,6 +123,7 @@ knitr::opts_chunk$set(echo = FALSE)
 <p class="nospace">Materials:</p>
 
 - [Slides](slides/dimension-reduction-1.html)
+- [Worksheet](worksheets/dimension-reduction-1.Rmd)
 
 ## Homeworks
 

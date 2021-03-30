@@ -14,7 +14,7 @@ class: center, middle, title-slide
 
 # Dimension reduction 1
 ### Claus O. Wilke
-### last updated: 2021-03-29
+### last updated: 2021-03-30
 
 ---
 
@@ -365,6 +365,43 @@ blue_jays %&gt;%
 
 ---
 
+## We perform a PCA with `prcomp()`
+
+.tiny-font[
+
+```r
+blue_jays %&gt;% 
+  select(where(is.numeric)) %&gt;% # retain only numeric columns
+  scale() %&gt;%                   # scale to zero mean and unit variance
+  prcomp()                      # do PCA
+```
+
+```
+Standard deviations (1, .., p=6):
+[1] 1.801735505 1.001664889 0.898426518 0.736457067 0.633147386
+[6] 0.001337779
+
+Rotation (n x k) = (6 x 6):
+                      PC1          PC2         PC3         PC4
+bill_depth_mm  -0.3969857  0.342262537 -0.15267580  0.70664985
+bill_width_mm  -0.2810408  0.044926541  0.95822204  0.02838445
+bill_length_mm -0.4209312  0.544180448 -0.13629166 -0.43921746
+head_length_mm -0.5231576 -0.007875712 -0.14075388 -0.40403900
+body_mass_g    -0.4308880 -0.277787878 -0.12517605  0.35651048
+skull_size_mm  -0.3561979 -0.712374529 -0.06666709 -0.12876761
+                        PC5           PC6
+bill_depth_mm   0.450105291 -0.0001782600
+bill_width_mm  -0.001569506 -0.0001746131
+bill_length_mm -0.141941341 -0.5431849028
+head_length_mm  0.131442872  0.7251949252
+body_mass_g    -0.770973799  0.0002123608
+skull_size_mm   0.406912265 -0.4231339911
+```
+]
+
+
+---
+
 ## Calculate the components and plot
 
 First we run the PCA and store results as `pca_fit`:
@@ -389,8 +426,10 @@ Then we add PC coordinates into original dataset and plot:
 library(broom)  # for augment(), tidy()
 
 pca_fit %&gt;%
-  augment(blue_jays) %&gt;% # add PCs to the original dataset
-  ggplot(aes(.fittedPC1, .fittedPC2, color = sex)) + geom_point()
+  # add PCs to the original dataset
+  augment(blue_jays) %&gt;%
+  ggplot(aes(.fittedPC1, .fittedPC2)) +
+  geom_point(aes(color = sex))
 ```
 ]
 
@@ -399,6 +438,7 @@ pca_fit %&gt;%
 
 ## Calculate the components and plot
 
+.pull-left[
 .medium-font[
 Plot PC 2 against PC 1
 ]
@@ -407,12 +447,14 @@ Plot PC 2 against PC 1
 
 ```r
 pca_fit %&gt;%
-  augment(blue_jays) %&gt;% # add PCs to the original dataset
-  ggplot(aes(.fittedPC1, .fittedPC2, color = sex)) + geom_point()
+  # add PCs to the original dataset
+  augment(blue_jays) %&gt;%
+  ggplot(aes(.fittedPC1, .fittedPC2)) +
+  geom_point(aes(color = sex))
 ```
-]
+]]
 
-.center[
+.pull-right[
 ![](dimension-reduction-1_files/figure-html/blue-jays-pca-plot-out-1.svg)&lt;!-- --&gt;
 ]
 
@@ -420,6 +462,7 @@ pca_fit %&gt;%
 
 ## Calculate the components and plot
 
+.pull-left[
 .medium-font[
 Plot PC 3 against PC 2
 ]
@@ -429,12 +472,14 @@ Plot PC 3 against PC 2
 
 ```r
 pca_fit %&gt;%
-  augment(blue_jays) %&gt;% # add PCs to the original dataset
-  ggplot(aes(.fittedPC2, .fittedPC3, color = sex)) + geom_point()
+  # add PCs to the original dataset
+  augment(blue_jays) %&gt;%
+  ggplot(aes(.fittedPC2, .fittedPC3)) +
+  geom_point(aes(color = sex))
 ```
-]
+]]
 
-.center[
+.pull-right[
 ![](dimension-reduction-1_files/figure-html/blue-jays-pca-plot2-out-1.svg)&lt;!-- --&gt;
 ]
 
@@ -476,16 +521,27 @@ pca_fit %&gt;%
 
 ## Plot the variance explained
 
-.tiny-font[
+.pull-left.tiny-font.width-50[
 
 ```r
 pca_fit %&gt;%
-  tidy(matrix = "eigenvalues") %&gt;% # extract eigenvalues
-  ggplot(aes(PC, 100*percent)) + geom_col() + ylab("% variance explained")
+  # extract eigenvalues
+  tidy(matrix = "eigenvalues") %&gt;%
+  ggplot(aes(PC, percent)) + 
+  geom_col() + 
+  scale_x_continuous(
+    # create one axis tick per PC
+    breaks = 1:6
+  ) +
+  scale_y_continuous(
+    name = "variance explained",
+    # format y axis ticks as percent values
+    label = scales::label_percent(accuracy = 1)
+  )
 ```
 ]
 
-.center[
+.pull-right[
 ![](dimension-reduction-1_files/figure-html/blue-jays-pca-eigenvalues-out-1.svg)&lt;!-- --&gt;
 ]
 
