@@ -137,7 +137,10 @@ pca_fit %>%
 .center[
 ```{r kpca-spirals, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = 0.618, dev = "svg"}
 do_kpca <- function(data, sigma, kernel = "rbfdot") {
-  data_num <- select(data, where(is.numeric)) 
+  data_num <- data %>%
+    select(where(is.numeric)) %>%
+    mutate(across(everything(), scale))
+  
   kpca_fit <- kpca(
     ~., data = data_num, kernel = kernel,
     kpar = list(sigma = sigma),
@@ -154,20 +157,20 @@ do_kpca <- function(data, sigma, kernel = "rbfdot") {
     cbind(select(data, -where(is.numeric)))
 }
 
-kpca_data <- sqrt(2)**(-2:5) %>%
+kpca_data <- 2**(-1:6) %>%
   signif(2) %>%
   map_dfr(~do_kpca(spirals, sigma = .x))
 
-kpca_data %>% filter(sigma == 5.7) %>%
+kpca_data %>% filter(sigma == 64.) %>%
   ggplot(aes(V1, V2, color = group, fill = group)) + 
   geom_point(pch = 21, size = 2, stroke = 0.2) +
   scale_x_continuous(
     name = "dimension 1", 
-    limits = c(-1.7, 1.2)
+    limits = c(-3, 1)
   ) +
   scale_y_continuous(
     name = "dimension 2",
-    limits = c(-1.5, 1.4)
+    limits = c(-2.2, 2.2)
   ) +
   scale_color_manual(
     values = outline_cols,
@@ -182,7 +185,7 @@ kpca_data %>% filter(sigma == 5.7) %>%
 ```
 ]
 
-Gaussian kernel, sigma = 5.7
+Gaussian kernel, sigma = 64
 
 ---
 
@@ -200,11 +203,11 @@ ggplot(kpca_data, aes(V1, V2, color = group, fill = group)) +
   ) +
   scale_x_continuous(
     name = "dimension 1",
-    limits = c(-1.7, 1.2)
+    limits = c(-3, 1)
   ) +
   scale_y_continuous(
     name = "dimension 2",
-    limits = c(-1.5, 1.4)
+    limits = c(-2.2, 2.2)
   ) +
   scale_color_manual(
     values = outline_cols,
@@ -247,6 +250,7 @@ do_tsne <- function(data, perplexity = 5, theta = 0.3, seed = 1234) {
   set.seed(seed)
   tsne_fit <- data %>%
     select(where(is.numeric)) %>%
+    scale() %>%
     Rtsne(perplexity = perplexity, theta = theta, check_duplicates = FALSE)
 
   tsne_fit$Y %>%
@@ -373,6 +377,7 @@ do_umap <- function(data, n_neighbors = 15, seed = 123) {
 
   umap_fit <- data %>%
     select(where(is.numeric)) %>%
+    scale() %>%
     umap(config = custom.config)
 
   umap_fit$layout %>%
@@ -483,6 +488,28 @@ ggplot(umap_data2, aes(V1, V2, color = group, fill = group)) +
   theme_bw(16)
 ```
 ]
+
+---
+
+## What is the meaning of the tuning parameters?
+
+--
+
+Tuning parameters define when points are close in the original data space
+
+--
+
+This implicitly defines the number of clusters generated
+
+--
+
+These have comparable effects:
+
+- sigma (Gaussian kernel PCA)
+
+- perplexity (t-SNE)
+
+- number of neighbors (UMAP)
 
 ---
 class: center middle
@@ -631,8 +658,9 @@ custom.config$random_state <- 1234    # random seed
 
 # calculate UMAP fit object
 umap_fit <- blue_jays %>%
-  select(where(is.numeric)) %>%
-  umap(config = custom.config)
+  select(where(is.numeric)) %>%       # retain only numeric columns
+  scale() %>%                         # scale to zero mean and unit variance
+  umap(config = custom.config)        # perform UMAP
 ```
 ]
 

@@ -66,7 +66,7 @@ class: center, middle, title-slide
 ![](dimension-reduction-2_files/figure-html/kpca-spirals-1.svg)&lt;!-- --&gt;
 ]
 
-Gaussian kernel, sigma = 5.7
+Gaussian kernel, sigma = 64
 
 ---
 
@@ -142,6 +142,28 @@ Both algorithms look at the local distances between points in the original data 
 .center[
 ![](dimension-reduction-2_files/figure-html/umap-spirals-grid2-1.svg)&lt;!-- --&gt;
 ]
+
+---
+
+## What is the meaning of the tuning parameters?
+
+--
+
+Tuning parameters define when points are close in the original data space
+
+--
+
+This implicitly defines the number of clusters generated
+
+--
+
+These have comparable effects:
+
+- sigma (Gaussian kernel PCA)
+
+- perplexity (t-SNE)
+
+- number of neighbors (UMAP)
 
 ---
 class: center middle
@@ -225,8 +247,9 @@ custom.config$random_state &lt;- 1234    # random seed
 
 # calculate UMAP fit object
 umap_fit &lt;- blue_jays %&gt;%
-  select(where(is.numeric)) %&gt;%
-  umap(config = custom.config)
+  select(where(is.numeric)) %&gt;%       # retain only numeric columns
+  scale() %&gt;%                         # scale to zero mean and unit variance
+  umap(config = custom.config)        # perform UMAP
 ```
 ]
 
