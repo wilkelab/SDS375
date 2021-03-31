@@ -125,11 +125,12 @@ knitr::opts_chunk$set(echo = FALSE)
 - [Slides](slides/dimension-reduction-1.html)
 - [Worksheet](worksheets/dimension-reduction-1.Rmd)
 
-### 17. Apr 2, 2021—Dimension reduction 2
+### 17. Apr 1, 2021—Dimension reduction 2
 
 <p class="nospace">Materials:</p>
 
 - [Slides](slides/dimension-reduction-2.html)
+- [Worksheet](worksheets/dimension-reduction-2.Rmd)
 
 
 ## Homeworks

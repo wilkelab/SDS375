@@ -45,7 +45,7 @@ blue_jays
 
 ## Performing a PCA
 
-We can peform a PCA with the function `prcomp()`. However, we first need to prepare the data. PCA can only take numeric columns, and it is best to scale all variables to zero mean and unit variance. 
+We can perform a PCA with the function `prcomp()`. However, we first need to prepare the data. PCA can only take numeric columns, and it is best to scale all variables to zero mean and unit variance. 
 
 We can select all numeric columns in a dataset with `select(where(is.numeric))` and we can scale an entire dataset consisting of only numeric columns with `scale()`. Try this on the `blue_jays` dataset. Modify the dataset so it is entirely numeric and properly scaled.
 
