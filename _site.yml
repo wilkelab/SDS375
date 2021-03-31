@@ -49,6 +49,9 @@ navbar:
           href: slides/visualizing-uncertainty.html
         - text: "Class 16: Dimension reduction 1"
           href: slides/dimension-reduction-1.html
+        - text: "Class 17: Dimension reduction 2"
+          href: slides/dimension-reduction-2.html
+
 
     - text: "Worksheets"
       menu:
@@ -86,6 +89,5 @@ navbar:
           href: worksheets/visualizing-uncertainty.Rmd
         - text: "Class 16: Dimension reduction 1"
           href: worksheets/dimension-reduction-1.Rmd
-
  
 output: distill::distill_article

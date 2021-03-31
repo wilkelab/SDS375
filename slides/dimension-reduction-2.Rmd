@@ -230,6 +230,10 @@ ggplot(kpca_data, aes(V1, V2, color = group, fill = group)) +
 
 - UMAP: Uniform manifold approximation and projection 
 
+--
+
+Both algorithms look at the local distances between points in the original data space and try to reproduce them in the low-dimensional representation
+
 
 ---
 
@@ -445,7 +449,7 @@ ggplot(umap_data, aes(V1, V2, color = group, fill = group)) +
 
 ---
 
-## Random starting point has minor impact on results
+## Random starting point has some impact on results
 
 .center[
 ```{r umap-spirals-grid2, echo = FALSE, cache = params$cache, fig.width = 10, fig.asp = 0.5, dev = "svg"}
@@ -481,6 +485,11 @@ ggplot(umap_data2, aes(V1, V2, color = group, fill = group)) +
 ]
 
 ---
+class: center middle
+
+## How do these methods perform<br>on the blue jays dataset?
+
+---
 
 ## UMAP of blue jays
 
@@ -504,7 +513,7 @@ bj_umap_data %>%
     guide = "none"
   ) +
   scale_fill_manual(
-    values = fill_cols,
+    values = fill_cols_dark,
     guide = "none"
   ) +
   theme_bw(16)
@@ -569,6 +578,23 @@ bj_kpca_data %>%
   theme_bw(16)
 ```
 ]
+
+---
+
+## Nonlinear methods have important downsides
+
+--
+
+- Results depend on parameter fine tuning
+
+--
+
+- Low-dimensional embedding cannot be interpreted<br>
+  (no rotation matrix plot)
+
+--
+
+Use only when linear methods clearly aren't working
 
 ---
 
@@ -637,4 +663,6 @@ umap_fit$layout %>%
 - Wikipedia: [Nonlinear dimensionality reduction](https://en.wikipedia.org/wiki/Nonlinear_dimensionality_reduction)
 - Wikipedia: [t-distributed stochastic neighbor embedding](https://en.wikipedia.org/wiki/T-distributed_stochastic_neighbor_embedding)
 - Wikipedia: [Kernel principal component analysis](https://en.wikipedia.org/wiki/Kernel_principal_component_analysis)
-
+- **kernlab** reference documentation (for kernel PCA): [pdf document](https://cran.r-project.org/web/packages/kernlab/kernlab.pdf)
+- **Rtsne** reference documentation: [pdf document](https://cran.r-project.org/web/packages/Rtsne/Rtsne.pdf)
+- **umap** vignette: [Uniform Manifold Approximation and Projection in R](https://cran.r-project.org/web/packages/umap/vignettes/umap.html)
