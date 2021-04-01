@@ -1,5 +1,16 @@
 library(tidyverse)
-library(ggforce)
+library(here)
+
+set.seed(1237)
+coords <- tibble(
+  x = c(rnorm(100), rnorm(100, 2), rnorm(100, 4.3)),
+  y = c(rnorm(100), rnorm(100, -4), rnorm(100, 1.5))
+)
+
+write_csv(coords, here("datasets", "gaussian_clusters.csv"))
+
+
+## k-means analysis
 
 update_clusters <- function(coords, centroids) {
   dmin <- sqrt((centroids$x[1]-coords$x)^2 + (centroids$y[1]-coords$y)^2)

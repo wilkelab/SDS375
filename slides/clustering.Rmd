@@ -32,6 +32,10 @@ update_geom_defaults("point", list(size = 2.0)) # 2 for full width, 2.5 for half
 
 # spirals
 spirals <- read_csv(here("datasets", "spirals.csv"))
+
+# gaussian clusters
+gaussian_clusters <- read_csv(here("datasets", "gaussian_clusters.csv"))
+
 ```
 
 ```{r kmeans-setup, echo = FALSE}
@@ -111,17 +115,51 @@ make_kmeans_plot <- function(coords, centroids, voronoi_centr, color_points = TR
 
 ```
 
+## Title
+
+---
+
+## *k*-means clustering
+
+--
+
+1\. Start with *k* randomly chosen means
+
+--
+
+2\. Color data points by the shortest distance to any
+mean
+
+--
+
+3\. Move means to centroid position of each group of
+points
+
+--
+
+4\. Repeat from step 2 until convergence
+
+---
+
+class: center middle
+
+## Let's try it out
+
+
+---
+
 class: middle
 
 .center[
-```{r three-clusters-kmeans1, echo = FALSE, fig.width = 7, fig.asp = .85, dev = "svg"}
-set.seed(1237)
-coords <- tibble(
-  x = c(rnorm(100), rnorm(100, 2), rnorm(100, 4.3)),
-  y = c(rnorm(100), rnorm(100, -4), rnorm(100, 1.5))
+```{r three-clusters-kmeans1, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
+coords <- gaussian_clusters
+
+centroids <- tibble(
+  x = c(5.7353523, -0.4681193, -0.5732993),
+  y = c(-5.8405302, 0.3293147, -1.0971190),
+  cluster = factor(1:3)
 )
 
-centroids <- random_centroids(coords, n = 3)
 coords <- update_clusters(coords, centroids)
 
 make_kmeans_plot(coords, centroids, color_points = FALSE, plot_centroids = FALSE, plot_voronoi = FALSE)
@@ -133,29 +171,27 @@ make_kmeans_plot(coords, centroids, color_points = FALSE, plot_centroids = FALSE
 class: middle
 
 .center[
-```{r three-clusters-kmeans2, echo = FALSE, fig.width = 7, fig.asp = .85, dev = "svg"}
+```{r three-clusters-kmeans2, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
 make_kmeans_plot(coords, centroids, color_points = FALSE, plot_centroids = TRUE, plot_voronoi = FALSE)
 ```
 ]
 
+.absolute-bottom-left[
+Add means at arbitrary locations
+]
+
 ---
 
 class: middle
 
 .center[
-```{r three-clusters-kmeans3, echo = FALSE, fig.width = 7, fig.asp = .85, dev = "svg"}
+```{r three-clusters-kmeans3, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
 make_kmeans_plot(coords, centroids, centroids, color_points = FALSE, plot_voronoi = TRUE)
 ```
 ]
 
----
-
-class: middle
-
-.center[
-```{r three-clusters-kmeans4, echo = FALSE, fig.width = 7, fig.asp = .85, dev = "svg"}
-make_kmeans_plot(coords, centroids, centroids, color_points = TRUE)
-```
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
 ]
 
 ---
@@ -163,32 +199,44 @@ make_kmeans_plot(coords, centroids, centroids, color_points = TRUE)
 class: middle
 
 .center[
-```{r three-clusters-kmeans5, echo = FALSE, fig.width = 7, fig.asp = .85, dev = "svg"}
+```{r three-clusters-kmeans4, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
+make_kmeans_plot(coords, centroids, centroids, color_points = TRUE)
+```
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+```{r three-clusters-kmeans5, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
 centroids2 <- update_centroids(coords)
 make_kmeans_plot(coords, centroids2, centroids, plot_voronoi = FALSE)
 ```
 ]
 
+.absolute-bottom-left[
+Move means to centroid position of each group of points
+]
+
 ---
 
 class: middle
 
 .center[
-```{r three-clusters-kmeans6, echo = FALSE, fig.width = 7, fig.asp = .85, dev = "svg"}
+```{r three-clusters-kmeans6, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
 centroids <- centroids2
 coords <- update_clusters(coords, centroids)
 make_kmeans_plot(coords, centroids, centroids, color_points = FALSE)
 ```
 ]
 
----
-
-class: middle
-
-.center[
-```{r three-clusters-kmeans7, echo = FALSE, fig.width = 7, fig.asp = .85, dev = "svg"}
-make_kmeans_plot(coords, centroids, centroids, color_points = TRUE)
-```
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
 ]
 
 ---
@@ -196,32 +244,44 @@ make_kmeans_plot(coords, centroids, centroids, color_points = TRUE)
 class: middle
 
 .center[
-```{r three-clusters-kmeans8, echo = FALSE, fig.width = 7, fig.asp = .85, dev = "svg"}
+```{r three-clusters-kmeans7, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
+make_kmeans_plot(coords, centroids, centroids, color_points = TRUE)
+```
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+```{r three-clusters-kmeans8, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
 centroids2 <- update_centroids(coords)
 make_kmeans_plot(coords, centroids2, centroids, plot_voronoi = FALSE)
 ```
 ]
 
+.absolute-bottom-left[
+Move means to centroid position of each group of points
+]
+
 ---
 
 class: middle
 
 .center[
-```{r three-clusters-kmeans9, echo = FALSE, fig.width = 7, fig.asp = .85, dev = "svg"}
+```{r three-clusters-kmeans9, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
 centroids <- centroids2
 coords <- update_clusters(coords, centroids)
 make_kmeans_plot(coords, centroids, centroids, color_points = FALSE)
 ```
 ]
 
----
-
-class: middle
-
-.center[
-```{r three-clusters-kmeans10, echo = FALSE, fig.width = 7, fig.asp = .85, dev = "svg"}
-make_kmeans_plot(coords, centroids, centroids, color_points = TRUE)
-```
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
 ]
 
 ---
@@ -229,32 +289,44 @@ make_kmeans_plot(coords, centroids, centroids, color_points = TRUE)
 class: middle
 
 .center[
-```{r three-clusters-kmeans11, echo = FALSE, fig.width = 7, fig.asp = .85, dev = "svg"}
+```{r three-clusters-kmeans10, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
+make_kmeans_plot(coords, centroids, centroids, color_points = TRUE)
+```
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+```{r three-clusters-kmeans11, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
 centroids2 <- update_centroids(coords)
 make_kmeans_plot(coords, centroids2, centroids, plot_voronoi = FALSE)
 ```
 ]
 
+.absolute-bottom-left[
+Move means to centroid position of each group of points
+]
+
 ---
 
 class: middle
 
 .center[
-```{r three-clusters-kmeans12, echo = FALSE, fig.width = 7, fig.asp = .85, dev = "svg"}
+```{r three-clusters-kmeans12, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
 centroids <- centroids2
 coords <- update_clusters(coords, centroids)
 make_kmeans_plot(coords, centroids, centroids, color_points = FALSE)
 ```
 ]
 
----
-
-class: middle
-
-.center[
-```{r three-clusters-kmeans13, echo = FALSE, fig.width = 7, fig.asp = .85, dev = "svg"}
-make_kmeans_plot(coords, centroids, centroids, color_points = TRUE)
-```
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
 ]
 
 ---
@@ -262,32 +334,44 @@ make_kmeans_plot(coords, centroids, centroids, color_points = TRUE)
 class: middle
 
 .center[
-```{r three-clusters-kmeans14, echo = FALSE, fig.width = 7, fig.asp = .85, dev = "svg"}
+```{r three-clusters-kmeans13, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
+make_kmeans_plot(coords, centroids, centroids, color_points = TRUE)
+```
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+```{r three-clusters-kmeans14, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
 centroids2 <- update_centroids(coords)
 make_kmeans_plot(coords, centroids2, centroids, plot_voronoi = FALSE)
 ```
 ]
 
+.absolute-bottom-left[
+Move means to centroid position of each group of points
+]
+
 ---
 
 class: middle
 
 .center[
-```{r three-clusters-kmeans15, echo = FALSE, fig.width = 7, fig.asp = .85, dev = "svg"}
+```{r three-clusters-kmeans15, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
 centroids <- centroids2
 coords <- update_clusters(coords, centroids)
 make_kmeans_plot(coords, centroids, centroids, color_points = FALSE)
 ```
 ]
 
----
-
-class: middle
-
-.center[
-```{r three-clusters-kmeans16, echo = FALSE, fig.width = 7, fig.asp = .85, dev = "svg"}
-make_kmeans_plot(coords, centroids, centroids, color_points = TRUE)
-```
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
 ]
 
 ---
@@ -295,77 +379,143 @@ make_kmeans_plot(coords, centroids, centroids, color_points = TRUE)
 class: middle
 
 .center[
-```{r three-clusters-kmeans17, echo = FALSE, fig.width = 7, fig.asp = .85, dev = "svg"}
+```{r three-clusters-kmeans16, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
+make_kmeans_plot(coords, centroids, centroids, color_points = TRUE)
+```
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+```{r three-clusters-kmeans17, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
 centroids2 <- update_centroids(coords)
 make_kmeans_plot(coords, centroids2, centroids, plot_voronoi = FALSE)
 ```
 ]
 
+.absolute-bottom-left[
+Move means to centroid position of each group of points
+]
+
 ---
 
 class: middle
 
 .center[
-```{r three-clusters-kmeans18, echo = FALSE, fig.width = 7, fig.asp = .85, dev = "svg"}
+```{r three-clusters-kmeans18, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
 centroids <- centroids2
 coords <- update_clusters(coords, centroids)
 make_kmeans_plot(coords, centroids, centroids, color_points = FALSE)
 ```
 ]
 
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
 ---
 
 class: middle
 
 .center[
-```{r three-clusters-kmeans19, echo = FALSE, fig.width = 7, fig.asp = .85, dev = "svg"}
+```{r three-clusters-kmeans19, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
 make_kmeans_plot(coords, centroids, centroids, color_points = TRUE)
 ```
 ]
 
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+```{r three-clusters-kmeans20, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
+make_kmeans_plot(coords, centroids, centroids, plot_voronoi = FALSE)
+```
+]
+
+.absolute-bottom-left[
+Final result
+]
+
+---
+class: middle center
+
+## Now we'll cluster the same dataset with five centroids
+
 ---
 class: middle
 
 .center[
-```{r five-clusters-kmeans1, echo = FALSE, fig.width = 7, fig.asp = .85, dev = "svg"}
+```{r five-clusters-kmeans1, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
 # three centers, 5 clusters
+coords <- gaussian_clusters
 
-set.seed(3541)
-centroids <- random_centroids(coords, n = 5)
+centroids <- tibble(
+  x = c(5.3544626, 3.1688159, 5.4307893, -0.9571097, 4.4852765),
+  y = c(1.754802, 2.622277, -4.537906, -4.415216, 3.125914),
+  cluster = factor(1:5)
+)
+
 coords <- update_clusters(coords, centroids)
 
 make_kmeans_plot(coords, centroids, color_points = FALSE, plot_centroids = FALSE, plot_voronoi = FALSE)
 ```
 ]
 
+
 ---
 
 class: middle
 
 .center[
-```{r five-clusters-kmeans2, echo = FALSE, fig.width = 7, fig.asp = .85, dev = "svg"}
+```{r five-clusters-kmeans2, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
 make_kmeans_plot(coords, centroids, color_points = FALSE, plot_centroids = TRUE, plot_voronoi = FALSE)
 ```
 ]
 
+
+.absolute-bottom-left[
+Add means at arbitrary locations
+]
+
+
 ---
 
 class: middle
 
 .center[
-```{r five-clusters-kmeans3, echo = FALSE, fig.width = 7, fig.asp = .85, dev = "svg"}
+```{r five-clusters-kmeans3, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
 make_kmeans_plot(coords, centroids, centroids, color_points = FALSE, plot_voronoi = TRUE)
 ```
 ]
 
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+
 ---
 
 class: middle
 
 .center[
-```{r five-clusters-kmeans4, echo = FALSE, fig.width = 7, fig.asp = .85, dev = "svg"}
+```{r five-clusters-kmeans4, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
 make_kmeans_plot(coords, centroids, centroids, color_points = TRUE)
 ```
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
 ]
 
 ---
@@ -373,32 +523,31 @@ make_kmeans_plot(coords, centroids, centroids, color_points = TRUE)
 class: middle
 
 .center[
-```{r five-clusters-kmeans5, echo = FALSE, fig.width = 7, fig.asp = .85, dev = "svg"}
+```{r five-clusters-kmeans5, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
 centroids2 <- update_centroids(coords)
 make_kmeans_plot(coords, centroids2, centroids, plot_voronoi = FALSE)
 ```
 ]
 
+.absolute-bottom-left[
+Move means to centroid position of each group of points
+]
+
+
 ---
 
 class: middle
 
 .center[
-```{r five-clusters-kmeans6, echo = FALSE, fig.width = 7, fig.asp = .85, dev = "svg"}
+```{r five-clusters-kmeans6, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
 centroids <- centroids2
 coords <- update_clusters(coords, centroids)
 make_kmeans_plot(coords, centroids, centroids, color_points = FALSE)
 ```
 ]
 
----
-
-class: middle
-
-.center[
-```{r five-clusters-kmeans7, echo = FALSE, fig.width = 7, fig.asp = .85, dev = "svg"}
-make_kmeans_plot(coords, centroids, centroids, color_points = TRUE)
-```
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
 ]
 
 ---
@@ -406,32 +555,44 @@ make_kmeans_plot(coords, centroids, centroids, color_points = TRUE)
 class: middle
 
 .center[
-```{r five-clusters-kmeans8, echo = FALSE, fig.width = 7, fig.asp = .85, dev = "svg"}
+```{r five-clusters-kmeans7, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
+make_kmeans_plot(coords, centroids, centroids, color_points = TRUE)
+```
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+```{r five-clusters-kmeans8, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
 centroids2 <- update_centroids(coords)
 make_kmeans_plot(coords, centroids2, centroids, plot_voronoi = FALSE)
 ```
 ]
 
+.absolute-bottom-left[
+Move means to centroid position of each group of points
+]
+
 ---
 
 class: middle
 
 .center[
-```{r five-clusters-kmeans9, echo = FALSE, fig.width = 7, fig.asp = .85, dev = "svg"}
+```{r five-clusters-kmeans9, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
 centroids <- centroids2
 coords <- update_clusters(coords, centroids)
 make_kmeans_plot(coords, centroids, centroids, color_points = FALSE)
 ```
 ]
 
----
-
-class: middle
-
-.center[
-```{r five-clusters-kmeans10, echo = FALSE, fig.width = 7, fig.asp = .85, dev = "svg"}
-make_kmeans_plot(coords, centroids, centroids, color_points = TRUE)
-```
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
 ]
 
 ---
@@ -439,32 +600,44 @@ make_kmeans_plot(coords, centroids, centroids, color_points = TRUE)
 class: middle
 
 .center[
-```{r five-clusters-kmeans11, echo = FALSE, fig.width = 7, fig.asp = .85, dev = "svg"}
+```{r five-clusters-kmeans10, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
+make_kmeans_plot(coords, centroids, centroids, color_points = TRUE)
+```
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+```{r five-clusters-kmeans11, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
 centroids2 <- update_centroids(coords)
 make_kmeans_plot(coords, centroids2, centroids, plot_voronoi = FALSE)
 ```
 ]
 
+.absolute-bottom-left[
+Move means to centroid position of each group of points
+]
+
 ---
 
 class: middle
 
 .center[
-```{r five-clusters-kmeans12, echo = FALSE, fig.width = 7, fig.asp = .85, dev = "svg"}
+```{r five-clusters-kmeans12, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
 centroids <- centroids2
 coords <- update_clusters(coords, centroids)
 make_kmeans_plot(coords, centroids, centroids, color_points = FALSE)
 ```
 ]
 
----
-
-class: middle
-
-.center[
-```{r five-clusters-kmeans13, echo = FALSE, fig.width = 7, fig.asp = .85, dev = "svg"}
-make_kmeans_plot(coords, centroids, centroids, color_points = TRUE)
-```
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
 ]
 
 ---
@@ -472,32 +645,44 @@ make_kmeans_plot(coords, centroids, centroids, color_points = TRUE)
 class: middle
 
 .center[
-```{r five-clusters-kmeans14, echo = FALSE, fig.width = 7, fig.asp = .85, dev = "svg"}
+```{r five-clusters-kmeans13, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
+make_kmeans_plot(coords, centroids, centroids, color_points = TRUE)
+```
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+```{r five-clusters-kmeans14, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
 centroids2 <- update_centroids(coords)
 make_kmeans_plot(coords, centroids2, centroids, plot_voronoi = FALSE)
 ```
 ]
 
+.absolute-bottom-left[
+Move means to centroid position of each group of points
+]
+
 ---
 
 class: middle
 
 .center[
-```{r five-clusters-kmeans15, echo = FALSE, fig.width = 7, fig.asp = .85, dev = "svg"}
+```{r five-clusters-kmeans15, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
 centroids <- centroids2
 coords <- update_clusters(coords, centroids)
 make_kmeans_plot(coords, centroids, centroids, color_points = FALSE)
 ```
 ]
 
----
-
-class: middle
-
-.center[
-```{r five-clusters-kmeans16, echo = FALSE, fig.width = 7, fig.asp = .85, dev = "svg"}
-make_kmeans_plot(coords, centroids, centroids, color_points = TRUE)
-```
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
 ]
 
 ---
@@ -505,41 +690,352 @@ make_kmeans_plot(coords, centroids, centroids, color_points = TRUE)
 class: middle
 
 .center[
-```{r five-clusters-kmeans17, echo = FALSE, fig.width = 7, fig.asp = .85, dev = "svg"}
+```{r five-clusters-kmeans16, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
+make_kmeans_plot(coords, centroids, centroids, color_points = TRUE)
+```
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+```{r five-clusters-kmeans17, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
 centroids2 <- update_centroids(coords)
 make_kmeans_plot(coords, centroids2, centroids, plot_voronoi = FALSE)
 ```
 ]
 
+.absolute-bottom-left[
+Move means to centroid position of each group of points
+]
+
+---
+class: center middle
+
+## ... do many more iterations ...
+
 ---
 
 class: middle
 
 .center[
-```{r five-clusters-kmeans18, echo = FALSE, fig.width = 7, fig.asp = .85, dev = "svg"}
+```{r five-clusters-kmeans18, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
+centroids <- centroids2
+
+for (i in 1:40) {
+  coords <- update_clusters(coords, centroids)
+  centroids <- update_centroids(coords)
+}
+make_kmeans_plot(coords, centroids, centroids, plot_voronoi = FALSE)
+```
+]
+
+.absolute-bottom-left[
+Final result
+]
+
+---
+class: middle center
+
+## Let's try this on the spirals dataset
+
+---
+class: middle
+
+.center[
+```{r spirals-kmeans1, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
+coords <- spirals
+
+centroids <- tibble(
+  x = c(5.3544626, 3.1688159, 5.4307893, -0.9571097, 4.4852765),
+  y = c(1.754802, 2.622277, -4.537906, -4.415216, 3.125914),
+  cluster = factor(1:5)
+)
+
+set.seed(3425)
+set.seed(3427)
+centroids <- random_centroids(coords, 3)
+
+coords <- update_clusters(coords, centroids)
+
+make_kmeans_plot(coords, centroids, color_points = FALSE, plot_centroids = FALSE, plot_voronoi = FALSE)
+```
+]
+
+
+---
+
+class: middle
+
+.center[
+```{r spirals-kmeans2, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
+make_kmeans_plot(coords, centroids, color_points = FALSE, plot_centroids = TRUE, plot_voronoi = FALSE)
+```
+]
+
+
+.absolute-bottom-left[
+Add means at arbitrary locations
+]
+
+
+---
+
+class: middle
+
+.center[
+```{r spirals-kmeans3, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
+make_kmeans_plot(coords, centroids, centroids, color_points = FALSE, plot_voronoi = TRUE)
+```
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+
+---
+
+class: middle
+
+.center[
+```{r spirals-kmeans4, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
+make_kmeans_plot(coords, centroids, centroids, color_points = TRUE)
+```
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+```{r spirals-kmeans5, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
+centroids2 <- update_centroids(coords)
+make_kmeans_plot(coords, centroids2, centroids, plot_voronoi = FALSE)
+```
+]
+
+.absolute-bottom-left[
+Move means to centroid position of each group of points
+]
+
+
+---
+
+class: middle
+
+.center[
+```{r spirals-kmeans6, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
 centroids <- centroids2
 coords <- update_clusters(coords, centroids)
 make_kmeans_plot(coords, centroids, centroids, color_points = FALSE)
 ```
 ]
 
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
 ---
 
 class: middle
 
 .center[
-```{r five-clusters-kmeans19, echo = FALSE, fig.width = 7, fig.asp = .85, dev = "svg"}
+```{r spirals-kmeans7, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
 make_kmeans_plot(coords, centroids, centroids, color_points = TRUE)
 ```
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+```{r spirals-kmeans8, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
+centroids2 <- update_centroids(coords)
+make_kmeans_plot(coords, centroids2, centroids, plot_voronoi = FALSE)
+```
+]
+
+.absolute-bottom-left[
+Move means to centroid position of each group of points
+]
+
+---
+
+class: middle
+
+.center[
+```{r spirals-kmeans9, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
+centroids <- centroids2
+coords <- update_clusters(coords, centroids)
+make_kmeans_plot(coords, centroids, centroids, color_points = FALSE)
+```
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+```{r spirals-kmeans10, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
+make_kmeans_plot(coords, centroids, centroids, color_points = TRUE)
+```
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+```{r spirals-kmeans11, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
+centroids2 <- update_centroids(coords)
+make_kmeans_plot(coords, centroids2, centroids, plot_voronoi = FALSE)
+```
+]
+
+.absolute-bottom-left[
+Move means to centroid position of each group of points
+]
+
+---
+
+class: middle
+
+.center[
+```{r spirals-kmeans12, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
+centroids <- centroids2
+coords <- update_clusters(coords, centroids)
+make_kmeans_plot(coords, centroids, centroids, color_points = FALSE)
+```
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+```{r spirals-kmeans13, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
+make_kmeans_plot(coords, centroids, centroids, color_points = TRUE)
+```
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+```{r spirals-kmeans14, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
+centroids2 <- update_centroids(coords)
+make_kmeans_plot(coords, centroids2, centroids, plot_voronoi = FALSE)
+```
+]
+
+.absolute-bottom-left[
+Move means to centroid position of each group of points
+]
+
+---
+
+class: middle
+
+.center[
+```{r spirals-kmeans15, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
+centroids <- centroids2
+coords <- update_clusters(coords, centroids)
+make_kmeans_plot(coords, centroids, centroids, color_points = FALSE)
+```
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+```{r spirals-kmeans16, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
+make_kmeans_plot(coords, centroids, centroids, color_points = TRUE)
+```
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+```{r spirals-kmeans17, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
+centroids2 <- update_centroids(coords)
+make_kmeans_plot(coords, centroids2, centroids, plot_voronoi = FALSE)
+```
+]
+
+.absolute-bottom-left[
+Move means to centroid position of each group of points
+]
+
+---
+class: center middle
+
+## ... do many more iterations ...
+
+---
+
+class: middle
+
+.center[
+```{r spirals-kmeans18, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = .85, dev = "svg"}
+centroids <- centroids2
+
+for (i in 1:100) {
+  coords <- update_clusters(coords, centroids)
+  centroids <- update_centroids(coords)
+}
+make_kmeans_plot(coords, centroids, centroids, plot_voronoi = FALSE)
+```
+]
+
+.absolute-bottom-left[
+Final result
 ]
 
 ---
 
 ## Further reading
 
-- Wikipedia: [Nonlinear dimensionality reduction](https://en.wikipedia.org/wiki/Nonlinear_dimensionality_reduction)
-- Wikipedia: [t-distributed stochastic neighbor embedding](https://en.wikipedia.org/wiki/T-distributed_stochastic_neighbor_embedding)
-- Wikipedia: [Kernel principal component analysis](https://en.wikipedia.org/wiki/Kernel_principal_component_analysis)
-- **kernlab** reference documentation (for kernel PCA): [pdf document](https://cran.r-project.org/web/packages/kernlab/kernlab.pdf)
-- **Rtsne** reference documentation: [pdf document](https://cran.r-project.org/web/packages/Rtsne/Rtsne.pdf)
-- **umap** vignette: [Uniform Manifold Approximation and Projection in R](https://cran.r-project.org/web/packages/umap/vignettes/umap.html)
+- Wikipedia: [k-means clustering](https://en.wikipedia.org/wiki/K-means_clustering)

@@ -73,3 +73,15 @@ table {
 .width-90 {
   width: 90%
 }
+
+.absolute-bottom-left {
+  position: absolute;
+  bottom: 0; 
+  left: 4em;
+}
+
+.absolute-bottom-right {
+  position: absolute;
+  bottom: 0; 
+  right: 4em;
+}

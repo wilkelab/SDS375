@@ -14,7 +14,7 @@ class: center, middle, title-slide
 
 # Clustering
 ### Claus O. Wilke
-### last updated: 2021-03-31
+### last updated: 2021-04-01
 
 ---
 
@@ -22,6 +22,39 @@ class: center, middle, title-slide
 
 
 
+
+## Title
+
+---
+
+## *k*-means clustering
+
+--
+
+1\. Start with *k* randomly chosen means
+
+--
+
+2\. Color data points by the shortest distance to any
+mean
+
+--
+
+3\. Move means to centroid position of each group of
+points
+
+--
+
+4\. Repeat from step 2 until convergence
+
+---
+
+class: center middle
+
+## Let's try it out
+
+
+---
 
 class: middle
 
@@ -37,12 +70,20 @@ class: middle
 ![](clustering_files/figure-html/three-clusters-kmeans2-1.svg)&lt;!-- --&gt;
 ]
 
+.absolute-bottom-left[
+Add means at arbitrary locations
+]
+
 ---
 
 class: middle
 
 .center[
 ![](clustering_files/figure-html/three-clusters-kmeans3-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
 ]
 
 ---
@@ -53,12 +94,20 @@ class: middle
 ![](clustering_files/figure-html/three-clusters-kmeans4-1.svg)&lt;!-- --&gt;
 ]
 
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
 ---
 
 class: middle
 
 .center[
 ![](clustering_files/figure-html/three-clusters-kmeans5-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Move means to centroid position of each group of points
 ]
 
 ---
@@ -69,12 +118,20 @@ class: middle
 ![](clustering_files/figure-html/three-clusters-kmeans6-1.svg)&lt;!-- --&gt;
 ]
 
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
 ---
 
 class: middle
 
 .center[
 ![](clustering_files/figure-html/three-clusters-kmeans7-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
 ]
 
 ---
@@ -85,12 +142,20 @@ class: middle
 ![](clustering_files/figure-html/three-clusters-kmeans8-1.svg)&lt;!-- --&gt;
 ]
 
+.absolute-bottom-left[
+Move means to centroid position of each group of points
+]
+
 ---
 
 class: middle
 
 .center[
 ![](clustering_files/figure-html/three-clusters-kmeans9-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
 ]
 
 ---
@@ -101,12 +166,20 @@ class: middle
 ![](clustering_files/figure-html/three-clusters-kmeans10-1.svg)&lt;!-- --&gt;
 ]
 
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
 ---
 
 class: middle
 
 .center[
 ![](clustering_files/figure-html/three-clusters-kmeans11-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Move means to centroid position of each group of points
 ]
 
 ---
@@ -117,12 +190,20 @@ class: middle
 ![](clustering_files/figure-html/three-clusters-kmeans12-1.svg)&lt;!-- --&gt;
 ]
 
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
 ---
 
 class: middle
 
 .center[
 ![](clustering_files/figure-html/three-clusters-kmeans13-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
 ]
 
 ---
@@ -133,12 +214,20 @@ class: middle
 ![](clustering_files/figure-html/three-clusters-kmeans14-1.svg)&lt;!-- --&gt;
 ]
 
+.absolute-bottom-left[
+Move means to centroid position of each group of points
+]
+
 ---
 
 class: middle
 
 .center[
 ![](clustering_files/figure-html/three-clusters-kmeans15-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
 ]
 
 ---
@@ -149,12 +238,20 @@ class: middle
 ![](clustering_files/figure-html/three-clusters-kmeans16-1.svg)&lt;!-- --&gt;
 ]
 
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
 ---
 
 class: middle
 
 .center[
 ![](clustering_files/figure-html/three-clusters-kmeans17-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Move means to centroid position of each group of points
 ]
 
 ---
@@ -165,6 +262,10 @@ class: middle
 ![](clustering_files/figure-html/three-clusters-kmeans18-1.svg)&lt;!-- --&gt;
 ]
 
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
 ---
 
 class: middle
@@ -173,12 +274,34 @@ class: middle
 ![](clustering_files/figure-html/three-clusters-kmeans19-1.svg)&lt;!-- --&gt;
 ]
 
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/three-clusters-kmeans20-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Final result
+]
+
+---
+class: middle center
+
+## Now we'll cluster the same dataset with five centroids
+
 ---
 class: middle
 
 .center[
 ![](clustering_files/figure-html/five-clusters-kmeans1-1.svg)&lt;!-- --&gt;
 ]
+
 
 ---
 
@@ -188,6 +311,12 @@ class: middle
 ![](clustering_files/figure-html/five-clusters-kmeans2-1.svg)&lt;!-- --&gt;
 ]
 
+
+.absolute-bottom-left[
+Add means at arbitrary locations
+]
+
+
 ---
 
 class: middle
@@ -196,12 +325,21 @@ class: middle
 ![](clustering_files/figure-html/five-clusters-kmeans3-1.svg)&lt;!-- --&gt;
 ]
 
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+
 ---
 
 class: middle
 
 .center[
 ![](clustering_files/figure-html/five-clusters-kmeans4-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
 ]
 
 ---
@@ -212,12 +350,21 @@ class: middle
 ![](clustering_files/figure-html/five-clusters-kmeans5-1.svg)&lt;!-- --&gt;
 ]
 
+.absolute-bottom-left[
+Move means to centroid position of each group of points
+]
+
+
 ---
 
 class: middle
 
 .center[
 ![](clustering_files/figure-html/five-clusters-kmeans6-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
 ]
 
 ---
@@ -228,12 +375,20 @@ class: middle
 ![](clustering_files/figure-html/five-clusters-kmeans7-1.svg)&lt;!-- --&gt;
 ]
 
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
 ---
 
 class: middle
 
 .center[
 ![](clustering_files/figure-html/five-clusters-kmeans8-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Move means to centroid position of each group of points
 ]
 
 ---
@@ -244,12 +399,20 @@ class: middle
 ![](clustering_files/figure-html/five-clusters-kmeans9-1.svg)&lt;!-- --&gt;
 ]
 
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
 ---
 
 class: middle
 
 .center[
 ![](clustering_files/figure-html/five-clusters-kmeans10-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
 ]
 
 ---
@@ -260,12 +423,20 @@ class: middle
 ![](clustering_files/figure-html/five-clusters-kmeans11-1.svg)&lt;!-- --&gt;
 ]
 
+.absolute-bottom-left[
+Move means to centroid position of each group of points
+]
+
 ---
 
 class: middle
 
 .center[
 ![](clustering_files/figure-html/five-clusters-kmeans12-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
 ]
 
 ---
@@ -276,12 +447,20 @@ class: middle
 ![](clustering_files/figure-html/five-clusters-kmeans13-1.svg)&lt;!-- --&gt;
 ]
 
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
 ---
 
 class: middle
 
 .center[
 ![](clustering_files/figure-html/five-clusters-kmeans14-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Move means to centroid position of each group of points
 ]
 
 ---
@@ -292,12 +471,20 @@ class: middle
 ![](clustering_files/figure-html/five-clusters-kmeans15-1.svg)&lt;!-- --&gt;
 ]
 
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
 ---
 
 class: middle
 
 .center[
 ![](clustering_files/figure-html/five-clusters-kmeans16-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
 ]
 
 ---
@@ -308,6 +495,15 @@ class: middle
 ![](clustering_files/figure-html/five-clusters-kmeans17-1.svg)&lt;!-- --&gt;
 ]
 
+.absolute-bottom-left[
+Move means to centroid position of each group of points
+]
+
+---
+class: center middle
+
+## ... do many more iterations ...
+
 ---
 
 class: middle
@@ -316,24 +512,241 @@ class: middle
 ![](clustering_files/figure-html/five-clusters-kmeans18-1.svg)&lt;!-- --&gt;
 ]
 
+.absolute-bottom-left[
+Final result
+]
+
+---
+class: middle center
+
+## Let's try this on the spirals dataset
+
+---
+class: middle
+
+.center[
+![](clustering_files/figure-html/spirals-kmeans1-1.svg)&lt;!-- --&gt;
+]
+
+
 ---
 
 class: middle
 
 .center[
-![](clustering_files/figure-html/five-clusters-kmeans19-1.svg)&lt;!-- --&gt;
+![](clustering_files/figure-html/spirals-kmeans2-1.svg)&lt;!-- --&gt;
+]
+
+
+.absolute-bottom-left[
+Add means at arbitrary locations
+]
+
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/spirals-kmeans3-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/spirals-kmeans4-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/spirals-kmeans5-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Move means to centroid position of each group of points
+]
+
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/spirals-kmeans6-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/spirals-kmeans7-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/spirals-kmeans8-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Move means to centroid position of each group of points
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/spirals-kmeans9-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/spirals-kmeans10-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/spirals-kmeans11-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Move means to centroid position of each group of points
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/spirals-kmeans12-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/spirals-kmeans13-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/spirals-kmeans14-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Move means to centroid position of each group of points
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/spirals-kmeans15-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/spirals-kmeans16-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/spirals-kmeans17-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Move means to centroid position of each group of points
+]
+
+---
+class: center middle
+
+## ... do many more iterations ...
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/spirals-kmeans18-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Final result
 ]
 
 ---
 
 ## Further reading
 
-- Wikipedia: [Nonlinear dimensionality reduction](https://en.wikipedia.org/wiki/Nonlinear_dimensionality_reduction)
-- Wikipedia: [t-distributed stochastic neighbor embedding](https://en.wikipedia.org/wiki/T-distributed_stochastic_neighbor_embedding)
-- Wikipedia: [Kernel principal component analysis](https://en.wikipedia.org/wiki/Kernel_principal_component_analysis)
-- **kernlab** reference documentation (for kernel PCA): [pdf document](https://cran.r-project.org/web/packages/kernlab/kernlab.pdf)
-- **Rtsne** reference documentation: [pdf document](https://cran.r-project.org/web/packages/Rtsne/Rtsne.pdf)
-- **umap** vignette: [Uniform Manifold Approximation and Projection in R](https://cran.r-project.org/web/packages/umap/vignettes/umap.html)
+- Wikipedia: [k-means clustering](https://en.wikipedia.org/wiki/K-means_clustering)
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
