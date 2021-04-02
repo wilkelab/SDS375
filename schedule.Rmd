@@ -241,7 +241,8 @@ This is an extra assignment for graduate students only.
 
 <p class="nospace">Materials:</p>
 
-- coming soon
+- [R Markdown template](assignments/grad_assignment.Rmd)
+- [HTML](assignments/grad_assignment.html)
 
 ### Final draft (due May 7, 2021)
 
