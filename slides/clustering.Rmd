@@ -1036,6 +1036,59 @@ Final result
 
 ---
 
+.pull-left.tiny-font[
+```{r iris-kmeans}
+km_fit <- iris %>% 
+  select(where(is.numeric)) %>%
+  kmeans(centers = 3, nstart = 10)
+
+km_fit %>%
+  augment(iris) %>%
+  ggplot() +
+  aes(x = Sepal.Length, Sepal.Width) +
+  geom_point(aes(color = .cluster, shape = Species)) +
+  geom_point(
+    data = tidy(km_fit),
+    aes(fill = cluster),
+    color = "black",
+    size = 4, shape = 21
+  ) +
+  guides(color = "none")
+```
+]
+
+
+---
+
+.pull-left.tiny-font[
+```{r iris-scree}
+# function to calculate within sum squares
+# for given data and number of centers
+calc_withinss <- function(data, centers) {
+  data %>% 
+    select(where(is.numeric)) %>%
+    kmeans(centers = centers, nstart = 10) %>%
+    tidy() %>%
+    pull(withinss) %>%
+    sum()
+}
+
+# make plot
+tibble(centers = 1:15) %>%
+  mutate(
+    within_sum_squares = map_dbl(
+      centers, ~calc_withinss(iris, .x)
+    )
+  ) %>%
+  ggplot() +
+  aes(centers, within_sum_squares) +
+  geom_point() +
+  geom_line()
+```
+]
+
+---
+
 ## Further reading
 
 - Wikipedia: [k-means clustering](https://en.wikipedia.org/wiki/K-means_clustering)
