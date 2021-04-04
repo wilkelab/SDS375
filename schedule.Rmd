@@ -137,7 +137,7 @@ knitr::opts_chunk$set(echo = FALSE)
 <p class="nospace">Materials:</p>
 
 - [Slides](slides/clustering.html)
-
+- [Worksheet](worksheets/clustering.Rmd)
 
 ## Homeworks
 

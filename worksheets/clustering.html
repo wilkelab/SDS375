@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="author" content="Claus O. Wilke" />
+
+
+<meta name="progressive" content="false" />
+<meta name="allow-skip" content="false" />
+
+<title>Dimension reduction 2</title>
+
+
+<!-- highlightjs -->
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+<!-- taken from https://github.com/rstudio/rmarkdown/blob/67b7f5fc779e4cfdfd0f021d3d7745b6b6e17149/inst/rmd/h/default.html#L296-L362 -->
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("section-TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+<!-- end tabsets -->
+
+
+
+</head>
+
+<body>
+
+
+
+<div class="pageContent band">
+<div class="bandContent page">
+
+<div class="topics">
+
+<div id="section-introduction" class="section level2">
+<h2>Introduction</h2>
+<p>In this worksheet, we will discuss how to perform k-means clustering.</p>
+<p>We will be using the R package <strong>tidyverse</strong> for data manipulation and visualization, and the R package <strong>broom</strong> to tidy the k-means outputs.</p>
+<pre class="r"><code># load required libraries
+library(tidyverse)
+library(broom)</code></pre>
+<p>We will be working with two datasets, <code>spirals</code> and <code>iris</code>. The dataset <code>spirals</code> contains made-up data in two dimensions that forms three intertwined spirals.</p>
+<pre class="r"><code>spirals</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["x"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["y"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["group"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"-1.804207105","2":"-0.013574491","3":"A"},{"1":"-1.856163952","2":"0.119075526","3":"A"},{"1":"-1.895448585","2":"0.303415503","3":"A"},{"1":"-1.807724046","2":"0.314680526","3":"A"},{"1":"-1.792681306","2":"0.264804261","3":"A"},{"1":"-1.824071157","2":"0.439436907","3":"A"},{"1":"-1.857762937","2":"0.592516052","3":"A"},{"1":"-1.771616262","2":"0.645916839","3":"A"},{"1":"-1.841317248","2":"0.559892829","3":"A"},{"1":"-1.793801582","2":"0.819565739","3":"A"},{"1":"-1.827851069","2":"0.837223407","3":"A"},{"1":"-1.708165482","2":"0.944374838","3":"A"},{"1":"-1.639504312","2":"1.033339015","3":"A"},{"1":"-1.732215366","2":"1.188817235","3":"A"},{"1":"-1.559539524","2":"1.310994422","3":"A"},{"1":"-1.491804480","2":"1.342978468","3":"A"},{"1":"-1.574987282","2":"1.411557922","3":"A"},{"1":"-1.376413428","2":"1.433203934","3":"A"},{"1":"-1.438024341","2":"1.568312849","3":"A"},{"1":"-1.209913980","2":"1.684367433","3":"A"},{"1":"-1.250975285","2":"1.746964027","3":"A"},{"1":"-1.179848208","2":"1.945236186","3":"A"},{"1":"-1.066699766","2":"1.848293536","3":"A"},{"1":"-0.953555236","2":"2.041098513","3":"A"},{"1":"-0.919586485","2":"1.996571112","3":"A"},{"1":"-0.872743205","2":"2.112999553","3":"A"},{"1":"-0.716756909","2":"2.127841935","3":"A"},{"1":"-0.590843502","2":"2.111792617","3":"A"},{"1":"-0.518634268","2":"2.162600164","3":"A"},{"1":"-0.433361374","2":"2.187876335","3":"A"},{"1":"-0.254728769","2":"2.248253357","3":"A"},{"1":"-0.099109923","2":"2.347348286","3":"A"},{"1":"-0.149363521","2":"2.282374149","3":"A"},{"1":"-0.002159309","2":"2.344606439","3":"A"},{"1":"0.177834166","2":"2.352530709","3":"A"},{"1":"0.313382006","2":"2.393269914","3":"A"},{"1":"0.326578151","2":"2.337390922","3":"A"},{"1":"0.516144894","2":"2.390004818","3":"A"},{"1":"0.574561438","2":"2.396017476","3":"A"},{"1":"0.680919208","2":"2.310616504","3":"A"},{"1":"0.773725601","2":"2.332222641","3":"A"},{"1":"0.881913633","2":"2.274520834","3":"A"},{"1":"0.977899467","2":"2.291434749","3":"A"},{"1":"1.005631195","2":"2.294921486","3":"A"},{"1":"1.221429213","2":"2.259256299","3":"A"},{"1":"1.455631885","2":"2.101182646","3":"A"},{"1":"1.574913464","2":"2.081810065","3":"A"},{"1":"1.527461883","2":"2.122844916","3":"A"},{"1":"1.670140584","2":"2.015154676","3":"A"},{"1":"1.796550146","2":"1.935198521","3":"A"},{"1":"1.969916791","2":"1.860324960","3":"A"},{"1":"1.998229055","2":"1.772300778","3":"A"},{"1":"2.197949800","2":"1.688422972","3":"A"},{"1":"2.202323219","2":"1.503185337","3":"A"},{"1":"2.331546550","2":"1.550255494","3":"A"},{"1":"2.462828573","2":"1.324113955","3":"A"},{"1":"2.442553593","2":"1.335052744","3":"A"},{"1":"2.551506183","2":"1.168988011","3":"A"},{"1":"2.523809729","2":"1.059196790","3":"A"},{"1":"2.729937475","2":"0.849779333","3":"A"},{"1":"2.729191840","2":"0.809008571","3":"A"},{"1":"2.914600389","2":"0.714410094","3":"A"},{"1":"2.887293398","2":"0.615056834","3":"A"},{"1":"2.887422045","2":"0.365071243","3":"A"},{"1":"2.907585776","2":"0.326846604","3":"A"},{"1":"2.888092532","2":"0.208425000","3":"A"},{"1":"3.013549254","2":"0.031951573","3":"A"},{"1":"3.038447209","2":"-0.186753998","3":"A"},{"1":"3.002850825","2":"-0.333159080","3":"A"},{"1":"3.046247356","2":"-0.344277742","3":"A"},{"1":"3.092517694","2":"-0.563228503","3":"A"},{"1":"3.047725188","2":"-0.754046202","3":"A"},{"1":"2.942681662","2":"-0.894670995","3":"A"},{"1":"2.868420717","2":"-0.929703723","3":"A"},{"1":"2.880951675","2":"-1.181189278","3":"A"},{"1":"2.825818322","2":"-1.280838042","3":"A"},{"1":"2.840655956","2":"-1.498979367","3":"A"},{"1":"2.702360186","2":"-1.638963916","3":"A"},{"1":"2.751152782","2":"-1.777562378","3":"A"},{"1":"2.620907901","2":"-1.994167927","3":"A"},{"1":"2.571274749","2":"-2.059595398","3":"A"},{"1":"2.474907438","2":"-2.203644667","3":"A"},{"1":"2.500849506","2":"-2.273832297","3":"A"},{"1":"2.352058852","2":"-2.473218711","3":"A"},{"1":"2.224313470","2":"-2.559758038","3":"A"},{"1":"2.133078943","2":"-2.584972431","3":"A"},{"1":"1.980723631","2":"-2.796103317","3":"A"},{"1":"1.901226655","2":"-2.924109789","3":"A"},{"1":"1.731892908","2":"-2.916040137","3":"A"},{"1":"1.597446204","2":"-3.045841241","3":"A"},{"1":"1.520694852","2":"-3.164796193","3":"A"},{"1":"1.332071161","2":"-3.245230869","3":"A"},{"1":"1.196354782","2":"-3.324721609","3":"A"},{"1":"1.011752014","2":"-3.495821755","3":"A"},{"1":"0.857589366","2":"-3.553055611","3":"A"},{"1":"0.725279838","2":"-3.576699173","3":"A"},{"1":"0.578157280","2":"-3.588037840","3":"A"},{"1":"0.299853523","2":"-3.603920460","3":"A"},{"1":"0.178848019","2":"-3.624672837","3":"A"},{"1":"0.081516263","2":"-3.748372591","3":"A"},{"1":"1.042513752","2":"1.526011465","3":"B"},{"1":"0.956275566","2":"1.580213043","3":"B"},{"1":"1.026921908","2":"1.509769087","3":"B"},{"1":"1.156470783","2":"1.474845013","3":"B"},{"1":"1.207348250","2":"1.411921590","3":"B"},{"1":"1.300471519","2":"1.378303336","3":"B"},{"1":"1.330359588","2":"1.332859398","3":"B"},{"1":"1.442742420","2":"1.213642839","3":"B"},{"1":"1.526330349","2":"1.203511333","3":"B"},{"1":"1.619971259","2":"1.115939686","3":"B"},{"1":"1.762725270","2":"1.069066085","3":"B"},{"1":"1.650191074","2":"0.964838641","3":"B"},{"1":"1.738805638","2":"0.879220695","3":"B"},{"1":"1.802646993","2":"0.906139843","3":"B"},{"1":"1.873357410","2":"0.846091147","3":"B"},{"1":"1.897161405","2":"0.653210119","3":"B"},{"1":"2.038040585","2":"0.604744675","3":"B"},{"1":"2.042969216","2":"0.423601125","3":"B"},{"1":"2.060695504","2":"0.395217413","3":"B"},{"1":"2.087353525","2":"0.328869783","3":"B"},{"1":"2.076730281","2":"0.263262373","3":"B"},{"1":"2.210291503","2":"0.044110353","3":"B"},{"1":"2.240870081","2":"-0.031064984","3":"B"},{"1":"2.229700247","2":"-0.159124727","3":"B"},{"1":"2.285835048","2":"-0.229558088","3":"B"},{"1":"2.250964134","2":"-0.248525033","3":"B"},{"1":"2.252140511","2":"-0.475515388","3":"B"},{"1":"2.196460902","2":"-0.525806727","3":"B"},{"1":"2.157298363","2":"-0.622847604","3":"B"},{"1":"2.236555413","2":"-0.807094467","3":"B"},{"1":"2.049458428","2":"-0.865140709","3":"B"},{"1":"2.088799684","2":"-0.980044803","3":"B"},{"1":"2.138806759","2":"-1.024338412","3":"B"},{"1":"2.084977645","2":"-1.178397727","3":"B"},{"1":"2.084742598","2":"-1.315162104","3":"B"},{"1":"2.024640112","2":"-1.398896098","3":"B"},{"1":"1.927167157","2":"-1.531323041","3":"B"},{"1":"1.868897377","2":"-1.661282500","3":"B"},{"1":"1.793710593","2":"-1.678682123","3":"B"},{"1":"1.753671956","2":"-1.811249079","3":"B"},{"1":"1.637672951","2":"-1.901077177","3":"B"},{"1":"1.531700005","2":"-1.980327561","3":"B"},{"1":"1.513996277","2":"-2.044119082","3":"B"},{"1":"1.346018321","2":"-2.152706179","3":"B"},{"1":"1.292078232","2":"-2.187923462","3":"B"},{"1":"1.127883948","2":"-2.342027745","3":"B"},{"1":"1.026636039","2":"-2.274235882","3":"B"},{"1":"1.085304968","2":"-2.458530181","3":"B"},{"1":"0.855481780","2":"-2.513843964","3":"B"},{"1":"0.767593040","2":"-2.489209619","3":"B"},{"1":"0.657485496","2":"-2.596183190","3":"B"},{"1":"0.487723929","2":"-2.669847168","3":"B"},{"1":"0.407106400","2":"-2.713637726","3":"B"},{"1":"0.279422470","2":"-2.639437571","3":"B"},{"1":"0.087382821","2":"-2.775582995","3":"B"},{"1":"-0.042753960","2":"-2.801522915","3":"B"},{"1":"-0.133963521","2":"-2.794967629","3":"B"},{"1":"-0.177526575","2":"-2.786203036","3":"B"},{"1":"-0.393787086","2":"-2.719243329","3":"B"},{"1":"-0.595651282","2":"-2.924957782","3":"B"},{"1":"-0.687863300","2":"-2.859540993","3":"B"},{"1":"-0.799107220","2":"-2.715651720","3":"B"},{"1":"-0.964335992","2":"-2.805147410","3":"B"},{"1":"-1.134058583","2":"-2.836081231","3":"B"},{"1":"-1.178365141","2":"-2.688092118","3":"B"},{"1":"-1.293425280","2":"-2.520307722","3":"B"},{"1":"-1.473189636","2":"-2.583818563","3":"B"},{"1":"-1.664931402","2":"-2.553829221","3":"B"},{"1":"-1.667451232","2":"-2.348179013","3":"B"},{"1":"-1.923445579","2":"-2.376934191","3":"B"},{"1":"-1.993820741","2":"-2.390011840","3":"B"},{"1":"-2.122713766","2":"-2.261925917","3":"B"},{"1":"-2.302413837","2":"-2.105619798","3":"B"},{"1":"-2.377659564","2":"-2.053487841","3":"B"},{"1":"-2.552615275","2":"-2.089606085","3":"B"},{"1":"-2.570201445","2":"-1.896438812","3":"B"},{"1":"-2.668554833","2":"-1.786160473","3":"B"},{"1":"-2.771711939","2":"-1.603011214","3":"B"},{"1":"-2.982110139","2":"-1.398413752","3":"B"},{"1":"-3.073681683","2":"-1.367474908","3":"B"},{"1":"-3.023626873","2":"-1.246707636","3":"B"},{"1":"-3.162720279","2":"-1.192977186","3":"B"},{"1":"-3.197592067","2":"-0.960863652","3":"B"},{"1":"-3.264796870","2":"-0.820890090","3":"B"},{"1":"-3.272930939","2":"-0.658111569","3":"B"},{"1":"-3.404480707","2":"-0.488157009","3":"B"},{"1":"-3.351510542","2":"-0.387665634","3":"B"},{"1":"-3.398067906","2":"-0.188749927","3":"B"},{"1":"-3.566931439","2":"-0.115681622","3":"B"},{"1":"-3.403313633","2":"0.184429712","3":"B"},{"1":"-3.536149523","2":"0.342979270","3":"B"},{"1":"-3.444784835","2":"0.518712866","3":"B"},{"1":"-3.438143831","2":"0.674757055","3":"B"},{"1":"-3.482521782","2":"0.915795190","3":"B"},{"1":"-3.370755425","2":"0.973217457","3":"B"},{"1":"-3.364345247","2":"1.182221706","3":"B"},{"1":"-3.390035101","2":"1.391070442","3":"B"},{"1":"-3.246702038","2":"1.531063880","3":"B"},{"1":"-3.280899591","2":"1.656033682","3":"B"},{"1":"-3.185680634","2":"1.819255953","3":"B"},{"1":"0.866103231","2":"-1.583741784","3":"C"},{"1":"0.850651903","2":"-1.674420555","3":"C"},{"1":"0.802830787","2":"-1.751943448","3":"C"},{"1":"0.734772637","2":"-1.656092592","3":"C"},{"1":"0.632052242","2":"-1.850291522","3":"C"},{"1":"0.427020992","2":"-1.849208997","3":"C"},{"1":"0.465565508","2":"-1.841254746","3":"C"},{"1":"0.414153268","2":"-1.895318237","3":"C"},{"1":"0.329117976","2":"-1.896313909","3":"C"},{"1":"0.161967726","2":"-2.021290306","3":"C"},{"1":"0.092315590","2":"-1.911151731","3":"C"},{"1":"0.044087230","2":"-2.030081313","3":"C"},{"1":"-0.002956938","2":"-2.035559181","3":"C"},{"1":"-0.129358177","2":"-1.956266994","3":"C"},{"1":"-0.253555467","2":"-1.961829141","3":"C"},{"1":"-0.430333571","2":"-2.012647772","3":"C"},{"1":"-0.456121777","2":"-1.989750261","3":"C"},{"1":"-0.605671661","2":"-2.045883532","3":"C"},{"1":"-0.620587111","2":"-2.000302629","3":"C"},{"1":"-0.744466915","2":"-1.969150296","3":"C"},{"1":"-0.915980662","2":"-1.996167755","3":"C"},{"1":"-0.989787475","2":"-1.936697510","3":"C"},{"1":"-1.134564436","2":"-1.864075819","3":"C"},{"1":"-1.226048474","2":"-1.891156856","3":"C"},{"1":"-1.317706578","2":"-1.829481290","3":"C"},{"1":"-1.405526301","2":"-1.633402499","3":"C"},{"1":"-1.429498090","2":"-1.623187928","3":"C"},{"1":"-1.608926379","2":"-1.713902813","3":"C"},{"1":"-1.625863096","2":"-1.591852845","3":"C"},{"1":"-1.693543194","2":"-1.501512524","3":"C"},{"1":"-1.840269087","2":"-1.426155788","3":"C"},{"1":"-1.957501226","2":"-1.368350996","3":"C"},{"1":"-2.011130977","2":"-1.221521975","3":"C"},{"1":"-2.070498471","2":"-1.213644701","3":"C"},{"1":"-2.234385936","2":"-1.196540224","3":"C"},{"1":"-2.341195457","2":"-0.954094467","3":"C"},{"1":"-2.198153301","2":"-0.876811168","3":"C"},{"1":"-2.264978925","2":"-0.726718292","3":"C"},{"1":"-2.324976383","2":"-0.742502987","3":"C"},{"1":"-2.437860537","2":"-0.599396767","3":"C"},{"1":"-2.424723273","2":"-0.446520540","3":"C"},{"1":"-2.535364475","2":"-0.383283571","3":"C"},{"1":"-2.538145801","2":"-0.217625761","3":"C"},{"1":"-2.588416633","2":"-0.178784804","3":"C"},{"1":"-2.527327941","2":"-0.008736667","3":"C"},{"1":"-2.558420450","2":"0.145959856","3":"C"},{"1":"-2.612475901","2":"0.319156505","3":"C"},{"1":"-2.622703033","2":"0.310448506","3":"C"},{"1":"-2.602028671","2":"0.440843467","3":"C"},{"1":"-2.605065837","2":"0.574418342","3":"C"},{"1":"-2.504327537","2":"0.760038477","3":"C"},{"1":"-2.562685660","2":"0.887267116","3":"C"},{"1":"-2.586134506","2":"1.069614882","3":"C"},{"1":"-2.470737515","2":"1.200281682","3":"C"},{"1":"-2.417306983","2":"1.234816644","3":"C"},{"1":"-2.368321675","2":"1.334707951","3":"C"},{"1":"-2.197402035","2":"1.486631163","3":"C"},{"1":"-2.325550942","2":"1.665436897","3":"C"},{"1":"-2.259634224","2":"1.759095263","3":"C"},{"1":"-2.104515148","2":"1.837549697","3":"C"},{"1":"-2.117033414","2":"1.934698163","3":"C"},{"1":"-2.014653078","2":"2.136807642","3":"C"},{"1":"-1.876678744","2":"2.248471526","3":"C"},{"1":"-1.828069207","2":"2.247575795","3":"C"},{"1":"-1.698377312","2":"2.369392333","3":"C"},{"1":"-1.586274182","2":"2.556575364","3":"C"},{"1":"-1.562142420","2":"2.580351347","3":"C"},{"1":"-1.366150247","2":"2.668000981","3":"C"},{"1":"-1.229595047","2":"2.753003645","3":"C"},{"1":"-1.193583062","2":"2.805387300","3":"C"},{"1":"-0.960950935","2":"2.929565584","3":"C"},{"1":"-0.973512686","2":"3.013089931","3":"C"},{"1":"-0.762687973","2":"3.033934014","3":"C"},{"1":"-0.681211250","2":"3.120684503","3":"C"},{"1":"-0.478610257","2":"3.071197961","3":"C"},{"1":"-0.260570971","2":"3.146897265","3":"C"},{"1":"-0.206124081","2":"3.251348215","3":"C"},{"1":"0.021522767","2":"3.238074712","3":"C"},{"1":"0.194318705","2":"3.190171988","3":"C"},{"1":"0.267831175","2":"3.195506023","3":"C"},{"1":"0.445766227","2":"3.170045235","3":"C"},{"1":"0.637614437","2":"3.225128071","3":"C"},{"1":"0.789988526","2":"3.196772393","3":"C"},{"1":"0.937225091","2":"3.196618528","3":"C"},{"1":"1.046454277","2":"3.259312549","3":"C"},{"1":"1.218174588","2":"3.189712598","3":"C"},{"1":"1.438019581","2":"3.151292360","3":"C"},{"1":"1.508716124","2":"3.107962716","3":"C"},{"1":"1.708348989","2":"2.981472349","3":"C"},{"1":"1.854588277","2":"3.001978990","3":"C"},{"1":"2.015986464","2":"2.870961964","3":"C"},{"1":"2.175794467","2":"2.675349914","3":"C"},{"1":"2.341006630","2":"2.776065772","3":"C"},{"1":"2.514121339","2":"2.608248275","3":"C"},{"1":"2.591587871","2":"2.477436317","3":"C"},{"1":"2.790350008","2":"2.435405572","3":"C"},{"1":"2.856388229","2":"2.240566150","3":"C"},{"1":"3.051553901","2":"2.169627500","3":"C"},{"1":"3.096413310","2":"2.002433988","3":"C"},{"1":"3.246762976","2":"1.824692148","3":"C"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>The dataset <code>iris</code> contains measurements on the leaves of flowers of three <em>Iris</em> species.</p>
+<pre class="r"><code>iris</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Sepal.Length"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Sepal.Width"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Petal.Length"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Petal.Width"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Species"],"name":[5],"type":["fct"],"align":["left"]}],"data":[{"1":"5.1","2":"3.5","3":"1.4","4":"0.2","5":"setosa"},{"1":"4.9","2":"3.0","3":"1.4","4":"0.2","5":"setosa"},{"1":"4.7","2":"3.2","3":"1.3","4":"0.2","5":"setosa"},{"1":"4.6","2":"3.1","3":"1.5","4":"0.2","5":"setosa"},{"1":"5.0","2":"3.6","3":"1.4","4":"0.2","5":"setosa"},{"1":"5.4","2":"3.9","3":"1.7","4":"0.4","5":"setosa"},{"1":"4.6","2":"3.4","3":"1.4","4":"0.3","5":"setosa"},{"1":"5.0","2":"3.4","3":"1.5","4":"0.2","5":"setosa"},{"1":"4.4","2":"2.9","3":"1.4","4":"0.2","5":"setosa"},{"1":"4.9","2":"3.1","3":"1.5","4":"0.1","5":"setosa"},{"1":"5.4","2":"3.7","3":"1.5","4":"0.2","5":"setosa"},{"1":"4.8","2":"3.4","3":"1.6","4":"0.2","5":"setosa"},{"1":"4.8","2":"3.0","3":"1.4","4":"0.1","5":"setosa"},{"1":"4.3","2":"3.0","3":"1.1","4":"0.1","5":"setosa"},{"1":"5.8","2":"4.0","3":"1.2","4":"0.2","5":"setosa"},{"1":"5.7","2":"4.4","3":"1.5","4":"0.4","5":"setosa"},{"1":"5.4","2":"3.9","3":"1.3","4":"0.4","5":"setosa"},{"1":"5.1","2":"3.5","3":"1.4","4":"0.3","5":"setosa"},{"1":"5.7","2":"3.8","3":"1.7","4":"0.3","5":"setosa"},{"1":"5.1","2":"3.8","3":"1.5","4":"0.3","5":"setosa"},{"1":"5.4","2":"3.4","3":"1.7","4":"0.2","5":"setosa"},{"1":"5.1","2":"3.7","3":"1.5","4":"0.4","5":"setosa"},{"1":"4.6","2":"3.6","3":"1.0","4":"0.2","5":"setosa"},{"1":"5.1","2":"3.3","3":"1.7","4":"0.5","5":"setosa"},{"1":"4.8","2":"3.4","3":"1.9","4":"0.2","5":"setosa"},{"1":"5.0","2":"3.0","3":"1.6","4":"0.2","5":"setosa"},{"1":"5.0","2":"3.4","3":"1.6","4":"0.4","5":"setosa"},{"1":"5.2","2":"3.5","3":"1.5","4":"0.2","5":"setosa"},{"1":"5.2","2":"3.4","3":"1.4","4":"0.2","5":"setosa"},{"1":"4.7","2":"3.2","3":"1.6","4":"0.2","5":"setosa"},{"1":"4.8","2":"3.1","3":"1.6","4":"0.2","5":"setosa"},{"1":"5.4","2":"3.4","3":"1.5","4":"0.4","5":"setosa"},{"1":"5.2","2":"4.1","3":"1.5","4":"0.1","5":"setosa"},{"1":"5.5","2":"4.2","3":"1.4","4":"0.2","5":"setosa"},{"1":"4.9","2":"3.1","3":"1.5","4":"0.2","5":"setosa"},{"1":"5.0","2":"3.2","3":"1.2","4":"0.2","5":"setosa"},{"1":"5.5","2":"3.5","3":"1.3","4":"0.2","5":"setosa"},{"1":"4.9","2":"3.6","3":"1.4","4":"0.1","5":"setosa"},{"1":"4.4","2":"3.0","3":"1.3","4":"0.2","5":"setosa"},{"1":"5.1","2":"3.4","3":"1.5","4":"0.2","5":"setosa"},{"1":"5.0","2":"3.5","3":"1.3","4":"0.3","5":"setosa"},{"1":"4.5","2":"2.3","3":"1.3","4":"0.3","5":"setosa"},{"1":"4.4","2":"3.2","3":"1.3","4":"0.2","5":"setosa"},{"1":"5.0","2":"3.5","3":"1.6","4":"0.6","5":"setosa"},{"1":"5.1","2":"3.8","3":"1.9","4":"0.4","5":"setosa"},{"1":"4.8","2":"3.0","3":"1.4","4":"0.3","5":"setosa"},{"1":"5.1","2":"3.8","3":"1.6","4":"0.2","5":"setosa"},{"1":"4.6","2":"3.2","3":"1.4","4":"0.2","5":"setosa"},{"1":"5.3","2":"3.7","3":"1.5","4":"0.2","5":"setosa"},{"1":"5.0","2":"3.3","3":"1.4","4":"0.2","5":"setosa"},{"1":"7.0","2":"3.2","3":"4.7","4":"1.4","5":"versicolor"},{"1":"6.4","2":"3.2","3":"4.5","4":"1.5","5":"versicolor"},{"1":"6.9","2":"3.1","3":"4.9","4":"1.5","5":"versicolor"},{"1":"5.5","2":"2.3","3":"4.0","4":"1.3","5":"versicolor"},{"1":"6.5","2":"2.8","3":"4.6","4":"1.5","5":"versicolor"},{"1":"5.7","2":"2.8","3":"4.5","4":"1.3","5":"versicolor"},{"1":"6.3","2":"3.3","3":"4.7","4":"1.6","5":"versicolor"},{"1":"4.9","2":"2.4","3":"3.3","4":"1.0","5":"versicolor"},{"1":"6.6","2":"2.9","3":"4.6","4":"1.3","5":"versicolor"},{"1":"5.2","2":"2.7","3":"3.9","4":"1.4","5":"versicolor"},{"1":"5.0","2":"2.0","3":"3.5","4":"1.0","5":"versicolor"},{"1":"5.9","2":"3.0","3":"4.2","4":"1.5","5":"versicolor"},{"1":"6.0","2":"2.2","3":"4.0","4":"1.0","5":"versicolor"},{"1":"6.1","2":"2.9","3":"4.7","4":"1.4","5":"versicolor"},{"1":"5.6","2":"2.9","3":"3.6","4":"1.3","5":"versicolor"},{"1":"6.7","2":"3.1","3":"4.4","4":"1.4","5":"versicolor"},{"1":"5.6","2":"3.0","3":"4.5","4":"1.5","5":"versicolor"},{"1":"5.8","2":"2.7","3":"4.1","4":"1.0","5":"versicolor"},{"1":"6.2","2":"2.2","3":"4.5","4":"1.5","5":"versicolor"},{"1":"5.6","2":"2.5","3":"3.9","4":"1.1","5":"versicolor"},{"1":"5.9","2":"3.2","3":"4.8","4":"1.8","5":"versicolor"},{"1":"6.1","2":"2.8","3":"4.0","4":"1.3","5":"versicolor"},{"1":"6.3","2":"2.5","3":"4.9","4":"1.5","5":"versicolor"},{"1":"6.1","2":"2.8","3":"4.7","4":"1.2","5":"versicolor"},{"1":"6.4","2":"2.9","3":"4.3","4":"1.3","5":"versicolor"},{"1":"6.6","2":"3.0","3":"4.4","4":"1.4","5":"versicolor"},{"1":"6.8","2":"2.8","3":"4.8","4":"1.4","5":"versicolor"},{"1":"6.7","2":"3.0","3":"5.0","4":"1.7","5":"versicolor"},{"1":"6.0","2":"2.9","3":"4.5","4":"1.5","5":"versicolor"},{"1":"5.7","2":"2.6","3":"3.5","4":"1.0","5":"versicolor"},{"1":"5.5","2":"2.4","3":"3.8","4":"1.1","5":"versicolor"},{"1":"5.5","2":"2.4","3":"3.7","4":"1.0","5":"versicolor"},{"1":"5.8","2":"2.7","3":"3.9","4":"1.2","5":"versicolor"},{"1":"6.0","2":"2.7","3":"5.1","4":"1.6","5":"versicolor"},{"1":"5.4","2":"3.0","3":"4.5","4":"1.5","5":"versicolor"},{"1":"6.0","2":"3.4","3":"4.5","4":"1.6","5":"versicolor"},{"1":"6.7","2":"3.1","3":"4.7","4":"1.5","5":"versicolor"},{"1":"6.3","2":"2.3","3":"4.4","4":"1.3","5":"versicolor"},{"1":"5.6","2":"3.0","3":"4.1","4":"1.3","5":"versicolor"},{"1":"5.5","2":"2.5","3":"4.0","4":"1.3","5":"versicolor"},{"1":"5.5","2":"2.6","3":"4.4","4":"1.2","5":"versicolor"},{"1":"6.1","2":"3.0","3":"4.6","4":"1.4","5":"versicolor"},{"1":"5.8","2":"2.6","3":"4.0","4":"1.2","5":"versicolor"},{"1":"5.0","2":"2.3","3":"3.3","4":"1.0","5":"versicolor"},{"1":"5.6","2":"2.7","3":"4.2","4":"1.3","5":"versicolor"},{"1":"5.7","2":"3.0","3":"4.2","4":"1.2","5":"versicolor"},{"1":"5.7","2":"2.9","3":"4.2","4":"1.3","5":"versicolor"},{"1":"6.2","2":"2.9","3":"4.3","4":"1.3","5":"versicolor"},{"1":"5.1","2":"2.5","3":"3.0","4":"1.1","5":"versicolor"},{"1":"5.7","2":"2.8","3":"4.1","4":"1.3","5":"versicolor"},{"1":"6.3","2":"3.3","3":"6.0","4":"2.5","5":"virginica"},{"1":"5.8","2":"2.7","3":"5.1","4":"1.9","5":"virginica"},{"1":"7.1","2":"3.0","3":"5.9","4":"2.1","5":"virginica"},{"1":"6.3","2":"2.9","3":"5.6","4":"1.8","5":"virginica"},{"1":"6.5","2":"3.0","3":"5.8","4":"2.2","5":"virginica"},{"1":"7.6","2":"3.0","3":"6.6","4":"2.1","5":"virginica"},{"1":"4.9","2":"2.5","3":"4.5","4":"1.7","5":"virginica"},{"1":"7.3","2":"2.9","3":"6.3","4":"1.8","5":"virginica"},{"1":"6.7","2":"2.5","3":"5.8","4":"1.8","5":"virginica"},{"1":"7.2","2":"3.6","3":"6.1","4":"2.5","5":"virginica"},{"1":"6.5","2":"3.2","3":"5.1","4":"2.0","5":"virginica"},{"1":"6.4","2":"2.7","3":"5.3","4":"1.9","5":"virginica"},{"1":"6.8","2":"3.0","3":"5.5","4":"2.1","5":"virginica"},{"1":"5.7","2":"2.5","3":"5.0","4":"2.0","5":"virginica"},{"1":"5.8","2":"2.8","3":"5.1","4":"2.4","5":"virginica"},{"1":"6.4","2":"3.2","3":"5.3","4":"2.3","5":"virginica"},{"1":"6.5","2":"3.0","3":"5.5","4":"1.8","5":"virginica"},{"1":"7.7","2":"3.8","3":"6.7","4":"2.2","5":"virginica"},{"1":"7.7","2":"2.6","3":"6.9","4":"2.3","5":"virginica"},{"1":"6.0","2":"2.2","3":"5.0","4":"1.5","5":"virginica"},{"1":"6.9","2":"3.2","3":"5.7","4":"2.3","5":"virginica"},{"1":"5.6","2":"2.8","3":"4.9","4":"2.0","5":"virginica"},{"1":"7.7","2":"2.8","3":"6.7","4":"2.0","5":"virginica"},{"1":"6.3","2":"2.7","3":"4.9","4":"1.8","5":"virginica"},{"1":"6.7","2":"3.3","3":"5.7","4":"2.1","5":"virginica"},{"1":"7.2","2":"3.2","3":"6.0","4":"1.8","5":"virginica"},{"1":"6.2","2":"2.8","3":"4.8","4":"1.8","5":"virginica"},{"1":"6.1","2":"3.0","3":"4.9","4":"1.8","5":"virginica"},{"1":"6.4","2":"2.8","3":"5.6","4":"2.1","5":"virginica"},{"1":"7.2","2":"3.0","3":"5.8","4":"1.6","5":"virginica"},{"1":"7.4","2":"2.8","3":"6.1","4":"1.9","5":"virginica"},{"1":"7.9","2":"3.8","3":"6.4","4":"2.0","5":"virginica"},{"1":"6.4","2":"2.8","3":"5.6","4":"2.2","5":"virginica"},{"1":"6.3","2":"2.8","3":"5.1","4":"1.5","5":"virginica"},{"1":"6.1","2":"2.6","3":"5.6","4":"1.4","5":"virginica"},{"1":"7.7","2":"3.0","3":"6.1","4":"2.3","5":"virginica"},{"1":"6.3","2":"3.4","3":"5.6","4":"2.4","5":"virginica"},{"1":"6.4","2":"3.1","3":"5.5","4":"1.8","5":"virginica"},{"1":"6.0","2":"3.0","3":"4.8","4":"1.8","5":"virginica"},{"1":"6.9","2":"3.1","3":"5.4","4":"2.1","5":"virginica"},{"1":"6.7","2":"3.1","3":"5.6","4":"2.4","5":"virginica"},{"1":"6.9","2":"3.1","3":"5.1","4":"2.3","5":"virginica"},{"1":"5.8","2":"2.7","3":"5.1","4":"1.9","5":"virginica"},{"1":"6.8","2":"3.2","3":"5.9","4":"2.3","5":"virginica"},{"1":"6.7","2":"3.3","3":"5.7","4":"2.5","5":"virginica"},{"1":"6.7","2":"3.0","3":"5.2","4":"2.3","5":"virginica"},{"1":"6.3","2":"2.5","3":"5.0","4":"1.9","5":"virginica"},{"1":"6.5","2":"3.0","3":"5.2","4":"2.0","5":"virginica"},{"1":"6.2","2":"3.4","3":"5.4","4":"2.3","5":"virginica"},{"1":"5.9","2":"3.0","3":"5.1","4":"1.8","5":"virginica"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p><strong>Hint:</strong> Pay attention to the column names. They are all capitalized (e.g., <code>Species</code>), and the first four use a point as a separator (e.g., <code>Sepal.Length</code>). It is easy to misspell them and then the R code doesn’t work correctly.</p>
+</div>
+<div id="section-clustering-the-iris-dataset" class="section level2">
+<h2>Clustering the <code>iris</code> dataset</h2>
+<p>We perform k-means clustering in R with the function <code>kmeans()</code>. It takes two important arguments, the number of clusters we want to generate (<code>centers</code>) and the number of times we want to re-run the clustering algorithm with different random starting points (<code>nstart</code>). Similarly to a PCA, we need to remove all non-numeric data columns before we can run the analysis.</p>
+<pre class="r"><code>km_fit &lt;- iris %&gt;% 
+  select(where(is.numeric)) %&gt;%
+  kmeans(centers = 3, nstart = 10)
+
+km_fit</code></pre>
+<pre><code>K-means clustering with 3 clusters of sizes 38, 62, 50
+
+Cluster means:
+  Sepal.Length Sepal.Width Petal.Length Petal.Width
+1     6.850000    3.073684     5.742105    2.071053
+2     5.901613    2.748387     4.393548    1.433871
+3     5.006000    3.428000     1.462000    0.246000
+
+Clustering vector:
+  [1] 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3
+ [38] 3 3 3 3 3 3 3 3 3 3 3 3 3 2 2 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+ [75] 2 2 2 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 1 2 1 1 1 1 2 1 1 1 1
+[112] 1 1 2 2 1 1 1 1 2 1 2 1 2 1 1 2 2 1 1 1 1 1 2 1 1 1 1 2 1 1 1 2 1 1 1 2 1
+[149] 1 2
+
+Within cluster sum of squares by cluster:
+[1] 23.87947 39.82097 15.15100
+ (between_SS / total_SS =  88.4 %)
+
+Available components:
+
+[1] &quot;cluster&quot;      &quot;centers&quot;      &quot;totss&quot;        &quot;withinss&quot;     &quot;tot.withinss&quot;
+[6] &quot;betweenss&quot;    &quot;size&quot;         &quot;iter&quot;         &quot;ifault&quot;      </code></pre>
+<p>The output from the fitted object (<code>km_fit</code>) gives us various pieces of information in human-readable form, such as the cluster sizes, the cluster means, and the assignment of rows in the original data table to the different clusters (“clustering vector”).</p>
+<p>At the end of the output, you see a list of “available components.” These are various pieces of information about the clustering result that you can extract from the fitted object. For example, <code>km_fit$cluster</code> gives you information about which row in the original data table belongs to which cluster.</p>
+<pre class="r"><code>km_fit$cluster</code></pre>
+<pre><code>  [1] 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3
+ [38] 3 3 3 3 3 3 3 3 3 3 3 3 3 2 2 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+ [75] 2 2 2 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 1 2 1 1 1 1 2 1 1 1 1
+[112] 1 1 2 2 1 1 1 1 2 1 2 1 2 1 1 2 2 1 1 1 1 1 2 1 1 1 1 2 1 1 1 2 1 1 1 2 1
+[149] 1 2</code></pre>
+<p>Similarly, <code>centers</code> will give you the positions of the cluster centers and <code>tot.withinss</code> will give you the total within sum-of-squares. Try this out. Also, see if you can figure out what the component <code>size</code> represents.</p>
+<div class="tutorial-exercise" data-label="kmfit-extraction" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
+<pre class="text"><code>km_fit$___</code></pre>
+<script type="application/json" data-opts-chunk="1">{"fig.width":6.5,"fig.height":4,"fig.retina":2,"fig.align":"default","fig.keep":"high","fig.show":"asis","out.width":624,"warning":true,"error":false,"message":true,"exercise.df_print":"paged","exercise.checker":"NULL"}</script>
+</div>
+<div class="tutorial-exercise-support" data-label="kmfit-extraction-hint" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
+<pre class="text"><code>km_fit$cluster
+___
+___</code></pre>
+</div>
+<div class="tutorial-exercise-support" data-label="kmfit-extraction-solution" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
+<pre class="text"><code>km_fit$cluster      # assignment of original data rows to clusters
+km_fit$tot.withinss # total within sum-of-squares
+km_fit$size         # cluster sizes (number of observations in each cluster)</code></pre>
+</div>
+<p>Next we move on to plotting the clustering output. The k-means algorithm is a stochastic algorithm that produces slightly different output each time it is run. This is particularly apparent when you set <code>nstart = 1</code>. In this case, you will get possibly quite different results for different random seeds. You can set the random seed via <code>set_seed()</code>.</p>
+<p>In the example below, try various seeds, including 2356, 2357, 2358, 2359, and see what the results are.</p>
+<div class="tutorial-exercise" data-label="kmeans-random" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
+<pre class="text"><code>set.seed(2356)
+
+km_fit &lt;- iris %&gt;% 
+  select(where(is.numeric)) %&gt;%
+  kmeans(centers = 3, nstart = 1)
+
+km_fit %&gt;%
+  augment(iris) %&gt;%
+  ggplot() +
+  aes(x = Sepal.Length, Sepal.Width) +
+  geom_point(aes(color = .cluster, shape = Species))</code></pre>
+<script type="application/json" data-opts-chunk="1">{"fig.width":6.5,"fig.height":4,"fig.retina":2,"fig.align":"default","fig.keep":"high","fig.show":"asis","out.width":624,"warning":true,"error":false,"message":true,"exercise.df_print":"paged","exercise.checker":"NULL"}</script>
+</div>
+<p>Now set <code>nstart = 10</code> and try the same random seeds once more.</p>
+</div>
+<div id="section-finding-the-appropriate-number-of-clusters" class="section level2">
+<h2>Finding the appropriate number of clusters</h2>
+<p>To get a sense of the correct number of clusters for a given dataset, we can plot the total within sum-of-squares as a function of the cluster number and look for a bend (“elbow”) in the curve. Remember, the total within sum-of-squares can be obtained from the fitted object via <code>km_fit$tot.withinss</code>.</p>
+<p>The following code sets up a function <code>calc_withinss</code> that calculates the total within sum-of-squares for an arbitrary data set and number of clusters, and then applies it to the <code>spirals</code> dataset.</p>
+<pre class="r"><code># function to calculate within sum squares
+calc_withinss &lt;- function(data, centers) {
+  km_fit &lt;- select(data, where(is.numeric)) %&gt;%
+    kmeans(centers = centers, nstart = 10)
+  km_fit$tot.withinss
+}
+
+tibble(centers = 1:15) %&gt;%
+  mutate(
+    within_sum_squares = map_dbl(
+      centers, ~calc_withinss(spirals, .x)
+    )
+  ) </code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["centers"],"name":[1],"type":["int"],"align":["right"]},{"label":["within_sum_squares"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"2282.6204"},{"1":"2","2":"1385.9578"},{"1":"3","2":"707.1235"},{"1":"4","2":"492.3520"},{"1":"5","2":"356.7457"},{"1":"6","2":"270.0723"},{"1":"7","2":"227.9074"},{"1":"8","2":"195.1673"},{"1":"9","2":"169.0826"},{"1":"10","2":"153.7666"},{"1":"11","2":"140.3679"},{"1":"12","2":"128.3091"},{"1":"13","2":"117.7897"},{"1":"14","2":"107.5714"},{"1":"15","2":"102.5204"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>Now take this code and use it to make a plot of the total within sum-of-squares against cluster number.</p>
+<div class="tutorial-exercise" data-label="tot-within-exercise" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
+<script type="application/json" data-opts-chunk="1">{"fig.width":6.5,"fig.height":4,"fig.retina":2,"fig.align":"default","fig.keep":"high","fig.show":"asis","out.width":624,"warning":true,"error":false,"message":true,"exercise.df_print":"paged","exercise.checker":"NULL"}</script>
+</div>
+<div class="tutorial-exercise-support" data-label="tot-within-exercise-hint" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
+<pre class="text"><code>tibble(centers = 1:15) %&gt;%
+  mutate(
+    within_sum_squares = map_dbl(
+      centers, ~calc_withinss(spirals, .x)
+    )
+  ) %&gt;%
+  ggplot(aes(___)) +
+  ___</code></pre>
+</div>
+<div class="tutorial-exercise-support" data-label="tot-within-exercise-solution" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
+<pre class="text"><code>tibble(centers = 1:15) %&gt;%
+  mutate(
+    within_sum_squares = map_dbl(
+      centers, ~calc_withinss(spirals, .x)
+    )
+  ) %&gt;%
+  ggplot(aes(centers, within_sum_squares)) +
+  geom_point() +
+  geom_line() +
+  theme_bw()</code></pre>
+</div>
+<p>The plot suggests that the correct number of clusters should be around 3 or 4. Now cluster the <code>spirals</code> dataset with this number of clusters and then plot it colored by cluster id.</p>
+<div class="tutorial-exercise" data-label="spirals-kmeans" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
+<script type="application/json" data-opts-chunk="1">{"fig.width":6.5,"fig.height":4,"fig.retina":2,"fig.align":"default","fig.keep":"high","fig.show":"asis","out.width":624,"warning":true,"error":false,"message":true,"exercise.df_print":"paged","exercise.checker":"NULL"}</script>
+</div>
+<div class="tutorial-exercise-support" data-label="spirals-kmeans-hint-1" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
+<pre class="text"><code>km_fit &lt;- ___ %&gt;% 
+  select(where(is.numeric)) %&gt;%
+  kmeans(centers = 3, nstart = 10)
+
+km_fit %&gt;%
+  augment(___) %&gt;%
+  ___</code></pre>
+</div>
+<div class="tutorial-exercise-support" data-label="spirals-kmeans-hint-2" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
+<pre class="text"><code>km_fit &lt;- spirals %&gt;% 
+  select(where(is.numeric)) %&gt;%
+  kmeans(centers = 3, nstart = 10)
+
+km_fit %&gt;%
+  augment(spirals) %&gt;%
+  ggplot() +
+  aes(___) +
+  geom_point(aes(color = ___, shape = ___))</code></pre>
+</div>
+<div class="tutorial-exercise-support" data-label="spirals-kmeans-solution" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
+<pre class="text"><code>km_fit &lt;- spirals %&gt;% 
+  select(where(is.numeric)) %&gt;%
+  kmeans(centers = 3, nstart = 10)
+
+km_fit %&gt;%
+  augment(spirals) %&gt;%
+  ggplot() +
+  aes(x, y) +
+  geom_point(aes(color = .cluster, shape = group))</code></pre>
+</div>
+<p>Do you think k-means clustering works on this dataset?</p>
+</div>
+<div id="section-combining-k-means-and-pca" class="section level2">
+<h2>Combining k-means and PCA</h2>
+<p>In practice, we often perform PCA first on a dataset and then cluster the transformed coordinates. Try this out on the <code>iris</code> dataset. Run a PCA, then cluster the PCA coordinates, and then plot the clusters in PCA space.</p>
+<p>As a reminder, this is how we would do a PCA on this dataset:</p>
+<pre class="r"><code>pca_fit &lt;- iris %&gt;% 
+  select(where(is.numeric)) %&gt;% # retain only numeric columns
+  scale() %&gt;%                   # scale to zero mean and unit variance
+  prcomp() 
+
+# combine iris data with PCA data (needed for plot)
+iris_pca &lt;- augment(pca_fit, iris)
+
+# extract PC coordinates from the fitted object
+# (needed for k-means) 
+augment(pca_fit) %&gt;%
+  select(-.rownames)  # remove columns with row names; not needed</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[".fittedPC1"],"name":[1],"type":["dbl"],"align":["right"]},{"label":[".fittedPC2"],"name":[2],"type":["dbl"],"align":["right"]},{"label":[".fittedPC3"],"name":[3],"type":["dbl"],"align":["right"]},{"label":[".fittedPC4"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"-2.25714118","2":"-0.478423832","3":"0.127279624","4":"0.024087508"},{"1":"-2.07401302","2":"0.671882687","3":"0.233825517","4":"0.102662845"},{"1":"-2.35633511","2":"0.340766425","3":"-0.044053900","4":"0.028282305"},{"1":"-2.29170679","2":"0.595399863","3":"-0.090985297","4":"-0.065735340"},{"1":"-2.38186270","2":"-0.644675659","3":"-0.015685647","4":"-0.035802870"},{"1":"-2.06870061","2":"-1.484205297","3":"-0.026878250","4":"0.006586116"},{"1":"-2.43586845","2":"-0.047485118","3":"-0.334350297","4":"-0.036652767"},{"1":"-2.22539189","2":"-0.222403002","3":"0.088399352","4":"-0.024529919"},{"1":"-2.32684533","2":"1.111603700","3":"-0.144592465","4":"-0.026769540"},{"1":"-2.17703491","2":"0.467447569","3":"0.252918268","4":"-0.039766068"},{"1":"-2.15907699","2":"-1.040205867","3":"0.267784001","4":"0.016675503"},{"1":"-2.31836413","2":"-0.132633999","3":"-0.093446191","4":"-0.133037725"},{"1":"-2.21104370","2":"0.726243183","3":"0.230140246","4":"0.002416941"},{"1":"-2.62430902","2":"0.958296347","3":"-0.180192423","4":"-0.019151375"},{"1":"-2.19139921","2":"-1.853846555","3":"0.471322025","4":"0.194081578"},{"1":"-2.25466121","2":"-2.677315230","3":"-0.030424684","4":"0.050365010"},{"1":"-2.20021676","2":"-1.478655729","3":"0.005326251","4":"0.188186988"},{"1":"-2.18303613","2":"-0.487206131","3":"0.044067686","4":"0.092779618"},{"1":"-1.89223284","2":"-1.400327567","3":"0.373093377","4":"0.060891973"},{"1":"-2.33554476","2":"-1.124083597","3":"-0.132187626","4":"-0.037630354"},{"1":"-1.90793125","2":"-0.407490576","3":"0.419885937","4":"0.010884821"},{"1":"-2.19964383","2":"-0.921035871","3":"-0.159331502","4":"0.059398340"},{"1":"-2.76508142","2":"-0.456813301","3":"-0.331069982","4":"0.019582826"},{"1":"-1.81259716","2":"-0.085272854","3":"-0.034373442","4":"0.150636353"},{"1":"-2.21972701","2":"-0.136796175","3":"-0.117599566","4":"-0.269238379"},{"1":"-1.94532930","2":"0.623529705","3":"0.304620475","4":"0.043416203"},{"1":"-2.04430277","2":"-0.241354991","3":"-0.086075649","4":"0.067454082"},{"1":"-2.16133650","2":"-0.525389422","3":"0.206125707","4":"0.010241084"},{"1":"-2.13241965","2":"-0.312172005","3":"0.270244895","4":"0.083977887"},{"1":"-2.25769799","2":"0.336604248","3":"-0.068207276","4":"-0.107918349"},{"1":"-2.13297647","2":"0.502856075","3":"0.074757996","4":"-0.048027970"},{"1":"-1.82547925","2":"-0.422280389","3":"0.269564311","4":"0.239069476"},{"1":"-2.60621687","2":"-1.787587272","3":"-0.047070727","4":"-0.228470534"},{"1":"-2.43800983","2":"-2.143546796","3":"0.082392024","4":"-0.048053409"},{"1":"-2.10292986","2":"0.458665270","3":"0.169706329","4":"0.028926042"},{"1":"-2.20043723","2":"0.205419224","3":"0.224688852","4":"0.168343905"},{"1":"-2.03831765","2":"-0.659349230","3":"0.482919584","4":"0.195702902"},{"1":"-2.51889339","2":"-0.590315163","3":"-0.019370918","4":"-0.136048774"},{"1":"-2.42152026","2":"0.901161067","3":"-0.192609402","4":"-0.009705907"},{"1":"-2.16246625","2":"-0.267981199","3":"0.175296561","4":"0.007023875"},{"1":"-2.27884081","2":"-0.440240541","3":"-0.034778398","4":"0.106626042"},{"1":"-1.85191836","2":"2.329610745","3":"0.203552303","4":"0.288896090"},{"1":"-2.54511203","2":"0.477501017","3":"-0.304745527","4":"-0.066379077"},{"1":"-1.95788857","2":"-0.470749613","3":"-0.308567588","4":"0.176501717"},{"1":"-2.12992356","2":"-1.138415464","3":"-0.247604064","4":"-0.150539117"},{"1":"-2.06283361","2":"0.708678586","3":"0.063716370","4":"0.139801160"},{"1":"-2.37677076","2":"-1.116688691","3":"-0.057026813","4":"-0.151722682"},{"1":"-2.38638171","2":"0.384957230","3":"-0.139002234","4":"-0.048671707"},{"1":"-2.22200263","2":"-0.994627669","3":"0.180886792","4":"-0.014878291"},{"1":"-2.19647504","2":"-0.009185585","3":"0.152518539","4":"0.049206884"},{"1":"1.09810244","2":"-0.860091033","3":"0.682300393","4":"0.034717469"},{"1":"0.72889556","2":"-0.592629362","3":"0.093807452","4":"0.004887251"},{"1":"1.23683580","2":"-0.614239894","3":"0.552157058","4":"0.009391933"},{"1":"0.40612251","2":"1.748546197","3":"0.023024633","4":"0.065549239"},{"1":"1.07188379","2":"0.207725147","3":"0.396925784","4":"0.104387166"},{"1":"0.38738955","2":"0.591302717","3":"-0.123776885","4":"-0.240027187"},{"1":"0.74403715","2":"-0.770438272","3":"-0.148472007","4":"-0.077111455"},{"1":"-0.48569562","2":"1.846243998","3":"-0.248432992","4":"-0.040384912"},{"1":"0.92480346","2":"-0.032118478","3":"0.594178807","4":"-0.029779844"},{"1":"0.01138804","2":"1.030565784","3":"-0.537100055","4":"-0.028366154"},{"1":"-0.10982834","2":"2.645211115","3":"0.046634215","4":"0.013714785"},{"1":"0.43922201","2":"0.063083852","3":"-0.204389093","4":"0.039992104"},{"1":"0.56023148","2":"1.758832129","3":"0.763214554","4":"0.045578465"},{"1":"0.71715934","2":"0.185602819","3":"0.068429700","4":"-0.164256922"},{"1":"-0.03324333","2":"0.437537419","3":"-0.194282030","4":"0.108684396"},{"1":"0.87248429","2":"-0.507364239","3":"0.501830204","4":"0.104593326"},{"1":"0.34908221","2":"0.195656268","3":"-0.489234095","4":"-0.190869932"},{"1":"0.15827980","2":"0.789451008","3":"0.301028700","4":"-0.204612265"},{"1":"1.22100316","2":"1.616827281","3":"0.480693656","4":"0.225145511"},{"1":"0.16436725","2":"1.298259939","3":"0.172260719","4":"-0.051554138"},{"1":"0.73521959","2":"-0.395247446","3":"-0.614467782","4":"-0.083006045"},{"1":"0.47469691","2":"0.415926887","3":"0.264067576","4":"0.113189079"},{"1":"1.23005729","2":"0.930209441","3":"0.367182178","4":"-0.009911322"},{"1":"0.63074514","2":"0.414997441","3":"0.290921638","4":"-0.273304557"},{"1":"0.70031506","2":"0.063200094","3":"0.444537765","4":"0.043313222"},{"1":"0.87135454","2":"-0.249956017","3":"0.471001057","4":"0.101376117"},{"1":"1.25231375","2":"0.076998069","3":"0.724727099","4":"0.039556002"},{"1":"1.35386953","2":"-0.330205463","3":"0.259955701","4":"0.066604931"},{"1":"0.66258066","2":"0.225173502","3":"-0.085577197","4":"-0.036318171"},{"1":"-0.04012419","2":"1.055183583","3":"0.318506304","4":"0.064571834"},{"1":"0.13035846","2":"1.557055553","3":"0.149482697","4":"-0.009371129"},{"1":"0.02337438","2":"1.567225244","3":"0.240745761","4":"-0.032663020"},{"1":"0.24073180","2":"0.774661195","3":"0.150707074","4":"0.023572390"},{"1":"1.05755171","2":"0.631726901","3":"-0.104959762","4":"-0.183354200"},{"1":"0.22323093","2":"0.286812663","3":"-0.663028512","4":"-0.253977520"},{"1":"0.42770626","2":"-0.842758920","3":"-0.449129446","4":"-0.109308985"},{"1":"1.04522645","2":"-0.520308714","3":"0.394464890","4":"0.037084781"},{"1":"1.04104379","2":"1.378371048","3":"0.685997804","4":"0.136378719"},{"1":"0.06935597","2":"0.218770433","3":"-0.290605718","4":"-0.146653279"},{"1":"0.28253073","2":"1.324886147","3":"-0.089111491","4":"0.008876070"},{"1":"0.27814596","2":"1.116288852","3":"-0.094172116","4":"-0.269753497"},{"1":"0.62248441","2":"-0.024839814","3":"0.020412763","4":"-0.147193289"},{"1":"0.33540673","2":"0.985103828","3":"0.198724011","4":"0.006508757"},{"1":"-0.36097409","2":"2.012495825","3":"-0.105467721","4":"0.019505467"},{"1":"0.28762268","2":"0.852873116","3":"-0.130452657","4":"-0.107043742"},{"1":"0.09105561","2":"0.180587142","3":"-0.128547696","4":"-0.229191812"},{"1":"0.22695654","2":"0.383634868","3":"-0.155691572","4":"-0.132163118"},{"1":"0.57446378","2":"0.154356489","3":"0.270743347","4":"-0.019794366"},{"1":"-0.44617230","2":"1.538637456","3":"-0.189765199","4":"0.199278855"},{"1":"0.25587339","2":"0.596852285","3":"-0.091572385","4":"-0.058426315"},{"1":"1.83841002","2":"-0.867515056","3":"-1.002044077","4":"-0.049085303"},{"1":"1.15401555","2":"0.696536401","3":"-0.528389994","4":"-0.040385459"},{"1":"2.19790361","2":"-0.560133976","3":"0.202236658","4":"0.058986583"},{"1":"1.43534213","2":"0.046830701","3":"-0.163083761","4":"-0.234982858"},{"1":"1.86157577","2":"-0.294059697","3":"-0.394307408","4":"-0.016243853"},{"1":"2.74268509","2":"-0.797736709","3":"0.580364827","4":"-0.101045973"},{"1":"0.36579225","2":"1.556289178","3":"-0.983598122","4":"-0.132679346"},{"1":"2.29475181","2":"-0.418663020","3":"0.649530452","4":"-0.237246445"},{"1":"1.99998633","2":"0.709063226","3":"0.392675073","4":"-0.086221779"},{"1":"2.25223216","2":"-1.914596301","3":"-0.396224508","4":"0.104488870"},{"1":"1.35962064","2":"-0.690443405","3":"-0.283661780","4":"0.107500284"},{"1":"1.59732747","2":"0.420292431","3":"-0.023108991","4":"0.058136869"},{"1":"1.87761053","2":"-0.417849815","3":"-0.026250468","4":"0.145926073"},{"1":"1.25590769","2":"1.158379741","3":"-0.578311891","4":"0.098826244"},{"1":"1.46274487","2":"0.440794883","3":"-1.000517746","4":"0.274738504"},{"1":"1.58476820","2":"-0.673986887","3":"-0.636297054","4":"0.191222383"},{"1":"1.46651849","2":"-0.254768327","3":"-0.037306280","4":"-0.154811637"},{"1":"2.41822770","2":"-2.548124795","3":"0.127454475","4":"-0.272892966"},{"1":"3.29964148","2":"-0.017721580","3":"0.700957033","4":"0.045037725"},{"1":"1.25954707","2":"1.701046715","3":"0.266643612","4":"-0.064963167"},{"1":"2.03091256","2":"-0.907427443","3":"-0.234015510","4":"0.167390481"},{"1":"0.97471535","2":"0.569855257","3":"-0.825362161","4":"0.027662914"},{"1":"2.88797650","2":"-0.412259950","3":"0.854558973","4":"-0.126911337"},{"1":"1.32878064","2":"0.480202496","3":"0.005410239","4":"0.139491837"},{"1":"1.69505530","2":"-1.010536476","3":"-0.297454114","4":"-0.061437911"},{"1":"1.94780139","2":"-1.004412720","3":"0.418582432","4":"-0.217609339"},{"1":"1.17118007","2":"0.315338060","3":"-0.129503907","4":"0.125001677"},{"1":"1.01754169","2":"-0.064131184","3":"-0.336588365","4":"-0.008625505"},{"1":"1.78237879","2":"0.186735633","3":"-0.269754304","4":"0.030983849"},{"1":"1.85742501","2":"-0.560413289","3":"0.713244682","4":"-0.207519953"},{"1":"2.42782030","2":"-0.258418706","3":"0.725386035","4":"-0.017863520"},{"1":"2.29723178","2":"-2.617554417","3":"0.491826144","4":"-0.210968943"},{"1":"1.85648383","2":"0.177953334","3":"-0.352966242","4":"0.099675959"},{"1":"1.11042770","2":"0.291944582","3":"0.182875741","4":"-0.185721512"},{"1":"1.19845835","2":"0.808606364","3":"0.164173760","4":"-0.487849130"},{"1":"2.78942561","2":"-0.853942542","3":"0.541093785","4":"0.294893130"},{"1":"1.57099294","2":"-1.065013214","3":"-0.942695700","4":"0.035486875"},{"1":"1.34179696","2":"-0.421020154","3":"-0.180271551","4":"-0.214702016"},{"1":"0.92173701","2":"-0.017165594","3":"-0.415434449","4":"0.005220919"},{"1":"1.84586124","2":"-0.673870645","3":"0.012629804","4":"0.194543500"},{"1":"2.00808316","2":"-0.611835930","3":"-0.426902678","4":"0.246711805"},{"1":"1.89543421","2":"-0.687273065","3":"-0.129640697","4":"0.468128374"},{"1":"1.15401555","2":"0.696536401","3":"-0.528389994","4":"-0.040385459"},{"1":"2.03374499","2":"-0.864624030","3":"-0.337014969","4":"0.045036251"},{"1":"1.99147547","2":"-1.045665670","3":"-0.630301866","4":"0.213330527"},{"1":"1.86425786","2":"-0.385674038","3":"-0.255418178","4":"0.387957152"},{"1":"1.55935649","2":"0.893692855","3":"0.026283300","4":"0.219456899"},{"1":"1.51609145","2":"-0.268170747","3":"-0.179576781","4":"0.118773236"},{"1":"1.36820418","2":"-1.007877934","3":"-0.930278721","4":"0.026041407"},{"1":"0.95744849","2":"0.024250427","3":"-0.526485033","4":"-0.162533529"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>Now modify this example so you perform a k-means clustering analysis and then color by clusters rather than by species.</p>
+<div class="tutorial-exercise" data-label="iris-pca-kmeans" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
+<script type="application/json" data-opts-chunk="1">{"fig.width":6.5,"fig.height":4,"fig.retina":2,"fig.align":"default","fig.keep":"high","fig.show":"asis","out.width":624,"warning":true,"error":false,"message":true,"exercise.df_print":"paged","exercise.checker":"NULL"}</script>
+</div>
+<div class="tutorial-exercise-support" data-label="iris-pca-kmeans-hint-1" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
+<pre class="text"><code>pca_fit &lt;- iris %&gt;% 
+  select(where(is.numeric)) %&gt;% # retain only numeric columns
+  scale() %&gt;%                   # scale to zero mean and unit variance
+  prcomp()
+
+# combine iris data with PCA data (needed for plot)
+iris_pca &lt;- augment(pca_fit, iris)
+
+# perform k-means
+km_fit &lt;- augment(pca_fit) %&gt;%
+  select(-.rownames) %&gt;%
+  ___</code></pre>
+</div>
+<div class="tutorial-exercise-support" data-label="iris-pca-kmeans-hint-2" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
+<pre class="text"><code>pca_fit &lt;- iris %&gt;% 
+  select(where(is.numeric)) %&gt;% # retain only numeric columns
+  scale() %&gt;%                   # scale to zero mean and unit variance
+  prcomp()
+
+# combine iris data with PCA data (needed for plot)
+iris_pca &lt;- augment(pca_fit, iris)
+
+# perform k-means
+km_fit &lt;- augment(pca_fit) %&gt;%
+  select(-.rownames) %&gt;%
+  kmeans(centers = 3, nstart = 10)
+
+km_fit %&gt;%
+  # combine with original data and the PCA coordinates
+  ___ %&gt;%
+  # plot
+  ___</code></pre>
+</div>
+<div class="tutorial-exercise-support" data-label="iris-pca-kmeans-hint-3" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
+<pre class="text"><code>pca_fit &lt;- iris %&gt;% 
+  select(where(is.numeric)) %&gt;% # retain only numeric columns
+  scale() %&gt;%                   # scale to zero mean and unit variance
+  prcomp()
+
+# combine iris data with PCA data (needed for plot)
+iris_pca &lt;- augment(pca_fit, iris)
+
+# perform k-means
+km_fit &lt;- augment(pca_fit) %&gt;%
+  select(-.rownames) %&gt;%
+  kmeans(centers = 3, nstart = 10)
+
+km_fit %&gt;%
+  # combine with original data and the PCA coordinates
+  augment(iris_pca) %&gt;%
+  ggplot() +
+  ___</code></pre>
+</div>
+<div class="tutorial-exercise-support" data-label="iris-pca-kmeans-hint-4" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
+<pre class="text"><code>pca_fit &lt;- iris %&gt;% 
+  select(where(is.numeric)) %&gt;% # retain only numeric columns
+  scale() %&gt;%                   # scale to zero mean and unit variance
+  prcomp()
+
+# combine iris data with PCA data (needed for plot)
+iris_pca &lt;- augment(pca_fit, iris)
+
+# perform k-means
+km_fit &lt;- augment(pca_fit) %&gt;%
+  select(-.rownames) %&gt;%
+  kmeans(centers = 3, nstart = 10)
+
+km_fit %&gt;%
+  # combine with original data and the PCA coordinates
+  augment(iris_pca) %&gt;%
+  ggplot() +
+  aes(x = .fittedPC1, .fittedPC2) +
+  geom_point(
+    aes(color = .cluster, shape = Species)
+  )</code></pre>
+</div>
+<div class="tutorial-exercise-support" data-label="iris-pca-kmeans-solution" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
+<pre class="text"><code>pca_fit &lt;- iris %&gt;% 
+  select(where(is.numeric)) %&gt;% # retain only numeric columns
+  scale() %&gt;%                   # scale to zero mean and unit variance
+  prcomp()
+
+# combine iris data with PCA data (needed for plot)
+iris_pca &lt;- augment(pca_fit, iris)
+
+# perform k-means
+km_fit &lt;- augment(pca_fit) %&gt;%
+  select(-.rownames) %&gt;%
+  kmeans(centers = 3, nstart = 10)
+
+km_fit %&gt;%
+  # combine with original data and the PCA coordinates
+  augment(iris_pca) %&gt;%
+  ggplot() +
+  aes(x = .fittedPC1, .fittedPC2) +
+  geom_point(
+    aes(color = .cluster, shape = Species)
+  ) +
+  geom_point(
+    data = tidy(km_fit),
+    aes(fill = cluster),
+    shape = 21, color = &quot;black&quot;, size = 4
+  ) +
+  guides(color = &quot;none&quot;)</code></pre>
+</div>
+<p>Change which components you plot on the x and the y axis to try to get a sense of how the clusters are located in the 4-dimensional PC space.</p>
+
+<script type="application/shiny-prerendered" data-context="server-start">
+library(learnr)
+library(tidyverse)
+library(broom)
+knitr::opts_chunk$set(echo = FALSE, comment = "")
+
+spirals <- read_csv("https://wilkelab.org/SDS375/datasets/spirals.csv")
+
+km_fit <- iris %>% 
+  select(where(is.numeric)) %>%
+  kmeans(centers = 3, nstart = 10)
+
+calc_withinss <- function(data, centers) {
+  km_fit <- select(data, where(is.numeric)) %>%
+    kmeans(centers = centers, nstart = 10)
+  km_fit$tot.withinss
+}
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+learnr:::register_http_handlers(session, metadata = NULL)
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+session$onSessionEnded(function() {
+        learnr:::session_stop_event(session)
+      })
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+`tutorial-exercise-kmfit-extraction-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-kmfit-extraction-code-editor`)), session)
+output$`tutorial-exercise-kmfit-extraction-output` <- renderUI({
+  `tutorial-exercise-kmfit-extraction-result`()
+})
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+`tutorial-exercise-kmeans-random-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-kmeans-random-code-editor`)), session)
+output$`tutorial-exercise-kmeans-random-output` <- renderUI({
+  `tutorial-exercise-kmeans-random-result`()
+})
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+`tutorial-exercise-tot-within-exercise-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-tot-within-exercise-code-editor`)), session)
+output$`tutorial-exercise-tot-within-exercise-output` <- renderUI({
+  `tutorial-exercise-tot-within-exercise-result`()
+})
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+`tutorial-exercise-spirals-kmeans-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-spirals-kmeans-code-editor`)), session)
+output$`tutorial-exercise-spirals-kmeans-output` <- renderUI({
+  `tutorial-exercise-spirals-kmeans-result`()
+})
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+`tutorial-exercise-iris-pca-kmeans-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-iris-pca-kmeans-code-editor`)), session)
+output$`tutorial-exercise-iris-pca-kmeans-output` <- renderUI({
+  `tutorial-exercise-iris-pca-kmeans-result`()
+})
+</script>
+ <!--html_preserve-->
+<script type="application/shiny-prerendered" data-context="dependencies">
+{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["header-attrs"]},{"type":"character","attributes":{},"value":["2.6"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["rmd/h/pandoc"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["header-attrs.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["rmarkdown"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["2.6"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["jquery"]},{"type":"character","attributes":{},"value":["1.11.3"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["rmd/h/jquery"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["jquery.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["rmarkdown"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["2.6"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["bootstrap"]},{"type":"character","attributes":{},"value":["3.3.5"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["rmd/h/bootstrap"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["viewport"]}},"value":[{"type":"character","attributes":{},"value":["width=device-width, initial-scale=1"]}]},{"type":"character","attributes":{},"value":["js/bootstrap.min.js","shim/html5shiv.min.js","shim/respond.min.js"]},{"type":"character","attributes":{},"value":["css/cerulean.min.css"]},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["rmarkdown"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["2.6"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["pagedtable"]},{"type":"character","attributes":{},"value":["1.1"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["rmd/h/pagedtable-1.1"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["js/pagedtable.js"]},{"type":"character","attributes":{},"value":["css/pagedtable.css"]},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["rmarkdown"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["2.6"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["highlightjs"]},{"type":"character","attributes":{},"value":["9.12.0"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["rmd/h/highlightjs"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["highlight.js"]},{"type":"character","attributes":{},"value":["textmate.css"]},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["rmarkdown"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["2.6"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["tutorial"]},{"type":"character","attributes":{},"value":["0.10.1"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/tutorial"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["tutorial.js"]},{"type":"character","attributes":{},"value":["tutorial.css"]},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.10.1"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["tutorial-autocompletion"]},{"type":"character","attributes":{},"value":["0.10.1"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/tutorial"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["tutorial-autocompletion.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.10.1"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["tutorial-diagnostics"]},{"type":"character","attributes":{},"value":["0.10.1"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/tutorial"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["tutorial-diagnostics.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.10.1"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["tutorial-format"]},{"type":"character","attributes":{},"value":["0.10.1"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["rmarkdown/templates/tutorial/resources"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["tutorial-format.js"]},{"type":"character","attributes":{},"value":["tutorial-format.css","rstudio-theme.css"]},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.10.1"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["jquery"]},{"type":"character","attributes":{},"value":["1.11.3"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["rmd/h/jquery"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["jquery.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["rmarkdown"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["2.6"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["navigation"]},{"type":"character","attributes":{},"value":["1.1"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["rmd/h/navigation-1.1"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["tabsets.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["rmarkdown"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["2.6"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["highlightjs"]},{"type":"character","attributes":{},"value":["9.12.0"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["rmd/h/highlightjs"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["highlight.js"]},{"type":"character","attributes":{},"value":["default.css"]},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["rmarkdown"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["2.6"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["jquery"]},{"type":"character","attributes":{},"value":["1.11.3"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["rmd/h/jquery"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["jquery.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["rmarkdown"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["2.6"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["font-awesome"]},{"type":"character","attributes":{},"value":["5.1.0"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["rmd/h/fontawesome"]}]},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["css/all.css","css/v4-shims.css"]},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["rmarkdown"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["2.6"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["bootbox"]},{"type":"character","attributes":{},"value":["4.4.0"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/bootbox"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["bootbox.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.10.1"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["idb-keyvalue"]},{"type":"character","attributes":{},"value":["3.2.0"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/idb-keyval"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["idb-keyval-iife-compat.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[false]},{"type":"character","attributes":{},"value":["0.10.1"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["tutorial"]},{"type":"character","attributes":{},"value":["0.10.1"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/tutorial"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["tutorial.js"]},{"type":"character","attributes":{},"value":["tutorial.css"]},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.10.1"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["tutorial-autocompletion"]},{"type":"character","attributes":{},"value":["0.10.1"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/tutorial"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["tutorial-autocompletion.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.10.1"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["tutorial-diagnostics"]},{"type":"character","attributes":{},"value":["0.10.1"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/tutorial"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["tutorial-diagnostics.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.10.1"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["ace"]},{"type":"character","attributes":{},"value":["1.2.6"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/ace"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["ace.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.10.1"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["clipboardjs"]},{"type":"character","attributes":{},"value":["1.5.15"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/clipboardjs"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["clipboard.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.10.1"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["ace"]},{"type":"character","attributes":{},"value":["1.2.6"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/ace"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["ace.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.10.1"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["clipboardjs"]},{"type":"character","attributes":{},"value":["1.5.15"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/clipboardjs"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["clipboard.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.10.1"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["ace"]},{"type":"character","attributes":{},"value":["1.2.6"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/ace"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["ace.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.10.1"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["clipboardjs"]},{"type":"character","attributes":{},"value":["1.5.15"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/clipboardjs"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["clipboard.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.10.1"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["ace"]},{"type":"character","attributes":{},"value":["1.2.6"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/ace"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["ace.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.10.1"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["clipboardjs"]},{"type":"character","attributes":{},"value":["1.5.15"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/clipboardjs"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["clipboard.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.10.1"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["ace"]},{"type":"character","attributes":{},"value":["1.2.6"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/ace"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["ace.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.10.1"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["clipboardjs"]},{"type":"character","attributes":{},"value":["1.5.15"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/clipboardjs"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["clipboard.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["0.10.1"]}]}]}
+</script>
+<!--/html_preserve-->
+<!--html_preserve-->
+<script type="application/shiny-prerendered" data-context="execution_dependencies">
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["packages"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["packages","version"]},"class":{"type":"character","attributes":{},"value":["data.frame"]},"row.names":{"type":"integer","attributes":{},"value":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77]}},"value":[{"type":"character","attributes":{},"value":["assertthat","backports","base","broom","cellranger","cli","colorspace","compiler","crayon","curl","datasets","DBI","dbplyr","digest","dplyr","ellipsis","evaluate","fastmap","forcats","fs","generics","ggplot2","git2r","glue","graphics","grDevices","grid","gtable","haven","hms","htmltools","htmlwidgets","httpuv","httr","jsonlite","knitr","later","learnr","lifecycle","lubridate","magrittr","markdown","methods","mime","modelr","munsell","pillar","pkgconfig","promises","purrr","R6","Rcpp","readr","readxl","reprex","rlang","rmarkdown","rprojroot","rstudioapi","rvest","scales","shiny","stats","stringi","stringr","tibble","tidyr","tidyselect","tidyverse","tools","utils","vctrs","withr","xfun","xml2","xtable","yaml"]},{"type":"character","attributes":{},"value":["0.2.1","1.2.1","4.0.2","0.7.4","1.1.0","2.3.0","2.0-0","4.0.2","1.3.4.9000","4.3","4.0.2","1.1.1","2.0.0","0.6.27","1.0.3","0.3.1","0.14","1.0.1","0.5.1","1.5.0","0.1.0","3.3.3","0.27.1","1.4.2","4.0.2","4.0.2","4.0.2","0.3.0","2.3.1","1.0.0","0.5.1.1","1.5.1","1.5.4","1.4.2","1.7.2","1.31","1.1.0.1","0.10.1","0.2.0","1.7.9.2","2.0.1","1.1","4.0.2","0.9","0.1.8","0.5.0","1.4.7","2.0.3","1.1.1","0.3.4","2.5.0","1.0.6","1.4.0","1.3.1","1.0.0","0.4.10","2.6","2.0.2","0.13","0.3.6","1.1.1","1.5.0","4.0.2","1.5.3","1.4.0","3.0.6","1.1.2","1.1.0","1.3.0","4.0.2","4.0.2","0.3.6","2.4.1","0.20","1.3.2","1.8-4","2.2.1"]}]}]}
+</script>
+<!--/html_preserve-->
+</div>
+
+</div> <!-- topics -->
+
+<div class="topicsContainer">
+<div class="topicsPositioner">
+<div class="band">
+<div class="bandContent topicsListContainer">
+
+<!-- begin doc-metadata -->
+<div id="doc-metadata">
+<h2 class="title toc-ignore" style="display:none;">Dimension reduction 2</h2>
+<h4 class="author"><em>Claus O. Wilke</em></h4>
+</div>
+<!-- end doc-metadata -->
+
+</div> <!-- bandContent.topicsListContainer -->
+</div> <!-- band -->
+</div> <!-- topicsPositioner -->
+</div> <!-- topicsContainer -->
+
+
+</div> <!-- bandContent page -->
+</div> <!-- pageContent band -->
+
+
+
+
+<script>
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+</script>
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+
+</body>
+
+</html>

@@ -93,5 +93,7 @@ navbar:
           href: worksheets/dimension-reduction-1.Rmd
         - text: "Class 17: Dimension reduction 2"
           href: worksheets/dimension-reduction-2.Rmd
+        - text: "Class 18: Clustering"
+          href: worksheets/clustering.Rmd
  
 output: distill::distill_article
