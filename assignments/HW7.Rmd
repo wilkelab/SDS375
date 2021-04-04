@@ -1,0 +1,57 @@
+---
+title: "Homework 7"
+---
+
+```{r global_options, include=FALSE}
+library(knitr)
+library(tidyverse)
+library(broom)
+
+opts_chunk$set(fig.align="center", fig.height=4.326, fig.width=7)
+```
+
+*Enter your name and EID here*
+
+**This homework is due on April 12, 2021 at 11:00pm. Please submit as a pdf file on Canvas.**
+
+For all problems in this homework, we will work with the `penguins_clean` dataset, which is a cleaned-up version of the `penguins` dataset from the **palmerpenguins** package.
+
+**Note:** This homework is about the contents of the plots. Don't worry about styling. It's OK to use the default theme and plot labeling.
+
+```{r message = FALSE}
+library(palmerpenguins)
+
+penguins_clean <- penguins %>% 
+  select(-year) %>% # remove the year column as it is distracting here
+  na.omit()         # remove any rows with missing values
+
+penguins_clean
+```
+
+**Problem 1: (2 pts)** 
+
+Perform a PCA of the `penguins_clean` dataset and make two plots: 1. A rotation plot of components 1 and 2; 2. A plot of the eigenvalues, showing the amount of variance explained by the various components.
+
+```{r}
+# your code goes here
+```
+
+
+**Problem 2: (4 pts)** Make a scatter plot of PC 2 versus PC 1 and color by penguin species. Then use the rotation plot from Problem 1 to describe the physical characteristics by which the different penguin species differ. Finally, make one more scatter plot of the raw data that can support your interpretation of the PC analysis.
+
+```{r}
+# your code goes here
+```
+
+*Your answer goes here.*
+
+
+**Problem 3: (4 pts)** Again make a scatter plot of PC 2 versus PC 1, but now color by sex. Then use the rotation plot from Problem 1 to describe the physical characteristics by which the different penguin sexes differ. Finally, make one more scatter plot of the raw data that can support your interpretation of the PC analysis.
+
+**Hint:** It helps to facet by penguin species.
+
+```{r}
+# your code goes here
+```
+
+*Your answer goes here.*

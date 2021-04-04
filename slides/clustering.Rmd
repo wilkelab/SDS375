@@ -1035,45 +1035,232 @@ Final result
 ]
 
 ---
+class: center middle
 
-.pull-left.tiny-font[
-```{r iris-kmeans}
-km_fit <- iris %>% 
-  select(where(is.numeric)) %>%
-  kmeans(centers = 3, nstart = 10)
+## k-means clustering works best when<br>data forms distinct, compact clusters
 
-km_fit %>%
-  augment(iris) %>%
-  ggplot() +
-  aes(x = Sepal.Length, Sepal.Width) +
-  geom_point(aes(color = .cluster, shape = Species)) +
-  geom_point(
-    data = tidy(km_fit),
-    aes(fill = cluster),
-    color = "black",
-    size = 4, shape = 21
-  ) +
-  guides(color = "none")
+
+---
+class: center middle
+
+
+## Doing k-means clustering in R
+
+
+---
+
+## Example dataset: `iris`
+
+Measurements on the sepals and petals of three iris species
+
+.small-font[
+```{r echo = TRUE}
+iris
+```
+]
+
+---
+
+## Example dataset: `iris`
+
+.small-font[
+```{r iris-plot, echo = TRUE, eval = FALSE}
+ggplot(iris, aes(Petal.Length, Petal.Width, color = Species)) +
+  geom_point()
+```
+]
+
+.center[
+```{r iris-plot-out, ref.label="iris-plot", fig.width=6.5, fig.asp = 0.618, echo=FALSE, dev = "svg"}
 ```
 ]
 
 
 ---
 
-.pull-left.tiny-font[
-```{r iris-scree}
+## We perform k-means clustering with `kmeans()`
+
+.tiny-font[
+```{r echo = TRUE}
+km_fit <- iris %>% 
+  select(where(is.numeric)) %>%
+  kmeans(
+    centers = 3,  # number of cluster centers
+    nstart = 10   # number of independent restarts of the algorithm
+  )
+
+km_fit
+```
+]
+
+
+---
+
+.tiny-font[
+```{r echo = TRUE}
+km_fit
+```
+]
+
+
+---
+
+## We perform k-means clustering with `kmeans()`
+
+.pull-left.xtiny-font[
+```{r iris-kmeans, echo = TRUE, eval = FALSE}
+# run kmeans clustering
+km_fit <- iris %>% 
+  select(where(is.numeric)) %>%
+  kmeans(centers = 3, nstart = 10)
+
+# plot
+km_fit %>%
+  # combine with original data
+  augment(iris) %>%
+  ggplot() +
+  aes(x = Petal.Length, Petal.Width) +
+  geom_point(
+    aes(color = .cluster, shape = Species)
+  ) +
+  geom_point(
+    data = tidy(km_fit),
+    aes(fill = cluster),
+    shape = 21, color = "black", size = 4
+  ) +
+  guides(color = "none")
+```
+]
+
+.pull-right.width-50[
+```{r iris-kmeans-out, ref.label="iris-kmeans", fig.width=6.5, fig.asp = 0.618, echo=FALSE, dev = "svg"}
+```
+]
+
+---
+
+## We perform k-means clustering with `kmeans()`
+
+.pull-left.xtiny-font[
+```{r echo = TRUE, eval = FALSE}
+# run kmeans clustering
+km_fit <- iris %>% 
+  select(where(is.numeric)) %>%
+  kmeans(centers = 3, nstart = 10)
+
+# plot
+km_fit %>%
+  # combine with original data
+  augment(iris) %>%
+  ggplot() +
+  aes(x = Petal.Length, Petal.Width) +
+  geom_point(
+    aes(color = .cluster, shape = Species)
+  ) +
+  geom_point(
+    data = tidy(km_fit),
+    aes(fill = cluster),
+    shape = 21, color = "black", size = 4
+  ) +
+  guides(color = "none")
+```
+]
+
+.pull-right.width-50[
+![](`r knitr::fig_chunk("iris-kmeans-out", "svg")`)
+
+.small-font[
+How do we choose the number of clusters?
+]]
+
+
+---
+
+## We perform k-means clustering with `kmeans()`
+
+.pull-left.xtiny-font[
+```{r iris-kmeans2, echo = TRUE, eval = FALSE}
+# run kmeans clustering
+km_fit <- iris %>% 
+  select(where(is.numeric)) %>%
+  kmeans(centers = 2, nstart = 10)
+
+# plot
+km_fit %>%
+  # combine with original data
+  augment(iris) %>%
+  ggplot() +
+  aes(x = Petal.Length, Petal.Width) +
+  geom_point(
+    aes(color = .cluster, shape = Species)
+  ) +
+  geom_point(
+    data = tidy(km_fit),
+    aes(fill = cluster),
+    shape = 21, color = "black", size = 4
+  ) +
+  guides(color = "none")
+```
+]
+
+.pull-right.width-50[
+```{r iris-kmeans2-out, ref.label="iris-kmeans2", fig.width=6.5, fig.asp = 0.618, echo=FALSE, dev = "svg"}
+```
+
+.small-font[
+How do we choose the number of clusters?
+]]
+
+---
+
+## We perform k-means clustering with `kmeans()`
+
+.pull-left.xtiny-font[
+```{r iris-kmeans3, echo = TRUE, eval = FALSE}
+# run kmeans clustering
+km_fit <- iris %>% 
+  select(where(is.numeric)) %>%
+  kmeans(centers = 5, nstart = 10)
+
+# plot
+km_fit %>%
+  # combine with original data
+  augment(iris) %>%
+  ggplot() +
+  aes(x = Petal.Length, Petal.Width) +
+  geom_point(
+    aes(color = .cluster, shape = Species)
+  ) +
+  geom_point(
+    data = tidy(km_fit),
+    aes(fill = cluster),
+    shape = 21, color = "black", size = 4
+  ) +
+  guides(color = "none")
+```
+]
+
+.pull-right.width-50[
+```{r iris-kmeans3-out, ref.label="iris-kmeans3", fig.width=6.5, fig.asp = 0.618, echo=FALSE, dev = "svg"}
+```
+
+.small-font[
+How do we choose the number of clusters?
+]]
+
+---
+
+## Look for elbow in scree plot
+
+.pull-left.xtiny-font[
+```{r iris-scree, echo = TRUE, eval = FALSE}
 # function to calculate within sum squares
-# for given data and number of centers
 calc_withinss <- function(data, centers) {
-  data %>% 
-    select(where(is.numeric)) %>%
-    kmeans(centers = centers, nstart = 10) %>%
-    tidy() %>%
-    pull(withinss) %>%
-    sum()
+  km_fit <- select(data, where(is.numeric)) %>%
+    kmeans(centers = centers, nstart = 10)
+  km_fit$tot.withinss
 }
 
-# make plot
 tibble(centers = 1:15) %>%
   mutate(
     within_sum_squares = map_dbl(
@@ -1086,6 +1273,14 @@ tibble(centers = 1:15) %>%
   geom_line()
 ```
 ]
+
+.pull-right[
+```{r iris-scree-out, ref.label="iris-scree", fig.width=6.5, fig.asp = 0.618, echo=FALSE, dev = "svg"}
+```
+
+.small-font[
+Plot suggests number of clusters of about 3
+]]
 
 ---
 
