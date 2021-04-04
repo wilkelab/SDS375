@@ -132,6 +132,12 @@ knitr::opts_chunk$set(echo = FALSE)
 - [Slides](slides/dimension-reduction-2.html)
 - [Worksheet](worksheets/dimension-reduction-2.Rmd)
 
+### 18. Apr 6, 2021—Clustering
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/clustering.html)
+
 
 ## Homeworks
 
@@ -189,7 +195,8 @@ All homeworks are due by 11:00pm on the day they are due. Homeworks need to be s
 
 <p class="nospace">Materials:</p>
 
-- coming soon
+- [R Markdown template](assignments/HW7.Rmd)
+- [HTML](assignments/HW7.html)
 
 ### Homework 8 (due Apr 19, 2021)
 

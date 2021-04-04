@@ -115,7 +115,34 @@ make_kmeans_plot <- function(coords, centroids, voronoi_centr, color_points = TR
 
 ```
 
-## Title
+.center[
+```{r three-clusters-viz, echo = FALSE, cache = params$cache, fig.width = 6, fig.asp = .85, dev = "svg"}
+centroids <- tibble(
+  cluster = factor(1:3),
+  x = c(2.014419687, 4.321905953, -0.003265806),
+  y = c(-4.1133121, 1.6406162, -0.1237819)
+)
+coords <- update_clusters(gaussian_clusters, centroids)
+
+make_kmeans_plot(coords, centroids,  centroids, color_points = FALSE, plot_centroids = FALSE, plot_voronoi = FALSE)
+```
+]
+
+These points correspond to three clusters. 
+Can a computer find them automatically?
+
+---
+
+
+.center[
+```{r three-clusters-viz2, echo = FALSE, cache = params$cache, fig.width = 6, fig.asp = .85, dev = "svg"}
+make_kmeans_plot(coords, centroids, centroids, color_points = TRUE, plot_centroids = FALSE, plot_voronoi = FALSE)
+```
+]
+
+These points correspond to three clusters. 
+Can a computer find them automatically?
+
 
 ---
 
@@ -1287,3 +1314,6 @@ Plot suggests number of clusters of about 3
 ## Further reading
 
 - Wikipedia: [k-means clustering](https://en.wikipedia.org/wiki/K-means_clustering)
+- Naftali Harris blog post: [Interactive k-means demonstration](https://www.naftaliharris.com/blog/visualizing-k-means-clustering/)
+- Stackoverflow post: [Determining the appropriate number of clusters in k-means](https://stackoverflow.com/questions/15376075/cluster-analysis-in-r-determine-the-optimal-number-of-clusters/15376462#15376462)
+- Medium article: [The 5 Clustering Algorithms Data Scientists Need to Know](https://towardsdatascience.com/the-5-clustering-algorithms-data-scientists-need-to-know-a36d136ef68)
