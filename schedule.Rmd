@@ -139,6 +139,13 @@ knitr::opts_chunk$set(echo = FALSE)
 - [Slides](slides/clustering.html)
 - [Worksheet](worksheets/clustering.Rmd)
 
+### 19. Apr 8, 2021—Visualizing geospatial data
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/geospatial-data.html)
+
+
 ## Homeworks
 
 All homeworks are due by 11:00pm on the day they are due. Homeworks need to be submitted as pdf files on Canvas.

@@ -53,6 +53,8 @@ navbar:
           href: slides/dimension-reduction-2.html
         - text: "Class 18: Clustering"
           href: slides/clustering.html
+        - text: "Class 19: Visualizing geospatial data"
+          href: slides/geospatial-data.html
 
 
     - text: "Worksheets"
