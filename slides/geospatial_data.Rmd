@@ -1,0 +1,280 @@
+---
+title: "Visualizing geospatial data"
+author: "Claus O. Wilke"
+date: "last updated: `r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: [default, "Wilke-slides-theme.css"]
+    lib_dir: libs
+    nature:
+      ratio: '16:9'
+      highlightStyle: github
+      highlightLines: true
+      slideNumberFormat: ''
+      titleSlideClass: [center, middle]
+params:
+  cache: TRUE
+---
+
+```{r setup, include=FALSE, echo=FALSE, message = FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(comment = "")
+
+library(tidyverse)
+library(sf)
+library(here)
+
+# ggplot2 settings so plots scale well for slide size 
+theme_set(theme_gray(16)) # 16 for full width, 18 for half width 
+update_geom_defaults("point", list(size = 2.0)) # 2 for full width, 2.5 for half width
+```
+
+background-image: url("https://clauswilke.com/dataviz/geospatial_data_files/figure-html/world-orthographic-1.png")
+background-position: left 50% top 75%
+background-size: 45%
+
+## Parallels (latitude) and meridians (longitude)
+
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+background-image: url("https://clauswilke.com/dataviz/coordinate_systems_axes_files/figure-html/worldmap-four-projections-1.png")
+background-position: left 50% top 75%
+background-size: 65%
+
+## There are many ways to project onto a 2D plane
+
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+background-image: url("https://clauswilke.com/dataviz/geospatial_data_files/figure-html/world-mercator-1.png")
+background-position: left 50% top 70%
+background-size: 45%
+
+## There are many ways to project onto a 2D plane
+
+
+.absolute-bottom-left[
+Mercator projection: Shapes are preserved, areas are severely distorted
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+background-image: url("https://clauswilke.com/dataviz/geospatial_data_files/figure-html/world-goode-1.png")
+background-position: left 50% top 60%
+background-size: 80%
+
+## There are many ways to project onto a 2D plane
+
+
+.absolute-bottom-left[
+Goode homolosine: Areas are preserved, shapes are somewhat distorted
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+background-image: url("https://clauswilke.com/dataviz/geospatial_data_files/figure-html/usa-orthographic-1.png")
+background-position: left 50% top 60%
+background-size: 45%
+
+## Projecting the US
+
+.absolute-bottom-left[
+Alaska, Hawaii, and the lower 48 are far apart; difficult to show on one map
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+background-image: url("https://clauswilke.com/dataviz/geospatial_data_files/figure-html/usa-true-albers-1.png")
+background-position: left 50% top 60%
+background-size: 50%
+
+## Projecting the US
+
+.absolute-bottom-left[
+A fair, area-preserving projection
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+background-image: url("https://clauswilke.com/dataviz/geospatial_data_files/figure-html/usa-albers-1.png")
+background-position: left 50% top 60%
+background-size: 50%
+
+## A common visualization. What happened to Alaska?
+
+.absolute-bottom-left[
+Alaska and Hawaii were moved closer; Alaska was also reduced in size
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+background-image: url("https://clauswilke.com/dataviz/geospatial_data_files/figure-html/usa-albers-revised-1.png")
+background-position: left 50% top 60%
+background-size: 50%
+
+## A fair visualization of the 50 states
+
+.absolute-bottom-left[
+Alaska is the largest state; 2.2 the size of Texas
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+class: center middle
+
+## Choropleth mapping: Coloring areas by a data value
+
+---
+background-image: url("https://clauswilke.com/dataviz/geospatial_data_files/figure-html/population-density-counties-1.png")
+background-position: left 50% top 60%
+background-size: 50%
+
+## US population density as a choropleth map
+
+.absolute-bottom-left[
+Alaska has very low population density
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+background-image: url("https://clauswilke.com/dataviz/geospatial_data_files/figure-html/population-density-counties2-1.png")
+background-position: left 50% top 60%
+background-size: 50%
+
+## US population density as a choropleth map
+
+.absolute-bottom-left[
+Alaska has very low population density
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+background-image: url("https://clauswilke.com/dataviz/geospatial_data_files/figure-html/median-income-counties-binned-1.png")
+background-position: left 50% top 60%
+background-size: 50%
+
+## US median income as a choropleth map
+
+.absolute-bottom-left[
+A binned color scale can make the map more readable
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+background-image: url("https://clauswilke.com/dataviz/geospatial_data_files/figure-html/median-income-states-1.png")
+background-position: left 50% top 60%
+background-size: 50%
+
+## Choropleth maps can be misleading
+
+.absolute-bottom-left[
+Large area of Alaska makes it appear very rich; remember, it's mostly empty
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+background-image: url("https://clauswilke.com/dataviz/geospatial_data_files/figure-html/median-income-statebins-1.png")
+background-position: left 50% top 60%
+background-size: 50%
+
+## A cartogram heatmap may be preferable
+
+.absolute-bottom-left[
+Each state is shown as an equally sized square
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+class: center middle
+
+## Maps and layers
+
+---
+background-image: url("https://clauswilke.com/dataviz/geospatial_data_files/figure-html/sfbay-overview-1.png")
+background-position: left 50% top 60%
+background-size: 50%
+
+## Maps show data in a geospatial context
+
+.absolute-bottom-left[
+Wind turbines in the San Francisco Bay Area
+]
+
+---
+background-image: url("https://clauswilke.com/dataviz/geospatial_data_files/figure-html/sfbay-layers-1.png")
+background-position: left 50% top 60%
+background-size: 50%
+
+## Maps are composed of several distinct layers
+
+.absolute-bottom-left[
+Wind turbines in the San Francisco Bay Area
+]
+
+---
+background-image: url("https://clauswilke.com/dataviz/geospatial_data_files/figure-html/shiloh-map-1.png")
+background-position: left 50% top 60%
+background-size: 50%
+
+## The concept of aesthetic mappings still applies
+
+.absolute-bottom-left[
+Location of individual wind turbines in the Shiloh Wind Farm
+]
+
+
+---
+
+<img src = "https://clauswilke.com/dataviz/geospatial_data_files/figure-html/world-orthographic-1.png", width = 50%, style = "position:absolute; top: 10%; left: 25%"></img>
+
+## Title
+
+
+
+---
+
+## Further reading
+
+- Fundamentals of Data Visualization: [Chapter 15: Visualizing geospatial data](https://clauswilke.com/dataviz/geospatial-data.html)
