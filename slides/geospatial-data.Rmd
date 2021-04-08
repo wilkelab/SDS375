@@ -325,7 +325,7 @@ texas_income$geometry
 .tiny-font[
 ```{r}
 texas_income %>% 
-  filter(NAME == "Travis County, Texas")
+  filter(county == "Travis")
 ```
 ]
 
@@ -356,7 +356,7 @@ ggplot(texas_income) +
 ```{r texas-sf-filter, eval = FALSE}
 # plot only Travis County
 texas_income %>% 
-  filter(NAME == "Travis County, Texas") %>%
+  filter(county == "Travis") %>%
   ggplot() + 
   geom_sf()
 ```
@@ -412,12 +412,12 @@ texas_income %>%
 
 ## ggplot supports simple features with `geom_sf()`
 
-.tiny-font.pull-left[
+.tiny-font.width-50.pull-left[
 ```{r texas-sf-mutate, eval = FALSE}
 # highlight the ten richest counties
 texas_income %>% 
   mutate(
-    top_ten = rank(-median_income) <= 10
+    top_ten = rank(desc(median_income)) <= 10
   ) %>%
   ggplot(aes(fill = top_ten)) + 
   geom_sf() +
@@ -440,12 +440,12 @@ texas_income %>%
 
 ## ggplot supports simple features with `geom_sf()`
 
-.pull-left[.tiny-font[
+.pull-left.width-50[.tiny-font[
 ```{r texas-sf-mutate2, eval = FALSE}
 # highlight the ten richest counties
 texas_income %>% 
   mutate(
-    top_ten = rank(-median_income) <= 10
+    top_ten = rank(desc(median_income)) <= 10
   ) %>%
   ggplot(aes(fill = top_ten)) + 
   geom_sf(color = "black", size = 0.1) +

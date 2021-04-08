@@ -303,28 +303,17 @@ dimension:      XY
 bbox:           xmin: -106.6456 ymin: 25.83738 xmax: -93.50829 ymax: 36.5007
 geographic CRS: NAD83
 First 10 features:
-   GEOID                    NAME median_income  moe
-1  48001  Anderson County, Texas         41327 1842
-2  48003   Andrews County, Texas         70423 6038
-3  48005  Angelina County, Texas         44223 1611
-4  48007   Aransas County, Texas         41690 3678
-5  48009    Archer County, Texas         60275 5182
-6  48011 Armstrong County, Texas         59737 4968
-7  48013  Atascosa County, Texas         52192 3005
-8  48015    Austin County, Texas         53687 3810
-9  48017    Bailey County, Texas         37397 8652
-10 48019   Bandera County, Texas         49863 7193
-                         geometry
-1  MULTIPOLYGON (((-96.0648 31...
-2  MULTIPOLYGON (((-103.0647 3...
-3  MULTIPOLYGON (((-95.00488 3...
-4  MULTIPOLYGON (((-96.8229 28...
-5  MULTIPOLYGON (((-98.95382 3...
-6  MULTIPOLYGON (((-101.6294 3...
-7  MULTIPOLYGON (((-98.80479 2...
-8  MULTIPOLYGON (((-96.62085 3...
-9  MULTIPOLYGON (((-103.0469 3...
-10 MULTIPOLYGON (((-99.60332 2...
+    FIPS    county median_income  moe                       geometry
+1  48001  Anderson         41327 1842 MULTIPOLYGON (((-96.0648 31...
+2  48003   Andrews         70423 6038 MULTIPOLYGON (((-103.0647 3...
+3  48005  Angelina         44223 1611 MULTIPOLYGON (((-95.00488 3...
+4  48007   Aransas         41690 3678 MULTIPOLYGON (((-96.8229 28...
+5  48009    Archer         60275 5182 MULTIPOLYGON (((-98.95382 3...
+6  48011 Armstrong         59737 4968 MULTIPOLYGON (((-101.6294 3...
+7  48013  Atascosa         52192 3005 MULTIPOLYGON (((-98.80479 2...
+8  48015    Austin         53687 3810 MULTIPOLYGON (((-96.62085 3...
+9  48017    Bailey         37397 8652 MULTIPOLYGON (((-103.0469 3...
+10 48019   Bandera         49863 7193 MULTIPOLYGON (((-99.60332 2...
 ```
 ]
 
@@ -376,7 +365,7 @@ MULTIPOLYGON (((-98.95382 33.49637, -98.95377 3...
 
 ```r
 texas_income %&gt;% 
-  filter(NAME == "Travis County, Texas")
+  filter(county == "Travis")
 ```
 
 ```
@@ -385,8 +374,8 @@ geometry type:  MULTIPOLYGON
 dimension:      XY
 bbox:           xmin: -98.17298 ymin: 30.0245 xmax: -97.36954 ymax: 30.62825
 geographic CRS: NAD83
-  GEOID                 NAME median_income moe                       geometry
-1 48453 Travis County, Texas         61451 591 MULTIPOLYGON (((-98.15927 3...
+   FIPS county median_income moe                       geometry
+1 48453 Travis         61451 591 MULTIPOLYGON (((-98.15927 3...
 ```
 ]
 
@@ -418,7 +407,7 @@ ggplot(texas_income) +
 ```r
 # plot only Travis County
 texas_income %&gt;% 
-  filter(NAME == "Travis County, Texas") %&gt;%
+  filter(county == "Travis") %&gt;%
   ggplot() + 
   geom_sf()
 ```
@@ -473,13 +462,13 @@ texas_income %&gt;%
 
 ## ggplot supports simple features with `geom_sf()`
 
-.tiny-font.pull-left[
+.tiny-font.width-50.pull-left[
 
 ```r
 # highlight the ten richest counties
 texas_income %&gt;% 
   mutate(
-    top_ten = rank(-median_income) &lt;= 10
+    top_ten = rank(desc(median_income)) &lt;= 10
   ) %&gt;%
   ggplot(aes(fill = top_ten)) + 
   geom_sf() +
@@ -501,13 +490,13 @@ texas_income %&gt;%
 
 ## ggplot supports simple features with `geom_sf()`
 
-.pull-left[.tiny-font[
+.pull-left.width-50[.tiny-font[
 
 ```r
 # highlight the ten richest counties
 texas_income %&gt;% 
   mutate(
-    top_ten = rank(-median_income) &lt;= 10
+    top_ten = rank(desc(median_income)) &lt;= 10
   ) %&gt;%
   ggplot(aes(fill = top_ten)) + 
   geom_sf(color = "black", size = 0.1) +

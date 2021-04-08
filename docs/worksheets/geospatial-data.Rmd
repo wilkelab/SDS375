@@ -1,0 +1,63 @@
+---
+#############################################################
+#                                                           #
+# Click on "Run Document" in RStudio to run this worksheet. #
+#                                                           #
+#############################################################
+title: "Visualizing geospatial data"
+author: "Claus O. Wilke"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(tidyverse)
+library(colorspace)
+library(sf)
+knitr::opts_chunk$set(echo = FALSE, comment = "")
+
+texas_income <- readRDS(url("https://wilkelab.org/SDS375/datasets/Texas_income.rds"))
+
+US_census <- read_csv("https://wilkelab.org/SDS375/datasets/US_census.csv")
+texas_counties <- US_census %>% 
+  filter(state == "Texas") %>%
+  select(FIPS, name, pop2010, area) %>%
+  extract(name, "county", regex = "(.+) County") %>%
+  mutate(popratio = pop2010/median(pop2010)) %>%
+  arrange(desc(popratio)) %>%
+  mutate(index = 1:n())
+```
+
+## Introduction
+
+In this worksheet, we will discuss how to visualize geospatial data.
+
+We will be using the R package **tidyverse** for general data manipulation and visualization, and the R package **sf** to handle simple features (which represent shapes and locations on the surface of the earth). We also load the package **colorspace** for its color scales.
+
+```{r library-calls, echo = TRUE, eval = FALSE}
+# load required libraries
+library(tidyverse)
+library(sf)
+library(colorspace)
+```
+
+
+We will be working with the datasets `texas_income` and `texas_counties`. The dataset `texas_income` contains the median income of all counties in Texas, as well as the shape information about each county (stored in the `geometry` column).
+
+```{r echo = TRUE}
+texas_income
+```
+
+The dataset `texas_counties` holds information about how many people lived in Texas counties in 2010. The column `popratio` is the ratio of the number of inhabitants to the median across all counties, and the column `index` simply counts the counties from most populous to least populous.
+
+```{r tx-counties, echo = TRUE}
+texas_counties
+```
+
+
+## Wrangling datasets containing simple features
+
+## Visualizing simple features with `geom_sf()`
+
+## Changing the projection with `coord_sf()`
