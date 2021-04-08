@@ -97,5 +97,7 @@ navbar:
           href: worksheets/dimension-reduction-2.Rmd
         - text: "Class 18: Clustering"
           href: worksheets/clustering.Rmd
+        - text: "Class 19: Visualizing geospatial data"
+          href: worksheets/geospatial-data.Rmd
  
 output: distill::distill_article

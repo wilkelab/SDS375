@@ -144,7 +144,7 @@ knitr::opts_chunk$set(echo = FALSE)
 <p class="nospace">Materials:</p>
 
 - [Slides](slides/geospatial-data.html)
-
+- [Worksheet](worksheets/geospatial-data.Rmd)
 
 ## Homeworks
 
