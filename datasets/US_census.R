@@ -1,7 +1,10 @@
 library(tidyverse)
 library(here)
 
-US_census <- dviz.supp::US_census
+US_census <- dviz.supp::US_census %>%
+   mutate(
+     FIPS = sprintf("%05i", FIPS)
+   )
 
 write_csv(US_census, here("datasets", "US_census.csv"))
 

@@ -484,3 +484,6 @@ hcl_by_h %>%
 ## Further reading
 
 - Fundamentals of Data Visualization: [Chapter 19: Common pitfalls of color use](https://clauswilke.com/dataviz/color-pitfalls.html)
+- Wikipedia: [HSL and HSV](https://en.wikipedia.org/wiki/HSL_and_HSV)
+
+

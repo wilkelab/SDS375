@@ -74,6 +74,23 @@ table {
   width: 90%
 }
 
+.move-up-1em {
+  margin-top: -1em;
+}
+
+.move-up-2em {
+  margin-top: -2em;
+}
+
+.move-down-1em {
+  margin-top: 1em;
+}
+
+.move-down-2em {
+  margin-top: 2em;
+}
+
+
 .absolute-bottom-left {
   position: absolute;
   bottom: 0; 
