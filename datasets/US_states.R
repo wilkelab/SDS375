@@ -3,8 +3,6 @@ library(sf)
 library(ggrepel)
 library(here)
 
-US_states <- dviz.supp::US_states_geoms$us_albers
-
 state_codes <- read_csv(file = 
 "name,state_code,GEOID
 Alabama,AL,01
@@ -64,18 +62,19 @@ Northern Mariana Islands,MP,69
 Puerto Rico,PR,72
 Virgin Islands,VI,78")
 
-US_states <- left_join(US_states, state_codes)
+US_states_AKsmall <- dviz.supp::US_states_geoms$albers_revised %>%
+  left_join(state_codes)
 
-label_coords <- US_states$geometry %>%
+label_coords <- US_states_AKsmall$geometry %>%
   sf::st_zm() %>%
   sf::st_point_on_surface() %>%
   sf::st_coordinates()
 
-US_states$label_x <- label_coords[, 1]
-US_states$label_y <- label_coords[, 2]
+US_states_AKsmall$label_x <- label_coords[, 1]
+US_states_AKsmall$label_y <- label_coords[, 2]
 
 # manually adjust label positions
-US_states <- US_states %>%
+US_states_AKsmall <- US_states_AKsmall %>%
   mutate(
     label_x = case_when(
       state_code == "HI" ~ label_x + 180000,
@@ -90,9 +89,21 @@ US_states <- US_states %>%
     )
   )
 
+saveRDS(US_states_AKsmall, here("datasets", "US_states_AKsmall.rds"))
+
+US_states <- dviz.supp::US_states_geoms$us_albers %>%
+  left_join(state_codes)
 saveRDS(US_states, here("datasets", "US_states.rds"))
 
-ggplot(US_states) + 
+US_counties_AKsmall <- dviz.supp::US_counties_geoms$us_albers %>%
+  left_join(state_codes, by = c(STATEFP = "GEOID"))
+saveRDS(US_counties_AKsmall, here("datasets", "US_counties_AKsmall.rds"))
+
+US_counties <- dviz.supp::US_counties_geoms$albers_revised %>%
+  left_join(state_codes, by = c(STATEFP = "GEOID"))
+saveRDS(US_counties, here("datasets", "US_counties.rds"))
+
+ggplot(US_states_AKsmall) + 
   geom_sf() +
   geom_text(
     aes(x = label_x, y = label_y, label = state_code),
@@ -100,11 +111,13 @@ ggplot(US_states) +
   ) +
   theme_void()
 
-US_counties <- dviz.supp::US_counties_geoms$us_albers
+ggplot(US_states) + 
+  geom_sf() +
+  theme_void()
 
-US_counties <- left_join(US_counties, state_codes, by = c(STATEFP = "GEOID"))
-
-saveRDS(US_counties, here("datasets", "US_counties.rds"))
+ggplot(US_counties_AKsmall) + 
+  geom_sf() +
+  theme_void()
 
 ggplot(US_counties) + 
   geom_sf() +
