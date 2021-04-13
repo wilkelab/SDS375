@@ -478,6 +478,91 @@ hcl_by_h %>%
 ```
 ]
 
+---
+
+## We can explore HCL colors in R
+
+```{r eval = FALSE}
+colorspace::choose_color()
+```
+
+--
+
+<img src = "color-spaces_files/choose_color1.png", width = 35%, style = "position:absolute; top: 20%; left: 52.5%; box-shadow: 3px 5px 3px 1px #00000080;"></img>
+
+--
+
+<img src = "color-spaces_files/choose_color2.png", width = 35%, style = "position:absolute; top: 35%; left: 12.5%; box-shadow: 3px 5px 3px 1px #00000080;"></img>
+
+--
+
+<img src = "color-spaces_files/choose_color3.png", width = 35%, style = "position:absolute; top: 50%; left: 42.5%; box-shadow: 3px 5px 3px 1px #00000080;"></img>
+
+---
+
+## One important point to remember: Avoid high chroma
+
+--
+
+.pull-left.width-45[
+High chroma: Toys
+
+<img src = "color-spaces_files/toys-image.jpg", width = 100%, style = "box-shadow: 3px 5px 3px 1px #00000080;"></img>
+]
+
+???
+
+[Photo by Pixabay from Pexels](https://www.pexels.com/photo/super-mario-and-yoshi-plastic-figure-163077/)
+
+--
+
+.pull-right.width-45[
+Low chroma: Elegance
+
+<img src = "color-spaces_files/home-interior.jpg", width = 95%, style = "box-shadow: 3px 5px 3px 1px #00000080;"></img>
+]
+
+???
+
+[Photo by Saviesa Home from Pexels](https://www.pexels.com/photo/kitchen-island-2089698/)
+
+---
+
+## Always be aware of color-vision deficiency
+
+5%–8% of men are color blind!
+
+--
+
+<img src = "https://clauswilke.com/dataviz/pitfalls_of_color_use_files/figure-html/red-green-cvd-sim-1.png", width = 100%></img>
+
+Red-green color-vision deficiency is the most common
+
+---
+
+## Always be aware of color-vision deficiency
+
+5%–8% of men are color blind!
+
+<img src = "https://clauswilke.com/dataviz/pitfalls_of_color_use_files/figure-html/blue-green-cvd-sim-1.png", width = 100%></img>
+
+Blue-green color-vision deficiency is rare but does occur
+
+---
+
+## Always be aware of color-vision deficiency
+
+Choose colors that can be distinguished with CVD
+
+<img src = "https://clauswilke.com/dataviz/pitfalls_of_color_use_files/figure-html/PiYG-cvd-sim-1.png", width = 100%></img>
+
+---
+
+## CVD is worse for thin lines and tiny dots
+
+.move-up-1em.center[
+<img src = "https://clauswilke.com/dataviz/pitfalls_of_color_use_files/figure-html/colors-thin-lines-1.png", width = 65%></img>
+]
 
 ---
 
@@ -485,5 +570,6 @@ hcl_by_h %>%
 
 - Fundamentals of Data Visualization: [Chapter 19: Common pitfalls of color use](https://clauswilke.com/dataviz/color-pitfalls.html)
 - Wikipedia: [HSL and HSV](https://en.wikipedia.org/wiki/HSL_and_HSV)
-
+- **colorspace** package documentation: [Color Spaces](https://colorspace.r-forge.r-project.org/articles/color_spaces.html)
+- **colorspace** package documentation: [Apps for Choosing Colors and Palettes Interactively](https://colorspace.r-forge.r-project.org/articles/hclwizard.html)
 

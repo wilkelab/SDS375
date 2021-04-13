@@ -55,6 +55,8 @@ navbar:
           href: slides/clustering.html
         - text: "Class 19: Visualizing geospatial data"
           href: slides/geospatial-data.html
+        - text: "Class 20: Color spaces and color-vision deficiency"
+          href: slides/color-spaces.html
 
 
     - text: "Worksheets"
@@ -99,5 +101,7 @@ navbar:
           href: worksheets/clustering.Rmd
         - text: "Class 19: Visualizing geospatial data"
           href: worksheets/geospatial-data.Rmd
+        - text: "Class 20: Color spaces and color-vision deficiency"
+          href: worksheets/color-spaces.R
  
 output: distill::distill_article

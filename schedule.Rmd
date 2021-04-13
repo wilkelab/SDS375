@@ -146,6 +146,14 @@ knitr::opts_chunk$set(echo = FALSE)
 - [Slides](slides/geospatial-data.html)
 - [Worksheet](worksheets/geospatial-data.Rmd)
 
+### 20. Apr 13, 2021—Color spaces and color-vision deficiency
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/color-spaces.html)
+- [Worksheet](worksheets/color-spaces.R)
+
+
 ## Homeworks
 
 All homeworks are due by 11:00pm on the day they are due. Homeworks need to be submitted as pdf files on Canvas.
@@ -209,7 +217,8 @@ All homeworks are due by 11:00pm on the day they are due. Homeworks need to be s
 
 <p class="nospace">Materials:</p>
 
-- coming soon
+- [R Markdown template](assignments/HW8.Rmd)
+- [HTML](assignments/HW8.html)
 
 ### Homework 9 (due Apr 26, 2021)
 
