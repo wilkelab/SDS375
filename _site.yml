@@ -57,7 +57,8 @@ navbar:
           href: slides/geospatial-data.html
         - text: "Class 20: Color spaces and color-vision deficiency"
           href: slides/color-spaces.html
-
+        - text: "Class 21: Redundant coding, text annotations"
+          href: slides/redundant-coding.html
 
     - text: "Worksheets"
       menu:

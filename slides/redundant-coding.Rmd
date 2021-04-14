@@ -275,13 +275,17 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 .center[
 ```{r tech-stocks-bad-legend, cache = params$cache, echo = FALSE, fig.width = 7, fig.asp = 0.618, dev = "svg"}
 price_plot_base <- 
-  ggplot(tech_stocks, aes(x = date, y = price_indexed, color = ticker)) +
+  ggplot(tech_stocks, aes(x = date, y = price_indexed, color = company)) +
   geom_line(size = 0.66, na.rm = TRUE) +
   scale_color_manual(
-    values = c("#000000", "#E69F00", "#56B4E9", "#009E73"),
+    values = c(
+      Facebook = "#000000", 
+      Alphabet = "#E69F00", 
+      Microsoft = "#56B4E9",
+      Apple = "#009E73"
+    ),
     name = "",
-    breaks = c("GOOG", "AAPL", "FB", "MSFT"),
-    labels = c("Alphabet", "Apple", "Facebook", "Microsoft")
+    breaks = c("Alphabet", "Apple", "Facebook", "Microsoft")
   ) +
   scale_x_date(
     name = "year",
@@ -314,12 +318,16 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 .center[
 ```{r tech-stocks-good-legend, cache = params$cache, echo = FALSE, fig.width = 7, fig.asp = 0.618, dev = "svg"}
 price_plot_base_good <- 
-  ggplot(tech_stocks, aes(x = date, y = price_indexed, color = ticker)) +
+  ggplot(tech_stocks, aes(x = date, y = price_indexed, color = company)) +
   scale_color_manual(
-    values = c("#000000", "#E69F00", "#56B4E9", "#009E73"),
+    values = c(
+      Facebook = "#000000", 
+      Alphabet = "#E69F00", 
+      Microsoft = "#56B4E9",
+      Apple = "#009E73"
+    ),
     name = "",
-    breaks = c("FB", "GOOG", "MSFT", "AAPL"),
-    labels = c("Facebook", "Alphabet", "Microsoft", "Apple")
+    breaks = c("Facebook", "Alphabet", "Microsoft", "Apple")
   ) +
   scale_x_date(
     name = "year",
@@ -383,12 +391,16 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 ```{r tech-stocks-good-no-legend, cache = params$cache, echo = FALSE, fig.width = 7, fig.asp = 0.618, dev = "svg"}
 tech_stocks_last <- filter(tech_stocks, date == "2017-06-02")
 
-ggplot(tech_stocks, aes(x = date, y = price_indexed, color = ticker)) +
+ggplot(tech_stocks, aes(x = date, y = price_indexed, color = company)) +
   scale_color_manual(
-    values = c("#000000", "#E69F00", "#56B4E9", "#009E73"),
+    values = c(
+      Facebook = "#000000", 
+      Alphabet = "#E69F00", 
+      Microsoft = "#56B4E9",
+      Apple = "#009E73"
+    ),
     name = "",
-    breaks = c("FB", "GOOG", "MSFT", "AAPL"),
-    labels = c("Facebook", "Alphabet", "Microsoft", "Apple"),
+    breaks = c("Facebook", "Alphabet", "Microsoft", "Apple"),
     guide = "none"
   ) +
   scale_x_date(
@@ -450,7 +462,7 @@ ggplot(
   ) +
   stat_ellipse(size = 0.5) +
   geom_text(
-    data = label_df,
+    data = iris_labels,
     aes(
       x = Sepal.Length, y = Sepal.Width,
       label = label, color = Species,
@@ -863,7 +875,6 @@ mtcars_named %>%
 ]
 
 
-
 ---
 
 ## 3. Automatic labeling with `geom_text_repel()`
@@ -891,13 +902,42 @@ mtcars_named %>%
 ```
 ]
 
+
+---
+
+## 3. Automatic labeling with `geom_text_repel()`
+
+.tiny-font.pull-left[
+```{r mtcars-plot7, eval = FALSE}
+set.seed(6644)
+
+mtcars_named %>%
+  mutate(
+    # randomly exclude 50% of the labels
+    car = ifelse(runif(n()) < 0.5, "", car)
+  ) %>% 
+  ggplot(aes(weight, mpg)) +
+  geom_point() +
+  geom_text_repel(
+    aes(label = car),
+    max.overlaps = 1000,
+    box.padding = 0.7     #<<
+  )
+```
+]
+
+.pull-right.width-50[
+```{r mtcars-plot7-out, cache = params$cache, ref.label="mtcars-plot7", fig.width=6., fig.asp = 0.75, echo=FALSE, warning=FALSE, dev = "svg"}
+```
+]
+
+`box.padding` controls how far labels are placed from data points
 ---
 
 ## Further reading
 
 - Fundamentals of Data Visualization: [Redundant coding](https://clauswilke.com/dataviz/redundant-coding.html)
 - **ggplot2** reference documentation: [`geom_text()`](https://ggplot2.tidyverse.org/reference/geom_text.html)
-- **ggrepel** reference documentation: [`geom_text_repel()`](https://ggplot2.tidyverse.org/reference/position_stack.html)
-
-
-
+- **ggrepel** documentation: [Examples](https://ggrepel.slowkow.com/articles/examples.html#examples-1)
+- **ggrepel** reference documentation:
+[`geom_text_repel()`](https://ggrepel.slowkow.com/reference/geom_text_repel.html)

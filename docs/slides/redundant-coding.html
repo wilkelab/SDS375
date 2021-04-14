@@ -715,7 +715,6 @@ mtcars_named %&gt;%
 ]
 
 
-
 ---
 
 ## 3. Automatic labeling with `geom_text_repel()`
@@ -743,16 +742,45 @@ mtcars_named %&gt;%
 ![](redundant-coding_files/figure-html/mtcars-plot6-out-1.svg)&lt;!-- --&gt;
 ]
 
+
+---
+
+## 3. Automatic labeling with `geom_text_repel()`
+
+.tiny-font.pull-left[
+
+```r
+set.seed(6644)
+
+mtcars_named %&gt;%
+  mutate(
+    # randomly exclude 50% of the labels
+    car = ifelse(runif(n()) &lt; 0.5, "", car)
+  ) %&gt;% 
+  ggplot(aes(weight, mpg)) +
+  geom_point() +
+  geom_text_repel(
+    aes(label = car),
+    max.overlaps = 1000,
+*   box.padding = 0.7
+  )
+```
+]
+
+.pull-right.width-50[
+![](redundant-coding_files/figure-html/mtcars-plot7-out-1.svg)&lt;!-- --&gt;
+]
+
+`box.padding` controls how far labels are placed from data points
 ---
 
 ## Further reading
 
 - Fundamentals of Data Visualization: [Redundant coding](https://clauswilke.com/dataviz/redundant-coding.html)
 - **ggplot2** reference documentation: [`geom_text()`](https://ggplot2.tidyverse.org/reference/geom_text.html)
-- **ggrepel** reference documentation: [`geom_text_repel()`](https://ggplot2.tidyverse.org/reference/position_stack.html)
-
-
-
+- **ggrepel** documentation: [Examples](https://ggrepel.slowkow.com/articles/examples.html#examples-1)
+- **ggrepel** reference documentation:
+[`geom_text_repel()`](https://ggrepel.slowkow.com/reference/geom_text_repel.html)
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

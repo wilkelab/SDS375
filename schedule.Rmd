@@ -153,6 +153,11 @@ knitr::opts_chunk$set(echo = FALSE)
 - [Slides](slides/color-spaces.html)
 - [Worksheet](worksheets/color-spaces.R)
 
+### 20. Apr 13, 2021—Redundant coding, text annotations
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/redundant-coding.html)
 
 ## Homeworks
 
