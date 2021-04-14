@@ -21,6 +21,9 @@ In this homework, we will work with two datasets, `US_counties` and `US_census`.
 US_counties <- readRDS(url("https://wilkelab.org/SDS375/datasets/US_counties.rds")) %>%
   rename(FIPS = GEOID)
 
+# workaround for missing rgdal on edupod
+st_crs(US_counties) <- NA
+
 US_census <- read_csv(
   "https://wilkelab.org/SDS375/datasets/US_census.csv",
   col_types = cols(FIPS = "c")
@@ -45,7 +48,7 @@ Grade breakdown: 2pt for the plot, 2pt for the plot design, and 2pt for identify
 # your code goes here
 ```
 
-**Problem 2: (4 pts)** Make a choropleth map of the percent foreign born (column `foreign_born` in `US_census`) for the counties in Texas only. Apply a Texas-centric projection. Additionally, use a different color scale than you used for Problem 1 and use a theme that shows longitude and latitude (nearly any theme other than `theme_void()` will work).
+**Problem 2: (4 pts)** Make a choropleth map of the percent foreign born (column `foreign_born` in `US_census`) for the counties in Texas only. Use a different color scale than you used for Problem 1 and use a theme that shows longitude and latitude (nearly any theme other than `theme_void()` will work).
 
 Grade breakdown: 3pt for the plot, 1pt for the plot design
 

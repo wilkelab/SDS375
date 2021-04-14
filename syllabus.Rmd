@@ -54,7 +54,7 @@ This class draws heavily from materials presented in the following two books. Bo
 ------- --------------------------- ------------------------------
 1.      Introduction                RStudio setup online, R Markdown
 
-2.      Aesthetic mappings          ggplot2 quickstart
+2.      Aesthetic mappings          **ggplot2** quickstart
 
 3.      Visualizing amounts         `geom_col()`, `geom_point()`,
                                     position adjustments
@@ -83,45 +83,38 @@ This class draws heavily from materials presented in the following two books. Bo
 
 13.     Visualizing trends          `geom_smooth()`
 
-14.     Working with models         `lm`, `cor.test`, broom package
+14.     Working with models         `lm`, `cor.test`, **broom** package
 
-15.     Visualizing uncertainty I   error bars, regression coefficient plots
+15.     Visualizing uncertainty     frequency framing, error bars, **ggdist** package
 
-16.     Visualizing uncertainty II  frequency framing, quantile dotplots
+16.     Dimension reduction I       PCA
 
-17.     Dimension reduction         PCA
+17.     Dimension reduction II      kernel PCA, t-SNE, UMAP
 
-18.     Hierarchical clustering
+18.     Clustering                  k-means clustering
         
 19.     Visualizing geospatial      `geom_sf()`, `coord_sf()`
         data
 
-20.     Color spaces, color vision
+20.     Color spaces, color vision  **colorspace** package
         deficiency
         
-21.     Redundant coding, text      ggrepel package
+21.     Redundant coding, text      **ggrepel** package
         annotations
 
-22.     Over-plotting               jittering, 2d histograms,
+22.     Interactive plots           **ggiraph** package
+
+23.     Over-plotting               jittering, 2d histograms,
                                     contour plots
 
-23.     Figure titles, captions,
-        tables
-
-24.     Compound figures            patchwork package
+24.     Compound figures            **patchwork** package
 
 25.     Telling a story
 
-26.     Setting up a blog           distill package
+26.     Web technologies            HTML, CSS
 
-27.     Web technologies            HTML, CSS
-
-28.     Image formats, image        magick package
+27.     Image formats, image        **magick** package
         manipulation
-
-29.     Interactive plots           ggplotly
-
-30.     Animations                  gganimate
 ----------------------------------------------------------------
 :::
 

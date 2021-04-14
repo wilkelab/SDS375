@@ -396,6 +396,9 @@ summary {
 US_counties &lt;- readRDS(url(&quot;https://wilkelab.org/SDS375/datasets/US_counties.rds&quot;)) %&gt;%
   rename(FIPS = GEOID)
 
+# workaround for missing rgdal on edupod
+st_crs(US_counties) &lt;- NA
+
 US_census &lt;- read_csv(
   &quot;https://wilkelab.org/SDS375/datasets/US_census.csv&quot;,
   col_types = cols(FIPS = &quot;c&quot;)
@@ -410,7 +413,7 @@ US_census &lt;- read_csv(
 </ol>
 <p>Grade breakdown: 2pt for the plot, 2pt for the plot design, and 2pt for identifying the county in Alaska for which home ownership data is not available.</p>
 <pre class="r"><code># your code goes here</code></pre>
-<p><strong>Problem 2: (4 pts)</strong> Make a choropleth map of the percent foreign born (column <code>foreign_born</code> in <code>US_census</code>) for the counties in Texas only. Apply a Texas-centric projection. Additionally, use a different color scale than you used for Problem 1 and use a theme that shows longitude and latitude (nearly any theme other than <code>theme_void()</code> will work).</p>
+<p><strong>Problem 2: (4 pts)</strong> Make a choropleth map of the percent foreign born (column <code>foreign_born</code> in <code>US_census</code>) for the counties in Texas only. Use a different color scale than you used for Problem 1 and use a theme that shows longitude and latitude (nearly any theme other than <code>theme_void()</code> will work).</p>
 <p>Grade breakdown: 3pt for the plot, 1pt for the plot design</p>
 <pre class="r"><code># your code goes here</code></pre>
 
