@@ -1,0 +1,299 @@
+---
+title: "Interactive plots"
+author: "Claus O. Wilke"
+date: "last updated: `r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: [default, "Wilke-slides-theme.css"]
+    lib_dir: libs
+    nature:
+      ratio: '16:9'
+      highlightStyle: github
+      highlightLines: true
+      slideNumberFormat: ''
+      titleSlideClass: [center, middle]
+params:
+  cache: TRUE
+---
+
+```{r setup, include=FALSE, echo=FALSE, message = FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(comment = "")
+
+library(tidyverse)
+library(colorspace)
+library(colorblindr)
+library(cowplot)
+library(ggrepel)
+library(ggiraph)
+library(here)
+
+# ggplot2 settings so plots scale well for slide size 
+theme_set(theme_gray(16)) # 16 for full width, 18 for half width 
+update_geom_defaults("point", list(size = 2.0)) # 2 for full width, 2.5 for half width
+
+# tx_counties dataset
+US_census <- read_csv(here("datasets", "US_census.csv"))
+
+tx_counties <- US_census %>% 
+  filter(state == "Texas") %>%
+  select(name, pop2010) %>%
+  extract(name, "county", regex = "(.+) County")
+```
+
+## Title
+
+.center[
+```{r iris-scatter-three-shapes, echo = FALSE}
+breaks <- c("setosa", "virginica", "versicolor")
+labels <- paste0("Iris ", breaks)
+
+iris_scatter <- iris %>%
+  mutate(
+    tooltip = glue::glue("Sepal length: {Sepal.Length}; Sepal width: {Sepal.Width}")
+  ) %>%
+  ggplot(
+    aes(Sepal.Length, Sepal.Width, shape = Species, fill = Species, color = Species)
+  ) +     
+  scale_shape_manual(
+    values = c(21, 22, 23),
+    breaks = breaks,
+    labels = labels,
+    name = NULL
+  ) +
+  scale_color_manual(
+    values = darken(c("#56B4E9", "#E69F00", "#009E73"), 0.3),
+    breaks = breaks,
+    labels = labels,
+    name = NULL
+  ) +
+  scale_fill_manual(
+    values = c("#56B4E980", "#E69F0080", "#009E7380"),
+    breaks = breaks,
+    labels = labels,
+    name = NULL
+  ) +
+  scale_x_continuous(
+    limits = c(3.95, 8.2), expand = c(0, 0),
+    labels = c("4.0", "5.0", "6.0", "7.0", "8.0"),
+    name = "Sepal length"
+  ) +
+  scale_y_continuous(
+    limits = c(1.9, 4.6), expand = c(0, 0),
+    name = "Sepal width"
+  ) + 
+  geom_point_interactive(
+    aes(tooltip = tooltip),
+    size=2.5, stroke = 0.5,
+    position = position_jitter(
+      width = 0.01 * diff(range(iris$Sepal.Length)),
+      height = 0.01 * diff(range(iris$Sepal.Width)),
+      seed = 3942
+    )
+  ) +
+  theme_minimal_grid() +
+  theme(
+    legend.title.align = 0.5,
+    legend.text = element_text(face = "italic"),
+    legend.spacing.y = unit(3.5, "pt"),
+    plot.margin = margin(7, 7, 3, 1.5)
+  )
+
+girafe(
+  ggobj = iris_scatter,
+  width_svg = 6,
+  height_svg = 6*.618,
+  options = list(
+    opts_tooltip(css = "font-size:20px;padding:2px 4px 2px 4px;background:black;color:white;border-radius:2px 2px 2px 2px;"),
+    opts_sizing(rescale = TRUE, width = 0.8)
+  )
+)
+```
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Label only a subset if there are too many items to label
+
+.center[
+```{r texas-counties-log, cache = params$cache, echo = FALSE, message = FALSE, fig.width = 8, fig.asp = 0.6, dev = "svg"}
+set.seed(3878)
+
+tx_counties_labels <- tx_counties %>% 
+  mutate(popratio = pop2010/median(pop2010)) %>%
+  arrange(desc(popratio)) %>%
+  mutate(
+    index = 1:n(),
+    label = ifelse(index <= 3 | index > n()-3 | runif(n()) < .04, county, ""),
+    label_large = ifelse(index <= 6, county, "")
+  )
+
+tx_counties_plot <- ggplot(tx_counties_labels, aes(x = index, y = popratio)) +
+  geom_hline(yintercept = 1, linetype = 2, color = "grey40") +
+  geom_point_interactive(
+    aes(tooltip = county),
+    size = 0.5,
+    color = "#0072B2"
+  ) +
+  geom_text_repel(
+    aes(label = label),
+    size = 10/.pt,
+    point.padding = .4, color = "black",
+    min.segment.length = 0,
+    max.overlaps = 1000
+  ) +
+  scale_y_log10(
+    breaks = c(.01, .1, 1, 10, 100),
+    name = "population number / median",
+    labels = expression(10^-2, 10^-1, 10^0, 10^1, 10^2)
+  ) +
+  scale_x_continuous(
+    limits = c(.5, nrow(tx_counties) + .5), expand = c(0, 0),
+    breaks = NULL, #c(1, 50*(1:5)),
+    name = "Texas counties, from most to least populous"
+  ) +
+  theme_minimal_hgrid(14) +
+  theme(axis.line = element_blank())
+
+girafe(
+  ggobj = tx_counties_plot,
+  width_svg = 8,
+  height_svg = 8*.6,
+  options = list(
+    opts_tooltip(css = "font-size:20px;padding:2px 4px 2px 4px;background:black;color:white;border-radius:2px 2px 2px 2px;"),
+    opts_sizing(rescale = TRUE, width = 0.8)
+  )
+)
+
+```
+]
+
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+class: center middle
+
+## Interactive plots in R
+
+---
+
+## 2. Manual labeling with `geom_text()`
+
+
+The raw input data:
+.tiny-font[
+```{r}
+iris
+```
+]
+
+---
+
+## 2. Manual labeling with `geom_text()`
+
+Manually create table with label positions:
+
+.tiny-font[
+```{r}
+iris_labels <- tibble(
+  Species = c("setosa", "virginica", "versicolor"),
+  Sepal.Width = c(4.2, 3.76, 2.08),
+  Sepal.Length = c(5.7, 7, 5.1),
+  label = c("Iris setosa", "Iris virginica", "Iris versicolor"),
+  hjust = c(0, 0.5, 0),
+  vjust = c(0, 0.5, 1)
+)
+
+iris_labels
+```
+]
+
+
+---
+
+## 2. Manual labeling with `geom_text()`
+
+.xtiny-font.pull-left.width-50[
+```{r iris-manual, eval = FALSE}
+ggplot(iris) +
+  aes(Sepal.Length, Sepal.Width, color = Species) +
+  geom_point(aes(shape = Species)) +
+  geom_text(
+    data = iris_labels,
+    aes(
+      label = label,
+      hjust = hjust, vjust = vjust
+    ),
+    size = 14/.pt # 14pt font
+  ) +
+  stat_ellipse(size = 0.5) +  #<<
+  guides(color = "none", shape = "none")
+```
+]
+
+.pull-right[
+```{r iris-manual-out, cache = params$cache, ref.label="iris-manual", fig.width=5., fig.asp = 0.8, echo=FALSE, warning=FALSE, dev = "svg"}
+```
+]
+
+
+---
+
+## 3. Automatic labeling with `geom_text_repel()`
+
+.tiny-font.pull-left[
+```{r}
+mtcars_named <- mtcars %>%
+  rownames_to_column("car") %>%
+  select(car, weight = wt, mpg)
+
+mtcars_named
+```
+]
+
+---
+
+## 3. Automatic labeling with `geom_text_repel()`
+
+.tiny-font.pull-left[
+```{r mtcars-plot, eval = FALSE}
+set.seed(6644)
+
+mtcars_named %>%
+  mutate(
+    # randomly exclude 50% of the labels
+    car = ifelse(runif(n()) < 0.5, "", car)
+  ) %>% 
+  ggplot(aes(weight, mpg)) +
+  geom_point() +
+  geom_text_repel(
+    aes(label = car),
+    max.overlaps = 1000,
+    box.padding = 0.7     #<<
+  )
+```
+]
+
+.pull-right.width-50[
+```{r mtcars-plot-out, cache = params$cache, ref.label="mtcars-plot", fig.width=6., fig.asp = 0.75, echo=FALSE, warning=FALSE, dev = "svg"}
+```
+]
+
+`box.padding` controls how far labels are placed from data points
+---
+
+## Further reading
+
+- Fundamentals of Data Visualization: [Redundant coding](https://clauswilke.com/dataviz/redundant-coding.html)
+- **ggplot2** reference documentation: [`geom_text()`](https://ggplot2.tidyverse.org/reference/geom_text.html)
+- **ggrepel** documentation: [Examples](https://ggrepel.slowkow.com/articles/examples.html#examples-1)
+- **ggrepel** reference documentation:
+[`geom_text_repel()`](https://ggrepel.slowkow.com/reference/geom_text_repel.html)

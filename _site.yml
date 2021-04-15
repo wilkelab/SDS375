@@ -104,5 +104,7 @@ navbar:
           href: worksheets/geospatial-data.Rmd
         - text: "Class 20: Color spaces and color-vision deficiency"
           href: worksheets/color-spaces.R
+        - text: "Class 21: Redundant coding, text annotations"
+          href: worksheets/redundant-coding.Rmd
  
 output: distill::distill_article
