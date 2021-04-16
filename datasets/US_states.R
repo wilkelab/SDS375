@@ -91,7 +91,7 @@ US_states_AKsmall <- US_states_AKsmall %>%
 
 saveRDS(US_states_AKsmall, here("datasets", "US_states_AKsmall.rds"))
 
-US_states <- dviz.supp::US_states_geoms$us_albers %>%
+US_states <- dviz.supp::US_states_geoms$albers_revised %>%
   left_join(state_codes)
 saveRDS(US_states, here("datasets", "US_states.rds"))
 

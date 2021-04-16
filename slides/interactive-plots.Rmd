@@ -26,6 +26,7 @@ library(colorblindr)
 library(cowplot)
 library(ggrepel)
 library(ggiraph)
+library(lubridate)
 library(here)
 
 # ggplot2 settings so plots scale well for slide size 
@@ -39,6 +40,16 @@ tx_counties <- US_census %>%
   filter(state == "Texas") %>%
   select(name, pop2010) %>%
   extract(name, "county", regex = "(.+) County")
+
+US_states <- readRDS(here("datasets", "US_states.rds"))
+
+# tech stocks dataset
+tech_stocks <- read_csv(here("datasets", "tech_stocks.csv")) %>%
+  mutate(date = ymd(date)) %>%
+  select(company, date, price_indexed)
+
+# CSS for the standard tool tips we'll use
+tooltip_css <- "font-size:20px;padding:2px 4px 2px 4px;background:black;color:white;border-radius:2px 2px 2px 2px;"
 ```
 
 ## Title
@@ -104,7 +115,7 @@ girafe(
   width_svg = 6,
   height_svg = 6*.618,
   options = list(
-    opts_tooltip(css = "font-size:20px;padding:2px 4px 2px 4px;background:black;color:white;border-radius:2px 2px 2px 2px;"),
+    opts_tooltip(css = tooltip_css),
     opts_sizing(rescale = TRUE, width = 0.8)
   )
 )
@@ -114,6 +125,236 @@ girafe(
 ???
 
 Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## You probably want to highlight the selected points
+
+.center[
+```{r iris-scatter-three-shapes-hover, echo = FALSE}
+breaks <- c("setosa", "virginica", "versicolor")
+labels <- paste0("Iris ", breaks)
+
+iris_scatter <- iris %>%
+  mutate(
+    tooltip = glue::glue("Sepal length: {Sepal.Length}; Sepal width: {Sepal.Width}")
+  ) %>%
+  ggplot(
+    aes(Sepal.Length, Sepal.Width, shape = Species, fill = Species, color = Species)
+  ) +     
+  scale_shape_manual(
+    values = c(21, 22, 23),
+    breaks = breaks,
+    labels = labels,
+    name = NULL
+  ) +
+  scale_color_manual(
+    values = darken(c("#56B4E9", "#E69F00", "#009E73"), 0.3),
+    breaks = breaks,
+    labels = labels,
+    name = NULL
+  ) +
+  scale_fill_manual(
+    values = c("#56B4E980", "#E69F0080", "#009E7380"),
+    breaks = breaks,
+    labels = labels,
+    name = NULL
+  ) +
+  scale_x_continuous(
+    limits = c(3.95, 8.2), expand = c(0, 0),
+    labels = c("4.0", "5.0", "6.0", "7.0", "8.0"),
+    name = "Sepal length"
+  ) +
+  scale_y_continuous(
+    limits = c(1.9, 4.6), expand = c(0, 0),
+    name = "Sepal width"
+  ) + 
+  geom_point_interactive(
+    aes(data_id = tooltip, tooltip = tooltip),
+    size=2.5, stroke = 0.5,
+    position = position_jitter(
+      width = 0.01 * diff(range(iris$Sepal.Length)),
+      height = 0.01 * diff(range(iris$Sepal.Width)),
+      seed = 3942
+    )
+  ) +
+  theme_minimal_grid() +
+  theme(
+    legend.title.align = 0.5,
+    legend.text = element_text(face = "italic"),
+    legend.spacing.y = unit(3.5, "pt"),
+    plot.margin = margin(7, 7, 3, 1.5)
+  )
+
+girafe(
+  ggobj = iris_scatter,
+  width_svg = 6,
+  height_svg = 6*.618,
+  options = list(
+    opts_tooltip(css = tooltip_css),
+    opts_hover(css = "stroke:#000000;fill-opacity:1.0;stroke-opacity:1.0"),
+    #opts_hover_inv(css = "opacity:0.5;"),
+    opts_sizing(rescale = TRUE, width = 0.8)
+  )
+)
+```
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+
+## You probably want to highlight the selected points
+
+.center[
+```{r iris-scatter-three-shapes-hover2, echo = FALSE}
+breaks <- c("setosa", "virginica", "versicolor")
+labels <- paste0("Iris ", breaks)
+
+iris_scatter <- iris %>%
+  mutate(
+    tooltip = glue::glue("Sepal length: {Sepal.Length}; Sepal width: {Sepal.Width}")
+  ) %>%
+  ggplot(
+    aes(Sepal.Length, Sepal.Width, shape = Species, fill = Species, color = Species)
+  ) +     
+  scale_shape_manual(
+    values = c(21, 22, 23),
+    breaks = breaks,
+    labels = labels,
+    name = NULL
+  ) +
+  scale_color_manual(
+    values = darken(c("#56B4E9", "#E69F00", "#009E73"), 0.3),
+    breaks = breaks,
+    labels = labels,
+    name = NULL
+  ) +
+  scale_fill_manual(
+    values = c("#56B4E980", "#E69F0080", "#009E7380"),
+    breaks = breaks,
+    labels = labels,
+    name = NULL
+  ) +
+  scale_x_continuous(
+    limits = c(3.95, 8.2), expand = c(0, 0),
+    labels = c("4.0", "5.0", "6.0", "7.0", "8.0"),
+    name = "Sepal length"
+  ) +
+  scale_y_continuous(
+    limits = c(1.9, 4.6), expand = c(0, 0),
+    name = "Sepal width"
+  ) + 
+  geom_point_interactive(
+    aes(data_id = Species, tooltip = tooltip),
+    size=2.5, stroke = 0.5,
+    position = position_jitter(
+      width = 0.01 * diff(range(iris$Sepal.Length)),
+      height = 0.01 * diff(range(iris$Sepal.Width)),
+      seed = 3942
+    )
+  ) +
+  theme_minimal_grid() +
+  theme(
+    legend.title.align = 0.5,
+    legend.text = element_text(face = "italic"),
+    legend.spacing.y = unit(3.5, "pt"),
+    plot.margin = margin(7, 7, 3, 1.5)
+  )
+
+girafe(
+  ggobj = iris_scatter,
+  width_svg = 6,
+  height_svg = 6*.618,
+  options = list(
+    opts_tooltip(css = tooltip_css),
+    opts_hover(css = "stroke:#000000;fill-opacity:1.0;stroke-opacity:1.0"),
+    opts_hover_inv(css = "opacity:0.5;"),
+    opts_sizing(rescale = TRUE, width = 0.8)
+  )
+)
+```
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Title
+
+.center[
+```{r tech-stocks-highlight, echo = FALSE}
+tech_stocks_last <- filter(tech_stocks, date == "2017-06-02")
+
+tech_stocks_lines <- ggplot(tech_stocks, aes(x = date, y = price_indexed, color = company)) +
+  scale_color_manual(
+    values = c(
+      Facebook = "#000000", 
+      Alphabet = "#E69F00", 
+      Microsoft = "#56B4E9",
+      Apple = "#009E73"
+    ),
+    name = "",
+    breaks = c("Facebook", "Alphabet", "Microsoft", "Apple"),
+    guide = "none"
+  ) +
+  scale_x_date(
+    name = "year",
+    limits = c(ymd("2012-06-01"), ymd("2017-05-31")),
+    expand = c(0,0)
+  ) + 
+  scale_y_continuous(
+    name = "stock price, indexed",
+    limits = c(0, 560),
+    expand = c(0,0),
+    sec.axis = dup_axis(
+      breaks = tech_stocks_last$price_indexed,
+      labels = tech_stocks_last$company,
+      name = NULL
+    )
+  ) +
+  geom_line_interactive(
+    aes(
+      data_id = company
+    ),
+    size = 0.66, na.rm = TRUE
+  ) +
+  geom_point_interactive(
+    aes(
+      tooltip = glue::glue("{date}: {signif(price_indexed, 3)}"),
+      data_id = company
+    ),
+    size = 0.66, na.rm = TRUE
+  ) +
+  theme_minimal_hgrid() + 
+  theme(
+    axis.ticks.length.y.right = grid::unit(0, "pt"),
+    plot.margin = margin(3, 7, 3, 1.5)
+  )
+
+girafe(
+  ggobj = tech_stocks_lines,
+  width_svg = 6,
+  height_svg = 6*.618,
+  options = list(
+    opts_tooltip(css = tooltip_css, delay_mouseover = 0, delay_mouseout = 0),
+    opts_hover(css = "fill-opacity:0;"),
+    opts_hover_inv(css = "opacity:0.2;"),
+    opts_sizing(rescale = TRUE, width = 0.8)
+  )
+)
+```
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
 
 ---
 
@@ -164,7 +405,7 @@ girafe(
   width_svg = 8,
   height_svg = 8*.6,
   options = list(
-    opts_tooltip(css = "font-size:20px;padding:2px 4px 2px 4px;background:black;color:white;border-radius:2px 2px 2px 2px;"),
+    opts_tooltip(css = tooltip_css),
     opts_sizing(rescale = TRUE, width = 0.8)
   )
 )
@@ -176,6 +417,47 @@ girafe(
 ???
 
 Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Title
+
+```{r US_states_clickthrough, echo = FALSE}
+US_states$onclick <- sprintf(
+  "window.open(\"%s%s\")",
+  "http://en.wikipedia.org/wiki/", as.character(US_states$name)
+)
+
+US_map <- ggplot(US_states) +
+  geom_sf_interactive(
+    aes(data_id = name, tooltip = name, onclick = onclick),
+    fill = "#EDBE8A", color = "black", size = 0.5/.pt
+  ) +
+  theme_void()
+
+girafe(
+  ggobj = US_map,
+  width_svg = 9,
+  height_svg = 9*.618,
+  options = list(
+    opts_tooltip(css = tooltip_css),
+    opts_hover(css = "fill:#E69F00;"),
+    opts_sizing(rescale = TRUE, width = 0.8)
+  )
+)
+
+```
+
+
+gg_crime <- ggplot(crimes, aes(x = Murder, y = Assault, color = UrbanPop )) +
+  geom_point_interactive(
+    aes( data_id = state, tooltip = state, onclick = onclick ), size = 3 ) +
+  scale_colour_gradient(low = "#999999", high = "#FF3333")
+
+girafe(ggobj = gg_crime)
+
+```
+
 
 ---
 
