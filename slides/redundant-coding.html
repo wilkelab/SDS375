@@ -14,7 +14,7 @@ class: center, middle, title-slide
 
 # Redundant coding, text annotations
 ### Claus O. Wilke
-### last updated: 2021-04-14
+### last updated: 2021-04-16
 
 ---
 
@@ -241,7 +241,7 @@ ggplot(tech_stocks) +
       ymd("2012-06-01"),
       ymd("2017-05-31")
     ),
-    expand = c(0,0)
+    expand = c(0, 0)
   ) + 
   scale_y_continuous(
     limits = c(0, 560),
@@ -272,11 +272,11 @@ ggplot(tech_stocks) +
       ymd("2012-06-01"),
       ymd("2017-05-31")
     ),
-    expand = c(0,0)
+    expand = c(0, 0)
   ) + 
   scale_y_continuous(
     limits = c(0, 560),
-    expand = c(0,0),
+    expand = c(0, 0),
 *   sec.axis = dup_axis(
 *     breaks = tech_stocks_last$price_indexed,
 *     labels = tech_stocks_last$company,
@@ -776,7 +776,7 @@ mtcars_named %&gt;%
 
 ## Further reading
 
-- Fundamentals of Data Visualization: [Redundant coding](https://clauswilke.com/dataviz/redundant-coding.html)
+- Fundamentals of Data Visualization: [Chapter 20: Redundant coding](https://clauswilke.com/dataviz/redundant-coding.html)
 - **ggplot2** reference documentation: [`geom_text()`](https://ggplot2.tidyverse.org/reference/geom_text.html)
 - **ggrepel** documentation: [Examples](https://ggrepel.slowkow.com/articles/examples.html#examples-1)
 - **ggrepel** reference documentation:

@@ -1,0 +1,262 @@
+---
+title: "Handling overlapping points"
+author: "Claus O. Wilke"
+date: "last updated: `r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: [default, "Wilke-slides-theme.css"]
+    lib_dir: libs
+    nature:
+      ratio: '16:9'
+      highlightStyle: github
+      highlightLines: true
+      slideNumberFormat: ''
+      titleSlideClass: [center, middle]
+params:
+  cache: TRUE
+---
+
+```{r setup, include=FALSE, echo=FALSE, message = FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(comment = "")
+
+library(tidyverse)
+library(cowplot)
+library(here)
+
+# ggplot2 settings so plots scale well for slide size 
+theme_set(theme_gray(16)) # 16 for full width, 18 for half width 
+update_geom_defaults("point", list(size = 2.0)) # 2 for full width, 2.5 for half width
+```
+
+## Title
+
+.center[
+```{r  mpg-cty-displ-solid, cache = params$cache, echo = FALSE, message = FALSE, fig.width = 6, fig.asp=.7416, dev = "svg"}
+p_mpg_solid <- ggplot(mpg, aes(y = cty, x = displ, color = drv, fill = drv)) +
+  geom_point(size = 3, shape = 21) + 
+  scale_x_continuous(
+    name = "displacement (l)",
+    limits = c(1.4, 7.1),
+    breaks = 2:7
+  ) +
+  scale_y_continuous(
+    name = "fuel economy (mpg)",
+    limits = c(5.3, 37),
+    breaks = 5*(2:7),
+    expand = c(0, 0)
+  ) +
+  scale_color_manual(
+    values = c("#202020", "#E69F00", "#56B4E9"), 
+    name = "drive train",
+    breaks = c("f", "r", "4"),
+    labels = c("FWD", "RWD", "4WD")
+  ) +
+  scale_fill_manual(
+    values = c("#202020", "#E69F00", "#56B4E9"), 
+    name = "drive train",
+    breaks = c("f", "r", "4"),
+    labels = c("FWD", "RWD", "4WD")
+  ) +
+  theme_half_open() +
+  theme(
+    legend.position = c(.7, .8),
+    plot.margin = margin(3, 7, 3, 1.5)
+  )
+
+stamp_bad(p_mpg_solid)
+```
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Title
+
+.center[
+```{r mpg-cty-displ-transp, cache = params$cache, echo = FALSE, message = FALSE, fig.width = 6, fig.asp=.7416, dev = "svg"}
+ggplot(mpg, aes(y = cty, x = displ, color = drv, fill = drv)) +
+  geom_point(size = 3, shape = 21) + 
+  scale_x_continuous(
+    name = "displacement (l)",
+    limits = c(1.4, 7.1),
+    breaks = 2:7
+  ) +
+  scale_y_continuous(
+    name = "fuel economy (mpg)",
+    limits = c(5.3, 37),
+    breaks = 5*(2:7),
+    expand = c(0, 0)
+  ) +
+  scale_color_manual(
+    values = c("#202020", "#E69F00", "#56B4E9"), 
+    name = "drive train",
+    breaks = c("f", "r", "4"),
+    labels = c("FWD", "RWD", "4WD")
+  ) +
+  scale_fill_manual(
+    values = c("#20202080", "#E69F0080", "#56B4E980"),
+    name = "drive train",
+    breaks = c("f", "r", "4"),
+    labels = c("FWD", "RWD", "4WD")
+  ) +
+  theme_half_open() +
+  theme(
+    legend.position = c(.7, .8),
+    plot.margin = margin(3, 7, 3, 1.5)
+  )
+```
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Title
+
+.center[
+```{r mpg-cty-displ-jitter, cache = params$cache, echo = FALSE, message = FALSE, fig.width = 6, fig.asp=.7416, dev = "svg"}
+ggplot(mpg, aes(y = cty, x = displ, color = drv, fill = drv)) +
+  geom_point(
+    size = 3, shape = 21,
+    position = position_jitter(
+      width = 0.01 * diff(range(mpg$displ)),
+      height = 0.01 * diff(range(mpg$cty)),
+      seed = 7384
+    )
+  ) + 
+  scale_x_continuous(
+    name = "displacement (l)",
+    limits = c(1.4, 7.1),
+    breaks = 2:7
+  ) +
+  scale_y_continuous(
+    name = "fuel economy (mpg)",
+    limits = c(5.3, 37),
+    breaks = 5*(2:7),
+    expand = c(0, 0)
+  ) +
+  scale_color_manual(
+    values = c("#202020", "#E69F00", "#56B4E9"), 
+    name = "drive train",
+    breaks = c("f", "r", "4"),
+    labels = c("FWD", "RWD", "4WD")
+  ) +
+  scale_fill_manual(
+    values = c("#20202080", "#E69F0080", "#56B4E980"),
+    name = "drive train",
+    breaks = c("f", "r", "4"),
+    labels = c("FWD", "RWD", "4WD")
+  ) +
+  theme_half_open() +
+  theme(
+    legend.position = c(.7, .8),
+    plot.margin = margin(3, 7, 3, 1.5)
+  )
+```
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Title
+
+.center[
+```{r mpg-cty-displ-jitter-extreme, cache = params$cache, echo = FALSE, message = FALSE, fig.width = 6, fig.asp=.7416, dev = "svg"}
+ggplot(mpg, aes(y = cty, x = displ, color = drv, fill = drv)) +
+  geom_point(
+    size = 3, shape = 21,
+    position = position_jitter(
+      width = 0.1 * diff(range(mpg$displ)),
+      height = 0.1 * diff(range(mpg$cty)),
+      seed = 7384
+    )
+  ) + 
+  scale_x_continuous(
+    name = "displacement (l)",
+    limits = c(1.4, 7.1),
+    breaks = 2:7
+  ) +
+  scale_y_continuous(
+    name = "fuel economy (mpg)",
+    limits = c(5.3, 37),
+    breaks = 5*(2:7),
+    expand = c(0, 0)
+  ) +
+  scale_color_manual(
+    values = c("#202020", "#E69F00", "#56B4E9"), 
+    name = "drive train",
+    breaks = c("f", "r", "4"),
+    labels = c("FWD", "RWD", "4WD")
+  ) +
+  scale_fill_manual(
+    values = c("#20202080", "#E69F0080", "#56B4E980"),
+    name = "drive train",
+    breaks = c("f", "r", "4"),
+    labels = c("FWD", "RWD", "4WD")
+  ) +
+  theme_half_open() +
+  theme(
+    legend.position = c(.7, .8),
+    plot.margin = margin(3, 7, 3, 1.5)
+  )
+```
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## 3. Automatic labeling with `geom_text_repel()`
+
+.tiny-font.pull-left[
+```{r}
+mtcars_named <- mtcars %>%
+  rownames_to_column("car") %>%
+  select(car, weight = wt, mpg)
+
+mtcars_named
+```
+]
+
+---
+
+## 3. Automatic labeling with `geom_text_repel()`
+
+.tiny-font.pull-left[
+```{r mtcars-plot, eval = FALSE}
+set.seed(6644)
+
+mtcars_named %>%
+  mutate(
+    # randomly exclude 50% of the labels
+    car = ifelse(runif(n()) < 0.5, "", car)
+  ) %>% 
+  ggplot(aes(weight, mpg)) +
+  geom_point() +
+  geom_text(aes(label = car))
+```
+]
+
+.pull-right.width-50[
+```{r mtcars-plot-out, cache = params$cache, ref.label="mtcars-plot", fig.width=6., fig.asp = 0.75, echo=FALSE, warning=FALSE, dev = "svg"}
+```
+]
+
+
+---
+
+## Further reading
+
+- Fundamentals of Data Visualization: [Chapter 18: Handling overlapping points](https://clauswilke.com/dataviz/overlapping-points.html)
+- **ggplot2** reference documentation: [`geom_density_2d()`](https://ggplot2.tidyverse.org/reference/geom_density_2d.html)

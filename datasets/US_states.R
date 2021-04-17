@@ -74,22 +74,49 @@ US_states_AKsmall$label_x <- label_coords[, 1]
 US_states_AKsmall$label_y <- label_coords[, 2]
 
 # manually adjust label positions
-US_states_AKsmall <- US_states_AKsmall %>%
+labels_pos <- read_csv(
+  file="state_code,xoff,yoff,hjust,vjust,segment
+AK,      0,  150000,  0.5, 0.5, FALSE
+CT, 450000, -140000,  0, 0.5, TRUE
+DC, 450000, -390000,  0, 0.5, TRUE
+DE, 150000,  -70000,  0, 0.5, TRUE
+HI, 150000,       0,  0, 0.5, FALSE
+ID,      0, -180000,  0.5, 0.5, FALSE
+MA, 450000,  150000,  0, 0.5, TRUE
+MD, 450000,  -230000,  0, 0.5, TRUE
+MI, 180000, -300000,  0.5, 0.5, FALSE
+NH, -160000,  240000, 0.5, -.1, TRUE
+NJ, 400000,  -80000,  0, 0.5, TRUE
+RI, 450000,   20000, 0, 0.5, TRUE
+VT, -290000, 140000,  1, 0.5, TRUE
+")
+
+US_states_AKsmall2 <- US_states_AKsmall %>%
+  left_join(labels_pos, by = "state_code") %>%
   mutate(
-    label_x = case_when(
-      state_code == "HI" ~ label_x + 180000,
-      state_code == "MI" ~ label_x + 180000,
-      TRUE ~ label_x
-    ),
-    label_y = case_when(
-      state_code == "AK" ~ label_y + 50000,
-      state_code == "ID" ~ label_y - 150000,
-      state_code == "MI" ~ label_y - 300000,
-      TRUE ~ label_y  
-    )
+    label_xend = label_x,
+    label_yend = label_y,
+    label_x = ifelse(is.na(xoff), label_x, label_x + xoff),
+    label_y = ifelse(is.na(yoff), label_y, label_y + yoff),
+    hjust = ifelse(is.na(hjust), 0.5, hjust),
+    vjust = ifelse(is.na(vjust), 0.5, vjust),
+    segment = ifelse(is.na(segment), FALSE, segment)
   )
 
-saveRDS(US_states_AKsmall, here("datasets", "US_states_AKsmall.rds"))
+ggplot(US_states_AKsmall2) + 
+  geom_sf() +
+  geom_text(
+    aes(x = label_x, y = label_y, label = state_code, hjust = hjust, vjust = vjust),
+    size = 9/.pt
+  ) +
+  geom_segment(
+    data = filter(US_states_AKsmall2, segment == TRUE),
+    aes(x = label_x, y = label_y, xend = label_xend, yend = label_yend)
+  ) +
+  theme_void() +
+  coord_sf(default_crs = NULL)
+
+saveRDS(US_states_AKsmall2, here("datasets", "US_states_AKsmall.rds"))
 
 US_states <- dviz.supp::US_states_geoms$albers_revised %>%
   left_join(state_codes)
@@ -102,14 +129,6 @@ saveRDS(US_counties_AKsmall, here("datasets", "US_counties_AKsmall.rds"))
 US_counties <- dviz.supp::US_counties_geoms$albers_revised %>%
   left_join(state_codes, by = c(STATEFP = "GEOID"))
 saveRDS(US_counties, here("datasets", "US_counties.rds"))
-
-ggplot(US_states_AKsmall) + 
-  geom_sf() +
-  geom_text(
-    aes(x = label_x, y = label_y, label = state_code),
-    size = 9/.pt
-  ) +
-  theme_void()
 
 ggplot(US_states) + 
   geom_sf() +

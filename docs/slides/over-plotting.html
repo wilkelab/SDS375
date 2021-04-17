@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Handling overlapping points</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Claus O. Wilke" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="Wilke-slides-theme.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, title-slide
+
+# Handling overlapping points
+### Claus O. Wilke
+### last updated: 2021-04-16
+
+---
+
+
+
+
+## Title
+
+.center[
+![](over-plotting_files/figure-html/mpg-cty-displ-solid-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Title
+
+.center[
+![](over-plotting_files/figure-html/mpg-cty-displ-transp-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Title
+
+.center[
+![](over-plotting_files/figure-html/mpg-cty-displ-jitter-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Title
+
+.center[
+![](over-plotting_files/figure-html/mpg-cty-displ-jitter-extreme-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## 3. Automatic labeling with `geom_text_repel()`
+
+.tiny-font.pull-left[
+
+```r
+mtcars_named &lt;- mtcars %&gt;%
+  rownames_to_column("car") %&gt;%
+  select(car, weight = wt, mpg)
+
+mtcars_named
+```
+
+```
+                   car weight  mpg
+1            Mazda RX4  2.620 21.0
+2        Mazda RX4 Wag  2.875 21.0
+3           Datsun 710  2.320 22.8
+4       Hornet 4 Drive  3.215 21.4
+5    Hornet Sportabout  3.440 18.7
+6              Valiant  3.460 18.1
+7           Duster 360  3.570 14.3
+8            Merc 240D  3.190 24.4
+9             Merc 230  3.150 22.8
+10            Merc 280  3.440 19.2
+11           Merc 280C  3.440 17.8
+12          Merc 450SE  4.070 16.4
+13          Merc 450SL  3.730 17.3
+14         Merc 450SLC  3.780 15.2
+15  Cadillac Fleetwood  5.250 10.4
+16 Lincoln Continental  5.424 10.4
+17   Chrysler Imperial  5.345 14.7
+18            Fiat 128  2.200 32.4
+19         Honda Civic  1.615 30.4
+20      Toyota Corolla  1.835 33.9
+21       Toyota Corona  2.465 21.5
+22    Dodge Challenger  3.520 15.5
+23         AMC Javelin  3.435 15.2
+24          Camaro Z28  3.840 13.3
+25    Pontiac Firebird  3.845 19.2
+26           Fiat X1-9  1.935 27.3
+27       Porsche 914-2  2.140 26.0
+28        Lotus Europa  1.513 30.4
+29      Ford Pantera L  3.170 15.8
+30        Ferrari Dino  2.770 19.7
+31       Maserati Bora  3.570 15.0
+32          Volvo 142E  2.780 21.4
+```
+]
+
+---
+
+## 3. Automatic labeling with `geom_text_repel()`
+
+.tiny-font.pull-left[
+
+```r
+set.seed(6644)
+
+mtcars_named %&gt;%
+  mutate(
+    # randomly exclude 50% of the labels
+    car = ifelse(runif(n()) &lt; 0.5, "", car)
+  ) %&gt;% 
+  ggplot(aes(weight, mpg)) +
+  geom_point() +
+  geom_text(aes(label = car))
+```
+]
+
+.pull-right.width-50[
+![](over-plotting_files/figure-html/mtcars-plot-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Further reading
+
+- Fundamentals of Data Visualization: [Chapter 18: Handling overlapping points](https://clauswilke.com/dataviz/overlapping-points.html)
+- **ggplot2** reference documentation: [`geom_density_2d()`](https://ggplot2.tidyverse.org/reference/geom_density_2d.html)
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"slideNumberFormat": ""
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
