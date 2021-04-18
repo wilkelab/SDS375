@@ -532,7 +532,7 @@ ggplot(tx_counties_labels, aes(x = index, y = popratio)) +
     size = 10/.pt,
     point.padding = .4, color = "black",
     min.segment.length = 0,
-    max.overlaps = 1000
+    max.overlaps = Inf
   ) +
   scale_y_log10(
     breaks = c(.01, .1, 1, 10, 100),
@@ -837,7 +837,7 @@ ggplot(mtcars_named, aes(weight, mpg)) +
   geom_point() +
   geom_text_repel(          #<<
     aes(label = car),       #<<
-    max.overlaps = 1000     #<<
+    max.overlaps = Inf      #<<
   )                         #<<
 ```
 ]
@@ -864,7 +864,7 @@ mtcars_named %>%
   geom_point() +
   geom_text_repel(
     aes(label = car),
-    max.overlaps = 1000
+    max.overlaps = Inf
   )
 ```
 ]
@@ -892,7 +892,7 @@ mtcars_named %>%
   geom_point() +
   geom_text_repel(
     aes(label = car),
-    max.overlaps = 1000
+    max.overlaps = Inf
   )
 ```
 ]
@@ -920,7 +920,7 @@ mtcars_named %>%
   geom_point() +
   geom_text_repel(
     aes(label = car),
-    max.overlaps = 1000,
+    max.overlaps = Inf,
     box.padding = 0.7     #<<
   )
 ```

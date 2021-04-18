@@ -62,7 +62,7 @@ Northern Mariana Islands,MP,69
 Puerto Rico,PR,72
 Virgin Islands,VI,78")
 
-US_states_AKsmall <- dviz.supp::US_states_geoms$albers_revised %>%
+US_states_AKsmall <- dviz.supp::US_states_geoms$us_albers %>%
   left_join(state_codes)
 
 label_coords <- US_states_AKsmall$geometry %>%
@@ -76,7 +76,7 @@ US_states_AKsmall$label_y <- label_coords[, 2]
 # manually adjust label positions
 labels_pos <- read_csv(
   file="state_code,xoff,yoff,hjust,vjust,segment
-AK,      0,  150000,  0.5, 0.5, FALSE
+AK,  30000,   70000,  0.5, 0.5, FALSE
 CT, 450000, -140000,  0, 0.5, TRUE
 DC, 450000, -390000,  0, 0.5, TRUE
 DE, 150000,  -70000,  0, 0.5, TRUE
@@ -86,7 +86,7 @@ MA, 450000,  150000,  0, 0.5, TRUE
 MD, 450000,  -230000,  0, 0.5, TRUE
 MI, 180000, -300000,  0.5, 0.5, FALSE
 NH, -160000,  240000, 0.5, -.1, TRUE
-NJ, 400000,  -80000,  0, 0.5, TRUE
+NJ, 400000,  -100000,  0, 0.5, TRUE
 RI, 450000,   20000, 0, 0.5, TRUE
 VT, -290000, 140000,  1, 0.5, TRUE
 ")
@@ -144,5 +144,19 @@ ggplot(US_counties) +
 
 
 
+US_states <- readRDS(url("https://wilkelab.org/SDS375/datasets/US_states_AKsmall.rds"))
+
+ggplot(US_states) + 
+  geom_sf() +
+  geom_text(
+    aes(x = label_x, y = label_y, label = state_code, hjust = hjust, vjust = vjust),
+    size = 9/.pt
+  ) +
+  geom_segment(
+    data = filter(US_states, segment == TRUE),
+    aes(x = label_x, y = label_y, xend = label_xend, yend = label_yend)
+  ) +
+  theme_void() +
+  coord_sf(default_crs = NULL)
 
 

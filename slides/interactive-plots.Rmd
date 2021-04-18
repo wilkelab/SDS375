@@ -52,7 +52,7 @@ tech_stocks <- read_csv(here("datasets", "tech_stocks.csv")) %>%
 tooltip_css <- "font-size:20px;padding:2px 4px 2px 4px;background:black;color:white;border-radius:2px 2px 2px 2px;"
 ```
 
-## Title
+## Interactivity can make a plot more informative
 
 .center[
 ```{r iris-scatter-three-shapes, echo = FALSE}
@@ -115,11 +115,15 @@ girafe(
   width_svg = 6,
   height_svg = 6*.618,
   options = list(
-    opts_tooltip(css = tooltip_css),
+    opts_tooltip(css = tooltip_css, delay_mouseover = 0, delay_mouseout = 0),
     opts_sizing(rescale = TRUE, width = 0.8)
   )
 )
 ```
+]
+
+.absolute-bottom-right[
+Hover over the data points
 ]
 
 ???
@@ -191,14 +195,18 @@ girafe(
   width_svg = 6,
   height_svg = 6*.618,
   options = list(
-    opts_tooltip(css = tooltip_css),
+    opts_tooltip(css = tooltip_css, delay_mouseover = 0, delay_mouseout = 0),
     opts_hover(css = "stroke:#000000;fill-opacity:1.0;stroke-opacity:1.0"),
-    #opts_hover_inv(css = "opacity:0.5;"),
     opts_sizing(rescale = TRUE, width = 0.8)
   )
 )
 ```
 ]
+
+.absolute-bottom-right[
+Hover over the data points
+]
+
 
 ???
 
@@ -270,7 +278,7 @@ girafe(
   width_svg = 6,
   height_svg = 6*.618,
   options = list(
-    opts_tooltip(css = tooltip_css),
+    opts_tooltip(css = tooltip_css, delay_mouseover = 0, delay_mouseout = 0),
     opts_hover(css = "stroke:#000000;fill-opacity:1.0;stroke-opacity:1.0"),
     opts_hover_inv(css = "opacity:0.5;"),
     opts_sizing(rescale = TRUE, width = 0.8)
@@ -278,6 +286,11 @@ girafe(
 )
 ```
 ]
+
+.absolute-bottom-right[
+Hover over the data points
+]
+
 
 ???
 
@@ -376,7 +389,7 @@ tx_counties_labels <- tx_counties %>%
 tx_counties_plot <- ggplot(tx_counties_labels, aes(x = index, y = popratio)) +
   geom_hline(yintercept = 1, linetype = 2, color = "grey40") +
   geom_point_interactive(
-    aes(tooltip = county),
+    aes(tooltip = county, data_id = county),
     size = 0.5,
     color = "#0072B2"
   ) +
@@ -397,6 +410,7 @@ tx_counties_plot <- ggplot(tx_counties_labels, aes(x = index, y = popratio)) +
     breaks = NULL, #c(1, 50*(1:5)),
     name = "Texas counties, from most to least populous"
   ) +
+  coord_cartesian(clip = "off") +
   theme_minimal_hgrid(14) +
   theme(axis.line = element_blank())
 
@@ -405,7 +419,8 @@ girafe(
   width_svg = 8,
   height_svg = 8*.6,
   options = list(
-    opts_tooltip(css = tooltip_css),
+    opts_tooltip(css = tooltip_css, delay_mouseover = 0, delay_mouseout = 0),
+    opts_hover(css = "stroke-width: 3; stroke: #E69F00;"),
     opts_sizing(rescale = TRUE, width = 0.8)
   )
 )
@@ -420,9 +435,9 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 
 ---
 
-## Title
+## Also consider linking to further info
 
-```{r US_states_clickthrough, echo = FALSE}
+```{r US_states_clickthrough, cache = params$cache, echo = FALSE}
 US_states$onclick <- sprintf(
   "window.open(\"%s%s\")",
   "http://en.wikipedia.org/wiki/", as.character(US_states$name)
@@ -440,7 +455,7 @@ girafe(
   width_svg = 9,
   height_svg = 9*.618,
   options = list(
-    opts_tooltip(css = tooltip_css),
+    opts_tooltip(css = tooltip_css, delay_mouseover = 0, delay_mouseout = 0),
     opts_hover(css = "fill:#E69F00;"),
     opts_sizing(rescale = TRUE, width = 0.8)
   )
@@ -448,16 +463,9 @@ girafe(
 
 ```
 
-
-gg_crime <- ggplot(crimes, aes(x = Murder, y = Assault, color = UrbanPop )) +
-  geom_point_interactive(
-    aes( data_id = state, tooltip = state, onclick = onclick ), size = 3 ) +
-  scale_colour_gradient(low = "#999999", high = "#FF3333")
-
-girafe(ggobj = gg_crime)
-
-```
-
+.absolute-bottom-right[
+Click on one of the states
+]
 
 ---
 
@@ -467,115 +475,247 @@ class: center middle
 
 ---
 
-## 2. Manual labeling with `geom_text()`
+## We can make plots interactive with the **ggiraph** package
 
+.tiny-font.pull-left.width-50[
+```{r iris-no-girafe-demo, eval = FALSE}
+#
 
-The raw input data:
-.tiny-font[
-```{r}
-iris
-```
-]
-
----
-
-## 2. Manual labeling with `geom_text()`
-
-Manually create table with label positions:
-
-.tiny-font[
-```{r}
-iris_labels <- tibble(
-  Species = c("setosa", "virginica", "versicolor"),
-  Sepal.Width = c(4.2, 3.76, 2.08),
-  Sepal.Length = c(5.7, 7, 5.1),
-  label = c("Iris setosa", "Iris virginica", "Iris versicolor"),
-  hjust = c(0, 0.5, 0),
-  vjust = c(0, 0.5, 1)
-)
-
-iris_labels
-```
-]
-
-
----
-
-## 2. Manual labeling with `geom_text()`
-
-.xtiny-font.pull-left.width-50[
-```{r iris-manual, eval = FALSE}
-ggplot(iris) +
-  aes(Sepal.Length, Sepal.Width, color = Species) +
-  geom_point(aes(shape = Species)) +
-  geom_text(
-    data = iris_labels,
-    aes(
-      label = label,
-      hjust = hjust, vjust = vjust
-    ),
-    size = 14/.pt # 14pt font
+iris_scatter <- ggplot(iris) + 
+  aes(
+    Sepal.Length, Sepal.Width,
+    color = Species
   ) +
-  stat_ellipse(size = 0.5) +  #<<
-  guides(color = "none", shape = "none")
+  geom_point()
+
+iris_scatter
+```
+]
+
+.pull-right.move-up-1em[
+```{r iris-no-girafe-demo-out, cache = params$cache, ref.label="iris-no-girafe-demo", echo=FALSE, warning=FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+## We can make plots interactive with the **ggiraph** package
+
+.tiny-font.pull-left.width-50[
+```{r iris-girafe-demo, eval = FALSE}
+library(ggiraph)                #<<
+
+iris_scatter <- ggplot(iris) + 
+  aes(
+    Sepal.Length, Sepal.Width,
+    color = Species
+  ) +
+  geom_point_interactive(      #<<
+    aes(tooltip = Species)     #<<
+  )
+
+girafe(                        #<<
+  ggobj = iris_scatter,        #<<
+  width_svg = 6,               #<<
+  height_svg = 6*.618          #<<
+)                              #<<
 ```
 ]
 
 .pull-right[
-```{r iris-manual-out, cache = params$cache, ref.label="iris-manual", fig.width=5., fig.asp = 0.8, echo=FALSE, warning=FALSE, dev = "svg"}
-```
-]
-
-
----
-
-## 3. Automatic labeling with `geom_text_repel()`
-
-.tiny-font.pull-left[
-```{r}
-mtcars_named <- mtcars %>%
-  rownames_to_column("car") %>%
-  select(car, weight = wt, mpg)
-
-mtcars_named
+```{r iris-girafe-demo-out, cache = params$cache, ref.label="iris-girafe-demo", echo=FALSE, warning=FALSE}
 ```
 ]
 
 ---
 
-## 3. Automatic labeling with `geom_text_repel()`
+## Styling happens via Cascading Style Sheets (CSS)
 
-.tiny-font.pull-left[
-```{r mtcars-plot, eval = FALSE}
-set.seed(6644)
+.tiny-font.pull-left.width-50[
+```{r iris-girafe-demo2, eval = FALSE}
+library(ggiraph)
 
-mtcars_named %>%
-  mutate(
-    # randomly exclude 50% of the labels
-    car = ifelse(runif(n()) < 0.5, "", car)
-  ) %>% 
-  ggplot(aes(weight, mpg)) +
-  geom_point() +
-  geom_text_repel(
-    aes(label = car),
-    max.overlaps = 1000,
-    box.padding = 0.7     #<<
+iris_scatter <- ggplot(iris) + 
+  aes(
+    Sepal.Length, Sepal.Width,
+    color = Species
+  ) +
+  geom_point_interactive(
+    aes(tooltip = Species)
   )
+
+girafe(
+  ggobj = iris_scatter,
+  width_svg = 6,
+  height_svg = 6*.618,
+  options = list( #<<
+    opts_tooltip( #<<
+css = "background:#F5F5F5;color:#191970;" #<<
+    ) #<<
+  ) #<<
+)
+```
+]
+
+.pull-right[
+```{r iris-girafe-demo2-out, cache = params$cache, ref.label="iris-girafe-demo2", echo=FALSE, warning=FALSE}
+```
+]
+
+---
+
+## Interlude: A brief intro to CSS
+
+--
+
+CSS is the language used to style web pages
+
+--
+
+Many online tutorials, e.g.: https://www.w3schools.com/css/default.asp
+
+---
+
+## Select multiple points at once with `data_id` aesthetic
+
+.tiny-font.pull-left.width-50[
+```{r iris-girafe-demo3, eval = FALSE}
+library(ggiraph)
+
+iris_scatter <- ggplot(iris) + 
+  aes(
+    Sepal.Length, Sepal.Width,
+    color = Species
+  ) +
+  geom_point_interactive(
+    aes(data_id = Species), #<<
+    size = 2
+  )
+
+girafe(
+  ggobj = iris_scatter,
+  width_svg = 6,
+  height_svg = 6*.618
+)
+```
+]
+
+.pull-right[
+```{r iris-girafe-demo3-out, cache = params$cache, ref.label="iris-girafe-demo3", echo=FALSE, warning=FALSE}
+```
+]
+
+
+---
+
+## Select multiple points at once with `data_id` aesthetic
+
+.tiny-font.pull-left.width-50[
+```{r iris-girafe-demo4, eval = FALSE}
+library(ggiraph)
+
+iris_scatter <- ggplot(iris) + 
+  aes(
+    Sepal.Length, Sepal.Width,
+    color = Species
+  ) +
+  geom_point_interactive(
+    aes(data_id = Species),
+    size = 2
+  )
+
+girafe(
+  ggobj = iris_scatter,
+  width_svg = 6,
+  height_svg = 6*.618,
+  options = list(
+    opts_hover(css = "fill: #202020;"),  #<<
+    opts_hover_inv(css = "opacity:0.2;")  #<<
+  )
+)
+```
+]
+
+.pull-right[
+```{r iris-girafe-demo4-out, cache = params$cache, ref.label="iris-girafe-demo4", echo=FALSE, warning=FALSE}
+```
+
+Again, styling via CSS
+
+]
+
+---
+
+## Interctive map example
+
+.tiny-font[
+```{r eval = FALSE, echo = TRUE}
+# load data
+US_states <- readRDS(url("https://wilkelab.org/SDS375/datasets/US_states.rds"))
+```
+]
+
+---
+
+## Interctive map example
+
+.tiny-font[
+```{r eval = FALSE, echo = TRUE}
+# load data
+US_states <- readRDS(url("https://wilkelab.org/SDS375/datasets/US_states.rds"))
+
+# print
+US_states
+```
+
+```{r eval = TRUE, echo = FALSE}
+US_states <- readRDS(url("https://wilkelab.org/SDS375/datasets/US_states.rds"))
+
+print(US_states, width = 200)
+```
+]
+
+---
+
+## Interctive map example
+
+.tiny-font.pull-left.width-50[
+```{r US_states_clickthrough-demo, eval = FALSE}
+US_map <- US_states %>%
+  mutate( # JavaScript call to open website 
+    onclick = glue::glue( #<<
+'window.open( #<<
+"https://en.wikipedia.org/wiki/{name}")') #<<
+  ) %>%
+  ggplot() +
+  geom_sf_interactive(
+    aes(
+      data_id = name, tooltip = name,
+      onclick = onclick  #<<
+    )
+  ) +
+  theme_void()
+
+girafe(
+  ggobj = US_map,
+  width_svg = 6,
+  height_svg = 6*.618
+)
+
 ```
 ]
 
 .pull-right.width-50[
-```{r mtcars-plot-out, cache = params$cache, ref.label="mtcars-plot", fig.width=6., fig.asp = 0.75, echo=FALSE, warning=FALSE, dev = "svg"}
+```{r US_states_clickthrough-demo-out, cache = params$cache, ref.label="US_states_clickthrough-demo", echo=FALSE, warning=FALSE}
 ```
 ]
 
-`box.padding` controls how far labels are placed from data points
 ---
 
 ## Further reading
 
-- Fundamentals of Data Visualization: [Redundant coding](https://clauswilke.com/dataviz/redundant-coding.html)
-- **ggplot2** reference documentation: [`geom_text()`](https://ggplot2.tidyverse.org/reference/geom_text.html)
-- **ggrepel** documentation: [Examples](https://ggrepel.slowkow.com/articles/examples.html#examples-1)
-- **ggrepel** reference documentation:
-[`geom_text_repel()`](https://ggrepel.slowkow.com/reference/geom_text_repel.html)
+- **ggiraph** documentation: [Using **ggiraph**](https://davidgohel.github.io/ggiraph/articles/offcran/using_ggiraph.html)
+- **ggiraph** documentation: [Function reference](https://davidgohel.github.io/ggiraph/reference/index.html)
+- MDN Web Docs: [Learn to style HTML using CSS
+](https://developer.mozilla.org/en-US/docs/Learn/CSS)
+- w3schools.com: [CSS Tutorial](https://www.w3schools.com/css/default.asp)
