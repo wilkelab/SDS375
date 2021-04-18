@@ -365,12 +365,13 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 ## Also consider linking to further info
 
 ```{r US_states_clickthrough, echo = FALSE}
-US_states$onclick <- sprintf(
-  "window.open(\"%s%s\")",
-  "http://en.wikipedia.org/wiki/", as.character(US_states$name)
+US_map <- US_states %>%
+  mutate(
+    onclick = glue::glue(
+'window.open("https://en.wikipedia.org/wiki/{name}")'
 )
-
-US_map <- ggplot(US_states) +
+ ) %>%
+ ggplot() +
   geom_sf_interactive(
     aes(data_id = name, tooltip = name, onclick = onclick),
     fill = "#EDBE8A", color = "black", size = 0.5/.pt
@@ -626,7 +627,7 @@ print(US_states, width = 200)
 ```{r US_states_clickthrough-demo, eval = FALSE}
 US_map <- US_states %>%
   mutate( # JavaScript call to open website 
-    onclick = glue::glue(
+    onclick = glue::glue( #<<
 'window.open(
 "https://en.wikipedia.org/wiki/{name}")')
   ) %>%
