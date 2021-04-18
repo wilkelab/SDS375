@@ -589,7 +589,7 @@ Again, styling via CSS
 
 ---
 
-## Interctive map example
+## Interactive map example
 
 .tiny-font[
 ```{r eval = FALSE, echo = TRUE}
@@ -600,7 +600,7 @@ US_states <- readRDS(url("https://wilkelab.org/SDS375/datasets/US_states.rds"))
 
 ---
 
-## Interctive map example
+## Interactive map example
 
 .tiny-font[
 ```{r eval = FALSE, echo = TRUE}
@@ -620,7 +620,7 @@ print(US_states, width = 200)
 
 ---
 
-## Interctive map example
+## Interactive map example
 
 .tiny-font.pull-left.width-50[
 ```{r US_states_clickthrough-demo, eval = FALSE}
@@ -651,6 +651,11 @@ girafe(
 .pull-right.width-50[
 ```{r US_states_clickthrough-demo-out, ref.label="US_states_clickthrough-demo", echo=FALSE, warning=FALSE}
 ```
+
+.small-font[
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Clicks open the states' wikipedia pages
+]
 ]
 
 ---
