@@ -654,7 +654,7 @@ girafe(
 
 .small-font[
 <br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Clicks open the states' wikipedia pages
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Click to open a state's wikipedia page
 ]
 ]
 
