@@ -626,9 +626,9 @@ print(US_states, width = 200)
 ```{r US_states_clickthrough-demo, eval = FALSE}
 US_map <- US_states %>%
   mutate( # JavaScript call to open website 
-    onclick = glue::glue( #<<
-'window.open( #<<
-"https://en.wikipedia.org/wiki/{name}")') #<<
+    onclick = glue::glue(
+'window.open(
+"https://en.wikipedia.org/wiki/{name}")')
   ) %>%
   ggplot() +
   geom_sf_interactive(
