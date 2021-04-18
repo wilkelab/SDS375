@@ -12,8 +12,6 @@ output:
       highlightLines: true
       slideNumberFormat: ''
       titleSlideClass: [center, middle]
-params:
-  cache: TRUE
 ---
 
 ```{r setup, include=FALSE, echo=FALSE, message = FALSE}
@@ -42,11 +40,6 @@ tx_counties <- US_census %>%
   extract(name, "county", regex = "(.+) County")
 
 US_states <- readRDS(here("datasets", "US_states.rds"))
-
-# tech stocks dataset
-tech_stocks <- read_csv(here("datasets", "tech_stocks.csv")) %>%
-  mutate(date = ymd(date)) %>%
-  select(company, date, price_indexed)
 
 # CSS for the standard tool tips we'll use
 tooltip_css <- "font-size:20px;padding:2px 4px 2px 4px;background:black;color:white;border-radius:2px 2px 2px 2px;"
@@ -122,8 +115,8 @@ girafe(
 ```
 ]
 
-.absolute-bottom-right[
-Hover over the data points
+.absolute-bottom-right.small-font[
+hover over the data points
 ]
 
 ???
@@ -132,7 +125,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 
 ---
 
-## You probably want to highlight the selected points
+## You probably want to highlight the selected points ...
 
 .center[
 ```{r iris-scatter-three-shapes-hover, echo = FALSE}
@@ -203,8 +196,8 @@ girafe(
 ```
 ]
 
-.absolute-bottom-right[
-Hover over the data points
+.absolute-bottom-right.small-font[
+hover over the data points
 ]
 
 
@@ -215,7 +208,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 
 ---
 
-## You probably want to highlight the selected points
+## ... and/or de-emphasize all others
 
 .center[
 ```{r iris-scatter-three-shapes-hover2, echo = FALSE}
@@ -278,8 +271,13 @@ girafe(
   width_svg = 6,
   height_svg = 6*.618,
   options = list(
-    opts_tooltip(css = tooltip_css, delay_mouseover = 0, delay_mouseout = 0),
-    opts_hover(css = "stroke:#000000;fill-opacity:1.0;stroke-opacity:1.0"),
+    opts_tooltip(
+      css = tooltip_css,
+      delay_mouseover = 0, delay_mouseout = 0
+    ),
+    opts_hover(
+      css = "stroke:#000000;fill-opacity:1.0;stroke-opacity:1.0"
+    ),
     opts_hover_inv(css = "opacity:0.5;"),
     opts_sizing(rescale = TRUE, width = 0.8)
   )
@@ -287,10 +285,9 @@ girafe(
 ```
 ]
 
-.absolute-bottom-right[
-Hover over the data points
+.absolute-bottom-right.small-font[
+hover over the data points
 ]
-
 
 ???
 
@@ -298,83 +295,10 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 
 ---
 
-## Title
+## You can combine interactivity with explicit labels
 
 .center[
-```{r tech-stocks-highlight, echo = FALSE}
-tech_stocks_last <- filter(tech_stocks, date == "2017-06-02")
-
-tech_stocks_lines <- ggplot(tech_stocks, aes(x = date, y = price_indexed, color = company)) +
-  scale_color_manual(
-    values = c(
-      Facebook = "#000000", 
-      Alphabet = "#E69F00", 
-      Microsoft = "#56B4E9",
-      Apple = "#009E73"
-    ),
-    name = "",
-    breaks = c("Facebook", "Alphabet", "Microsoft", "Apple"),
-    guide = "none"
-  ) +
-  scale_x_date(
-    name = "year",
-    limits = c(ymd("2012-06-01"), ymd("2017-05-31")),
-    expand = c(0,0)
-  ) + 
-  scale_y_continuous(
-    name = "stock price, indexed",
-    limits = c(0, 560),
-    expand = c(0,0),
-    sec.axis = dup_axis(
-      breaks = tech_stocks_last$price_indexed,
-      labels = tech_stocks_last$company,
-      name = NULL
-    )
-  ) +
-  geom_line_interactive(
-    aes(
-      data_id = company
-    ),
-    size = 0.66, na.rm = TRUE
-  ) +
-  geom_point_interactive(
-    aes(
-      tooltip = glue::glue("{date}: {signif(price_indexed, 3)}"),
-      data_id = company
-    ),
-    size = 0.66, na.rm = TRUE
-  ) +
-  theme_minimal_hgrid() + 
-  theme(
-    axis.ticks.length.y.right = grid::unit(0, "pt"),
-    plot.margin = margin(3, 7, 3, 1.5)
-  )
-
-girafe(
-  ggobj = tech_stocks_lines,
-  width_svg = 6,
-  height_svg = 6*.618,
-  options = list(
-    opts_tooltip(css = tooltip_css, delay_mouseover = 0, delay_mouseout = 0),
-    opts_hover(css = "fill-opacity:0;"),
-    opts_hover_inv(css = "opacity:0.2;"),
-    opts_sizing(rescale = TRUE, width = 0.8)
-  )
-)
-```
-]
-
-???
-
-Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
-
-
----
-
-## Label only a subset if there are too many items to label
-
-.center[
-```{r texas-counties-log, cache = params$cache, echo = FALSE, message = FALSE, fig.width = 8, fig.asp = 0.6, dev = "svg"}
+```{r texas-counties-log, echo = FALSE, message = FALSE, fig.width = 8, fig.asp = 0.6, dev = "svg"}
 set.seed(3878)
 
 tx_counties_labels <- tx_counties %>% 
@@ -428,6 +352,9 @@ girafe(
 ```
 ]
 
+.absolute-bottom-right.small-font[
+hover over the data points
+]
 
 ???
 
@@ -437,7 +364,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 
 ## Also consider linking to further info
 
-```{r US_states_clickthrough, cache = params$cache, echo = FALSE}
+```{r US_states_clickthrough, echo = FALSE}
 US_states$onclick <- sprintf(
   "window.open(\"%s%s\")",
   "http://en.wikipedia.org/wiki/", as.character(US_states$name)
@@ -463,8 +390,8 @@ girafe(
 
 ```
 
-.absolute-bottom-right[
-Click on one of the states
+.absolute-bottom-right.small-font[
+click on one of the states
 ]
 
 ---
@@ -493,8 +420,13 @@ iris_scatter
 ]
 
 .pull-right.move-up-1em[
-```{r iris-no-girafe-demo-out, cache = params$cache, ref.label="iris-no-girafe-demo", echo=FALSE, warning=FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r iris-no-girafe-demo-out, ref.label="iris-no-girafe-demo", echo=FALSE, warning=FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
+
+.small-font[
+regular **ggplot2** plot:  
+hovering does nothing
+]
 ]
 
 ---
@@ -523,8 +455,13 @@ girafe(                        #<<
 ]
 
 .pull-right[
-```{r iris-girafe-demo-out, cache = params$cache, ref.label="iris-girafe-demo", echo=FALSE, warning=FALSE}
+```{r iris-girafe-demo-out, ref.label="iris-girafe-demo", echo=FALSE, warning=FALSE}
 ```
+
+.small-font[
+**ggiraph** version:  
+hovering displays species names
+]
 ]
 
 ---
@@ -558,8 +495,14 @@ css = "background:#F5F5F5;color:#191970;" #<<
 ]
 
 .pull-right[
-```{r iris-girafe-demo2-out, cache = params$cache, ref.label="iris-girafe-demo2", echo=FALSE, warning=FALSE}
+```{r iris-girafe-demo2-out, ref.label="iris-girafe-demo2", echo=FALSE, warning=FALSE}
 ```
+
+.small-font[
+**ggiraph** version:  
+hovering displays species names
+]
+
 ]
 
 ---
@@ -601,7 +544,7 @@ girafe(
 ]
 
 .pull-right[
-```{r iris-girafe-demo3-out, cache = params$cache, ref.label="iris-girafe-demo3", echo=FALSE, warning=FALSE}
+```{r iris-girafe-demo3-out, ref.label="iris-girafe-demo3", echo=FALSE, warning=FALSE}
 ```
 ]
 
@@ -637,7 +580,7 @@ girafe(
 ]
 
 .pull-right[
-```{r iris-girafe-demo4-out, cache = params$cache, ref.label="iris-girafe-demo4", echo=FALSE, warning=FALSE}
+```{r iris-girafe-demo4-out, ref.label="iris-girafe-demo4", echo=FALSE, warning=FALSE}
 ```
 
 Again, styling via CSS
@@ -706,7 +649,7 @@ girafe(
 ]
 
 .pull-right.width-50[
-```{r US_states_clickthrough-demo-out, cache = params$cache, ref.label="US_states_clickthrough-demo", echo=FALSE, warning=FALSE}
+```{r US_states_clickthrough-demo-out, ref.label="US_states_clickthrough-demo", echo=FALSE, warning=FALSE}
 ```
 ]
 

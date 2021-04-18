@@ -1,0 +1,57 @@
+---
+title: "Homework 9"
+---
+
+```{r global_options, include=FALSE}
+library(knitr)
+library(tidyverse)
+library(ggrepel)
+library(colorspace)
+library(palmerpenguins)
+
+opts_chunk$set(fig.align="center", fig.height=4.326, fig.width=7)
+```
+
+*Enter your name and EID here*
+
+**This homework is due on April 26, 2021 at 11:00pm. Please submit as a pdf file on Canvas.**
+
+**Problem 1: (2 pts)** 
+
+Use the color picker app from the **colorspace** package (`colorspace::choose_color()`) to create a qualitative color scale containing four colors. One of the four colors should be `#5626B4`, so you need to find three additional colors that go with this one.
+
+```{r fig.width = 6, fig.height = 3}
+# replace "#FFFFFF" with your own colors
+colors <- c("#5626B4", "#FFFFFF", "#FFFFFF", "#FFFFFF")
+
+swatchplot(colors)
+```
+
+
+**Problem 2: (4 pts)** Take the following scatter plot of the penguins dataset and make three modifications:
+
+1. Use the colors you chose in Problem 1.
+2. Improve the visual appearance by choosing a theme and cleaning up axis labels.
+3. Remove the need for a legend by direct-labeling the points.
+
+```{r fig.width = 6, fig.height = 0.75*6}
+ggplot(penguins, aes(bill_length_mm, body_mass_g, color = species)) +
+  geom_point(size = 2, na.rm = TRUE)
+```
+
+**Problem 3: (4 pts)** The following scatter plot shows per-capita income versus number of inhabitants in all Texas counties in 2010. Use `geom_text_repel()` to label a subset of the counties by name. You can choose the counties to subset as you wish. Also, choose a theme and clean up the axis labeling, and make any other improvements to the plot design you consider appropriate. 
+
+**Hint:** If you're not sure how to select a subset of counties to label, check out the examples on the **ggrepel** website for some inspiration:
+https://ggrepel.slowkow.com/articles/examples.html#examples-1
+
+```{r fig.width = 5, fig.height = 0.75*5, message = FALSE}
+tx_census <- read_csv("https://wilkelab.org/SDS375/datasets/US_census.csv") %>%
+  filter(state == "Texas") %>%
+  select(county = name, pop2010, per_capita_income)
+
+tx_census %>%
+  ggplot(aes(pop2010, per_capita_income)) +
+  geom_point(size = 1.5) +
+  scale_x_log10()
+```
+

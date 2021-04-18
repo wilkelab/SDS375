@@ -160,6 +160,12 @@ knitr::opts_chunk$set(echo = FALSE)
 - [Slides](slides/redundant-coding.html)
 - [Worksheet](worksheets/redundant-coding.Rmd)
 
+### 22. Apr 20, 2021—Interactive plots
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/interactive-plots.html)
+
 ## Homeworks
 
 All homeworks are due by 11:00pm on the day they are due. Homeworks need to be submitted as pdf files on Canvas.
@@ -218,6 +224,7 @@ All homeworks are due by 11:00pm on the day they are due. Homeworks need to be s
 
 - [R Markdown template](assignments/HW7.Rmd)
 - [HTML](assignments/HW7.html)
+- [Solutions](assignments/HW7_solutions.html)
 
 ### Homework 8 (due Apr 19, 2021)
 
@@ -230,7 +237,8 @@ All homeworks are due by 11:00pm on the day they are due. Homeworks need to be s
 
 <p class="nospace">Materials:</p>
 
-- coming soon
+- [R Markdown template](assignments/HW9.Rmd)
+- [HTML](assignments/HW9.html)
 
 ## Projects
 
@@ -260,7 +268,9 @@ All projects are due by 11:00pm on the day they are due. Projects need to be sub
 
 <p class="nospace">Materials:</p>
 
-- coming soon
+- [Instructions](assignments/project3_instructions.html)
+- [Project Template (Rmd)](assignments/project3.Rmd)
+- [Project Template (HTML)](assignments/project3.html)
 
 ## Graduate course credit
 

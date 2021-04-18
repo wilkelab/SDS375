@@ -14,7 +14,7 @@ class: center, middle, title-slide
 
 # Redundant coding, text annotations
 ### Claus O. Wilke
-### last updated: 2021-04-16
+### last updated: 2021-04-17
 
 ---
 
@@ -678,7 +678,7 @@ ggplot(mtcars_named, aes(weight, mpg)) +
   geom_point() +
 * geom_text_repel(
 *   aes(label = car),
-*   max.overlaps = 1000
+*   max.overlaps = Inf
 * )
 ```
 ]
@@ -705,7 +705,7 @@ mtcars_named %&gt;%
   geom_point() +
   geom_text_repel(
     aes(label = car),
-    max.overlaps = 1000
+    max.overlaps = Inf
   )
 ```
 ]
@@ -733,7 +733,7 @@ mtcars_named %&gt;%
   geom_point() +
   geom_text_repel(
     aes(label = car),
-    max.overlaps = 1000
+    max.overlaps = Inf
   )
 ```
 ]
@@ -761,7 +761,7 @@ mtcars_named %&gt;%
   geom_point() +
   geom_text_repel(
     aes(label = car),
-    max.overlaps = 1000,
+    max.overlaps = Inf,
 *   box.padding = 0.7
   )
 ```
