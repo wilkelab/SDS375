@@ -108,6 +108,8 @@ navbar:
           href: worksheets/color-spaces.R
         - text: "Class 21: Redundant coding, text annotations"
           href: worksheets/redundant-coding.Rmd
+        - text: "Class 22: Interactive plots"
+          href: worksheets/interactive-plots.Rmd
 
  
 output: distill::distill_article

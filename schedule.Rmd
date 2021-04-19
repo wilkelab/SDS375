@@ -165,6 +165,8 @@ knitr::opts_chunk$set(echo = FALSE)
 <p class="nospace">Materials:</p>
 
 - [Slides](slides/interactive-plots.html)
+- [Worksheet](worksheets/interactive-plots.Rmd)
+
 
 ## Homeworks
 
