@@ -1,0 +1,239 @@
+---
+#############################################################
+#                                                           #
+# Click on "Run Document" in RStudio to run this worksheet. #
+#                                                           #
+#############################################################
+title: "Interactive plots"
+author: "Claus O. Wilke"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(tidyverse)
+library(sf)
+library(ggiraph)
+knitr::opts_chunk$set(echo = FALSE, comment = "", paged.print = FALSE)
+
+texas_income <- readRDS(url("https://wilkelab.org/SDS375/datasets/Texas_income.rds")) %>%
+  select(-county)
+
+US_census <- read_csv("https://wilkelab.org/SDS375/datasets/US_census.csv")
+tx_census <- US_census %>% 
+  filter(state == "Texas") %>%
+  select(FIPS, name, pop2010, area) %>%
+  extract(name, "county", regex = "(.+) County") %>%
+  mutate(
+    FIPS = as.character(FIPS),
+    popratio = pop2010/median(pop2010),
+  )
+
+texas_counties <- left_join(texas_income, tx_census, by = "FIPS")
+```
+
+## Introduction
+
+In this worksheet, we will discuss how to add some level of interactivity to **ggplot2** plots.
+
+We will be using the R package **tidyverse** for general data manipulation and visualization, the R package **sf** to handle simple features for geospatial plotting, and the R package **ggiraph** for interactivity.
+
+```{r library-calls, echo = TRUE, eval = FALSE}
+# load required libraries
+library(tidyverse)
+library(sf)
+library(ggiraph)
+```
+
+
+We will be working with the dataset `texas_counties`. This dataset  contains various pieces of information about each county in Texas, such as the number of people living in the county in 2010 (`pop2010`), the size of each county (column `area`), and the median income (`median_income`). The column `popratio` is the ratio of the number of inhabitants to the median across all counties. The dataset also contains the shape information about each county (stored in the `geometry` column). The column `FIPS` contains a five-digit id code that uniquely represents each county.
+
+```{r tx-counties, echo = TRUE}
+texas_counties
+```
+
+## Interactice scatterplots
+
+*Intro text*
+
+```{r income-vs-popsize, echo = TRUE}
+texas_scatter <- texas_counties %>%
+  ggplot(aes(pop2010, median_income)) +
+  geom_point(na.rm = TRUE, size = 2) +
+  scale_x_log10()
+
+texas_scatter
+```
+
+
+```{r income-vs-popsize-exercise, exercise = TRUE}
+texas_scatter <- texas_counties %>%
+  ggplot(aes(pop2010, median_income)) +
+  geom_point(na.rm = TRUE, size = 2) +
+  scale_x_log10()
+
+texas_scatter
+```
+
+```{r income-vs-popsize-exercise-hint}
+texas_scatter <- texas_counties %>%
+  ggplot(aes(pop2010, median_income)) +
+  geom_point_interactive(
+    aes(tooltip = ___),
+    na.rm = TRUE, size = 2
+  ) +
+  scale_x_log10()
+
+girafe(
+  ggobj = ___
+)
+```
+
+```{r income-vs-popsize-exercise-solution}
+texas_scatter <- texas_counties %>%
+  ggplot(aes(pop2010, median_income)) +
+  geom_point_interactive(
+    aes(tooltip = county),
+    na.rm = TRUE, size = 2
+  ) +
+  scale_x_log10()
+
+girafe(
+  ggobj = texas_scatter
+)
+```
+
+```{r income-vs-popsize-exercise2, exercise = TRUE}
+
+```
+
+```{r income-vs-popsize-exercise2-hint}
+texas_scatter <- texas_counties %>%
+  ggplot(aes(pop2010, median_income)) +
+  geom_point_interactive(
+    aes(
+      tooltip = county,
+      data_id = ___
+    ),
+    na.rm = TRUE, size = 2
+  ) +
+  scale_x_log10()
+
+girafe(
+  ggobj = texas_scatter
+)
+```
+
+```{r income-vs-popsize-exercise2-solution}
+texas_scatter <- texas_counties %>%
+  ggplot(aes(pop2010, median_income)) +
+  geom_point_interactive(
+    aes(
+      tooltip = county,
+      data_id = county
+    ),
+    na.rm = TRUE, size = 2
+  ) +
+  scale_x_log10()
+
+girafe(
+  ggobj = texas_scatter
+)
+```
+
+```{r income-vs-popsize-exercise3, exercise = TRUE}
+
+```
+
+```{r income-vs-popsize-exercise3-hint}
+texas_scatter <- texas_counties %>%
+  ggplot(aes(pop2010, median_income)) +
+  geom_point_interactive(
+    aes(
+      tooltip = county,
+      data_id = county
+    ),
+    na.rm = TRUE, size = 2
+  ) +
+  scale_x_log10()
+
+girafe(
+  ggobj = texas_scatter,
+  options = list(
+    opts_tooltip(
+      css = ___
+    ),
+    opts_hover(
+      css = ___
+    )
+  )
+)
+```
+
+```{r income-vs-popsize-exercise3-solution}
+texas_scatter <- texas_counties %>%
+  ggplot(aes(pop2010, median_income)) +
+  geom_point_interactive(
+    aes(
+      tooltip = county,
+      data_id = county
+    ),
+    na.rm = TRUE, size = 2
+  ) +
+  scale_x_log10()
+
+girafe(
+  ggobj = texas_scatter,
+  options = list(
+    opts_tooltip(
+      css = "background:#F5F5F5;color:#191970;"
+    ),
+    opts_hover(
+      css = "fill: #D83832;"
+    )
+  )
+)
+```
+
+## Interactive maps
+
+```{r texas-map}
+texas_county_map <- texas_counties %>%
+  ggplot(aes(fill = median_income)) +
+  geom_sf(
+    size = 0.2, color = "black"
+  ) +
+  scale_fill_viridis_c(option = "E") +
+  theme_minimal()
+
+texas_county_map
+```
+
+
+
+```{r texas-map-exercise, exercise = TRUE}
+
+```
+
+```{r texas-map-exercise-hint}
+```
+
+```{r texas-map-exercise-solution}
+texas_county_map <- texas_counties %>%
+  ggplot(aes(fill = median_income)) +
+  geom_sf_interactive(
+    aes(
+      tooltip = county,
+      data_id = county
+    ),
+    size = 0.2, color = "black"
+  ) +
+  scale_fill_viridis_c(option = "E") +
+  theme_minimal()
+
+girafe(
+  ggobj = texas_county_map
+)
+```
+
