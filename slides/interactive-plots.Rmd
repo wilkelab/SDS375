@@ -525,7 +525,7 @@ iris_scatter <- ggplot(iris) +
 girafe(                        #<<
   ggobj = iris_scatter,        #<<
   width_svg = 6,               #<<
-  height_svg = 6*.618          #<<
+  height_svg = 6*0.618          #<<
 )                              #<<
 ```
 ]
@@ -560,10 +560,10 @@ iris_scatter <- ggplot(iris) +
 girafe(
   ggobj = iris_scatter,
   width_svg = 6,
-  height_svg = 6*.618,
+  height_svg = 6*0.618,
   options = list( #<<
     opts_tooltip( #<<
-css = "background:#F5F5F5;color:#191970;" #<<
+css = "background: #F5F5F5; color: #191970;" #<<
     ) #<<
   ) #<<
 )
@@ -614,7 +614,7 @@ iris_scatter <- ggplot(iris) +
 girafe(
   ggobj = iris_scatter,
   width_svg = 6,
-  height_svg = 6*.618
+  height_svg = 6*0.618
 )
 ```
 ]
@@ -646,10 +646,10 @@ iris_scatter <- ggplot(iris) +
 girafe(
   ggobj = iris_scatter,
   width_svg = 6,
-  height_svg = 6*.618,
+  height_svg = 6*0.618,
   options = list(
     opts_hover(css = "fill: #202020;"),  #<<
-    opts_hover_inv(css = "opacity:0.2;")  #<<
+    opts_hover_inv(css = "opacity: 0.2;")  #<<
   )
 )
 ```
@@ -710,7 +710,7 @@ US_map <- US_states %>%
 girafe(
   ggobj = US_map,
   width_svg = 6,
-  height_svg = 6*.618
+  height_svg = 6*0.618
 )
 
 ```
@@ -745,7 +745,7 @@ US_map <- US_states %>%
 girafe(
   ggobj = US_map,
   width_svg = 6,
-  height_svg = 6*.618
+  height_svg = 6*0.618
 )
 
 ```
