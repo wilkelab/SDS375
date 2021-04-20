@@ -91,3 +91,19 @@ d-article li {
 .nospace {
     margin-bottom: 0;
 }
+
+@media screen and (max-width: 768px) {
+	.distill-site-header.responsive{
+		max-height:100vh;
+		overflow-y:auto;
+		position:fixed;
+		top:0;
+	}
+}
+
+@media screen and (min-width: 769px) {
+	.nav-dropdown-content{
+		max-height:100vh;
+		overflow-y:auto;
+	}
+}
