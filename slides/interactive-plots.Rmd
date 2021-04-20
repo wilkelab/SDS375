@@ -25,24 +25,41 @@ library(cowplot)
 library(ggrepel)
 library(ggiraph)
 library(lubridate)
+library(sf)
 library(here)
 
 # ggplot2 settings so plots scale well for slide size 
 theme_set(theme_gray(16)) # 16 for full width, 18 for half width 
 update_geom_defaults("point", list(size = 2.0)) # 2 for full width, 2.5 for half width
 
+# US_states dataset
+US_states <- readRDS(here("datasets", "US_states.rds"))
+
 # tx_counties dataset
 US_census <- read_csv(here("datasets", "US_census.csv"))
 
-tx_counties <- US_census %>% 
-  filter(state == "Texas") %>%
-  select(name, pop2010) %>%
-  extract(name, "county", regex = "(.+) County")
+#tx_counties <- US_census %>% 
+#  filter(state == "Texas") %>%
+#  select(name, pop2010) %>%
+#  extract(name, "county", regex = "(.+) County")
 
-US_states <- readRDS(here("datasets", "US_states.rds"))
+texas_income <- readRDS(url("https://wilkelab.org/SDS375/datasets/Texas_income.rds")) %>%
+  select(-county)
+
+tx_census <- US_census %>% 
+  filter(state == "Texas") %>%
+  select(FIPS, name, pop2010, area) %>%
+  extract(name, "county", regex = "(.+) County") %>%
+  mutate(
+    FIPS = as.character(FIPS),
+    popratio = pop2010/median(pop2010),
+  )
+
+tx_counties <- left_join(texas_income, tx_census, by = "FIPS")
 
 # CSS for the standard tool tips we'll use
 tooltip_css <- "font-size:20px;padding:2px 4px 2px 4px;background:black;color:white;border-radius:2px 2px 2px 2px;"
+
 ```
 
 ## Interactivity can make a plot more informative
@@ -397,6 +414,64 @@ click on one of the states
 
 ---
 
+## Highlight across two plots for added context
+
+```{r tx_income_combined, echo = FALSE}
+texas_scatter <- tx_counties %>%
+  ggplot(aes(pop2010, median_income)) +
+  geom_point_interactive(
+    aes(
+      tooltip = county,
+      data_id = county
+    ),
+    na.rm = TRUE, size = 4,
+    shape = 21,
+    color = "#0072B2", fill = "#0072B280"
+  ) +
+  scale_y_continuous(
+    name = "Median income (USD)",
+    limits = c(21000, 97000),
+    breaks = c(40000, 60000, 80000),
+    labels = scales::dollar_format(),
+    expand = c(0, 0)
+  ) +
+  scale_x_log10(
+    name = "Number of inhabitants",
+    limits = c(300, 4100000),
+    breaks = c(1e2, 1e3, 1e4, 1e5, 1e6),
+    labels = expression(10^2, 10^3, 10^4, 10^5, 10^6)
+  ) +
+  theme_minimal_grid()
+
+texas_county_map <- tx_counties %>%
+  mutate(
+    onclick = glue::glue('window.open("https://en.wikipedia.org/wiki/{county} County, Texas")')
+  ) %>%
+  ggplot() +
+  geom_sf_interactive(
+    aes(
+      tooltip = county,
+      data_id = county,
+      onclick = onclick
+    ),
+    fill = "#0072B240", color = "black", size = 0.5/.pt
+  ) +
+  coord_sf(crs = 3083) +
+  theme_void()
+
+girafe(
+  ggobj = plot_grid(texas_scatter, texas_county_map, rel_widths = c(1.2, 1)),
+  width_svg = 10,
+  height_svg = 5,
+  options = list(
+    opts_tooltip(css = tooltip_css, delay_mouseover = 0, delay_mouseout = 0),
+    opts_hover(css = "fill: #E69F00; fill-opacity: 1.0; stroke: #E69F00;")
+  )
+)
+```
+
+---
+
 class: center middle
 
 ## Interactive plots in R
@@ -616,6 +691,33 @@ US_states
 US_states <- readRDS(url("https://wilkelab.org/SDS375/datasets/US_states.rds"))
 
 print(US_states, width = 200)
+```
+]
+
+---
+
+## Interactive map example
+
+.tiny-font.pull-left.width-50[
+```{r US_states_highlight-demo, eval = FALSE}
+US_map <- US_states %>%
+  ggplot() +
+  geom_sf_interactive( #<<
+    aes(data_id = name, tooltip = name)  #<<
+  ) + #<<
+  theme_void()
+
+girafe(
+  ggobj = US_map,
+  width_svg = 6,
+  height_svg = 6*.618
+)
+
+```
+]
+
+.pull-right.width-50[
+```{r US_states_clickthrough-demo-out, ref.label="US_states_highlight-demo", echo=FALSE, warning=FALSE}
 ```
 ]
 

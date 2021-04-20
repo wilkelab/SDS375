@@ -16,6 +16,7 @@ library(tidyverse)
 library(sf)
 library(ggiraph)
 library(glue)
+library(cowplot)
 knitr::opts_chunk$set(echo = FALSE, comment = "", paged.print = FALSE)
 
 texas_income <- readRDS(url("https://wilkelab.org/SDS375/datasets/Texas_income.rds")) %>%
@@ -38,7 +39,7 @@ texas_counties <- left_join(texas_income, tx_census, by = "FIPS")
 
 In this worksheet, we will discuss how to add some level of interactivity to **ggplot2** plots.
 
-We will be using the R package **tidyverse** for general data manipulation and visualization, the R package **sf** to handle simple features for geospatial plotting, the R package **glue** for text formatting, and the R package **ggiraph** for interactivity.
+We will be using the package **tidyverse** for general data manipulation and visualization, the package **sf** to handle simple features for geospatial plotting, the package **glue** for text formatting, the package **cowplot** for side-by-side plotting, and the package **ggiraph** for interactivity.
 
 ```{r library-calls, echo = TRUE, eval = FALSE}
 # load required libraries
@@ -394,3 +395,123 @@ girafe(
 )
 ```
 
+Interactive maps become particularly useful if you combine them with one or more additional plots that show further information, e.g. a scatterplot. Then, we can highlight a county in the map and the corresponding data point in the scatterplot or vice versa. We will do this by combining the scatter plot from the previous section with the Texas map from this section. You can combine two plots with the function `plot_grid()`, which takes as argument the two plots to combine, e.g. `plot_grid(texas_scatter, texas_county_map)`. This can be used as the `ggobj` in `girafe()`.
+
+**Hint:** Set `width_svg = 8` and `height_svg = 4` in the `girafe()` function to obtain an appropriate plot layout.
+
+```{r texas-map-exercise3, exercise = TRUE}
+
+```
+
+```{r texas-map-exercise3-hint-1}
+# first make the scatter plot
+texas_scatter <- texas_counties %>%
+  ggplot(aes(pop2010, median_income)) +
+  geom_point_interactive(
+    aes(
+      tooltip = county,
+      data_id = county
+    ),
+    na.rm = TRUE, size = 3
+  ) +
+  scale_x_log10() +
+  theme_bw()
+```
+
+```{r texas-map-exercise3-hint-2}
+# first make the scatter plot
+texas_scatter <- texas_counties %>%
+  ggplot(aes(pop2010, median_income)) +
+  geom_point_interactive(
+    aes(
+      tooltip = county,
+      data_id = county
+    ),
+    na.rm = TRUE, size = 3
+  ) +
+  scale_x_log10() +
+  theme_bw()
+
+# then make the map
+texas_county_map <- texas_counties %>%
+  ggplot() +
+  geom_sf_interactive(
+    aes(
+      tooltip = county,
+      data_id = county
+    ),
+    size = 0.2, color = "black"
+  ) +
+  theme_void()
+```
+
+
+```{r texas-map-exercise3-hint-3}
+# first make the scatter plot
+texas_scatter <- texas_counties %>%
+  ggplot(aes(pop2010, median_income)) +
+  geom_point_interactive(
+    aes(
+      tooltip = county,
+      data_id = county
+    ),
+    na.rm = TRUE, size = 3
+  ) +
+  scale_x_log10() +
+  theme_bw()
+
+# then make the map
+texas_county_map <- texas_counties %>%
+  ggplot() +
+  geom_sf_interactive(
+    aes(
+      tooltip = county,
+      data_id = county
+    ),
+    size = 0.2, color = "black"
+  ) +
+  theme_void()
+
+# then combine
+girafe(
+  ggobj = plot_grid(___, ___),
+  width_svg = 8,
+  height_svg = 4
+)
+```
+
+```{r texas-map-exercise3-solution}
+# first make the scatter plot
+texas_scatter <- texas_counties %>%
+  ggplot(aes(pop2010, median_income)) +
+  geom_point_interactive(
+    aes(
+      tooltip = county,
+      data_id = county
+    ),
+    na.rm = TRUE, size = 3
+  ) +
+  scale_x_log10() +
+  theme_bw()
+
+# then make the map
+texas_county_map <- texas_counties %>%
+  ggplot() +
+  geom_sf_interactive(
+    aes(
+      tooltip = county,
+      data_id = county
+    ),
+    size = 0.2, color = "black"
+  ) +
+  theme_void()
+
+# then combine
+girafe(
+  ggobj = plot_grid(texas_scatter, texas_county_map),
+  width_svg = 8,
+  height_svg = 4
+)
+```
+
+In the above plot, try using the lasso on one plot and see what happens to the other.
