@@ -14,7 +14,7 @@ class: center, middle, title-slide
 
 # Handling overlapping points
 ### Claus O. Wilke
-### last updated: 2021-04-16
+### last updated: 2021-04-21
 
 ---
 
@@ -24,7 +24,7 @@ class: center, middle, title-slide
 ## Title
 
 .center[
-![](over-plotting_files/figure-html/mpg-cty-displ-solid-1.svg)&lt;!-- --&gt;
+![](overplotting_files/figure-html/mpg-cty-displ-solid-1.svg)&lt;!-- --&gt;
 ]
 
 ???
@@ -36,7 +36,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 ## Title
 
 .center[
-![](over-plotting_files/figure-html/mpg-cty-displ-transp-1.svg)&lt;!-- --&gt;
+![](overplotting_files/figure-html/mpg-cty-displ-transp-1.svg)&lt;!-- --&gt;
 ]
 
 ???
@@ -48,7 +48,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 ## Title
 
 .center[
-![](over-plotting_files/figure-html/mpg-cty-displ-jitter-1.svg)&lt;!-- --&gt;
+![](overplotting_files/figure-html/mpg-cty-displ-jitter-1.svg)&lt;!-- --&gt;
 ]
 
 ???
@@ -60,7 +60,37 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 ## Title
 
 .center[
-![](over-plotting_files/figure-html/mpg-cty-displ-jitter-extreme-1.svg)&lt;!-- --&gt;
+![](overplotting_files/figure-html/mpg-cty-displ-jitter-extreme-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+class: center middle
+
+## 2D density plots: Contour lines and contour bands
+
+---
+
+## Title
+
+.center[
+![](overplotting_files/figure-html/blue-jays-contour-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+
+## Title
+
+.center[
+![](overplotting_files/figure-html/blue-jays-contour-filled-1.svg)&lt;!-- --&gt;
 ]
 
 ???
@@ -69,7 +99,194 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 
 ---
 
-## 3. Automatic labeling with `geom_text_repel()`
+## Title
+
+.center[
+![](overplotting_files/figure-html/blue-jays-no-contour-by-sex-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Title
+
+.center[
+![](overplotting_files/figure-html/blue-jays-contour-by-sex-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Title
+
+.center[
+![](overplotting_files/figure-html/diamonds-points-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Title
+
+.center[
+![](overplotting_files/figure-html/diamonds-contours-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Title title title title title
+
+.center[
+![](overplotting_files/figure-html/diamonds-contour-facets-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+class: center middle
+
+## 2D histograms: Rectangular and hex bins
+
+---
+
+## Title title title title title
+
+.center[
+![](overplotting_files/figure-html/diamonds-bin2d-facets-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Title title title title title
+
+.center[
+![](overplotting_files/figure-html/diamonds-bin2d-facets2-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Title title title title title
+
+.center[
+![](overplotting_files/figure-html/diamonds-hexbin-facets-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Title title title title title
+
+.center[
+![](overplotting_files/figure-html/diamonds-hexbin2-facets-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Choosing the right color scale
+
+.center[
+![](overplotting_files/figure-html/diamonds-hexbin2-facets-1.svg)
+]
+
+.absolute-bottom-left[
+palette: SunsetDark
+]
+
+---
+
+## Choosing the right color scale
+
+.center[
+![](overplotting_files/figure-html/diamonds-hexbin3-facets-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+palette: Batlow
+]
+
+---
+
+## Choosing the right color scale
+
+.center[
+![](overplotting_files/figure-html/diamonds-hexbin4-facets-1.svg)&lt;!-- --&gt;
+]
+
+
+.absolute-bottom-left[
+palette: YlOrRd
+]
+
+---
+
+## Choosing the right color scale
+
+.center[
+![](overplotting_files/figure-html/diamonds-hexbin5-facets-1.svg)&lt;!-- --&gt;
+]
+
+
+.absolute-bottom-left[
+palette: BluYl
+]
+
+---
+
+## Choosing the right color scale
+
+.center[
+![](overplotting_files/figure-html/diamonds-hexbin6-facets-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+palette: Heat
+]
+
+---
+
+## Choosing the right color scale
+
+.center[
+![](overplotting_files/figure-html/diamonds-hexbin7-facets-1.svg)&lt;!-- --&gt;
+]
+
+
+.absolute-bottom-left[
+palette: ag_GrnYl
+]
+
+---
+
+## Choosing the right color scale
+
+.center[
+![](overplotting_files/figure-html/diamonds-hexbin2-facets-1.svg)
+]
+
+.absolute-bottom-left[
+palette: SunsetDark
+]
+
+---
+
+## 3. Automatic labeling
 
 .tiny-font.pull-left[
 
@@ -120,7 +337,7 @@ mtcars_named
 
 ---
 
-## 3. Automatic labeling with `geom_text_repel()`
+## 3. Automatic labeling
 
 .tiny-font.pull-left[
 
@@ -139,7 +356,7 @@ mtcars_named %&gt;%
 ]
 
 .pull-right.width-50[
-![](over-plotting_files/figure-html/mtcars-plot-out-1.svg)&lt;!-- --&gt;
+![](overplotting_files/figure-html/mtcars-plot-out-1.svg)&lt;!-- --&gt;
 ]
 
 
