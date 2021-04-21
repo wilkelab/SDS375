@@ -61,6 +61,8 @@ navbar:
           href: slides/redundant-coding.html
         - text: "Class 22: Interactive plots"
           href: slides/interactive-plots.html
+        - text: "Class 23: Handling overlapping points"
+          href: slides/overplotting.html
 
     - text: "Worksheets"
       menu:

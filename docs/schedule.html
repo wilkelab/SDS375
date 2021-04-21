@@ -2201,6 +2201,22 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
   .nospace {
       margin-bottom: 0;
+  }
+
+  @media screen and (max-width: 768px) {
+  	.distill-site-header.responsive{
+  		max-height:100vh;
+  		overflow-y:auto;
+  		position:fixed;
+  		top:0;
+  	}
+  }
+
+  @media screen and (min-width: 769px) {
+  	.nav-dropdown-content{
+  		max-height:100vh;
+  		overflow-y:auto;
+  	}
   }</style>
   <style type="text/css">
   /* base style */
@@ -2419,6 +2435,7 @@ Slides
 <a href="slides/color-spaces.html">Class 20: Color spaces and color-vision deficiency</a>
 <a href="slides/redundant-coding.html">Class 21: Redundant coding, text annotations</a>
 <a href="slides/interactive-plots.html">Class 22: Interactive plots</a>
+<a href="slides/overplotting.html">Class 23: Handling overlapping points</a>
 </div>
 </div>
 <div class="nav-dropdown">
@@ -2674,6 +2691,13 @@ Materials:
 <ul>
 <li><a href="slides/interactive-plots.html">Slides</a></li>
 <li><a href="worksheets/interactive-plots.Rmd">Worksheet</a></li>
+</ul>
+<h3 id="apr-22-2021handling-overlapping-points">23. Apr 22, 2021—Handling overlapping points</h3>
+<p class="nospace">
+Materials:
+</p>
+<ul>
+<li><a href="slides/overplotting.html">Slides</a></li>
 </ul>
 <h2 id="homeworks">Homeworks</h2>
 <p>All homeworks are due by 11:00pm on the day they are due. Homeworks need to be submitted as pdf files on Canvas.</p>

@@ -2201,6 +2201,22 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
   .nospace {
       margin-bottom: 0;
+  }
+
+  @media screen and (max-width: 768px) {
+  	.distill-site-header.responsive{
+  		max-height:100vh;
+  		overflow-y:auto;
+  		position:fixed;
+  		top:0;
+  	}
+  }
+
+  @media screen and (min-width: 769px) {
+  	.nav-dropdown-content{
+  		max-height:100vh;
+  		overflow-y:auto;
+  	}
   }</style>
   <style type="text/css">
   /* base style */
@@ -2419,6 +2435,7 @@ Slides
 <a href="slides/color-spaces.html">Class 20: Color spaces and color-vision deficiency</a>
 <a href="slides/redundant-coding.html">Class 21: Redundant coding, text annotations</a>
 <a href="slides/interactive-plots.html">Class 22: Interactive plots</a>
+<a href="slides/overplotting.html">Class 23: Handling overlapping points</a>
 </div>
 </div>
 <div class="nav-dropdown">

@@ -32,7 +32,7 @@ update_geom_defaults("point", list(size = 2.0)) # 2 for full width, 2.5 for half
 blue_jays <- read_csv(here("datasets", "blue_jays.csv"))
 ```
 
-## Title
+## Be aware of points plotted exactly on top of one another
 
 .center[
 ```{r  mpg-cty-displ-solid, cache = params$cache, echo = FALSE, message = FALSE, fig.width = 6, fig.asp=.7416, dev = "svg"}
@@ -77,7 +77,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 
 ---
 
-## Title
+## Partial transparency helps highlight overlapping points
 
 .center[
 ```{r mpg-cty-displ-transp, cache = params$cache, echo = FALSE, message = FALSE, fig.width = 6, fig.asp=.7416, dev = "svg"}
@@ -120,7 +120,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 
 ---
 
-## Title
+## A little jitter shows overlaps even more clearly
 
 .center[
 ```{r mpg-cty-displ-jitter, cache = params$cache, echo = FALSE, message = FALSE, fig.width = 6, fig.asp=.7416, dev = "svg"}
@@ -170,11 +170,11 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 
 ---
 
-## Title
+## But don't jitter too much
 
 .center[
 ```{r mpg-cty-displ-jitter-extreme, cache = params$cache, echo = FALSE, message = FALSE, fig.width = 6, fig.asp=.7416, dev = "svg"}
-ggplot(mpg, aes(y = cty, x = displ, color = drv, fill = drv)) +
+p_mpg_jitter_extreme <- ggplot(mpg, aes(y = cty, x = displ, color = drv, fill = drv)) +
   geom_point(
     size = 3, shape = 21,
     position = position_jitter(
@@ -211,6 +211,8 @@ ggplot(mpg, aes(y = cty, x = displ, color = drv, fill = drv)) +
     legend.position = c(.7, .8),
     plot.margin = margin(3, 7, 3, 1.5)
   )
+
+stamp_bad(p_mpg_jitter_extreme)
 ```
 ]
 
@@ -225,7 +227,7 @@ class: center middle
 
 ---
 
-## Title
+## Contour lines are the 2D version of density plots
 
 .center[
 ```{r blue-jays-contour, cache = params$cache, echo = FALSE, fig.width = 6, fig.asp = 0.75, dev = "svg"}
@@ -263,7 +265,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 
 ---
 
-## Title
+## We can vary shading for added effect
 
 .center[
 ```{r blue-jays-contour-filled, cache = params$cache, echo = FALSE, fig.width = 6, fig.asp = 0.75, dev = "svg"}
@@ -284,7 +286,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 
 ---
 
-## Title
+## What do we do when there are multiple groups?
 
 .center[
 ```{r blue-jays-no-contour-by-sex, cache = params$cache, echo = FALSE, fig.width = 6, fig.asp = 0.75, dev = "svg"}
@@ -310,7 +312,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 
 ---
 
-## Title
+## Colored contour lines can work for 2 to 3 groups
 
 .center[
 ```{r blue-jays-contour-by-sex, cache = params$cache, echo = FALSE, fig.width = 6, fig.asp = 0.75, dev = "svg"}
@@ -347,7 +349,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 
 ---
 
-## Title
+## What if there are multiple groups intermingled?
 
 .center[
 ```{r diamonds-points, cache = params$cache, echo = FALSE, fig.width = 6, fig.asp = 0.75, dev = "svg"}
@@ -397,7 +399,7 @@ diamonds_plot_base <- ggplot(diamonds_small, aes(carat, price, color = cut)) +
 diamonds_plot_points <- diamonds_plot_base +
   geom_point(size = .4, alpha = 1/5)
   
-stamp_bad(diamonds_plot_points)
+diamonds_plot_points
 ```
 ]
 
@@ -407,7 +409,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 
 ---
 
-## Title
+## Don't make plots that look like spaghetti
 
 .center[
 ```{r diamonds-contours, cache = params$cache, echo = FALSE, fig.width = 6, fig.asp = 0.75, dev = "svg"}
@@ -424,7 +426,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 
 ---
 
-## Title title title title title
+## Contour lines work well with small multiples (facets)
 
 .center[
 ```{r diamonds-contour-facets, echo = FALSE, cache = params$cache, fig.width = 8, fig.asp = 0.618, dev = "svg"}
@@ -480,7 +482,7 @@ class: center middle
 
 ---
 
-## Title title title title title
+## 2D histograms: rectangular bins
 
 .center[
 ```{r diamonds-bin2d-facets, echo = FALSE, cache = params$cache, fig.width = 8, fig.asp = 0.618, dev = "svg"}
@@ -507,10 +509,16 @@ diamonds_facet_base +
 ```
 ]
 
+--
+
+.absolute-bottom-left[
+We need to choose a bin size as in regular histograms
+]
+
 
 ---
 
-## Title title title title title
+## 2D histograms: rectangular bins
 
 .center[
 ```{r diamonds-bin2d-facets2, echo = FALSE, cache = params$cache, fig.width = 8, fig.asp = 0.618, dev = "svg"}
@@ -537,10 +545,13 @@ diamonds_facet_base +
 ```
 ]
 
+.absolute-bottom-left[
+We need to choose a bin size as in regular histograms
+]
 
 ---
 
-## Title title title title title
+## 2D histograms: hex bins
 
 .center[
 ```{r diamonds-hexbin-facets, echo = FALSE, cache = params$cache, fig.width = 8, fig.asp = 0.618, dev = "svg"}
@@ -569,7 +580,7 @@ diamonds_facet_base +
 
 ---
 
-## Title title title title title
+## 2D histograms: hex bins
 
 .center[
 ```{r diamonds-hexbin2-facets, echo = FALSE, cache = params$cache, fig.width = 8, fig.asp = 0.618, dev = "svg"}
@@ -595,6 +606,7 @@ diamonds_facet_base +
   )
 ```
 ]
+
 
 ---
 

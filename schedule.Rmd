@@ -167,6 +167,11 @@ knitr::opts_chunk$set(echo = FALSE)
 - [Slides](slides/interactive-plots.html)
 - [Worksheet](worksheets/interactive-plots.Rmd)
 
+### 23. Apr 22, 2021—Handling overlapping points
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/overplotting.html)
 
 ## Homeworks
 
