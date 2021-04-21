@@ -789,40 +789,252 @@ palette: SunsetDark
 ]
 
 ---
+class: center middle
 
-## 3. Automatic labeling
+## Creating 2D density plots and histograms in R
+
+
+---
+
+## Contour lines
 
 .tiny-font.pull-left[
-```{r}
-mtcars_named <- mtcars %>%
-  rownames_to_column("car") %>%
-  select(car, weight = wt, mpg)
+```{r scatter-demo, eval = FALSE}
+blue_jays %>%
+  ggplot(aes(body_mass_g, head_length_mm)) +
+  geom_point() +
+  theme_bw(14)
+```
+]
 
-mtcars_named
+.pull-right[
+```{r scatter-demo-out, cache = params$cache, ref.label="scatter-demo", fig.width=6., fig.asp = 0.75, echo=FALSE, dev = "svg"}
+```
+]
+
+
+
+---
+
+## Contour lines
+
+.tiny-font.pull-left[
+```{r contour-lines-demo, eval = FALSE}
+blue_jays %>%
+  ggplot(aes(body_mass_g, head_length_mm)) +
+  geom_density_2d() +  #<<
+  geom_point() +
+  theme_bw(14)
+```
+]
+
+.pull-right[
+```{r contour-lines-demo-out, cache = params$cache, ref.label="contour-lines-demo", fig.width=6., fig.asp = 0.75, echo=FALSE, dev = "svg"}
+```
+]
+
+
+---
+
+## Contour lines
+
+.tiny-font.pull-left[
+```{r contour-lines-demo2, eval = FALSE}
+blue_jays %>%
+  ggplot(aes(body_mass_g, head_length_mm)) +
+  geom_density_2d(bins = 5) + #<<
+  geom_point() +
+  theme_bw(14)
+```
+]
+
+.pull-right[
+```{r contour-lines-demo2-out, cache = params$cache, ref.label="contour-lines-demo2", fig.width=6., fig.asp = 0.75, echo=FALSE, dev = "svg"}
+```
+]
+
+
+---
+
+## Contour bands
+
+.tiny-font.width-70.move-up-1em[
+```{r contour-bands-demo, eval = FALSE}
+ggplot(blue_jays, aes(body_mass_g, head_length_mm)) +
+  geom_density_2d_filled(bins = 5) + #<<
+  #
+  geom_point() +
+  theme_bw(14)
+```
+]
+
+.center[
+```{r contour-bands-demo-out, cache = params$cache, ref.label="contour-bands-demo", fig.width=7., fig.asp = 0.55, echo=FALSE, dev = "svg"}
+```
+]
+
+
+---
+
+## Contour bands
+
+.tiny-font.width-70.move-up-1em[
+```{r contour-bands-demo2, eval = FALSE}
+ggplot(blue_jays, aes(body_mass_g, head_length_mm)) +
+  geom_density_2d_filled(bins = 5, alpha = 0.5) + #<<
+  #
+  geom_point() +
+  theme_bw(14)
+```
+]
+
+.center[
+```{r contour-bands-demo2-out, cache = params$cache, ref.label="contour-bands-demo2", fig.width=7., fig.asp = 0.55, echo=FALSE, dev = "svg"}
+```
+]
+
+
+---
+
+## Contour bands
+
+.tiny-font.width-70.move-up-1em[
+```{r contour-bands-demo3, eval = FALSE}
+ggplot(blue_jays, aes(body_mass_g, head_length_mm)) +
+  geom_density_2d_filled(bins = 5, alpha = 0.5) +
+  geom_density_2d(bins = 5, color = "black", size = 0.2) + #<<
+  geom_point() +
+  theme_bw(14)
+```
+]
+
+.center[
+```{r contour-bands-demo3-out, cache = params$cache, ref.label="contour-bands-demo3", fig.width=7., fig.asp = 0.55, echo=FALSE, dev = "svg"}
+```
+]
+
+
+---
+
+## 2D histograms
+
+.tiny-font.width-70.move-up-1em[
+```{r bins2d-demo, eval = FALSE}
+ggplot(blue_jays, aes(body_mass_g, head_length_mm)) +
+  geom_bin2d() + #<<
+  theme_bw(14)
+```
+]
+
+.center[
+```{r bins2d-demo-out, cache = params$cache, ref.label="bins2d-demo", fig.width=7., fig.asp = 0.618, echo=FALSE, dev = "svg"}
 ```
 ]
 
 ---
 
-## 3. Automatic labeling
+## 2D histograms
 
-.tiny-font.pull-left[
-```{r mtcars-plot, eval = FALSE}
-set.seed(6644)
-
-mtcars_named %>%
-  mutate(
-    # randomly exclude 50% of the labels
-    car = ifelse(runif(n()) < 0.5, "", car)
-  ) %>% 
-  ggplot(aes(weight, mpg)) +
-  geom_point() +
-  geom_text(aes(label = car))
+.tiny-font.width-70.move-up-1em[
+```{r bins2d-demo2, eval = FALSE}
+ggplot(blue_jays, aes(body_mass_g, head_length_mm)) +
+  geom_bin2d(binwidth = c(3, 3)) + #<<
+  theme_bw(14)
 ```
 ]
 
-.pull-right.width-50[
-```{r mtcars-plot-out, cache = params$cache, ref.label="mtcars-plot", fig.width=6., fig.asp = 0.75, echo=FALSE, warning=FALSE, dev = "svg"}
+.center[
+```{r bins2d-demo2-out, cache = params$cache, ref.label="bins2d-demo2", fig.width=7., fig.asp = 0.618, echo=FALSE, dev = "svg"}
+```
+]
+
+
+---
+
+## 2D histograms
+
+.tiny-font.width-70.move-up-1em[
+```{r bins2d-demo3, eval = FALSE}
+ggplot(blue_jays, aes(body_mass_g, head_length_mm)) +
+  geom_bin2d(binwidth = c(1, 5)) + #<<
+  theme_bw(14)
+```
+]
+
+.center[
+```{r bins2d-demo3-out, cache = params$cache, ref.label="bins2d-demo3", fig.width=7., fig.asp = 0.618, echo=FALSE, dev = "svg"}
+```
+]
+
+
+---
+
+## 2D histograms
+
+.tiny-font.width-70.move-up-1em[
+```{r bins2d-demo4, eval = FALSE}
+ggplot(blue_jays, aes(body_mass_g, head_length_mm)) +
+  geom_bin2d(binwidth = c(5, 1)) + #<<
+  theme_bw(14)
+```
+]
+
+.center[
+```{r bins2d-demo4-out, cache = params$cache, ref.label="bins2d-demo4", fig.width=7., fig.asp = 0.618, echo=FALSE, dev = "svg"}
+```
+]
+
+
+---
+
+## Hex bins
+
+.tiny-font.width-70.move-up-1em[
+```{r hex-demo, eval = FALSE}
+ggplot(blue_jays, aes(body_mass_g, head_length_mm)) +
+  geom_hex() + #<<
+  theme_bw(14)
+```
+]
+
+.center[
+```{r hex-demo-out, cache = params$cache, ref.label="hex-demo", fig.width=7., fig.asp = 0.618, echo=FALSE, dev = "svg"}
+```
+]
+
+
+---
+
+## Hex bins
+
+.tiny-font.width-70.move-up-1em[
+```{r hex-demo2, eval = FALSE}
+ggplot(blue_jays, aes(body_mass_g, head_length_mm)) +
+  geom_hex(bins = 15) + #<<
+  theme_bw(14)
+```
+]
+
+.center[
+```{r hex-demo2-out, cache = params$cache, ref.label="hex-demo2", fig.width=7., fig.asp = 0.618, echo=FALSE, dev = "svg"}
+```
+]
+
+
+---
+
+## Hex bins
+
+.tiny-font.width-70.move-up-1em[
+```{r hex-demo3, eval = FALSE}
+ggplot(blue_jays, aes(body_mass_g, head_length_mm)) +
+  geom_hex(bins = 10) + #<<
+  theme_bw(14)
+```
+]
+
+.center[
+```{r hex-demo3-out, cache = params$cache, ref.label="hex-demo3", fig.width=7., fig.asp = 0.618, echo=FALSE, dev = "svg"}
 ```
 ]
 
@@ -833,3 +1045,5 @@ mtcars_named %>%
 
 - Fundamentals of Data Visualization: [Chapter 18: Handling overlapping points](https://clauswilke.com/dataviz/overlapping-points.html)
 - **ggplot2** reference documentation: [`geom_density_2d()`](https://ggplot2.tidyverse.org/reference/geom_density_2d.html)
+- **ggplot2** reference documentation: [`geom_bin2d()`](https://ggplot2.tidyverse.org/reference/geom_bin2d.html)
+- **ggplot2** reference documentation: [`geom_hex()`](https://ggplot2.tidyverse.org/reference/geom_hex.html)

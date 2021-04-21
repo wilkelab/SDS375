@@ -285,78 +285,253 @@ palette: SunsetDark
 ]
 
 ---
+class: center middle
 
-## 3. Automatic labeling
+## Creating 2D density plots and histograms in R
+
+
+---
+
+## Contour lines
 
 .tiny-font.pull-left[
 
 ```r
-mtcars_named &lt;- mtcars %&gt;%
-  rownames_to_column("car") %&gt;%
-  select(car, weight = wt, mpg)
+blue_jays %&gt;%
+  ggplot(aes(body_mass_g, head_length_mm)) +
+  geom_point() +
+  theme_bw(14)
+```
+]
 
-mtcars_named
-```
+.pull-right[
+![](overplotting_files/figure-html/scatter-demo-out-1.svg)&lt;!-- --&gt;
+]
 
+
+
+---
+
+## Contour lines
+
+.tiny-font.pull-left[
+
+```r
+blue_jays %&gt;%
+  ggplot(aes(body_mass_g, head_length_mm)) +
+* geom_density_2d() +
+  geom_point() +
+  theme_bw(14)
 ```
-                   car weight  mpg
-1            Mazda RX4  2.620 21.0
-2        Mazda RX4 Wag  2.875 21.0
-3           Datsun 710  2.320 22.8
-4       Hornet 4 Drive  3.215 21.4
-5    Hornet Sportabout  3.440 18.7
-6              Valiant  3.460 18.1
-7           Duster 360  3.570 14.3
-8            Merc 240D  3.190 24.4
-9             Merc 230  3.150 22.8
-10            Merc 280  3.440 19.2
-11           Merc 280C  3.440 17.8
-12          Merc 450SE  4.070 16.4
-13          Merc 450SL  3.730 17.3
-14         Merc 450SLC  3.780 15.2
-15  Cadillac Fleetwood  5.250 10.4
-16 Lincoln Continental  5.424 10.4
-17   Chrysler Imperial  5.345 14.7
-18            Fiat 128  2.200 32.4
-19         Honda Civic  1.615 30.4
-20      Toyota Corolla  1.835 33.9
-21       Toyota Corona  2.465 21.5
-22    Dodge Challenger  3.520 15.5
-23         AMC Javelin  3.435 15.2
-24          Camaro Z28  3.840 13.3
-25    Pontiac Firebird  3.845 19.2
-26           Fiat X1-9  1.935 27.3
-27       Porsche 914-2  2.140 26.0
-28        Lotus Europa  1.513 30.4
-29      Ford Pantera L  3.170 15.8
-30        Ferrari Dino  2.770 19.7
-31       Maserati Bora  3.570 15.0
-32          Volvo 142E  2.780 21.4
+]
+
+.pull-right[
+![](overplotting_files/figure-html/contour-lines-demo-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Contour lines
+
+.tiny-font.pull-left[
+
+```r
+blue_jays %&gt;%
+  ggplot(aes(body_mass_g, head_length_mm)) +
+* geom_density_2d(bins = 5) +
+  geom_point() +
+  theme_bw(14)
 ```
+]
+
+.pull-right[
+![](overplotting_files/figure-html/contour-lines-demo2-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Contour bands
+
+.tiny-font.width-70.move-up-1em[
+
+```r
+ggplot(blue_jays, aes(body_mass_g, head_length_mm)) +
+* geom_density_2d_filled(bins = 5) +
+  #
+  geom_point() +
+  theme_bw(14)
+```
+]
+
+.center[
+![](overplotting_files/figure-html/contour-bands-demo-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Contour bands
+
+.tiny-font.width-70.move-up-1em[
+
+```r
+ggplot(blue_jays, aes(body_mass_g, head_length_mm)) +
+* geom_density_2d_filled(bins = 5, alpha = 0.5) +
+  #
+  geom_point() +
+  theme_bw(14)
+```
+]
+
+.center[
+![](overplotting_files/figure-html/contour-bands-demo2-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Contour bands
+
+.tiny-font.width-70.move-up-1em[
+
+```r
+ggplot(blue_jays, aes(body_mass_g, head_length_mm)) +
+  geom_density_2d_filled(bins = 5, alpha = 0.5) +
+* geom_density_2d(bins = 5, color = "black", size = 0.2) +
+  geom_point() +
+  theme_bw(14)
+```
+]
+
+.center[
+![](overplotting_files/figure-html/contour-bands-demo3-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## 2D histograms
+
+.tiny-font.width-70.move-up-1em[
+
+```r
+ggplot(blue_jays, aes(body_mass_g, head_length_mm)) +
+* geom_bin2d() +
+  theme_bw(14)
+```
+]
+
+.center[
+![](overplotting_files/figure-html/bins2d-demo-out-1.svg)&lt;!-- --&gt;
 ]
 
 ---
 
-## 3. Automatic labeling
+## 2D histograms
 
-.tiny-font.pull-left[
+.tiny-font.width-70.move-up-1em[
 
 ```r
-set.seed(6644)
-
-mtcars_named %&gt;%
-  mutate(
-    # randomly exclude 50% of the labels
-    car = ifelse(runif(n()) &lt; 0.5, "", car)
-  ) %&gt;% 
-  ggplot(aes(weight, mpg)) +
-  geom_point() +
-  geom_text(aes(label = car))
+ggplot(blue_jays, aes(body_mass_g, head_length_mm)) +
+* geom_bin2d(binwidth = c(3, 3)) +
+  theme_bw(14)
 ```
 ]
 
-.pull-right.width-50[
-![](overplotting_files/figure-html/mtcars-plot-out-1.svg)&lt;!-- --&gt;
+.center[
+![](overplotting_files/figure-html/bins2d-demo2-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## 2D histograms
+
+.tiny-font.width-70.move-up-1em[
+
+```r
+ggplot(blue_jays, aes(body_mass_g, head_length_mm)) +
+* geom_bin2d(binwidth = c(1, 5)) +
+  theme_bw(14)
+```
+]
+
+.center[
+![](overplotting_files/figure-html/bins2d-demo3-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## 2D histograms
+
+.tiny-font.width-70.move-up-1em[
+
+```r
+ggplot(blue_jays, aes(body_mass_g, head_length_mm)) +
+* geom_bin2d(binwidth = c(5, 1)) +
+  theme_bw(14)
+```
+]
+
+.center[
+![](overplotting_files/figure-html/bins2d-demo4-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Hex bins
+
+.tiny-font.width-70.move-up-1em[
+
+```r
+ggplot(blue_jays, aes(body_mass_g, head_length_mm)) +
+* geom_hex() +
+  theme_bw(14)
+```
+]
+
+.center[
+![](overplotting_files/figure-html/hex-demo-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Hex bins
+
+.tiny-font.width-70.move-up-1em[
+
+```r
+ggplot(blue_jays, aes(body_mass_g, head_length_mm)) +
+* geom_hex(bins = 15) +
+  theme_bw(14)
+```
+]
+
+.center[
+![](overplotting_files/figure-html/hex-demo2-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Hex bins
+
+.tiny-font.width-70.move-up-1em[
+
+```r
+ggplot(blue_jays, aes(body_mass_g, head_length_mm)) +
+* geom_hex(bins = 10) +
+  theme_bw(14)
+```
+]
+
+.center[
+![](overplotting_files/figure-html/hex-demo3-out-1.svg)&lt;!-- --&gt;
 ]
 
 
@@ -366,6 +541,8 @@ mtcars_named %&gt;%
 
 - Fundamentals of Data Visualization: [Chapter 18: Handling overlapping points](https://clauswilke.com/dataviz/overlapping-points.html)
 - **ggplot2** reference documentation: [`geom_density_2d()`](https://ggplot2.tidyverse.org/reference/geom_density_2d.html)
+- **ggplot2** reference documentation: [`geom_bin2d()`](https://ggplot2.tidyverse.org/reference/geom_bin2d.html)
+- **ggplot2** reference documentation: [`geom_hex()`](https://ggplot2.tidyverse.org/reference/geom_hex.html)
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
