@@ -172,6 +172,7 @@ knitr::opts_chunk$set(echo = FALSE)
 <p class="nospace">Materials:</p>
 
 - [Slides](slides/overplotting.html)
+- [Worksheet](worksheets/overplotting.Rmd)
 
 ## Homeworks
 

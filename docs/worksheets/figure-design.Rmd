@@ -28,6 +28,7 @@ We will be using the R package **tidyverse**, which includes `ggplot()` and rela
 ```{r library-calls, echo = TRUE, eval = FALSE}
 # load required library
 library(tidyverse)
+library(cowplot)
 library(palmerpenguins)
 ```
 
