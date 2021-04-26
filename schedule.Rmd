@@ -247,6 +247,7 @@ All homeworks are due by 11:00pm on the day they are due. Homeworks need to be s
 
 - [R Markdown template](assignments/HW8.Rmd)
 - [HTML](assignments/HW8.html)
+- [Solutions](assignments/HW8_solutions.html)
 
 ### Homework 9 (due Apr 26, 2021)
 
