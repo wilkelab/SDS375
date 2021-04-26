@@ -174,6 +174,13 @@ knitr::opts_chunk$set(echo = FALSE)
 - [Slides](slides/overplotting.html)
 - [Worksheet](worksheets/overplotting.Rmd)
 
+### 24. Apr 27, 2021—Compound figures
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/compound-figures.html)
+
+
 ## Homeworks
 
 All homeworks are due by 11:00pm on the day they are due. Homeworks need to be submitted as pdf files on Canvas.
@@ -279,6 +286,7 @@ All projects are due by 11:00pm on the day they are due. Projects need to be sub
 - [Instructions](assignments/project3_instructions.html)
 - [Project Template (Rmd)](assignments/project3.Rmd)
 - [Project Template (HTML)](assignments/project3.html)
+- [Grading rubric](assignments/project3_rubric.pdf)
 
 ## Graduate course credit
 

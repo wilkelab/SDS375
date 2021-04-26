@@ -63,6 +63,8 @@ navbar:
           href: slides/interactive-plots.html
         - text: "Class 23: Handling overlapping points"
           href: slides/overplotting.html
+        - text: "Class 24: Compound figures"
+          href: slides/compound-figures.html
 
     - text: "Worksheets"
       menu:
