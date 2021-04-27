@@ -280,8 +280,8 @@ background-image: url("https://clauswilke.com/dataviz/figure_titles_captions_fil
 background-position: left 15% top 40%
 background-size: 50%
 
-.pull-right.width-35.move-down-2em[
-Figure 1. **Corruption and human development.** The most developed countries experience the least corruption. Inspired by a posting in [The Economist online (2011)](https://www.economist.com/graphic-detail/2011/12/02/corrosive-corruption). Data sources: Transparency International & UN Human Development Report
+.pull-right.width-35.move-down-2em.small-font[
+Figure 1. **Corruption and human development.** The most developed countries experience the least corruption. Inspired by a posting in [The Economist online (2011)](https://www.economist.com/graphic-detail/2011/12/02/corrosive-corruption). Data sources: Transparency International & UN Human Development Report.
 ]
 
 .absolute-bottom-left[

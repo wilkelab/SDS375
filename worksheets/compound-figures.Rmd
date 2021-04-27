@@ -1,0 +1,166 @@
+---
+#############################################################
+#                                                           #
+# Click on "Run Document" in RStudio to run this worksheet. #
+#                                                           #
+#############################################################
+title: "Compound figures"
+author: "Claus O. Wilke"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(tidyverse)
+library(patchwork)
+knitr::opts_chunk$set(echo = FALSE, comment = "")
+
+p1 <- ggplot(mtcars) + 
+  geom_point(aes(mpg, disp))
+
+p2 <- ggplot(mtcars) + 
+  geom_boxplot(aes(gear, disp, group = gear))
+
+p3 <- ggplot(mtcars) + 
+  geom_smooth(aes(disp, qsec))
+
+p4 <- ggplot(mtcars) + 
+  geom_bar(aes(carb))
+```
+
+## Introduction
+
+In this worksheet, we will discuss how to combine several **ggplot2** plots into one compound figure.
+
+We will be using the R package **tidyverse**, which includes `ggplot()` and related functions. We will also be using the package **patchwork** for plot composition.
+
+```{r library-calls, echo = TRUE, eval = FALSE}
+# load required library
+library(tidyverse)
+library(patchwork)
+```
+
+We will be working with the dataset `mtcars`, which contains fuel consumption and 10 aspects of automobile design and performance for 32 automobiles (1973–74 models).
+
+```{r temperatures, echo = TRUE}
+mtcars
+```
+
+
+## Combining plots
+
+First we set up four different plots that we will subsequently combine. The plots are stored in variables `p1`, `p2`, `p3`, `p4`.
+
+```{r singlet-plots, echo = TRUE, message = FALSE, fig.width = 4, fig.height = 0.618*4}
+p1 <- ggplot(mtcars) + 
+  geom_point(aes(mpg, disp))
+p1  
+
+p2 <- ggplot(mtcars) + 
+  geom_boxplot(aes(gear, disp, group = gear))
+p2
+
+p3 <- ggplot(mtcars) + 
+  geom_smooth(aes(disp, qsec))
+p3
+
+p4 <- ggplot(mtcars) + 
+  geom_bar(aes(carb))
+p4
+```
+
+To show plots side-by-side, we use the operator `|`, as in `p1 | p2`. Try this by making a compound plot of plots `p1`, `p2`, `p3` side-by-side.
+
+```{r plots-side-by-side, exercise = TRUE, message = FALSE}
+
+```
+
+```{r plots-side-by-side-solution}
+p1 | p2 | p3
+```
+
+To show plots on top of one-another, we use the operator `/`, as in `p1 / p2`. Try this by making a compound plot of plots `p1`, `p2`, `p3` on top of each other.
+
+```{r plots-on-top, exercise = TRUE, message = FALSE}
+
+```
+
+```{r plots-on-top-solution}
+p1 / p2 / p3
+```
+
+We can also use parentheses to group plots with respect to the operators `|` and `/`. For example, we can place several plots side-by-side and then place this entire row of plots on top of another plot. Try this out.
+
+```{r plots-complex, exercise = TRUE, message = FALSE}
+
+```
+
+```{r plots-complex-hint}
+(___) / p4
+```
+
+```{r plots-complex-solution}
+(p1 | p2 | p3 ) / p4
+```
+
+
+## Plot annotations
+
+The **patchwork** package provides a powerful annotation system via the `plot_annotation()` function that can be added to a plot assembly. For example, we can add plot tags (the labels in the upper left corner identifying the plots) via the plot annotation `tag_levels`. You can set `tag_levels = "A"` to generate tags A, B, C, etc. Try this out.
+
+```{r plots-w-tags, exercise = TRUE, message = FALSE}
+(p1 | p2 | p3 ) / p4
+```
+
+```{r plots-w-tags-hint}
+(p1 | p2 | p3 ) / p4 +
+  plot_annotation(
+    ___
+  )
+```
+
+```{r plots-w-tags-solution}
+(p1 | p2 | p3 ) / p4 +
+  plot_annotation(
+    tag_levels = "A"
+  )
+```
+
+Try also tag levels such as `"a"`, `"i"`, or `"1"`.
+
+You can also add elements such as titles, subtitles, and captions, by setting the `title`, `subtitle`, or `caption` argument in `plot_annotation()`. Try this out by adding an overall title to the figure from the previous exercise.
+
+```{r plots-w-title, exercise = TRUE, message = FALSE}
+
+```
+
+```{r plots-w-title-hint}
+(p1 | p2 | p3 ) / p4 +
+  plot_annotation(
+    tag_levels = "A",
+    ___
+  )
+```
+
+```{r plots-w-title-solution}
+(p1 | p2 | p3 ) / p4 +
+  plot_annotation(
+    tag_levels = "A",
+    title = "Various observations about old cars"
+  )
+```
+
+Also set a subtitle and a caption.
+
+Finally, you can change the theme of all plots in the plot assembly via the `&` operator, as in `(p1 | p2) & theme_bw()`. Try this out.
+
+```{r themeing, exercise = TRUE, message = FALSE}
+
+```
+
+```{r themeing-solution}
+(p1 | p2) & theme_bw()
+```
+
+What happens if you write this expression without parentheses? Do you understand why?

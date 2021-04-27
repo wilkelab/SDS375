@@ -116,6 +116,8 @@ navbar:
           href: worksheets/interactive-plots.Rmd
         - text: "Class 23: Handling overlapping points"
           href: worksheets/overplotting.Rmd
+        - text: "Class 24: Compound figures"
+          href: worksheets/compound-figures.Rmd
 
  
 output: distill::distill_article
