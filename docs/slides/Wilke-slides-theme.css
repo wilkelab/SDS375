@@ -120,6 +120,9 @@ table {
   margin-top: 2em;
 }
 
+.move-down-3em {
+  margin-top: 2em;
+}
 
 .absolute-bottom-left {
   position: absolute;

@@ -65,6 +65,9 @@ navbar:
           href: slides/overplotting.html
         - text: "Class 24: Compound figures"
           href: slides/compound-figures.html
+        - text: "Class 25: Telling a story"
+          href: slides/telling-a-story.html
+          
 
     - text: "Worksheets"
       menu:

@@ -32,11 +32,24 @@ update_geom_defaults("point", list(size = 2.0)) # 2 for full width, 2.5 for half
 preprints <- read_csv(here("datasets", "preprints.csv"))
 ```
 
+## How did I end up teaching a class on data visualization?
+
+--
+
+<img src = "telling-a-story_files/cowplot-logo.svg", width = 30%, style = "position:absolute; top: 22%; left: 13%;"></img>
+
+--
+
+<img src = "https://clauswilke.com/dataviz/cover.png", width = 30%, style = "position:absolute; top: 20%; left: 53%; box-shadow: 3px 5px 3px 1px #00000080;"></img>
+
+
+---
+
 ## What is a story?
 
 --
 
-A story is a collection of observations, facts, or events presented in a specific order such that they create an .highlight[emotional reaction.]
+A story is a collection of observations, facts, or events presented in a specific order such that they create an .highlight[emotional reaction]
 
 ---
 
@@ -98,9 +111,238 @@ Action
 .highlight[Resolution]
 ]
 
+.absolute-bottom-right[
+Challenge and resolution are<br>the two most important parts
+]
+
 ---
 
-## Graphical example: Preprints in biology
+## Mapping my story onto this format
+
+--
+
+**Opening:** We need to make many data visualizations in my lab
+
+--
+
+**Challenge:** I end up telling my students the same things over and over
+
+--
+
+**Action:** I go and write a book about data visualization
+
+--
+
+**Resolution:** The book is written. But now I teach the material, so I still keep saying the same things over and over
+
+
+---
+
+## Other story structures
+
+--
+
+.center.move-up-1em[
+Action
+]
+
+--
+
+.center[
+<img src = "telling-a-story_files/arrow.svg", width = 3%, style = "margin-top: -0.5em; margin-bottom: -1em"></img>
+
+Background
+]
+
+--
+
+.center[
+<img src = "telling-a-story_files/arrow.svg", width = 3%, style = "margin-top: -0.5em; margin-bottom: -1em"></img>
+
+Development
+]
+
+--
+
+.center[
+<img src = "telling-a-story_files/arrow.svg", width = 3%, style = "margin-top: -0.5em; margin-bottom: -1em"></img>
+
+Climax
+]
+
+--
+
+.center[
+<img src = "telling-a-story_files/arrow.svg", width = 3%, style = "margin-top: -0.5em; margin-bottom: -1em"></img>
+
+Ending
+]
+
+--
+
+.absolute-bottom-right[
+(Better for action movies<br>than for scientific reports)
+]
+
+---
+
+## Mapping my story onto this format
+
+--
+
+**Action:** In May 2017, I embark on a major project: Write a book on data visualization
+
+--
+
+**Background:** I do this because we need to make many data visualizations in my lab, and I end up telling my students the same things over and over
+
+--
+
+**Development:** Writing the book takes me almost two years; along the way, I add many features to ggplot2 and become a member of the ggplot2 team
+
+--
+
+**Climax:** The book is released in April 2019
+
+--
+
+**Ending:** Now I'm a dataviz teacher
+
+
+---
+
+## Other story structures
+
+<br><br>
+
+--
+
+.center[
+Lead
+]
+
+--
+
+.center[
+<img src = "telling-a-story_files/arrow.svg", width = 3%, style = "margin-top: -0.5em; margin-bottom: -1em"></img>
+
+Development
+]
+
+--
+
+.absolute-bottom-right[
+(Commonly used in newspaper articles)
+]
+
+---
+
+## Mapping my story onto this format
+
+--
+
+**Lead:** Because I see the need for more education in data visualization, I have written an entire book about the topic
+
+--
+
+**Development:** I had previously written an R package to improve figure design, but it wasn't sufficient: Good judgement cannot be automated
+
+--
+
+So I wrote a book; the book is entirely about concepts, not about coding, and it is meant as a resource for anybody doing data visualizations, regardless of their preferred visualization software
+
+---
+
+## Writing a scientific paper: The Introduction
+
+--
+
+Three paragraphs:
+
+--
+
+**Paragraph 1:** What is the broad research area?<br>(Opening)
+
+--
+
+**Paragraph 2:** What specifically do we not know?<br>(Challenge)
+
+--
+
+**Paragraph 3:** What was done, what was found?<br>(Action/Resolution)
+
+
+---
+
+## Writing a scientific paper: The Results section
+
+--
+
+Repeat the following structure for each experiment/analysis/figure:
+
+--
+
+- What do we want to know? (Challenge)
+
+--
+
+- What did we do? (Action)
+
+--
+
+- What did we observe? (Results from the action)
+
+--
+
+Don't interpret the findings, just report them
+
+
+---
+
+## Writing a scientific paper: The Discussion section
+
+--
+
+First paragraph, repeat everything said so far:
+
+--
+
+* What do we want to know?
+
+--
+
+* What did we do?
+
+--
+
+* What did we see?
+
+--
+
+<br>
+Subsequent paragraphs, elaborate on these issues:
+
+--
+
+* How can we interpret our findings?
+
+--
+
+* How do our findings relate to other works in the field?
+
+--
+
+* What are weaknesses/drawbacks of our work?
+
+
+---
+class: center middle
+
+## Telling a story with figures
+
+---
+
+## Example: Preprints in biology
 
 .center[
 ```{r preprints-part1, cache = params$cache, echo = FALSE, fig.width = 7.5, fig.asp = 0.618, dev = "svg"}
@@ -139,19 +381,42 @@ df_preprints %>%
 ```
 ]
 
+.absolute-bottom-right[
+Opening
+]
+
+
 ???
 
 Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
 
---
+
+---
+
+
+## Example: Preprints in biology
+
+.center[
+![](`r knitr::fig_chunk("preprints-part1", "svg")`)
+]
+
 
 <div style = "position: absolute; top: 50%; left: 57%; width: 3.8in">
 What happened in 2014 to curtail the growth?
 </div>
 
+.absolute-bottom-right[
+Challenge
+]
+
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
 ---
 
-## Graphical example: Preprints in biology
+## Example: Preprints in biology
 
 .center[
 ```{r preprints-part2, cache = params$cache, echo = FALSE, fig.width = 7.5, fig.asp = 0.618, dev = "svg"}
@@ -181,6 +446,10 @@ ggplot(df_preprints, aes(date, count, color = archive)) +
 ```
 ]
 
+.absolute-bottom-right[
+Resolution
+]
+
 <div style = "position: absolute; top: 65%; left: 60%; width: 3.8in">
 bioRxiv opened in 2014
 </div>
@@ -204,6 +473,8 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 ---
 
 ## Prepare figures that make a clear point
+
+--
 
 .center[
 ```{r arrival-delay-vs-distance, cache = params$cache, echo = FALSE, message = FALSE, fig.width = 7.5, fig.asp = 0.618, dev = "svg"}
@@ -333,6 +604,12 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 
 ---
 
+## Make your figures memorable
+
+
+
+---
+
 background-image: url("https://clauswilke.com/dataviz/telling_a_story_files/figure-html/petownership-bar-1.png")
 background-position: left 50% top 60%
 background-size: 65%
@@ -363,3 +640,5 @@ Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.
 ## Further reading
 
 - Fundamentals of Data Visualization: [Chapter 29: Telling a story and making a point](https://clauswilke.com/dataviz/telling-a-story.html)
+
+- Joshua Schimel (2011) Writing Science: How to Write Papers That Get Cited and Proposals That Get Funded

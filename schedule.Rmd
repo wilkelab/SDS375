@@ -181,6 +181,13 @@ knitr::opts_chunk$set(echo = FALSE)
 - [Slides](slides/compound-figures.html)
 - [Worksheet](worksheets/compound-figures.Rmd)
 
+### 25. Apr 29, 2021—Telling a story
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/telling-a-story.html)
+- There is no accompanying worksheet
+
 ## Homeworks
 
 All homeworks are due by 11:00pm on the day they are due. Homeworks need to be submitted as pdf files on Canvas.
