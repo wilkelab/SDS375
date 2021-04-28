@@ -401,7 +401,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 ]
 
 
-<div style = "position: absolute; top: 50%; left: 57%; width: 3.8in">
+<div style = "position: absolute; top: 50%; left: 57%; width: 3.8in; background: white;">
 What happened in 2014 to curtail the growth?
 </div>
 
@@ -450,7 +450,7 @@ ggplot(df_preprints, aes(date, count, color = archive)) +
 Resolution
 ]
 
-<div style = "position: absolute; top: 65%; left: 60%; width: 3.8in">
+<div style = "position: absolute; top: 65%; left: 60%; width: 3.8in; background: white;">
 bioRxiv opened in 2014
 </div>
 
