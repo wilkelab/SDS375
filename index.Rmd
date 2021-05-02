@@ -34,7 +34,7 @@ To run any of the materials locally on your own machine, you will need the follo
 - A recent version of R, [download from here.](https://cloud.r-project.org/)
 - A recent version of RStudio, [download from here.](https://rstudio.com/products/rstudio/download/#download)
 - The following R packages:    
-  broom, cluster, colorspace, corrr, cowplot, distill, gapminder, GGally, gganimate,  ggiraph, ggdendro, ggdist, ggforce, ggplot2movies, ggpointdensity, ggraph, ggrepel, ggridges, ggtext, ggthemes, gifski, glue, knitr, learnr, lemon, magick, MASS, Matrix, nycflights13, palmerpenguins, patchwork, plotly, plotROC, rgdal, rmarkdown, sf, tidymodels, tidyverse, transformr, treemapify, umap
+  broom, cluster, colorspace, corrr, cowplot, distill, gapminder, GGally, gganimate,  ggiraph, ggdendro, ggdist, ggforce, ggplot2movies, ggpointdensity, ggraph, ggrepel, ggridges, ggtext, ggthemes, gifski, glue, knitr, learnr, lemon, magick, margins, MASS, Matrix, nycflights13, palmerpenguins, patchwork, plotly, plotROC, rgdal, rmarkdown, sf, tidymodels, tidyverse, transformr, treemapify, umap, xaringan
 
 You can install all required R packages at once by running the following code in the R command line:
 
@@ -45,9 +45,9 @@ install.packages(
     "GGally", "gganimate", "ggiraph", "ggdendro", "ggdist", "ggforce",
     "ggplot2movies", "ggpointdensity", "ggraph",  "ggrepel", "ggridges",
     "ggtext", "ggthemes", "gifski", "glue", "knitr", "learnr", "lemon", "magick",
-    "MASS", "Matrix", "nycflights13", "palmerpenguins", "patchwork", "plotly",
+    "margins", "MASS", "Matrix", "nycflights13", "palmerpenguins", "patchwork", "plotly",
     "plotROC", "rgdal", "rmarkdown", "sf", "tidymodels", "tidyverse", "transformr",
-    "treemapify", "umap"
+    "treemapify", "umap", "xaringan"
   )
 )
 ```
