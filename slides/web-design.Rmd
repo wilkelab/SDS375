@@ -1,0 +1,669 @@
+---
+title: "Introduction to web design"
+author: "Claus O. Wilke"
+date: "last updated: `r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: [default, "Wilke-slides-theme.css"]
+    lib_dir: libs
+    nature:
+      ratio: '16:9'
+      highlightStyle: github
+      highlightLines: true
+      slideNumberFormat: ''
+      titleSlideClass: [center, middle]
+params:
+  cache: TRUE
+---
+
+```{r setup, include=FALSE, echo=FALSE, message = FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(comment = "")
+
+library(tidyverse)
+library(cowplot)
+library(colorspace)
+library(here)
+
+# ggplot2 settings so plots scale well for slide size 
+theme_set(theme_gray(16)) # 16 for full width, 18 for half width 
+update_geom_defaults("point", list(size = 2.0)) # 2 for full width, 2.5 for half width
+```
+
+## Anatomy of a web site
+
+--
+
+Web sites consist of three components:
+
+--
+
+**HTML:** Content of the site
+
+--
+
+**CSS:** Appearance of the site
+
+--
+
+**JavaScript:** Interactivity
+
+--
+
+We won't be discussing JavaScript here
+
+---
+
+```{css echo = FALSE}
+.html-example {
+  padding: 1em;
+  border: solid 0.5px black;
+}
+
+```
+
+## Block and inline elements
+
+--
+
+`<div>`: Contents stacked vertically
+
+--
+
+`<span>`: Contents placed inline
+
+---
+
+## Block and inline elements
+
+.small-font.pull-left[
+HTML input:
+
+```HTML
+<div>This</div>
+<div>is</div>
+<div>an</div>
+<div>example</div>
+```
+]
+
+--
+
+.small-font.pull-right[
+Rendered output:
+
+.html-example[
+<div>This</div>
+<div>is</div>
+<div>an</div>
+<div>example</div>
+]]
+
+--
+
+`<div>` elements are stacked vertically from top to bottom
+
+---
+
+## Block and inline elements
+
+.small-font.pull-left[
+HTML input:
+
+```HTML
+<span>This</span>
+<span>is</span>
+<span>an</span>
+<span>example</span>
+```
+]
+
+--
+
+.small-font.pull-right[
+Rendered output:
+
+.html-example[
+<span>This</span>
+<span>is</span>
+<span>an</span>
+<span>example</span>
+]]
+
+--
+
+`<span>` elements are placed inline
+
+---
+
+## Elements can be nested
+
+.small-font.pull-left[
+HTML input:
+
+```HTML
+<div>
+  <span>This</span>
+  <span>is</span>
+</div>
+<div>
+  <span>an</span>
+  <span>example</span>
+<div>
+```
+]
+
+--
+
+.small-font.pull-right[
+Rendered output:
+
+.html-example[
+<div>
+  <span>This</span>
+  <span>is</span>
+</div>
+<div>
+  <span>an</span>
+  <span>example</span>
+<div>
+]]
+
+---
+
+## Elements are styled with CSS
+
+.small-font.pull-left[
+HTML input:
+
+```HTML
+This is an <span>example</span>
+```
+]
+
+---
+
+## Elements are styled with CSS
+
+.small-font.pull-left[
+HTML input:
+
+```HTML
+This is an <span>example</span>
+```
+
+CSS input:
+
+```CSS
+span { 
+  color: #91322F;
+  font-weight: bold;
+}
+```
+]
+
+--
+
+.small-font.pull-right[
+Rendered output:
+
+.html-example[
+This is an <span style = "color: #91322F; font-weight: bold;">example</span>
+]]
+
+---
+
+## Elements are styled with CSS
+
+.small-font.pull-left[
+HTML input:
+
+```HTML
+<div>
+This is an <span>example</span>
+</div>
+```
+
+CSS input:
+
+```CSS
+span { color: #91322F; }
+div {
+  background-color: #D4E1F3;
+}
+```
+]
+
+.small-font.pull-right[
+Rendered output:
+
+.html-example[
+<div style = "background-color: #D4E1F3;">
+This is an <span style = "color: #91322F;">example</span>
+</div>
+]]
+
+
+
+---
+
+## Elements are styled with CSS
+
+.small-font.pull-left[
+HTML input:
+
+```HTML
+<div>
+This is an <span>example</span>
+</div>
+```
+
+CSS input:
+
+```CSS
+span { color: #91322F; }
+div {
+  background-color: #D4E1F3;
+  padding: 36px 8px 24px 8px;
+}
+```
+]
+
+.small-font.pull-right[
+Rendered output:
+
+.html-example[
+<div style = "background-color: #D4E1F3; padding: 36px 8px 24px 8px;">
+This is an <span style = "color: #91322F;">example</span>
+</div>
+]]
+
+---
+
+## Elements are styled with CSS
+
+.small-font.pull-left[
+HTML input:
+
+```HTML
+<div>
+This is an <span>example</span>
+</div>
+```
+
+CSS input:
+
+```CSS
+span {
+  color: #91322F;
+  background-color: #D4E1F3;
+  padding: 36px 8px 24px 8px;
+}
+```
+]
+
+.pull-right[.small-font[
+Rendered output:
+
+.html-example[
+<div>
+This is an <span style = "color: #91322F; background-color: #D4E1F3; padding: 36px 8px 24px 8px;">example</span>
+</div>
+]]]
+
+
+---
+
+## Elements are styled with CSS
+
+.small-font.pull-left[
+HTML input:
+
+```HTML
+<div>
+This is an <span>example</span>
+</div>
+```
+
+CSS input:
+
+```CSS
+span {
+  color: #91322F;
+  background-color: #D4E1F3;
+  padding: 36px 8px 24px 8px;
+}
+```
+]
+
+.small-font.pull-right[
+Rendered output:
+
+.html-example[
+<div>
+This is an <span style = "color: #91322F; background-color: #D4E1F3; padding: 36px 8px 24px 8px;">example</span>
+</div>
+]
+
+<br>
+Top and bottom padding don't affect the height of an inline element
+]
+
+---
+
+## Creating complex designs: CSS classes and selectors
+
+.small-font.pull-left.width-60[
+HTML input:
+
+```HTML
+This is <span class = "red">red</span>,
+<span class = "green">green</span>,
+and <span class = "blue">blue</span>
+text.
+```
+
+
+CSS input:
+
+```CSS
+.red { color: red; }
+.green { color: green; }
+.blue { color: blue; }
+```
+]
+
+.small-font.pull-right.width-35[
+Rendered output:
+
+.html-example[
+This is
+<span style = "color: red;">red</span>,
+<span style = "color: green;">green</span>,
+and
+<span style = "color: blue">blue</span>
+text.
+]]
+
+---
+
+## Creating complex designs: CSS classes and selectors
+
+.small-font.pull-left.width-60[
+HTML input:
+
+```HTML
+This is <span class = "red">red</span>,
+<span class = "green">green</span>,
+and <span class = "blue">blue</span>
+text.
+```
+
+
+CSS input:
+
+```CSS
+.red { color: red; }
+.green { color: green; }
+.blue { color: blue; }
+span { font-weight: bold; }
+```
+]
+
+.small-font.pull-right.width-35[
+Rendered output:
+
+.html-example[
+This is
+<span style = "color: red; font-weight: bold;">red</span>,
+<span style = "color: green; font-weight: bold;">green</span>,
+and
+<span style = "color: blue; font-weight: bold;">blue</span>
+text.
+]]
+
+---
+
+## Creating complex designs: CSS classes and selectors
+
+.small-font.pull-left.width-60[
+HTML input:
+
+```HTML
+This is <span class = "red">red</span>,
+<span class = "green">green</span>,
+and <span class = "blue">blue</span>
+text.
+```
+
+
+CSS input:
+
+```CSS
+.red { color: red; }
+.green { color: green; }
+.blue { color: blue; }
+span { font-weight: bold; }
+```
+]
+
+.small-font.pull-right.width-35[
+Rendered output:
+
+.html-example[
+This is
+<span style = "color: red; font-weight: bold;">red</span>,
+<span style = "color: green; font-weight: bold;">green</span>,
+and
+<span style = "color: blue; font-weight: bold;">blue</span>
+text.
+]]
+
+---
+
+## Creating complex designs: CSS classes and selectors
+
+.small-font.pull-left.width-60[
+HTML input:
+
+```HTML
+<div class = "blue">
+This is <span class = "red">red</span>,
+<span class = "green">green</span>,
+and <span class = "blue">blue</span>
+text.
+</div>
+```
+
+
+CSS input:
+
+```CSS
+.red { color: red; }
+.green { color: green; }
+.blue { color: blue; }
+span.blue { color: black; }
+```
+]
+
+.small-font.pull-right.width-35[
+Rendered output:
+
+.html-example[
+<div style = "color: blue;">
+This is
+<span style = "color: red;">red</span>,
+<span style = "color: green;">green</span>,
+and
+<span style = "color: black;">blue</span>
+text.
+</div>
+]]
+
+---
+class: center middle
+
+## Try this out for yourself: https://jsfiddle.net/
+
+---
+
+```{css echo = FALSE}
+.indent { padding-left: 3em;}
+```
+
+## Making a website with R
+
+Personal website/blog/simple project:
+
+**distill:** ["Scientific and technical writing, native to the web"](https://rstudio.github.io/distill/)<br>
+.indent[Example: https://wilkelab.org/SDS375/]
+
+--
+
+**blogdown:** ["Creating Websites with R Markdown"](https://bookdown.org/yihui/blogdown/)<br>
+.indent[Example: https://clauswilke.com/]
+
+--
+
+<br>
+Book-format long document
+
+**bookdown:** ["Authoring Books and Technical Documents with R Markdown"](https://bookdown.org/yihui/bookdown/)<br>
+.indent[Example: https://clauswilke.com/dataviz]
+
+
+---
+
+## Making a website with R
+
+Interactive app:
+
+**shiny:** ["Mastering Shiny"](https://mastering-shiny.org/)<br>
+.indent[Examples: Interactive tutorials, color picker app]<br>
+
+--
+
+.move-up-1em[
+.indent[More examples: [Shiny Gallery](https://shiny.rstudio.com/gallery/)]
+]
+
+--
+
+<br>
+Presentation:
+
+**xaringan:** ["xaringan Presentations"](https://bookdown.org/yihui/rmarkdown/xaringan.html)<br>
+.indent[Example: [This presentation](https://wilkelab.org/SDS375/slides/web-design.Rmd)]
+
+---
+class: center middle
+
+## Making a website with **distill**
+
+---
+
+background-image: url("web-design_files/distill-package-1.png")
+background-position: left 50% top 50%
+background-size: 85%
+
+---
+
+background-image: url("web-design_files/distill-package-2.png")
+background-position: left 50% top 50%
+background-size: 85%
+
+---
+
+background-image: url("web-design_files/distill-package-3.png")
+background-position: left 50% top 50%
+background-size: 85%
+
+---
+
+background-image: url("web-design_files/distill-package-4.png")
+background-position: left 50% top 50%
+background-size: 85%
+
+---
+class: center middle
+
+## Building the site
+
+---
+
+background-image: url("web-design_files/distill-build-1.png")
+background-position: left 50% top 50%
+background-size: 85%
+
+---
+
+background-image: url("web-design_files/distill-build-2.png")
+background-position: left 50% top 50%
+background-size: 85%
+
+---
+
+background-image: url("web-design_files/distill-build-3.png")
+background-position: left 50% top 50%
+background-size: 85%
+
+---
+class: center middle
+
+## Getting the site online: Netlify drop
+
+---
+
+background-image: url("web-design_files/netlify-1.png")
+background-position: left 50% top 50%
+background-size: 85%
+
+---
+
+background-image: url("web-design_files/netlify-2.png")
+background-position: left 50% top 50%
+background-size: 85%
+
+---
+
+background-image: url("web-design_files/netlify-3.png")
+background-position: left 50% top 50%
+background-size: 85%
+
+.absolute-bottom-right[
+Upload URL: https://app.netlify.com/drop
+]
+
+---
+
+background-image: url("web-design_files/netlify-4.png")
+background-position: left 50% top 50%
+background-size: 85%
+
+---
+
+## Alternatives to Netlify
+
+--
+
+- [GitHub pages](https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages)
+
+--
+
+- [Site44](https://www.site44.com/)
+
+--
+
+- Any webhosting service
+
+--
+
+For details and more options, see [here](https://rstudio.github.io/distill/publish_website.html)
+
+---
+
+
+## Further reading
+
+- **distill:** https://rstudio.github.io/distill/
+- **blogdown:** https://bookdown.org/yihui/blogdown/
