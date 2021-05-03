@@ -58,6 +58,8 @@ We won't be discussing JavaScript here
 .html-example {
   padding: 1em;
   border: solid 0.5px black;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 ```
@@ -79,7 +81,7 @@ We won't be discussing JavaScript here
 .small-font.pull-left[
 HTML input:
 
-```HTML
+```html
 <div>This</div>
 <div>is</div>
 <div>an</div>
@@ -110,7 +112,7 @@ Rendered output:
 .small-font.pull-left[
 HTML input:
 
-```HTML
+```html
 <span>This</span>
 <span>is</span>
 <span>an</span>
@@ -141,7 +143,7 @@ Rendered output:
 .small-font.pull-left[
 HTML input:
 
-```HTML
+```html
 <div>
   <span>This</span>
   <span>is</span>
@@ -176,7 +178,7 @@ Rendered output:
 .small-font.pull-left[
 HTML input:
 
-```HTML
+```html
 This is an <span>example</span>
 ```
 ]
@@ -188,13 +190,13 @@ This is an <span>example</span>
 .small-font.pull-left[
 HTML input:
 
-```HTML
+```html
 This is an <span>example</span>
 ```
 
 CSS input:
 
-```CSS
+```css
 span { 
   color: #91322F;
   font-weight: bold;
@@ -218,7 +220,7 @@ This is an <span style = "color: #91322F; font-weight: bold;">example</span>
 .small-font.pull-left[
 HTML input:
 
-```HTML
+```html
 <div>
 This is an <span>example</span>
 </div>
@@ -226,7 +228,7 @@ This is an <span>example</span>
 
 CSS input:
 
-```CSS
+```css
 span { color: #91322F; }
 div {
   background-color: #D4E1F3;
@@ -252,7 +254,7 @@ This is an <span style = "color: #91322F;">example</span>
 .small-font.pull-left[
 HTML input:
 
-```HTML
+```html
 <div>
 This is an <span>example</span>
 </div>
@@ -260,7 +262,7 @@ This is an <span>example</span>
 
 CSS input:
 
-```CSS
+```css
 span { color: #91322F; }
 div {
   background-color: #D4E1F3;
@@ -285,7 +287,7 @@ This is an <span style = "color: #91322F;">example</span>
 .small-font.pull-left[
 HTML input:
 
-```HTML
+```html
 <div>
 This is an <span>example</span>
 </div>
@@ -293,7 +295,7 @@ This is an <span>example</span>
 
 CSS input:
 
-```CSS
+```css
 span {
   color: #91322F;
   background-color: #D4E1F3;
@@ -319,7 +321,7 @@ This is an <span style = "color: #91322F; background-color: #D4E1F3; padding: 36
 .small-font.pull-left[
 HTML input:
 
-```HTML
+```html
 <div>
 This is an <span>example</span>
 </div>
@@ -327,7 +329,7 @@ This is an <span>example</span>
 
 CSS input:
 
-```CSS
+```css
 span {
   color: #91322F;
   background-color: #D4E1F3;
@@ -356,7 +358,7 @@ Top and bottom padding don't affect the height of an inline element
 .small-font.pull-left.width-60[
 HTML input:
 
-```HTML
+```html
 This is <span class = "red">red</span>,
 <span class = "green">green</span>,
 and <span class = "blue">blue</span>
@@ -366,7 +368,7 @@ text.
 
 CSS input:
 
-```CSS
+```css
 .red { color: red; }
 .green { color: green; }
 .blue { color: blue; }
@@ -392,7 +394,7 @@ text.
 .small-font.pull-left.width-60[
 HTML input:
 
-```HTML
+```html
 This is <span class = "red">red</span>,
 <span class = "green">green</span>,
 and <span class = "blue">blue</span>
@@ -402,7 +404,7 @@ text.
 
 CSS input:
 
-```CSS
+```css
 .red { color: red; }
 .green { color: green; }
 .blue { color: blue; }
@@ -429,44 +431,7 @@ text.
 .small-font.pull-left.width-60[
 HTML input:
 
-```HTML
-This is <span class = "red">red</span>,
-<span class = "green">green</span>,
-and <span class = "blue">blue</span>
-text.
-```
-
-
-CSS input:
-
-```CSS
-.red { color: red; }
-.green { color: green; }
-.blue { color: blue; }
-span { font-weight: bold; }
-```
-]
-
-.small-font.pull-right.width-35[
-Rendered output:
-
-.html-example[
-This is
-<span style = "color: red; font-weight: bold;">red</span>,
-<span style = "color: green; font-weight: bold;">green</span>,
-and
-<span style = "color: blue; font-weight: bold;">blue</span>
-text.
-]]
-
----
-
-## Creating complex designs: CSS classes and selectors
-
-.small-font.pull-left.width-60[
-HTML input:
-
-```HTML
+```html
 <div class = "blue">
 This is <span class = "red">red</span>,
 <span class = "green">green</span>,
@@ -478,7 +443,7 @@ text.
 
 CSS input:
 
-```CSS
+```css
 .red { color: red; }
 .green { color: green; }
 .blue { color: blue; }
@@ -504,6 +469,157 @@ text.
 class: center middle
 
 ## Try this out for yourself: https://jsfiddle.net/
+
+---
+class: center middle
+
+## A few more tags to know
+
+
+---
+
+## The `<img>` tag: images
+
+.small-font[
+HTML input:
+
+```html
+<img src = "https://clauswilke.com/dataviz/cover.png", width = 30% />
+```
+
+Rendered output:
+
+
+.width-60.html-example[
+<img src = "https://clauswilke.com/dataviz/cover.png", width = 30% />
+]]
+
+
+---
+
+## The `<img>` tag: images
+
+.small-font[
+HTML input:
+
+```html
+<img src = "https://clauswilke.com/dataviz/cover.png", width = 100% />
+```
+
+Rendered output:
+
+
+.width-60.html-example[
+<img src = "https://clauswilke.com/dataviz/cover.png", width = 100% />
+]]
+
+
+---
+
+## The `<a>` tag: links
+
+.small-font[
+HTML input:
+
+```html
+My book on data visualization:
+<a href = "https://clauswilke.com/dataviz/">
+Fundamentals of Data Visualization</a>
+```
+
+Rendered output:
+
+
+.width-60.html-example[
+My book on data visualization:
+<a href = "https://clauswilke.com/dataviz/">
+Fundamentals of Data Visualization</a>
+]]
+
+---
+
+## The `<br>` tag: line breaks
+
+.small-font[
+HTML input:
+
+```html
+My book on data visualization:<br>
+<a href = "https://clauswilke.com/dataviz/">
+Fundamentals of Data Visualization</a>
+```
+
+Rendered output:
+
+
+.width-60.html-example[
+My book on data visualization:<br>
+<a href = "https://clauswilke.com/dataviz/">
+Fundamentals of Data Visualization</a>
+]]
+
+---
+
+## The `<ul>` and `<li>` tags: unordered lists
+
+.small-font.pull-left[
+HTML input:
+
+```html
+Some fruit:
+
+<ul>
+  <li>Apples</li>
+  <li>Oranges</li>
+  <li>Bananas</li>
+</ul>
+```
+]
+
+.small-font.pull-right[
+Rendered output:
+
+.html-example[
+Some fruit:
+
+<ul>
+  <li>Apples</li>
+  <li>Oranges</li>
+  <li>Bananas</li>
+</ul>
+]]
+
+---
+
+## The `<ol>` and `<li>` tags: ordered lists
+
+.small-font.pull-left[
+HTML input:
+
+```html
+Some fruit:
+
+<ol>
+  <li>Apples</li>
+  <li>Oranges</li>
+  <li>Bananas</li>
+</ol>
+```
+]
+
+.small-font.pull-right[
+Rendered output:
+
+.html-example[
+Some fruit:
+
+<ol>
+  <li>Apples</li>
+  <li>Oranges</li>
+  <li>Bananas</li>
+</ol>
+]]
+
 
 ---
 
@@ -665,5 +781,8 @@ For details and more options, see [here](https://rstudio.github.io/distill/publi
 
 ## Further reading
 
-- **distill:** https://rstudio.github.io/distill/
-- **blogdown:** https://bookdown.org/yihui/blogdown/
+- MDN Web Docs: [Learn to style HTML using CSS
+](https://developer.mozilla.org/en-US/docs/Learn/CSS)
+- w3schools.com: [CSS Tutorial](https://www.w3schools.com/css/default.asp)
+- **distill** package: [Scientific and technical writing, native to the web](https://rstudio.github.io/distill/)
+- **xaringan** package: [xaringan Presentations](https://bookdown.org/yihui/rmarkdown/xaringan.html)

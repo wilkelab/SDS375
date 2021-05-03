@@ -188,6 +188,13 @@ knitr::opts_chunk$set(echo = FALSE)
 - [Slides](slides/telling-a-story.html)
 - There is no accompanying worksheet
 
+### 26. May 4, 2021—Introduction to web design
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/web-design.html)
+
+
 ## Homeworks
 
 All homeworks are due by 11:00pm on the day they are due. Homeworks need to be submitted as pdf files on Canvas.
