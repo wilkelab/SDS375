@@ -193,7 +193,7 @@ knitr::opts_chunk$set(echo = FALSE)
 <p class="nospace">Materials:</p>
 
 - [Slides](slides/web-design.html)
-
+- [Worksheet](slides/web-design-worksheet.html)
 
 ## Homeworks
 

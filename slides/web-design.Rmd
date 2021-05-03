@@ -19,15 +19,6 @@ params:
 ```{r setup, include=FALSE, echo=FALSE, message = FALSE}
 options(htmltools.dir.version = FALSE)
 knitr::opts_chunk$set(comment = "")
-
-library(tidyverse)
-library(cowplot)
-library(colorspace)
-library(here)
-
-# ggplot2 settings so plots scale well for slide size 
-theme_set(theme_gray(16)) # 16 for full width, 18 for half width 
-update_geom_defaults("point", list(size = 2.0)) # 2 for full width, 2.5 for half width
 ```
 
 ## Anatomy of a web site

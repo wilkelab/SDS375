@@ -123,6 +123,8 @@ navbar:
           href: worksheets/overplotting.Rmd
         - text: "Class 24: Compound figures"
           href: worksheets/compound-figures.Rmd
+        - text: "Class 26: Introduction to web design"
+          href: slides/web-design-worksheet.html
 
  
 output: distill::distill_article
