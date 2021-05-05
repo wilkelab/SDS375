@@ -660,7 +660,7 @@ Interactive app:
 Presentation:
 
 **xaringan:** ["xaringan Presentations"](https://bookdown.org/yihui/rmarkdown/xaringan.html)<br>
-.indent[Example: [This presentation](https://wilkelab.org/SDS375/slides/web-design.Rmd)]
+.indent[Example: [This presentation](https://wilkelab.org/SDS375/slides/web-design.html)]
 
 ---
 class: center middle
