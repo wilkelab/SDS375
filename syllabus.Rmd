@@ -111,10 +111,9 @@ This class draws heavily from materials presented in the following two books. Bo
 
 25.     Telling a story
 
-26.     Web technologies            HTML, CSS
+26.     Web technologies            HTML, CSS, **distill** package
 
-27.     Image formats, image        **magick** package
-        manipulation
+27.     Animations                  **gganimate** package
 ----------------------------------------------------------------
 :::
 
