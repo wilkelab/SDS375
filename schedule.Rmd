@@ -195,6 +195,14 @@ knitr::opts_chunk$set(echo = FALSE)
 - [Slides](slides/web-design.html)
 - [Worksheet](slides/web-design-worksheet.html)
 
+
+### 27. May 6, 2021—Functions and functional programming
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/functional-programming.html)
+
+
 ## Homeworks
 
 All homeworks are due by 11:00pm on the day they are due. Homeworks need to be submitted as pdf files on Canvas.
@@ -269,6 +277,7 @@ All homeworks are due by 11:00pm on the day they are due. Homeworks need to be s
 
 - [R Markdown template](assignments/HW9.Rmd)
 - [HTML](assignments/HW9.html)
+- [Solutions](assignments/HW9_solutions.html)
 
 ## Projects
 

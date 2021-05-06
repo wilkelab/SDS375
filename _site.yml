@@ -125,6 +125,7 @@ navbar:
           href: worksheets/compound-figures.Rmd
         - text: "Class 26: Introduction to web design"
           href: slides/web-design-worksheet.html
-
+        - text: "Class 27: Functions and functional programming"
+          href: slides/functional-programming.html
  
 output: distill::distill_article

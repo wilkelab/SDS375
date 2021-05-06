@@ -611,16 +611,24 @@ Note: This pipeline automatically processes all species in the dataset
 
 --
 
-- `for` loops bring in data logistics (indexing)
+- They often require us to think about data logistics (indexing)
 
 --
 
-- `for` loops cannot easily be parallelized or otherwise optimized
+- They encourage writing long, monolithic blocks of code
 
 --
 
-- most modern programming languages are moving away from `for` loops<br>
-  (examples: Python, Rust, even JavaScript)
+- They encourage iterative thinking over conceptual thinking
+
+--
+
+- They cannot easily be parallelized or otherwise optimized
+
+--
+
+- Most modern programming languages are moving away from `for` loops<br>
+  (examples: Python, Rust, JavaScript)
 
 ---
 
@@ -628,5 +636,5 @@ Note: This pipeline automatically processes all species in the dataset
 
 - R for Data Science: [Chapter 19: Functions](https://r4ds.had.co.nz/functions.html)
 - R for Data Science: [Chapter 21.5: The map functions](https://r4ds.had.co.nz/iteration.html#the-map-functions)
-
+- **purrr** reference documentation: [Apply a function to each element of a list or atomic vector](https://purrr.tidyverse.org/reference/map.html)
 
