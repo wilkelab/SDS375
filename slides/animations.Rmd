@@ -102,6 +102,10 @@ animate(
 ```
 ]
 
+.absolute-bottom-right.tiny-font[
+Data source: World Bank
+]
+
 ---
 
 ## Animations can create more engaging displays
@@ -146,6 +150,10 @@ animate(
   fps = params$fps
 )
 ```
+]
+
+.absolute-bottom-right.tiny-font[
+Data source: World Bank
 ]
 
 ---

@@ -69,8 +69,10 @@ navbar:
           href: slides/telling-a-story.html
         - text: "Class 26: Introduction to web design"
           href: slides/web-design.html
-        - text: "Class 27: Functions and functional programming"
+        - text: "Class 27a: Functions and functional programming"
           href: slides/functional-programming.html
+        - text: "Class 27b: Animations"
+          href: slides/animations.html
           
 
     - text: "Worksheets"

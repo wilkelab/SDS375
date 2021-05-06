@@ -196,11 +196,12 @@ knitr::opts_chunk$set(echo = FALSE)
 - [Worksheet](slides/web-design-worksheet.html)
 
 
-### 27. May 6, 2021—Functions and functional programming
+### 27. May 6, 2021—Functional programming & Animations
 
 <p class="nospace">Materials:</p>
 
-- [Slides](slides/functional-programming.html)
+- [Slides: Functional programming](slides/functional-programming.html)
+- [Slides: Animations](slides/animations.html)
 
 
 ## Homeworks
