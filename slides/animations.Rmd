@@ -1,0 +1,447 @@
+---
+title: "Animations"
+author: "Claus O. Wilke"
+date: "last updated: `r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: [default, "Wilke-slides-theme.css"]
+    lib_dir: libs
+    nature:
+      ratio: '16:9'
+      highlightStyle: github
+      highlightLines: true
+      slideNumberFormat: ''
+      titleSlideClass: [center, middle]
+params:
+  cache: TRUE
+  nframes: 200
+  fps: 20
+  res: 150
+---
+
+```{r setup, include=FALSE, echo=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(comment = "")
+
+library(tidyverse)
+library(here)
+library(cowplot)
+library(glue)
+library(ggrepel)
+library(gganimate)
+
+# ggplot2 settings so plots scale well for slide size 
+theme_set(theme_gray(16)) # 16 for full width, 18 for half width 
+update_geom_defaults("point", list(size = 2)) # 2 for full width, 2.5 for half width
+
+# gdp dataset
+gdp_ranked <- read_csv(here("datasets", "gdp_ranked.csv")) %>%
+  mutate(rank = fct_rev(factor(rank)))
+```
+
+## Animations can create more engaging displays
+
+.center.move-up-1em[
+```{r gdp-anim-bar-race, cache = params$cache, echo = FALSE, warning = FALSE, out.width = "50%"}
+p <- gdp_ranked %>%
+  mutate(
+    label = scales::comma(gdp, 1),
+    highlight = ifelse(country == "China", "China", "other")
+  ) %>%
+  ggplot(
+    aes(
+      gdp, rank, group = country,
+      color = highlight, fill = highlight
+    )
+  ) +
+  geom_col(alpha = 0.8) +
+  geom_text(
+    aes(x = -200, label = country),
+    hjust = 1, size = 12/.pt
+  ) +
+  geom_text(
+    aes(x = gdp + 200, label = label),
+    hjust = 0, size = 12/.pt
+  ) +
+  scale_color_manual(
+    aesthetics = c("color", "fill"),
+    values = c(
+      other = "gray35", China = "#AB4A39"
+    ),
+    guide = "none"
+  ) +
+  scale_x_continuous(
+    name = "GDP (billions USD)",
+    limits = 1000*c(-7, 23),
+    breaks = 1000*c(0, 5, 10, 15, 20),
+    labels = scales::comma
+  ) +
+  labs(
+    title = "China's rise in GDP",
+    subtitle = "Year: {closest_state}"
+  ) +
+  theme_minimal_vgrid(12, rel_small = 1) +
+  theme(
+    axis.text.y = element_blank(),
+    axis.title.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    axis.line.y = element_blank(),
+    axis.title.x = element_text(hjust = 1)
+  ) +
+  #facet_wrap(vars(year)) + NULL
+  transition_states(year, transition_length = 5)
+
+animate(
+  p,
+  width = 6*params$res,
+  height = 6*params$res,
+  res = params$res,
+  nframes = params$nframes,
+  fps = params$fps
+)
+```
+]
+
+---
+
+## Animations can create more engaging displays
+
+.center[
+```{r gdp-anim-lines-race, cache = params$cache, echo = FALSE, warning = FALSE, out.width = "66%"}
+p <- gdp_ranked %>%
+  filter(
+    #TRUE
+    country %in% c("China", "Japan", "United States", "Germany", "Brazil")
+  ) %>%
+  mutate(
+    label = glue::glue(" {country}")
+  ) %>%
+  ggplot(aes(year, gdp, color = country)) +
+  geom_line() +
+  geom_point(size = 3) +
+  geom_text_repel(
+    aes(label = label),
+    hjust = 0,
+    nudge_x = 1,
+    direction = "y",
+    xlim = c(NA, Inf),
+    size = 14/.pt
+  ) +
+  scale_y_log10(name = "GDP (billion USD)", labels = scales::comma) +
+  scale_color_manual(
+    values = c("#009E73", "#404040", "#0072B2", "#D55E00", "#CC79A7"),
+    guide = "none"
+  ) +
+  coord_cartesian(clip = "off") +
+  theme_minimal_hgrid(14, rel_small = 1) +
+  theme(plot.margin = margin(7, 100, 7, 7)) +
+  transition_reveal(year)
+
+animate(
+  p,
+  width = 8*params$res,
+  height = 0.618*8*params$res,
+  res = params$res,
+  nframes = params$nframes,
+  fps = params$fps
+)
+```
+]
+
+---
+
+## We make animations in R with **gganimate**
+
+.width-70[
+```r
+library(tidyverse)
+library(gganimate)
+
+# make fun animations
+...
+```
+]
+
+The **gganimate** package adds powerful animation tools to **ggplot2**
+
+<img src = "https://gganimate.com/reference/figures/logo.png", width = 15%, style = "position:absolute; top: 19%; right: 13%;" />
+
+---
+class: center middle
+
+## How should we think about making an animation?
+
+---
+
+## Think of an animation as faceting by time
+
+.center.move-up-1em[
+```{r gdp-anim-bar-facets, cache = params$cache, echo = FALSE, warning = FALSE, fig.width = 9, fig.height = 5.33, dev = "svg"}
+gdp_ranked %>%
+  filter(year > 1985 & year %% 5 == 0) %>%
+  mutate(
+    label = scales::comma(gdp, 1),
+    highlight = ifelse(country == "China", "China", "other")
+  ) %>%
+  ggplot(
+    aes(
+      gdp, rank, group = country,
+      color = highlight, fill = highlight
+    )
+  ) +
+  geom_col(alpha = 0.8) +
+  geom_text(
+    aes(x = -200, label = country),
+    hjust = 1, size = 8/.pt
+  ) +
+  geom_text(
+    aes(x = gdp + 200, label = label),
+    hjust = 0, size = 8/.pt
+  ) +
+  scale_color_manual(
+    aesthetics = c("color", "fill"),
+    values = c(
+      other = "gray35", China = "#AB4A39"
+    ),
+    guide = "none"
+  ) +
+  scale_x_continuous(
+    name = "GDP (billions USD)",
+    limits = 1000*c(-10, 23),
+    breaks = 1000*c(0, 5, 10, 15, 20),
+    labels = scales::comma
+  ) +
+  facet_wrap(vars(year), scales = "free_x") +
+  theme_minimal_vgrid(8, rel_small = 1) +
+  theme(
+    axis.text.y = element_blank(),
+    axis.title.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    axis.line.y = element_blank(),
+    axis.title.x = element_text(hjust = 1),
+    panel.grid.major.x = element_line(size = 0.4)
+  )
+```
+]
+
+---
+
+## We know how to make a faceted plot
+
+.tiny-font[
+```{r gdp-facet-demo, eval = FALSE}
+gdp_ranked %>%
+  filter(year > 1985 & year %% 5 == 0) %>%
+  ggplot(aes(gdp, rank)) +
+  geom_col(aes(fill = country)) +
+  facet_wrap(vars(year))
+```
+]
+
+.center[
+```{r gdp-facet-demo-out, ref.label = "gdp-facet-demo", cache = params$cache, echo = FALSE, warning = FALSE, fig.width = 6, fig.asp = 0.66, dev = "svg"}
+
+```
+]
+
+---
+
+## Making an animation is about as complicated
+
+.tiny-font[
+```{r eval = FALSE}
+gdp_ranked %>%
+  # gganimate uses the `group` aesthetic to track objects across frames
+  ggplot(aes(gdp, rank, group = country)) + 
+  geom_col(aes(fill = country)) +
+  transition_states(year, transition_length = 5)
+```
+]
+
+.center[
+```{r gdp-bar-race-demo, cache = params$cache, echo = FALSE, warning = FALSE, out.width = "40%"}
+p <- gdp_ranked %>%
+  ggplot(aes(gdp, rank, group = country)) +
+  geom_col(aes(fill = country)) +
+  transition_states(year, transition_length = 5)
+
+animate(
+  p,
+  width = 6*params$res,
+  height = 5*params$res,
+  res = params$res,
+  nframes = params$nframes,
+  fps = params$fps
+)
+```
+]
+
+---
+
+
+## Adding country names and plot title
+
+.tiny-font.pull-left.width-50[
+```{r gdp-anim-fancy, eval = FALSE}
+gdp_ranked %>%
+  ggplot(aes(gdp, rank, group = country)) +
+  geom_col(aes(fill = country)) +
+  geom_text(
+    aes(x = -200, label = country),
+    hjust = 1, size = 14/.pt
+  ) +
+  xlim(-7000, 23000) +
+  labs(title = "year: {closest_state}") +
+  theme_minimal_vgrid(14, rel_small = 1) +
+  theme(
+    axis.text.y = element_blank(),
+    axis.title.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    axis.line.y = element_blank()
+  ) + 
+  guides(fill = "none") +
+  transition_states(year, transition_length = 5)
+```
+]
+
+.pull-right.width-40[
+```{r gdp-anim-fancy-out, cache = params$cache, echo = FALSE, warning = FALSE, out.width = "100%"}
+p <- gdp_ranked %>%
+  ggplot(aes(gdp, rank, group = country)) +
+  geom_col(aes(fill = country)) +
+  geom_text(
+    aes(x = -200, label = country),
+    hjust = 1, size = 14/.pt
+  ) +
+  xlim(-7000, 23000) +
+  labs(title = "year: {closest_state}") +
+  theme_minimal_vgrid(14, rel_small = 1) +
+  theme(
+    axis.text.y = element_blank(),
+    axis.title.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    axis.line.y = element_blank()
+  ) + 
+  guides(fill = "none") +
+  transition_states(year, transition_length = 5)
+
+animate(
+  p,
+  width = 6*params$res,
+  height = 6*params$res,
+  res = params$res,
+  nframes = params$nframes,
+  fps = params$fps
+)
+```
+]
+
+---
+
+## We make time series with `transition_reveal()`
+
+.tiny-font.pull-left.width-50[
+```{r gdp-line-race-demo, eval = FALSE}
+selected <- c("China", "Japan",
+  "United States", "Germany", "Brazil")
+
+gdp_ranked %>%
+  filter(country %in% selected) %>%
+  ggplot(aes(year, gdp, color = country)) +
+  geom_line() +
+  geom_point(size = 3) +
+  scale_y_log10() +
+  transition_reveal(year)
+```
+]
+
+.pull-right.width-45[
+```{r gdp-line-race-demo-out, cache = params$cache, echo = FALSE, warning = FALSE, out.width = "100%"}
+selected <- c("China", "Japan",
+  "United States", "Germany", "Brazil")
+
+p <- gdp_ranked %>%
+  filter(country %in% selected) %>%
+  ggplot(aes(year, gdp, color = country)) +
+  geom_line() +
+  geom_point(size = 3) +
+  scale_y_log10() +
+  transition_reveal(year)
+
+animate(
+  p,
+  width = 6*params$res,
+  height = 0.618*6*params$res,
+  res = params$res,
+  nframes = params$nframes,
+  fps = params$fps
+)
+```
+]
+
+---
+
+## This works also with **ggrepel** for labeling
+
+.tiny-font.pull-left.width-50[
+```{r gdp-line-race-labeled, eval = FALSE}
+gdp_ranked %>%
+  filter(country %in% selected) %>%
+  ggplot(aes(year, gdp, color = country)) +
+  geom_line() +
+  geom_point(size = 3) +
+  geom_text_repel(
+    aes(label = country),
+    hjust = 0,
+    nudge_x = 2,
+    direction = "y",
+    xlim = c(NA, Inf)
+  ) +
+  scale_y_log10() +
+  guides(color = "none") +
+  coord_cartesian(clip = "off") +
+  theme(plot.margin = margin(7, 100, 7, 7)) +
+  transition_reveal(year)
+```
+]
+
+.pull-right.width-45[
+```{r gdp-line-race-labeled-out, cache = params$cache, echo = FALSE, warning = FALSE, out.width = "100%"}
+p <- gdp_ranked %>%
+  filter(country %in% selected) %>%
+  ggplot(aes(year, gdp, color = country)) +
+  geom_line() +
+  geom_point(size = 3) +
+  geom_text_repel(
+    aes(label = country),
+    hjust = 0,
+    nudge_x = 2,
+    direction = "y",
+    xlim = c(NA, Inf)
+  ) +
+  scale_y_log10() +
+  guides(color = "none") +
+  coord_cartesian(clip = "off") +
+  theme(plot.margin = margin(7, 100, 7, 7)) +
+  transition_reveal(year)
+
+animate(
+  p,
+  width = 6*params$res,
+  height = 0.618*6*params$res,
+  res = params$res,
+  nframes = params$nframes,
+  fps = params$fps
+)
+```
+]
+
+---
+
+## Further reading
+
+- **gganimate** documentation: [Getting started](https://gganimate.com/articles/gganimate.html)
+- **gganimate** reference documentation: [`transition_states()`](https://gganimate.com/reference/transition_states.html)
+- **gganimate** reference documentation: [`transition_reveal()`](https://gganimate.com/reference/transition_reveal.html)
+
+
