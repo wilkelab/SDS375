@@ -602,7 +602,7 @@ penguins %>%
 ```
 
 .small-font[
-Note: This pipeline automatically processes all species in the dataset
+Note: This pipeline automatically processes all species in the dataset, whatever they are called
 ]
 
 ---
