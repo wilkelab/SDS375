@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>Handling overlapping points</title>
+    <title>Dealing with issues of overplotting</title>
     <meta charset="utf-8" />
     <meta name="author" content="Claus O. Wilke" />
     <script src="libs/header-attrs/header-attrs.js"></script>
@@ -12,9 +12,9 @@
     <textarea id="source">
 class: center, middle, title-slide
 
-# Handling overlapping points
+# Dealing with issues of overplotting
 ### Claus O. Wilke
-### last updated: 2021-04-21
+### last updated: 2021-09-12
 
 ---
 
@@ -30,6 +30,10 @@ class: center, middle, title-slide
 ???
 
 Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+--
+
+Technical term for this problem: overplotting
 
 ---
 
@@ -50,6 +54,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 .center[
 ![](overplotting_files/figure-html/mpg-cty-displ-jitter-1.svg)&lt;!-- --&gt;
 ]
+
 
 ???
 
@@ -293,6 +298,10 @@ palette: ag_GrnYl
 .absolute-bottom-left[
 palette: SunsetDark
 ]
+
+
+---
+[//]: # "segment ends here"
 
 ---
 class: center middle
@@ -544,6 +553,8 @@ ggplot(blue_jays, aes(body_mass_g, head_length_mm)) +
 ![](overplotting_files/figure-html/hex-demo3-out-1.svg)&lt;!-- --&gt;
 ]
 
+---
+[//]: # "segment ends here"
 
 ---
 

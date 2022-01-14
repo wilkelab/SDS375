@@ -1,0 +1,517 @@
+---
+#############################################################
+#                                                           #
+# Click on "Run Document" in RStudio to run this worksheet. #
+#                                                           #
+#############################################################
+title: "Interactive plots"
+author: "Claus O. Wilke"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(tidyverse)
+library(sf)
+library(ggiraph)
+library(glue)
+library(cowplot)
+knitr::opts_chunk$set(echo = FALSE, comment = "", paged.print = FALSE)
+
+texas_income <- readRDS(url("https://wilkelab.org/SDS375/datasets/Texas_income.rds")) %>%
+  select(-county)
+
+US_census <- read_csv("https://wilkelab.org/SDS375/datasets/US_census.csv")
+tx_census <- US_census %>% 
+  filter(state == "Texas") %>%
+  select(FIPS, name, pop2010, area) %>%
+  extract(name, "county", regex = "(.+) County") %>%
+  mutate(
+    FIPS = as.character(FIPS),
+    popratio = pop2010/median(pop2010),
+  )
+
+texas_counties <- left_join(texas_income, tx_census, by = "FIPS")
+```
+
+## Introduction
+
+In this worksheet, we will discuss how to add some level of interactivity to **ggplot2** plots.
+
+We will be using the package **tidyverse** for general data manipulation and visualization, the package **sf** to handle simple features for geospatial plotting, the package **glue** for text formatting, the package **cowplot** for side-by-side plotting, and the package **ggiraph** for interactivity.
+
+```{r library-calls, echo = TRUE, eval = FALSE}
+# load required libraries
+library(tidyverse)
+library(sf)
+library(ggiraph)
+library(glue)
+```
+
+
+We will be working with the dataset `texas_counties`. This dataset  contains various pieces of information about each county in Texas, such as the number of people living in the county in 2010 (`pop2010`), the size of each county (column `area`), and the median income (`median_income`). The column `popratio` is the ratio of the number of inhabitants to the median across all counties. The dataset also contains the shape information about each county (stored in the `geometry` column). The column `FIPS` contains a five-digit id code that uniquely represents each county.
+
+```{r tx-counties, echo = TRUE}
+texas_counties
+```
+
+## Interactice scatterplots
+
+The **ggiraph** package provides the simplest means towards adding a moderate amount of interactivity into **ggplot2** plots. It makes it quite straightforward to produce interactive tooltips, interactive highlighting, and the ability to execute actions in the browser (such as opening a new page) when the user clicks on specific elements in the plot.
+
+As a first example, we will create an interactive version of the following plot, which shows median income in Texas counties versus the number of inhabitants of that county.
+
+```{r income-vs-popsize, echo = TRUE}
+texas_scatter <- texas_counties %>%
+  ggplot(aes(pop2010, median_income)) +
+  geom_point(na.rm = TRUE, size = 2) +
+  scale_x_log10()
+
+texas_scatter
+```
+
+To turn this plot interactive, we need to make at least the following three modifications:
+
+1. Replace the geom with the appropriate interactive version. For example, `geom_point()` is replaced by `geom_point_interactive()`.
+
+2. Add an interactive aesthetic. For example, the `tooltip` aesthetic sets the contents of tooltips that show when hovering over the data points.
+
+3. Display the interactive plot object by calling the `girafe()` function with the argument `ggobj`. For example, if your **ggplot2** plot is stored in a variable `p`, you would call `girafe(ggobj = p)`.
+
+Make these modifications to the above plot to create an interactive version.
+
+```{r income-vs-popsize-exercise, exercise = TRUE}
+texas_scatter <- texas_counties %>%
+  ggplot(aes(pop2010, median_income)) +
+  geom_point(na.rm = TRUE, size = 2) +
+  scale_x_log10()
+
+texas_scatter
+```
+
+```{r income-vs-popsize-exercise-hint}
+texas_scatter <- texas_counties %>%
+  ggplot(aes(pop2010, median_income)) +
+  geom_point_interactive(
+    aes(tooltip = ___),
+    na.rm = TRUE, size = 2
+  ) +
+  scale_x_log10()
+
+girafe(
+  ggobj = ___
+)
+```
+
+```{r income-vs-popsize-exercise-solution}
+texas_scatter <- texas_counties %>%
+  ggplot(aes(pop2010, median_income)) +
+  geom_point_interactive(
+    aes(tooltip = county),
+    na.rm = TRUE, size = 2
+  ) +
+  scale_x_log10()
+
+girafe(
+  ggobj = texas_scatter
+)
+```
+
+In addition to the `tooltip` aesthetic, there is also the `data_id` aesthetic, which enables highlighting of the selected point(s). If each element has its own `data_id` then elements get highlighted individually. Alternatively, if elements share their `data_id` value then they get highlighted jointly.
+
+First, try individual highlighting, by using `county` as the `data_id`.
+
+```{r income-vs-popsize-exercise2, exercise = TRUE}
+
+```
+
+```{r income-vs-popsize-exercise2-hint}
+texas_scatter <- texas_counties %>%
+  ggplot(aes(pop2010, median_income)) +
+  geom_point_interactive(
+    aes(
+      tooltip = county,
+      data_id = ___
+    ),
+    na.rm = TRUE, size = 2
+  ) +
+  scale_x_log10()
+
+girafe(
+  ggobj = texas_scatter
+)
+```
+
+```{r income-vs-popsize-exercise2-solution}
+texas_scatter <- texas_counties %>%
+  ggplot(aes(pop2010, median_income)) +
+  geom_point_interactive(
+    aes(
+      tooltip = county,
+      data_id = county
+    ),
+    na.rm = TRUE, size = 2
+  ) +
+  scale_x_log10()
+
+girafe(
+  ggobj = texas_scatter
+)
+```
+
+Next, try joint highlighting, by creating two groups: one for counties with a median income above $60,000 and one for all other counties.
+
+```{r income-vs-popsize-exercise3, exercise = TRUE}
+
+```
+
+```{r income-vs-popsize-exercise3-hint}
+texas_scatter <- texas_counties %>%
+  mutate(
+    income = ifelse(___)
+  ) %>%
+  ggplot(aes(pop2010, median_income, color = ___)) +
+  geom_point_interactive(
+    aes(
+      tooltip = county,
+      data_id = ___
+    ),
+    na.rm = TRUE, size = 2
+  ) +
+  scale_x_log10()
+
+girafe(
+  ggobj = texas_scatter
+)
+```
+
+```{r income-vs-popsize-exercise3-solution}
+texas_scatter <- texas_counties %>%
+  mutate(
+    income = ifelse(median_income > 60000, "high", "low")
+  ) %>%
+  ggplot(aes(pop2010, median_income, color = income)) +
+  geom_point_interactive(
+    aes(
+      tooltip = county,
+      data_id = income
+    ),
+    na.rm = TRUE, size = 2
+  ) +
+  scale_x_log10()
+
+girafe(
+  ggobj = texas_scatter
+)
+```
+
+You can customize how tooltips and highlighted data points appear by providing the argument `options` in the `girafe()` function. Options are separated out by tooltip options, hover options, etc. which are provided inside a `list()`. Tooltip options are set via `opts_tooltip()`, and hover options are set via `opts_hover()`. Both functions take an argument `css` which takes CSS declarations such as `background: #F5F5F5;` or `fill: blue;`. Thus, customization code could look as follows:
+
+```
+girafe(
+  ggobj = texas_scatter,
+  options = list(
+    opts_tooltip(
+      css = "background: #F5F5F5; color: black;"
+    ),
+    opts_hover(
+      css = "fill: orange;"
+    )
+  )
+)
+```
+
+Try this out.
+
+```{r income-vs-popsize-exercise4, exercise = TRUE}
+texas_scatter <- texas_counties %>%
+  ggplot(aes(pop2010, median_income)) +
+  geom_point_interactive(
+    aes(
+      tooltip = county,
+      data_id = county
+    ),
+    na.rm = TRUE, size = 2
+  ) +
+  scale_x_log10()
+
+girafe(
+  ggobj = texas_scatter,
+  options = ___
+)
+```
+
+```{r income-vs-popsize-exercise4-hint}
+texas_scatter <- texas_counties %>%
+  ggplot(aes(pop2010, median_income)) +
+  geom_point_interactive(
+    aes(
+      tooltip = county,
+      data_id = county
+    ),
+    na.rm = TRUE, size = 2
+  ) +
+  scale_x_log10()
+
+girafe(
+  ggobj = texas_scatter,
+  options = list(
+    opts_tooltip(
+      css = ___
+    ),
+    opts_hover(
+      css = ___
+    )
+  )
+)
+```
+
+```{r income-vs-popsize-exercise4-solution}
+texas_scatter <- texas_counties %>%
+  ggplot(aes(pop2010, median_income)) +
+  geom_point_interactive(
+    aes(
+      tooltip = county,
+      data_id = county
+    ),
+    na.rm = TRUE, size = 2
+  ) +
+  scale_x_log10()
+
+girafe(
+  ggobj = texas_scatter,
+  options = list(
+    opts_tooltip(
+      css = "background: #F5F5F5; color: #191970;"
+    ),
+    opts_hover(
+      css = "fill: #D83832;"
+    )
+  )
+)
+```
+
+Also try different CSS properties to see which effect they have. For example, for the tooltip CSS, try `padding` [(docs)](https://developer.mozilla.org/en-US/docs/Web/CSS/padding). For the hove CSS, try `stroke` [(docs)](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke) or `stroke-width` [(docs)](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-width).
+
+## Interactive maps
+
+We can also make interactive maps. This requires using `geom_sf_interactive()` instead of `geom_sf()`, and again using aesthetics such as `tooltip` or `data_id`.
+
+As an example, consider this non-interactive plot of median income in Texas counties.
+
+```{r texas-map, echo = TRUE}
+texas_county_map <- texas_counties %>%
+  ggplot(aes(fill = median_income)) +
+  geom_sf(
+    size = 0.2, color = "black"
+  ) +
+  scale_fill_viridis_c(option = "E") +
+  theme_minimal()
+
+texas_county_map
+```
+
+Make it interactive, such that by hovering over the map counties get highlighted and a tooltip shows the county name.
+
+```{r texas-map-exercise, exercise = TRUE}
+
+```
+
+```{r texas-map-exercise-hint}
+```
+
+```{r texas-map-exercise-solution}
+texas_county_map <- texas_counties %>%
+  ggplot(aes(fill = median_income)) +
+  geom_sf_interactive(
+    aes(
+      tooltip = county,
+      data_id = county
+    ),
+    size = 0.2, color = "black"
+  ) +
+  scale_fill_viridis_c(option = "E") +
+  theme_minimal()
+
+girafe(
+  ggobj = texas_county_map
+)
+```
+
+We can also make the counties in the map clickable, by providing an `onclick` aesthetic. The aesthetic needs to be provided with strings holding JavaScript code that should be executed when the user clicks on the element. For example, to open the Wikipedia page for Travis County we would need to provide the following code snippet:
+```
+window.open("https://en.wikipedia.org/wiki/Travis County, Texas")
+```
+
+Integrate this into the previous map by writing code that generates the JavaScript snippets for each county and maps them onto the `onclick` aesthetic. **Hint:** The `glue()` function will be very helpful here.
+
+```{r texas-map-exercise2, exercise = TRUE}
+
+```
+
+
+```{r texas-map-exercise2-hint}
+texas_county_map <- texas_counties %>%
+  mutate(
+    onclick = glue(___)
+  ) %>%
+  ggplot(aes(fill = median_income)) +
+  geom_sf_interactive(
+    aes(
+      tooltip = county,
+      data_id = county,
+      onclick = ___
+    ),
+    size = 0.2, color = "black"
+  ) +
+  scale_fill_viridis_c(option = "E") +
+  theme_minimal()
+
+girafe(
+  ggobj = texas_county_map
+)
+```
+
+```{r texas-map-exercise2-solution}
+texas_county_map <- texas_counties %>%
+  mutate(
+    onclick = glue('window.open("https://en.wikipedia.org/wiki/{county} County, Texas")')
+  ) %>%
+  ggplot(aes(fill = median_income)) +
+  geom_sf_interactive(
+    aes(
+      tooltip = county,
+      data_id = county,
+      onclick = onclick
+    ),
+    size = 0.2, color = "black"
+  ) +
+  scale_fill_viridis_c(option = "E") +
+  theme_minimal()
+
+girafe(
+  ggobj = texas_county_map
+)
+```
+
+Interactive maps become particularly useful if you combine them with one or more additional plots that show further information, e.g. a scatterplot. Then, we can highlight a county in the map and the corresponding data point in the scatterplot or vice versa. We will do this by combining the scatter plot from the previous section with the Texas map from this section. You can combine two plots with the function `plot_grid()`, which takes as argument the two plots to combine, e.g. `plot_grid(texas_scatter, texas_county_map)`. This can be used as the `ggobj` in `girafe()`.
+
+**Hint:** Set `width_svg = 8` and `height_svg = 4` in the `girafe()` function to obtain an appropriate plot layout.
+
+```{r texas-map-exercise3, exercise = TRUE}
+
+```
+
+```{r texas-map-exercise3-hint-1}
+# first make the scatter plot
+texas_scatter <- texas_counties %>%
+  ggplot(aes(pop2010, median_income)) +
+  geom_point_interactive(
+    aes(
+      tooltip = county,
+      data_id = county
+    ),
+    na.rm = TRUE, size = 3
+  ) +
+  scale_x_log10() +
+  theme_bw()
+```
+
+```{r texas-map-exercise3-hint-2}
+# first make the scatter plot
+texas_scatter <- texas_counties %>%
+  ggplot(aes(pop2010, median_income)) +
+  geom_point_interactive(
+    aes(
+      tooltip = county,
+      data_id = county
+    ),
+    na.rm = TRUE, size = 3
+  ) +
+  scale_x_log10() +
+  theme_bw()
+
+# then make the map
+texas_county_map <- texas_counties %>%
+  ggplot() +
+  geom_sf_interactive(
+    aes(
+      tooltip = county,
+      data_id = county
+    ),
+    size = 0.2, color = "black"
+  ) +
+  theme_void()
+```
+
+
+```{r texas-map-exercise3-hint-3}
+# first make the scatter plot
+texas_scatter <- texas_counties %>%
+  ggplot(aes(pop2010, median_income)) +
+  geom_point_interactive(
+    aes(
+      tooltip = county,
+      data_id = county
+    ),
+    na.rm = TRUE, size = 3
+  ) +
+  scale_x_log10() +
+  theme_bw()
+
+# then make the map
+texas_county_map <- texas_counties %>%
+  ggplot() +
+  geom_sf_interactive(
+    aes(
+      tooltip = county,
+      data_id = county
+    ),
+    size = 0.2, color = "black"
+  ) +
+  theme_void()
+
+# then combine
+girafe(
+  ggobj = plot_grid(___, ___),
+  width_svg = 8,
+  height_svg = 4
+)
+```
+
+```{r texas-map-exercise3-solution}
+# first make the scatter plot
+texas_scatter <- texas_counties %>%
+  ggplot(aes(pop2010, median_income)) +
+  geom_point_interactive(
+    aes(
+      tooltip = county,
+      data_id = county
+    ),
+    na.rm = TRUE, size = 3
+  ) +
+  scale_x_log10() +
+  theme_bw()
+
+# then make the map
+texas_county_map <- texas_counties %>%
+  ggplot() +
+  geom_sf_interactive(
+    aes(
+      tooltip = county,
+      data_id = county
+    ),
+    size = 0.2, color = "black"
+  ) +
+  theme_void()
+
+# then combine
+girafe(
+  ggobj = plot_grid(texas_scatter, texas_county_map),
+  width_svg = 8,
+  height_svg = 4
+)
+```
+
+In the above plot, try using the lasso on one plot and see what happens to the other.

@@ -1,0 +1,321 @@
+---
+#############################################################
+#                                                           #
+# Click on "Run Document" in RStudio to run this worksheet. #
+#                                                           #
+#############################################################
+title: "Getting things into the right order"
+author: "Claus O. Wilke"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(tidyverse)
+library(palmerpenguins)
+library(gapminder)
+library(ggridges)
+knitr::opts_chunk$set(echo = FALSE, comment = "")
+```
+
+## Introduction
+
+In this worksheet, we will discuss how to manipulate factor levels such that plots show visual elements in the correct order.
+
+We will be using four R packages, **tidyverse** for various data manipulation functions and **palmerpenguins**, **gapminder**, and **ggridges** for the `penguins`, `gapminder`, and `Aus_athletes` datasets, respectively.
+
+```{r library-calls, echo = TRUE, eval = FALSE}
+# load required libraries
+library(tidyverse)
+library(palmerpenguins)
+library(gapminder)
+library(ggridges)
+```
+
+We will be working with the dataset `penguins`, which contains data on individual penguins on Antarctica.
+
+```{r echo = TRUE}
+penguins
+```
+
+We will also be working with the dataset `gapminder`, which contains information about life expectancy, population number, and GDP for 142 different countries.
+
+```{r echo = TRUE}
+gapminder
+```
+
+Finally, we will be working with the dataset `Aus_athletes`, which contains various physiological measurements made on athletes competing in different sports.
+
+```{r echo = TRUE}
+Aus_athletes
+```
+
+## Manual reordering
+
+The simplest form of reordering is manual, where we state explicitly in which order we want some graphical element to appear. We reorder manually with the function `fct_relevel()`, which takes as arguments the variable to reorder and the levels we want to reorder, in the order in which we want them to appear.
+
+Here is a simple example. We create a factor `x` with levels `"A"`, `"B"`, `"C"`, in that order, and then we reorder the levels to `"B"`, `"C"`, `"A"`.
+
+```{r echo = TRUE}
+x <- factor(c("A", "B", "A", "C", "B"))
+x
+
+fct_relevel(x, "B", "C", "A")
+```
+
+Try this out for yourself. Place the levels into a few different orderings. Also try listing only some of the levels to reorder.
+
+```{r factor-example, exercise = TRUE}
+x <- factor(c("A", "B", "A", "C", "B"))
+x
+
+fct_relevel(x, ___)
+```
+
+```{r factor-example-solution}
+x <- factor(c("A", "B", "A", "C", "B"))
+x
+
+fct_relevel(x, "C", "A", "B")
+```
+
+
+Now we apply this concept to a ggplot graph. We will work with the following boxplot visualization of the distribution of bill length versus penguin species. 
+
+```{r penguins-unordered, echo = TRUE}
+penguins %>%
+  ggplot(aes(species, bill_length_mm)) +
+  geom_boxplot()
+```
+
+Use the function `fct_relevel()` to place the three species into the order Chinstrap, Gentoo, Adelie. (*Hint:* You will have to use a `mutate()` statement to modify the `species` column.)
+
+```{r penguins-ordered-manual, exercise = TRUE}
+
+```
+
+```{r penguins-ordered-manual-hint}
+penguins %>%
+  mutate(
+    species = fct_relevel(___)
+  ) %>%
+  ggplot(aes(species, bill_length_mm)) +
+  geom_boxplot()
+```
+
+```{r penguins-ordered-manual-solution}
+penguins %>%
+  mutate(
+    species = fct_relevel(species, "Chinstrap", "Gentoo", "Adelie")
+  ) %>%
+  ggplot(aes(species, bill_length_mm)) +
+  geom_boxplot()
+```
+
+Now flip the x and y axes, making sure that the order remains Chinstrap, Gentoo, Adelie from top to bottom.
+
+```{r penguins-ordered-manual2, exercise = TRUE}
+
+```
+
+```{r penguins-ordered-manual2-hint}
+penguins %>%
+  mutate(
+    species = fct_relevel(species, ___)
+  ) %>%
+  ggplot(aes(bill_length_mm, species)) +
+  geom_boxplot()
+```
+
+```{r penguins-ordered-manual2-solution}
+penguins %>%
+  mutate(
+    species = fct_relevel(species, "Adelie", "Gentoo", "Chinstrap")
+  ) %>%
+  ggplot(aes(bill_length_mm, species)) +
+  geom_boxplot()
+```
+
+## Reordering based on frequency
+
+Manual reordering is cumbersome if there are many levels that need to be reorderd. Therefore, we often use functions that can reorder automatically based on some quantitative criterion. For example, we can use `fct_infreq()` to order a factor based on the number of occurrences of each level in the dataset. And we can reverse the order of a factor using the function `fct_rev()`. These two functions are particularly useful for making bar plots.
+
+Consider the following plot of the number of athletes competing in various sports in the `Aus_athletes` dataset. This plot is problematic because the sports are arranged in an arbitrary (here: alphabetic) order that is not meaningful for the data shown.
+
+```{r aus-athletes-unordered, echo = TRUE}
+Aus_athletes %>%
+  ggplot(aes(y = sport)) +
+  geom_bar()
+```
+
+Reorder the `sport` column so that the sport with the most athletes appears on top and the sport with the least athletes at the bottom.
+
+```{r aus-athletes-ordered, exercise = TRUE}
+
+```
+
+```{r aus-athletes-ordered-hint}
+Aus_athletes %>%
+  mutate(
+    sport = ___
+  ) %>%
+  ggplot(aes(y = sport)) +
+  geom_bar()
+```
+
+```{r aus-athletes-ordered-solution}
+Aus_athletes %>%
+  mutate(
+    sport = fct_rev(fct_infreq(sport))
+  ) %>%
+  ggplot(aes(y = sport)) +
+  geom_bar()
+```
+
+
+## Reordering based on numerical values
+
+Another common problem we encounter is that we want to order a factor based on some other numerical variable, possibly after we have calculated some summary statistic such as the median, minimum, or maximum.
+
+As an example for this problem, we consider a plot of the life expectancy in various countries in the Americas over time, shown as colored tiles.
+
+```{r life-expectancy-tiles-unordered, echo = TRUE}
+gapminder %>%
+  filter(continent == "Americas") %>%
+  ggplot(aes(year, country, fill = lifeExp)) + 
+  geom_tile() +
+  scale_fill_viridis_c(option = "A")
+```
+
+The default alphabetic ordering creates a meaningless color pattern that is difficult to read. It would make more sense to order the countries by some function of the life expectancy values, such as the minimum, median, or maximum value. We can do this with the function `fct_reorder()`, which takes three arguments: The factor to reorder, the numerical variable on which to base the ordering, and the name of a function (such as `min`, `median`, `max`) to be applied to calculate the ordering statistic.
+
+Modify the above plot so the countries are ordered by their median life expectancy over the observed time period.
+
+```{r life-expectancy-tiles, exercise = TRUE}
+
+```
+
+```{r life-expectancy-tiles-hint}
+gapminder %>%
+  filter(continent == "Americas") %>%
+  mutate(
+    country = fct_reorder(___, ___, ___)
+  ) %>%
+  ggplot(aes(year, country, fill = lifeExp)) + 
+  geom_tile() +
+  scale_fill_viridis_c(option = "A")
+```
+
+```{r life-expectancy-tiles-solution}
+gapminder %>%
+  filter(continent == "Americas") %>%
+  mutate(
+    country = fct_reorder(country, lifeExp, median)
+  ) %>%
+  ggplot(aes(year, country, fill = lifeExp)) + 
+  geom_tile() +
+  scale_fill_viridis_c(option = "A")
+```
+
+Try other orderings, such as `min`, `max`, or `mean`.
+
+Next, instead of plotting this data as colored tiles, plot it as lines, using facets to make separate panels for each country.
+
+```{r life-expectancy-lines, exercise = TRUE}
+
+```
+
+```{r life-expectancy-lines-hint}
+gapminder %>%
+  filter(continent == "Americas") %>%
+  mutate(country = fct_reorder(country, lifeExp, median)) %>%
+  ggplot(___) + 
+  geom____() +
+  facet_wrap(___)
+```
+
+```{r life-expectancy-lines-solution}
+gapminder %>%
+  filter(continent == "Americas") %>%
+  mutate(country = fct_reorder(country, lifeExp, median)) %>%
+  ggplot(aes(year, lifeExp)) + 
+  geom_line() +
+  facet_wrap(vars(country))
+```
+
+Again, try various orderings, including `min`, `max`, or `mean`.
+
+
+## Lumping of factor levels
+
+Finally, we sometimes have factors with too many levels and we want to combine some into a catch-all level such as "Other". We illustrate this concept with the following plot, which shows BMI (body-mass index) versus height for male athletes, broken down by sport.
+
+```{r athletes-sport-all, echo = TRUE}
+Aus_athletes %>%
+  filter(sex == "m") %>%
+  ggplot(aes(height, bmi, color = sport)) +
+  geom_point()
+```
+
+We want to modify this plot so that all sports other than basketball and water polo are shown as "Other". To achieve this goal, you will have to create a new column called `sport_lump` that contains a lumped version of the `sport` factor.
+
+The function that does the lumping is called `fct_other()`, and it takes as argument the variable to lump and an argument `keep` listing the values to keep or alternatively an argument `drop` listing the values to drop. Since you want to keep only basketball and water polo, use the variant with the `keep` argument.
+
+```{r athletes-sport-lump, exercise = TRUE}
+Aus_athletes %>%
+  filter(sex == "m") %>%
+  mutate(
+    sport_lump = ___
+  ) %>%
+  ggplot(aes(height, bmi, color = sport_lump)) +
+  geom_point()
+```
+
+```{r athletes-sport-lump-hint}
+Aus_athletes %>%
+  filter(sex == "m") %>%
+  mutate(
+    sport_lump = fct_other(sport, keep = ___)
+  ) %>%
+  ggplot(aes(height, bmi, color = sport_lump)) +
+  geom_point()
+```
+
+```{r athletes-sport-lump-solution}
+Aus_athletes %>%
+  filter(sex == "m") %>%
+  mutate(
+    sport_lump = fct_other(sport, keep = c("basketball", "water polo"))
+  ) %>%
+  ggplot(aes(height, bmi, color = sport_lump)) +
+  geom_point()
+```
+
+Now use the variant of the `fct_other()` function with the `drop` argument. Drop field, rowing, and tennis from the sports considered individually.
+
+```{r athletes-sport-lump2, exercise = TRUE}
+
+```
+
+```{r athletes-sport-lump2-hint}
+Aus_athletes %>%
+  filter(sex == "m") %>%
+  mutate(
+    sport_lump = fct_other(sport, drop = ___)
+  ) %>%
+  ggplot(aes(height, bmi, color = sport_lump)) +
+  geom_point()
+```
+
+```{r athletes-sport-lump2-solution}
+Aus_athletes %>%
+  filter(sex == "m") %>%
+  mutate(
+    sport_lump = fct_other(sport, drop = c("field", "rowing", "tennis"))
+  ) %>%
+  ggplot(aes(height, bmi, color = sport_lump)) +
+  geom_point()
+```
+
+Finally, try other lumping functions also. For example, the function `fct_lump_n()` retains the *n* most frequent levels and lump all others into `"Other"`. See if you can create a meaningful example with the `Aus_athletes` dataset that uses the `fct_lump_n()` function. *Hint:* Try to make a bar plot, similar to the one we made in the section on reordering based on frequency.

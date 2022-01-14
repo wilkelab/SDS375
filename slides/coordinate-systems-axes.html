@@ -14,7 +14,7 @@ class: center, middle, title-slide
 
 # Coordinate systems and axes
 ### Claus O. Wilke
-### last updated: 2021-02-02
+### last updated: 2021-09-23
 
 ---
 
@@ -61,13 +61,18 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 
 Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
 
+---
+
+class: center middle
+
+## Non-linear scales and coordinate systems
 
 ---
 
-## Non-linear scales: log-scales
+## Logarithmic scales (log scales)
 
 .small-text[
-Visualize these five values: 1, 3.16, 10, 31.6, 100
+Visualize these five values: 1, &amp;nbsp; 3.16, &amp;nbsp; 10, &amp;nbsp; 31.6, &amp;nbsp; 100
 ]
 
 --
@@ -156,13 +161,20 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 ![](coordinate-systems-axes_files/figure-html/temp-normals-vs-time-polar-1.svg)&lt;!-- --&gt;
 ]
 
+[//]: # "segment ends here"
+
+---
+class: center middle
+
+## Scales and coordinate systems in **ggplot2**
+
 ---
 
 ## Scale functions customize the x and y axes
 
 
 
-Recall the box-office example from class 3
+Recall the box-office example from a prior lecture
 
 .pull-left.tiny-font[
 
@@ -297,7 +309,7 @@ ggplot(boxoffice) +
   aes(amount, fct_reorder(title, amount)) +
   geom_col() +
   scale_x_continuous(
-    name = "weekend gross",
+    name = "weekend gross (million USD)",
     limits = c(0, 80),
     breaks = c(0, 25, 50, 75),
 *   labels = c("0", "$25M", "$50M", "$75M")
@@ -383,7 +395,7 @@ ggplot(tx_counties) +
 
 ---
 
-## Scale parameters work the same
+## Parameters work the same for all scale functions
 
 
 .pull-left.nogap.tiny-font[
@@ -471,6 +483,7 @@ ggplot(temperatures, aes(day_of_year, temperature, color = location)) +
 ![](coordinate-systems-axes_files/figure-html/temperatures-polar2-out-1.svg)&lt;!-- --&gt;
 ]]
 
+[//]: # "segment ends here"
 
 ---
 

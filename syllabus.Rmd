@@ -15,18 +15,23 @@ knitr::opts_chunk$set(echo = FALSE)
 ## Course title and instructor
 
 **Title:** SDS 375/395 Data Visualization in R<br>
-**Unique:** 57800, 57915, TTH 9:30am--11:00am<br>
+**Unique:** 56640, 56735, TTH 3:30pm--5:00pm<br>
 
 
 **Instructor:** Claus	O.	Wilke<br>
 **Email:** wilke@austin.utexas.edu<br>
-**Office Hours:** Mon. 12:00pm - 1:00pm (open Zoom), or by appointment <br>
+**Office Hours:** By appointment <br>
 **GitHub:** [clauswilke](https://github.com/clauswilke) <br>
 
 **Teaching Assistant:** Anastasiya Kulikova<br>
 **Email:** akulikova82@yahoo.com<br>
 **Office Hours:** Fri. 3:00pm - 4:00pm (open Zoom), or by appointment <br>
 **GitHub:** [akulikova64](https://github.com/akulikova64)
+
+**Teaching Assistant:** Fuheng Cui<br>
+**Email:** cuifuheng@utexas.edu<br>
+**Office Hours:** By appointment <br>
+**GitHub:** 
 
 ## Purpose and contents of the class
 
@@ -40,11 +45,18 @@ This class is not a biology class, and no knowledge of biology is expected. Thus
 
 ## Textbook
 
-This class draws heavily from materials presented in the following two books. Both books are freely available online and you do not need to purchase a physical copy of either book to succeed in this class.
+This class draws heavily from materials presented in the following book:
 
-1. Claus O. Wilke. [Fundamentals of Data Visualization.](https://clauswilke.com/dataviz) O'Reilly Media, 2019.
+- Claus O. Wilke. [Fundamentals of Data Visualization.](https://clauswilke.com/dataviz) O'Reilly Media, 2019.
 
-2. Kieran Healy. [Data Visualization: A Practical Introduction.](https://socviz.co/) Princeton University Press, 2018.
+Additionally, we will also make use of the following books:
+
+- Hadley Wickham, Danielle Navarro, and Thomas Lin Pedersen. [ggplot2: Elegant Graphics for Data Analysis, 3rd ed.](https://ggplot2-book.org/) Springer, to appear.
+
+- Kieran Healy. [Data Visualization: A Practical Introduction.](https://socviz.co/) Princeton University Press, 2018.
+
+All these books are freely available online and you do not need to purchase a physical copy of either book to succeed in this class.
+
 
 ## Topics covered
 
@@ -52,76 +64,85 @@ This class draws heavily from materials presented in the following two books. Bo
 ------------------------------------------------------------------
   Class Topic                       Coding concepts covered
 ------- --------------------------- ------------------------------
-1.      Introduction                RStudio setup online, R Markdown
+1.      Introduction, reproducible  RStudio setup online, R Markdown
+        workflows
 
 2.      Aesthetic mappings          **ggplot2** quickstart
 
-3.      Visualizing amounts         `geom_col()`, `geom_point()`,
+3.      Telling a story
+
+4.      Visualizing amounts         `geom_col()`, `geom_point()`,
                                     position adjustments
 
-4.      Visualizing distributions I stats, `geom_density()`,
-                                    `geom_histogram()`
-
-5.      Visualizing distributions   violin plots, sina plots, ridgeline plots
-        II
-
-6.      Coordinate systems and      coords and position scales
+5.      Coordinate systems and      coords and position scales
         axes
-        
-7.      Color scales                color and fill scales
 
-8.      Figure design               ggplot themes
+6.      Visualizing distributions   stats, `geom_density()`,
+        1                           `geom_histogram()`
 
-9.      Data wrangling              `mutate()`, `filter()`, `arrange()`
+7.      Visualizing distributions   violin plots, sina plots, ridgeline plots
+        2
 
-10.     Data wrangling              `group_by()`, `summarize()`, `count()`
+8.      Color scales                color and fill scales
 
-11.     Getting things into the     `fct_reorder()`, `fct_lump()`
+9.      Data wrangling 1            `mutate()`, `filter()`, `arrange()`
+
+10.     Data wrangling 2            `group_by()`, `summarize()`, `count()`
+
+11.     Visualizing proportions     bar charts, pie charts
+
+12.     Getting to know your data
+        1: Data providence
+
+13.     Getting to know your data   handling missing data, `is.na()`, `case_when()`
+        2: Data quality and 
+        relevance                   
+
+14.     Getting things into the     `fct_reorder()`, `fct_lump()`
         right order
 
-12.     Visualizing proportions     bar charts, pie charts
+15.     Figure design               ggplot themes
 
-13.     Visualizing trends          `geom_smooth()`
+16.     Color spaces, color vision  **colorspace** package
+        deficiency
 
-14.     Working with models         `lm`, `cor.test`, **broom** package
+17.     Functions and functional    `map()`, `nest()`, **purrr** package
+        programming
 
-15.     Visualizing uncertainty     frequency framing, error bars, **ggdist** package
+18.     Visualizing trends          `geom_smooth()`
 
-16.     Dimension reduction I       PCA
+19.     Working with models         `lm`, `cor.test`, **broom** package
 
-17.     Dimension reduction II      kernel PCA, t-SNE, UMAP
+20.     Visualizing uncertainty     frequency framing, error bars, **ggdist** package
 
-18.     Clustering                  k-means clustering
+21.     Dimension reduction 1       PCA
+
+22.     Dimension reduction 2       kernel PCA, t-SNE, UMAP
+
+23.     Clustering 1                k-means clustering
+
+24.     Clustering 2                hierarchical clustering
         
-19.     Visualizing geospatial      `geom_sf()`, `coord_sf()`
+25.     Visualizing geospatial      `geom_sf()`, `coord_sf()`
         data
 
-20.     Color spaces, color vision  **colorspace** package
-        deficiency
-        
-21.     Redundant coding, text      **ggrepel** package
+26.     Redundant coding, text      **ggrepel** package
         annotations
 
-22.     Interactive plots           **ggiraph** package
+27.     Interactive plots           **ggiraph** package
 
-23.     Over-plotting               jittering, 2d histograms,
+28.     Over-plotting               jittering, 2d histograms,
                                     contour plots
 
-24.     Compound figures            **patchwork** package
+29.     Compound figures            **patchwork** package
 
-25.     Telling a story
-
-26.     Web technologies            HTML, CSS, **distill** package
-
-27.     Animations                  **gganimate** package
+30.     Review
 ----------------------------------------------------------------
 :::
 
 ## Computing requirements
 
 Programming needs to be learned by doing, and a significant portion of the in-class time will be dedicated to working through simple problems. All programming exercises will be available through a web-based system, so the only system requirement for student computers is a modern web browser.
-
-In the spring of 2021, the class will be taught entirely online. All lectures will be recorded and made available via Canvas, and all slides and worksheets will be made available on this website. Students will be able to take the class synchronously or asynchronously, at their option.
 
 ## Course site
 
@@ -137,28 +158,26 @@ Note that edupods will be unavailable due to maintenance approximately two hours
 https://wikis.utexas.edu/display/RCTFusers
 
 An online discussions forum will be available at the following private GitHub repo:
-https://github.com/wilkelab/SDS375_spring2021<br>
+https://github.com/wilkelab/SDS375_spring2022<br>
 You will be given access to this repo during the first week of class.
 
 ## Assignments and grading
 
-**Note: This section was updated on 02/25/2021 due to the university closure from 02/14/2021 to 02/24/2021. The total number of homeworks was reduced from 10 to 9 and minimum guaranteed grades were adjusted accordingly.**
-
 The graded components of this class will be homeworks, projects, and online participation. Each week either one homework or one project is due. Homeworks will be relatively short visualization problems to be solved by the student, usually involving some small amount of programming to achieve a specified goal. Projects are larger and more involved data analysis problems that involve both programming and writing. Students will have at least one week to complete each homework and two weeks to complete each project. The submission deadlines for homeworks and projects will be Mondays at 11pm.
 
-There will be nine homeworks and three projects. Both homeworks and projects need to be submitted electronically on Canvas. Homeworks are worth 10 points and projects are worth 100 points. The lowest-scoring homework will be dropped, so that a maximum of 80 points can be obtained from the homeworks.
+There will be ten homeworks and three projects. Both homeworks and projects need to be submitted electronically on Canvas. Homeworks are worth 10 points and projects are worth 100 points. The lowest-scoring homework will be dropped, so that a maximum of 90 points can be obtained from the homeworks.
 
 Online participation assignments are small tasks meant to promote discussion and engagement with the class materials. They are worth between 5 and 10 points, for a maximum of 60.
 
 ::: l-page
 Assignment type   Number   Points per assignment  Total points
 --------------- -------- ----------------------- -------------
-Homework          8 (+1)                      10            80
+Homework          9 (+1)                      10            90
 Project           3                          100           300
 Participation     9                         5-10            60
 :::
 
-Thus, in summary, each project contributes 23% to the final grade, the totality of all homeworks contributes another 18% to the final grade, and participation contributes 13%. **There are no traditional exams in this class and there is no final.**
+Thus, in summary, each project contributes 22% to the final grade, the totality of all homeworks contributes another 20% to the final grade, and participation contributes 13%. **There are no traditional exams in this class and there is no final.**
 
 The participation assignments are meant to foster discussion about class materials on GitHub. Several of them can be performed more than once and will receive the indicated points each time they are performed successfully, up to the maximum number of times the specific activity is rewarded or the point maximum of 60, whichever is reached earlier. The following activities will be available:
 
@@ -177,10 +196,10 @@ The	class	will use +/- grading, and the exact grade boundaries will be determine
 ::: l-page
  Points achieved  Minimum guaranteed grade
 ---------------- -------------------------
-       396 (90%)                        A-
-       352 (80%)                        B-
-       308 (70%)                        C-
-       220 (50%)                        D-
+       405 (90%)                        A-
+       360 (80%)                        B-
+       315 (70%)                        C-
+       225 (50%)                        D-
 :::
 
 ## Late assignment policy
@@ -189,7 +208,7 @@ Homeworks that are submitted past the posted deadline will not be graded and wil
 
 Project submissions will have a 2-day grace period. Projects submitted during the grace period will have 25 points deducted from the obtained grade. After the grace period, students who have not submitted their project will receive 0 points.
 
-Participation assignments have no deadline and are available until the last class day.
+Participation assignments will be open for several weeks each and will be spaced approximately evenly throughout the semester, so that students have to demonstrate consistent participation to achieve full points.
 
 ## Extra assignment for graduate course credit
 
@@ -197,7 +216,7 @@ Graduate students who are taking this class for graduate course credit will have
 
 ## Office hours
 
-Both the graduate TA and myself will be available for an open Zoom Q&A each week. These sessions will be recorded and shared on Canvas. In addition, for any conversations that are not appropriate for an open Zoom call, such as grade complaints or other issues of a personal nature, please request an appointment. The most effective way to request an appointment for office hours is to suggest several times that work for you.  I would suggest to write an email such as the following:
+Both the graduate TA and myself will be available at posted times or by appointment. Office hours will be over Zoom. The most effective way to request an appointment for office hours outside of posted times is to suggest several times that work for you.  I would suggest to write an email such as the following:
 
     Dear Dr. Wilke,
     
@@ -224,7 +243,7 @@ Specifically, we will not discuss technical issues related to assignments over e
 
 ## Academic dishonesty
 
-This course is built upon the idea that student interaction is important and a powerful way to learn. We encourage you to communicate with other students, in particular through the [discussion forums on GitHub.](https://github.com/wilkelab/SDS375_spring2021) However, there are times when you need to demonstrate your own ability to work and solve problems. In particular, your homeworks and projects are independent work, unless explicitly stated otherwise. You are allowed to confer with fellow students about general approaches to solve the problems in the assignments, but you have to do the assignments on your own and describe your work in your own words. Students who violate these expectations can expect to receive a failing grade on the assignment and will be reported to Student Judicial Services. These types of violations are reported to professional schools, should you ever decide to apply one day. Don’t do it—it’s not worth the consequences.
+This course is built upon the idea that student interaction is important and a powerful way to learn. We encourage you to communicate with other students, in particular through the [discussion forums on GitHub.](https://github.com/wilkelab/SDS375_spring2022) However, there are times when you need to demonstrate your own ability to work and solve problems. In particular, your homeworks and projects are independent work, unless explicitly stated otherwise. You are allowed to confer with fellow students about general approaches to solve the problems in the assignments, but you have to do the assignments on your own and describe your work in your own words. Students who violate these expectations can expect to receive a failing grade on the assignment and will be reported to Student Judicial Services. These types of violations are reported to professional schools, should you ever decide to apply one day. Don’t do it—it’s not worth the consequences.
 
 
 ## Sharing of Course Materials is Prohibited

@@ -18,8 +18,8 @@ knitr::opts_chunk$set(echo = FALSE)
 This is the home page for SDS 375, Data Visualization in R. All course materials will be posted on this site.
 
 Instructor: [Claus O. Wilke](https://clauswilke.com)  
-Meeting times: TTH 9:30am to 11:00am  
-Venue: online  
+Meeting times: TTH 3:30pm to 5:00pm  
+Venue: UTC 4.110  
 Syllabus: [click here](syllabus.html)  
 Upcoming lectures and assignments: [click here](schedule.html)  
 
@@ -34,20 +34,19 @@ To run any of the materials locally on your own machine, you will need the follo
 - A recent version of R, [download from here.](https://cloud.r-project.org/)
 - A recent version of RStudio, [download from here.](https://rstudio.com/products/rstudio/download/#download)
 - The following R packages:    
-  broom, cluster, colorspace, corrr, cowplot, distill, gapminder, GGally, gganimate,  ggiraph, ggdendro, ggdist, ggforce, ggplot2movies, ggpointdensity, ggraph, ggrepel, ggridges, ggtext, ggthemes, gifski, glue, knitr, learnr, lemon, magick, margins, MASS, Matrix, nycflights13, palmerpenguins, patchwork, plotly, plotROC, rgdal, rmarkdown, sf, tidymodels, tidyverse, transformr, treemapify, umap, xaringan
+  broom, cluster, colorspace, cowplot, distill, gapminder, GGally, gganimate,  ggiraph, ggdendro, ggdist, ggforce, ggplot2movies, ggrepel, ggridges, ggthemes, gifski, glue, knitr, learnr, naniar, margins, MASS, Matrix, nycflights13, palmerpenguins, patchwork, rgdal, rmarkdown, sf, tidyverse, transformr, umap, xaringan
 
 You can install all required R packages at once by running the following code in the R command line:
 
 ```{r eval = FALSE, echo = TRUE}
 install.packages(
   c(
-    "broom", "cluster", "colorspace", "corrr", "cowplot", "distill", "gapminder", 
+    "broom", "cluster", "colorspace", "cowplot", "distill", "gapminder", 
     "GGally", "gganimate", "ggiraph", "ggdendro", "ggdist", "ggforce",
-    "ggplot2movies", "ggpointdensity", "ggraph",  "ggrepel", "ggridges",
-    "ggtext", "ggthemes", "gifski", "glue", "knitr", "learnr", "lemon", "magick",
-    "margins", "MASS", "Matrix", "nycflights13", "palmerpenguins", "patchwork", "plotly",
-    "plotROC", "rgdal", "rmarkdown", "sf", "tidymodels", "tidyverse", "transformr",
-    "treemapify", "umap", "xaringan"
+    "ggplot2movies", "ggrepel", "ggridges", "ggthemes", "gifski", "glue",
+    "knitr", "learnr", "naniar", "margins", "MASS", "Matrix",
+    "nycflights13", "palmerpenguins", "patchwork", "rgdal", "rmarkdown",
+    "sf", "tidyverse", "transformr", "umap", "xaringan"
   )
 )
 ```

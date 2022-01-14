@@ -149,6 +149,8 @@ Alaska is the largest state; 2.2 the size of Texas
 
 Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
 
+[//]: # "segment ends here"
+
 ---
 class: center middle
 
@@ -230,6 +232,8 @@ Each state is shown as an equally sized square
 
 Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
 
+[//]: # "segment ends here"
+
 ---
 class: center middle
 
@@ -280,6 +284,8 @@ Location of individual wind turbines in the Shiloh Wind Farm
 
 Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
 
+[//]: # "segment ends here"
+
 ---
 class: middle center
 
@@ -294,9 +300,13 @@ background-size: 65%
 
 <a href = "https://gist.github.com/edzer/f461a3a95570c4ab7edf3125c2f19d20"><img src="https://user-images.githubusercontent.com/520851/34887433-ce1d130e-f7c6-11e7-83fc-d60ad4fae6bd.gif", style = "position: absolute; top: 10%; right: 10%;"/></a>
 
+.absolute-bottom-right[
+Artwork by <a href="https://twitter.com/allison_horst/status/1071456081308614656">Allison Horst</a>
+]
+
 ???
 
-Illustration by <a href="https://twitter.com/allison_horst/status/1071456081308614656">Allison Horst</a>
+Artwork by <a href="https://twitter.com/allison_horst/status/1071456081308614656">Allison Horst</a>
 
 ---
 
@@ -676,6 +686,10 @@ ggplot(texas_income) +
 .absolute-bottom-left[
 Reference: https://spatialreference.org/ref/epsg/3338/
 ]
+
+
+[//]: # "segment ends here"
+
 
 ---
 

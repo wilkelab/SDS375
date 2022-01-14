@@ -1,0 +1,278 @@
+---
+title: "SDS 375—Data Visualization in R"
+author: "Claus O. Wilke"
+date: "last updated: `r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: [default, "Wilke-slides-theme.css"]
+    lib_dir: libs
+    nature:
+      ratio: '16:9'
+      highlightStyle: github
+      highlightLines: true
+      slideNumberFormat: ''
+      titleSlideClass: [center, middle]
+---
+
+```{r setup, include=FALSE, echo=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(comment = "")
+```
+
+## Why Data Visualization?
+
+--
+
+<br>
+
+.center[
+<img src = "introduction_files/Data_science_venn.svg", width = 60%></img>
+]
+
+---
+
+
+## Why Data Visualization?
+
+<br>
+
+.center[
+<img src = "introduction_files/Data_visualization_venn.svg", width = 60%></img>
+]
+
+---
+
+## Why me?
+
+--
+
+<img src = "https://clauswilke.com/dataviz/cover.png", width = 30%, style = "position:absolute; top: 18%; left: 13%; box-shadow: 3px 5px 3px 1px #00000080;"></img>
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+.pull-left.small-font[
+
+.center[
+https://clauswilke.com/dataviz
+]
+
+]
+
+
+--
+
+<img src = "https://clauswilke.com/dataviz/coordinate_systems_axes_files/figure-html/worldmap-four-projections-1.png", width = 30%, style = "position:absolute; top: 12%; left: 45%; box-shadow: 3px 5px 3px 1px #00000080;"></img>
+
+--
+
+<img src = "https://clauswilke.com/dataviz/nested_proportions_files/figure-html/US-states-treemap-1.png",  width = 30%, style = "position:absolute; top: 22%; left: 55%; box-shadow: 3px 5px 3px 1px #00000080;"></img>
+
+
+--
+
+<img src = "https://clauswilke.com/dataviz/geospatial_data_files/figure-html/unemployment-geofacet-1.png",  width = 30%, style = "position:absolute; top: 32%; left: 65%; box-shadow: 3px 5px 3px 1px #00000080;"></img>
+
+--
+
+<img src = "https://clauswilke.com/dataviz/redundant_coding_files/figure-html/temp-ridgeline-colorbar-1.png",  width = 30%, style = "position:absolute; top: 42%; left: 50%; box-shadow: 3px 5px 3px 1px #00000080;"></img>
+
+--
+
+<img src = "https://clauswilke.com/dataviz/multi-panel_figures_files/figure-html/athletes-composite-good-1.png",  width = 30%, style = "position:absolute; top: 52%; left: 60%; box-shadow: 3px 5px 3px 1px #00000080;"></img>
+
+
+---
+
+## Why me?
+
+.center[
+<img src = "introduction_files/ggplot2-website-title.png", width = 60%></img>
+]
+
+--
+
+.center[
+<img src = "introduction_files/ggplot2-website-footer.png", width = 60%></img>
+]
+
+
+
+---
+
+## Why R?
+
+--
+
+<img src = "introduction_files/Rlogo.svg", width = 25%, style = "position:absolute; top: 18%; left: 15%;"></img>
+
+<img src = "introduction_files/Data_science_venn.svg", width = 40%, style = "position:absolute; top: 57%; left: 8%;"></img>
+
+???
+
+The R logo [is distributed](https://www.r-project.org/logo/) under the terms of the Creative Commons Attribution-ShareAlike 4.0 International license ([CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)).
+
+RStudio hex stickers [are distributed](https://github.com/rstudio/hex-stickers) under [CC0.](https://github.com/rstudio/hex-stickers/blob/master/LICENSE.md)
+
+--
+
+<img src = "introduction_files/package-hexlogos.svg", width = 35%, style = "position:absolute; top: 5%; left: 55%;"></img>
+
+
+---
+class: middle
+
+## Class website/syllabus: https://wilkelab.org/SDS375
+
+---
+
+## The first core concept: Markdown
+
+.small-font[
+**Input:**
+
+```
+This is a sentence in Markdown, containing `code`, **bold text**,
+and *italics*.
+```
+]
+
+
+--
+
+.small-font[
+**Output:**
+
+This is a sentence in Markdown, containing `code`, **bold text**, and *italics*.
+]
+
+
+---
+
+## The first core concept: Markdown
+
+.small-font[
+**Input:**
+
+````
+The function `rnorm()` creates normal variates.
+`r ''````{R}
+rnorm(5) # create 5 normal variates
+```
+````
+]
+
+--
+
+.small-font[
+**Output:**
+
+The function `rnorm()` creates normal variates.
+```{R}
+rnorm(5) # create 5 normal variates
+```
+]
+
+---
+
+## Edupod login: https://edupod.cns.utexas.edu
+
+.center[
+<img src = "introduction_files/edupod-landing.png", width = 60%, style = "position:relative; top:-42px;"></img>
+]
+
+---
+
+## Edupod login: https://edupod.cns.utexas.edu
+
+.center[
+<img src = "introduction_files/edupod-landing-edited.png", width = 60%, style = "position:relative; top:-42px;"></img>
+]
+
+---
+
+## Edupod login: https://edupod.cns.utexas.edu
+
+.center[
+<img src = "introduction_files/edupod-login.png", width = 60%, style = "position:relative; top:-42px;"></img>
+]
+
+---
+
+## Using RStudio
+
+.center[
+<img src = "introduction_files/RStudio-clean.png", width = 80%, style = "position:relative; top:-52px;"></img>
+]
+
+---
+
+## Using RStudio
+
+.center[
+<img src = "introduction_files/RStudio-clean-edited.png", width = 80%, style = "position:relative; top:-52px;"></img>
+]
+
+---
+
+## Knitting an R Markdown file
+
+.center[
+<img src = "introduction_files/RStudio-markdown.png", width = 80%, style = "position:relative; top:-52px;"></img>
+]
+
+---
+
+## Knitting an R Markdown file
+
+.center[
+<img src = "introduction_files/RStudio-markdown-edited.png", width = 80%, style = "position:relative; top:-52px;"></img>
+]
+
+---
+
+
+## Knitting an R Markdown file
+
+.center[
+<img src = "introduction_files/markdown-knitted.png", width = 80%, style = "position:relative; top:-52px;"></img>
+]
+
+---
+
+## Knitting to pdf
+
+.center[
+<img src = "introduction_files/RStudio-markdown-edited2.png", width = 80%, style = "position:relative; top:-52px;"></img>
+]
+
+---
+
+## Knitting to pdf
+
+.center[
+<img src = "introduction_files/markdown-knit-pdf-edited.png", width = 80%, style = "position:relative; top:-52px;"></img>
+]
+
+---
+
+## Knitting to pdf
+
+.center[
+<img src = "introduction_files/markdown-knitted-pdf.png", width = 80%, style = "position:relative; top:-52px;"></img>
+]
+
+---
+
+## Knitting to pdf
+
+.center[
+<img src = "introduction_files/markdown-knitted-pdf-edited.png", width = 80%, style = "position:relative; top:-52px;"></img>
+]
+
+---
+
+## Further reading
+
+- [R Markdown tutorial](https://rmarkdown.rstudio.com/lesson-2.html)
+- [R Markdown cheatsheet](https://github.com/rstudio/cheatsheets/raw/master/rmarkdown-2.0.pdf)
+- [R Markdown book](https://bookdown.org/yihui/rmarkdown/)

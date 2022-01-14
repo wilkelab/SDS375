@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Clustering</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Claus O. Wilke" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="Wilke-slides-theme.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, title-slide
+
+# Clustering
+### Claus O. Wilke
+### last updated: 2021-04-04
+
+---
+
+
+
+
+
+
+.center[
+![](clustering_files/figure-html/three-clusters-viz-1.svg)&lt;!-- --&gt;
+]
+
+These points correspond to three clusters. 
+Can a computer find them automatically?
+
+---
+
+
+.center[
+![](clustering_files/figure-html/three-clusters-viz2-1.svg)&lt;!-- --&gt;
+]
+
+These points correspond to three clusters. 
+Can a computer find them automatically?
+
+
+---
+
+## *k*-means clustering
+
+--
+
+1\. Start with *k* randomly chosen means
+
+--
+
+2\. Color data points by the shortest distance to any
+mean
+
+--
+
+3\. Move means to centroid position of each group of
+points
+
+--
+
+4\. Repeat from step 2 until convergence
+
+---
+
+class: center middle
+
+## Let's try it out
+
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/three-clusters-kmeans1-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/three-clusters-kmeans2-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Add means at arbitrary locations
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/three-clusters-kmeans3-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/three-clusters-kmeans4-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/three-clusters-kmeans5-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Move means to centroid position of each group of points
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/three-clusters-kmeans6-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/three-clusters-kmeans7-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/three-clusters-kmeans8-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Move means to centroid position of each group of points
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/three-clusters-kmeans9-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/three-clusters-kmeans10-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/three-clusters-kmeans11-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Move means to centroid position of each group of points
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/three-clusters-kmeans12-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/three-clusters-kmeans13-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/three-clusters-kmeans14-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Move means to centroid position of each group of points
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/three-clusters-kmeans15-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/three-clusters-kmeans16-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/three-clusters-kmeans17-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Move means to centroid position of each group of points
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/three-clusters-kmeans18-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/three-clusters-kmeans19-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/three-clusters-kmeans20-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Final result
+]
+
+---
+class: middle center
+
+## Now we'll cluster the same dataset with five centroids
+
+---
+class: middle
+
+.center[
+![](clustering_files/figure-html/five-clusters-kmeans1-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/five-clusters-kmeans2-1.svg)&lt;!-- --&gt;
+]
+
+
+.absolute-bottom-left[
+Add means at arbitrary locations
+]
+
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/five-clusters-kmeans3-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/five-clusters-kmeans4-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/five-clusters-kmeans5-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Move means to centroid position of each group of points
+]
+
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/five-clusters-kmeans6-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/five-clusters-kmeans7-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/five-clusters-kmeans8-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Move means to centroid position of each group of points
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/five-clusters-kmeans9-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/five-clusters-kmeans10-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/five-clusters-kmeans11-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Move means to centroid position of each group of points
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/five-clusters-kmeans12-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/five-clusters-kmeans13-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/five-clusters-kmeans14-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Move means to centroid position of each group of points
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/five-clusters-kmeans15-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/five-clusters-kmeans16-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/five-clusters-kmeans17-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Move means to centroid position of each group of points
+]
+
+---
+class: center middle
+
+## ... do many more iterations ...
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/five-clusters-kmeans18-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Final result
+]
+
+---
+class: middle center
+
+## Let's try this on the spirals dataset
+
+---
+class: middle
+
+.center[
+![](clustering_files/figure-html/spirals-kmeans1-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/spirals-kmeans2-1.svg)&lt;!-- --&gt;
+]
+
+
+.absolute-bottom-left[
+Add means at arbitrary locations
+]
+
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/spirals-kmeans3-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/spirals-kmeans4-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/spirals-kmeans5-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Move means to centroid position of each group of points
+]
+
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/spirals-kmeans6-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/spirals-kmeans7-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/spirals-kmeans8-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Move means to centroid position of each group of points
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/spirals-kmeans9-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/spirals-kmeans10-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/spirals-kmeans11-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Move means to centroid position of each group of points
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/spirals-kmeans12-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/spirals-kmeans13-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/spirals-kmeans14-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Move means to centroid position of each group of points
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/spirals-kmeans15-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/spirals-kmeans16-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Color data points by the shortest distance to any mean
+]
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/spirals-kmeans17-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Move means to centroid position of each group of points
+]
+
+---
+class: center middle
+
+## ... do many more iterations ...
+
+---
+
+class: middle
+
+.center[
+![](clustering_files/figure-html/spirals-kmeans18-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Final result
+]
+
+---
+class: center middle
+
+## k-means clustering works best when&lt;br&gt;data forms distinct, compact clusters
+
+
+---
+class: center middle
+
+
+## Doing k-means clustering in R
+
+
+---
+
+## Example dataset: `iris`
+
+Measurements on the sepals and petals of three iris species
+
+.small-font[
+
+```r
+iris
+```
+
+```
+    Sepal.Length Sepal.Width Petal.Length Petal.Width    Species
+1            5.1         3.5          1.4         0.2     setosa
+2            4.9         3.0          1.4         0.2     setosa
+3            4.7         3.2          1.3         0.2     setosa
+4            4.6         3.1          1.5         0.2     setosa
+5            5.0         3.6          1.4         0.2     setosa
+6            5.4         3.9          1.7         0.4     setosa
+7            4.6         3.4          1.4         0.3     setosa
+8            5.0         3.4          1.5         0.2     setosa
+9            4.4         2.9          1.4         0.2     setosa
+10           4.9         3.1          1.5         0.1     setosa
+11           5.4         3.7          1.5         0.2     setosa
+12           4.8         3.4          1.6         0.2     setosa
+13           4.8         3.0          1.4         0.1     setosa
+14           4.3         3.0          1.1         0.1     setosa
+15           5.8         4.0          1.2         0.2     setosa
+16           5.7         4.4          1.5         0.4     setosa
+17           5.4         3.9          1.3         0.4     setosa
+18           5.1         3.5          1.4         0.3     setosa
+19           5.7         3.8          1.7         0.3     setosa
+20           5.1         3.8          1.5         0.3     setosa
+21           5.4         3.4          1.7         0.2     setosa
+22           5.1         3.7          1.5         0.4     setosa
+23           4.6         3.6          1.0         0.2     setosa
+24           5.1         3.3          1.7         0.5     setosa
+25           4.8         3.4          1.9         0.2     setosa
+26           5.0         3.0          1.6         0.2     setosa
+27           5.0         3.4          1.6         0.4     setosa
+28           5.2         3.5          1.5         0.2     setosa
+29           5.2         3.4          1.4         0.2     setosa
+30           4.7         3.2          1.6         0.2     setosa
+31           4.8         3.1          1.6         0.2     setosa
+32           5.4         3.4          1.5         0.4     setosa
+33           5.2         4.1          1.5         0.1     setosa
+34           5.5         4.2          1.4         0.2     setosa
+35           4.9         3.1          1.5         0.2     setosa
+36           5.0         3.2          1.2         0.2     setosa
+37           5.5         3.5          1.3         0.2     setosa
+38           4.9         3.6          1.4         0.1     setosa
+39           4.4         3.0          1.3         0.2     setosa
+40           5.1         3.4          1.5         0.2     setosa
+41           5.0         3.5          1.3         0.3     setosa
+42           4.5         2.3          1.3         0.3     setosa
+43           4.4         3.2          1.3         0.2     setosa
+44           5.0         3.5          1.6         0.6     setosa
+45           5.1         3.8          1.9         0.4     setosa
+46           4.8         3.0          1.4         0.3     setosa
+47           5.1         3.8          1.6         0.2     setosa
+48           4.6         3.2          1.4         0.2     setosa
+49           5.3         3.7          1.5         0.2     setosa
+50           5.0         3.3          1.4         0.2     setosa
+51           7.0         3.2          4.7         1.4 versicolor
+52           6.4         3.2          4.5         1.5 versicolor
+53           6.9         3.1          4.9         1.5 versicolor
+54           5.5         2.3          4.0         1.3 versicolor
+55           6.5         2.8          4.6         1.5 versicolor
+56           5.7         2.8          4.5         1.3 versicolor
+57           6.3         3.3          4.7         1.6 versicolor
+58           4.9         2.4          3.3         1.0 versicolor
+59           6.6         2.9          4.6         1.3 versicolor
+60           5.2         2.7          3.9         1.4 versicolor
+61           5.0         2.0          3.5         1.0 versicolor
+62           5.9         3.0          4.2         1.5 versicolor
+63           6.0         2.2          4.0         1.0 versicolor
+64           6.1         2.9          4.7         1.4 versicolor
+65           5.6         2.9          3.6         1.3 versicolor
+66           6.7         3.1          4.4         1.4 versicolor
+67           5.6         3.0          4.5         1.5 versicolor
+68           5.8         2.7          4.1         1.0 versicolor
+69           6.2         2.2          4.5         1.5 versicolor
+70           5.6         2.5          3.9         1.1 versicolor
+71           5.9         3.2          4.8         1.8 versicolor
+72           6.1         2.8          4.0         1.3 versicolor
+73           6.3         2.5          4.9         1.5 versicolor
+74           6.1         2.8          4.7         1.2 versicolor
+75           6.4         2.9          4.3         1.3 versicolor
+76           6.6         3.0          4.4         1.4 versicolor
+77           6.8         2.8          4.8         1.4 versicolor
+78           6.7         3.0          5.0         1.7 versicolor
+79           6.0         2.9          4.5         1.5 versicolor
+80           5.7         2.6          3.5         1.0 versicolor
+81           5.5         2.4          3.8         1.1 versicolor
+82           5.5         2.4          3.7         1.0 versicolor
+83           5.8         2.7          3.9         1.2 versicolor
+84           6.0         2.7          5.1         1.6 versicolor
+85           5.4         3.0          4.5         1.5 versicolor
+86           6.0         3.4          4.5         1.6 versicolor
+87           6.7         3.1          4.7         1.5 versicolor
+88           6.3         2.3          4.4         1.3 versicolor
+89           5.6         3.0          4.1         1.3 versicolor
+90           5.5         2.5          4.0         1.3 versicolor
+91           5.5         2.6          4.4         1.2 versicolor
+92           6.1         3.0          4.6         1.4 versicolor
+93           5.8         2.6          4.0         1.2 versicolor
+94           5.0         2.3          3.3         1.0 versicolor
+95           5.6         2.7          4.2         1.3 versicolor
+96           5.7         3.0          4.2         1.2 versicolor
+97           5.7         2.9          4.2         1.3 versicolor
+98           6.2         2.9          4.3         1.3 versicolor
+99           5.1         2.5          3.0         1.1 versicolor
+100          5.7         2.8          4.1         1.3 versicolor
+101          6.3         3.3          6.0         2.5  virginica
+102          5.8         2.7          5.1         1.9  virginica
+103          7.1         3.0          5.9         2.1  virginica
+104          6.3         2.9          5.6         1.8  virginica
+105          6.5         3.0          5.8         2.2  virginica
+106          7.6         3.0          6.6         2.1  virginica
+107          4.9         2.5          4.5         1.7  virginica
+108          7.3         2.9          6.3         1.8  virginica
+109          6.7         2.5          5.8         1.8  virginica
+110          7.2         3.6          6.1         2.5  virginica
+111          6.5         3.2          5.1         2.0  virginica
+112          6.4         2.7          5.3         1.9  virginica
+113          6.8         3.0          5.5         2.1  virginica
+114          5.7         2.5          5.0         2.0  virginica
+115          5.8         2.8          5.1         2.4  virginica
+116          6.4         3.2          5.3         2.3  virginica
+117          6.5         3.0          5.5         1.8  virginica
+118          7.7         3.8          6.7         2.2  virginica
+119          7.7         2.6          6.9         2.3  virginica
+120          6.0         2.2          5.0         1.5  virginica
+121          6.9         3.2          5.7         2.3  virginica
+122          5.6         2.8          4.9         2.0  virginica
+123          7.7         2.8          6.7         2.0  virginica
+124          6.3         2.7          4.9         1.8  virginica
+125          6.7         3.3          5.7         2.1  virginica
+126          7.2         3.2          6.0         1.8  virginica
+127          6.2         2.8          4.8         1.8  virginica
+128          6.1         3.0          4.9         1.8  virginica
+129          6.4         2.8          5.6         2.1  virginica
+130          7.2         3.0          5.8         1.6  virginica
+131          7.4         2.8          6.1         1.9  virginica
+132          7.9         3.8          6.4         2.0  virginica
+133          6.4         2.8          5.6         2.2  virginica
+134          6.3         2.8          5.1         1.5  virginica
+135          6.1         2.6          5.6         1.4  virginica
+136          7.7         3.0          6.1         2.3  virginica
+137          6.3         3.4          5.6         2.4  virginica
+138          6.4         3.1          5.5         1.8  virginica
+139          6.0         3.0          4.8         1.8  virginica
+140          6.9         3.1          5.4         2.1  virginica
+141          6.7         3.1          5.6         2.4  virginica
+142          6.9         3.1          5.1         2.3  virginica
+143          5.8         2.7          5.1         1.9  virginica
+144          6.8         3.2          5.9         2.3  virginica
+145          6.7         3.3          5.7         2.5  virginica
+146          6.7         3.0          5.2         2.3  virginica
+147          6.3         2.5          5.0         1.9  virginica
+148          6.5         3.0          5.2         2.0  virginica
+149          6.2         3.4          5.4         2.3  virginica
+150          5.9         3.0          5.1         1.8  virginica
+```
+]
+
+---
+
+## Example dataset: `iris`
+
+.small-font[
+
+```r
+ggplot(iris, aes(Petal.Length, Petal.Width, color = Species)) +
+  geom_point()
+```
+]
+
+.center[
+![](clustering_files/figure-html/iris-plot-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## We perform k-means clustering with `kmeans()`
+
+.tiny-font[
+
+```r
+km_fit &lt;- iris %&gt;% 
+  select(where(is.numeric)) %&gt;%
+  kmeans(
+    centers = 3,  # number of cluster centers
+    nstart = 10   # number of independent restarts of the algorithm
+  )
+
+km_fit
+```
+
+```
+K-means clustering with 3 clusters of sizes 50, 38, 62
+
+Cluster means:
+  Sepal.Length Sepal.Width Petal.Length Petal.Width
+1     5.006000    3.428000     1.462000    0.246000
+2     6.850000    3.073684     5.742105    2.071053
+3     5.901613    2.748387     4.393548    1.433871
+
+Clustering vector:
+  [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+ [31] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 3 3 2 3 3 3 3 3 3 3
+ [61] 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 2 3 3 3 3 3 3 3 3 3 3 3 3
+ [91] 3 3 3 3 3 3 3 3 3 3 2 3 2 2 2 2 3 2 2 2 2 2 2 3 3 2 2 2 2 3
+[121] 2 3 2 3 2 2 3 3 2 2 2 2 2 3 2 2 2 2 3 2 2 2 3 2 2 2 3 2 2 3
+
+Within cluster sum of squares by cluster:
+[1] 15.15100 23.87947 39.82097
+ (between_SS / total_SS =  88.4 %)
+
+Available components:
+
+[1] "cluster"      "centers"      "totss"        "withinss"    
+[5] "tot.withinss" "betweenss"    "size"         "iter"        
+[9] "ifault"      
+```
+]
+
+
+---
+
+.tiny-font[
+
+```r
+km_fit
+```
+
+```
+K-means clustering with 3 clusters of sizes 50, 38, 62
+
+Cluster means:
+  Sepal.Length Sepal.Width Petal.Length Petal.Width
+1     5.006000    3.428000     1.462000    0.246000
+2     6.850000    3.073684     5.742105    2.071053
+3     5.901613    2.748387     4.393548    1.433871
+
+Clustering vector:
+  [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+ [31] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 3 3 2 3 3 3 3 3 3 3
+ [61] 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 2 3 3 3 3 3 3 3 3 3 3 3 3
+ [91] 3 3 3 3 3 3 3 3 3 3 2 3 2 2 2 2 3 2 2 2 2 2 2 3 3 2 2 2 2 3
+[121] 2 3 2 3 2 2 3 3 2 2 2 2 2 3 2 2 2 2 3 2 2 2 3 2 2 2 3 2 2 3
+
+Within cluster sum of squares by cluster:
+[1] 15.15100 23.87947 39.82097
+ (between_SS / total_SS =  88.4 %)
+
+Available components:
+
+[1] "cluster"      "centers"      "totss"        "withinss"    
+[5] "tot.withinss" "betweenss"    "size"         "iter"        
+[9] "ifault"      
+```
+]
+
+
+---
+
+## We perform k-means clustering with `kmeans()`
+
+.pull-left.xtiny-font[
+
+```r
+# run kmeans clustering
+km_fit &lt;- iris %&gt;% 
+  select(where(is.numeric)) %&gt;%
+  kmeans(centers = 3, nstart = 10)
+
+# plot
+km_fit %&gt;%
+  # combine with original data
+  augment(iris) %&gt;%
+  ggplot() +
+  aes(x = Petal.Length, Petal.Width) +
+  geom_point(
+    aes(color = .cluster, shape = Species)
+  ) +
+  geom_point(
+    data = tidy(km_fit),
+    aes(fill = cluster),
+    shape = 21, color = "black", size = 4
+  ) +
+  guides(color = "none")
+```
+]
+
+.pull-right.width-50[
+![](clustering_files/figure-html/iris-kmeans-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## We perform k-means clustering with `kmeans()`
+
+.pull-left.xtiny-font[
+
+```r
+# run kmeans clustering
+km_fit &lt;- iris %&gt;% 
+  select(where(is.numeric)) %&gt;%
+  kmeans(centers = 3, nstart = 10)
+
+# plot
+km_fit %&gt;%
+  # combine with original data
+  augment(iris) %&gt;%
+  ggplot() +
+  aes(x = Petal.Length, Petal.Width) +
+  geom_point(
+    aes(color = .cluster, shape = Species)
+  ) +
+  geom_point(
+    data = tidy(km_fit),
+    aes(fill = cluster),
+    shape = 21, color = "black", size = 4
+  ) +
+  guides(color = "none")
+```
+]
+
+.pull-right.width-50[
+![](clustering_files/figure-html/iris-kmeans-out-1.svg)
+
+.small-font[
+How do we choose the number of clusters?
+]]
+
+
+---
+
+## We perform k-means clustering with `kmeans()`
+
+.pull-left.xtiny-font[
+
+```r
+# run kmeans clustering
+km_fit &lt;- iris %&gt;% 
+  select(where(is.numeric)) %&gt;%
+  kmeans(centers = 2, nstart = 10)
+
+# plot
+km_fit %&gt;%
+  # combine with original data
+  augment(iris) %&gt;%
+  ggplot() +
+  aes(x = Petal.Length, Petal.Width) +
+  geom_point(
+    aes(color = .cluster, shape = Species)
+  ) +
+  geom_point(
+    data = tidy(km_fit),
+    aes(fill = cluster),
+    shape = 21, color = "black", size = 4
+  ) +
+  guides(color = "none")
+```
+]
+
+.pull-right.width-50[
+![](clustering_files/figure-html/iris-kmeans2-out-1.svg)&lt;!-- --&gt;
+
+.small-font[
+How do we choose the number of clusters?
+]]
+
+---
+
+## We perform k-means clustering with `kmeans()`
+
+.pull-left.xtiny-font[
+
+```r
+# run kmeans clustering
+km_fit &lt;- iris %&gt;% 
+  select(where(is.numeric)) %&gt;%
+  kmeans(centers = 5, nstart = 10)
+
+# plot
+km_fit %&gt;%
+  # combine with original data
+  augment(iris) %&gt;%
+  ggplot() +
+  aes(x = Petal.Length, Petal.Width) +
+  geom_point(
+    aes(color = .cluster, shape = Species)
+  ) +
+  geom_point(
+    data = tidy(km_fit),
+    aes(fill = cluster),
+    shape = 21, color = "black", size = 4
+  ) +
+  guides(color = "none")
+```
+]
+
+.pull-right.width-50[
+![](clustering_files/figure-html/iris-kmeans3-out-1.svg)&lt;!-- --&gt;
+
+.small-font[
+How do we choose the number of clusters?
+]]
+
+---
+
+## Look for elbow in scree plot
+
+.pull-left.xtiny-font[
+
+```r
+# function to calculate within sum squares
+calc_withinss &lt;- function(data, centers) {
+  km_fit &lt;- select(data, where(is.numeric)) %&gt;%
+    kmeans(centers = centers, nstart = 10)
+  km_fit$tot.withinss
+}
+
+tibble(centers = 1:15) %&gt;%
+  mutate(
+    within_sum_squares = map_dbl(
+      centers, ~calc_withinss(iris, .x)
+    )
+  ) %&gt;%
+  ggplot() +
+  aes(centers, within_sum_squares) +
+  geom_point() +
+  geom_line()
+```
+]
+
+.pull-right[
+![](clustering_files/figure-html/iris-scree-out-1.svg)&lt;!-- --&gt;
+
+.small-font[
+Plot suggests number of clusters of about 3
+]]
+
+---
+
+## Further reading
+
+- Wikipedia: [k-means clustering](https://en.wikipedia.org/wiki/K-means_clustering)
+- Naftali Harris blog post: [Interactive k-means demonstration](https://www.naftaliharris.com/blog/visualizing-k-means-clustering/)
+- Stackoverflow post: [Determining the appropriate number of clusters in k-means](https://stackoverflow.com/questions/15376075/cluster-analysis-in-r-determine-the-optimal-number-of-clusters/15376462#15376462)
+- Medium article: [The 5 Clustering Algorithms Data Scientists Need to Know](https://towardsdatascience.com/the-5-clustering-algorithms-data-scientists-need-to-know-a36d136ef68)
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"slideNumberFormat": ""
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

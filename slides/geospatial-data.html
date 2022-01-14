@@ -14,7 +14,7 @@ class: center, middle, title-slide
 
 # Visualizing geospatial data
 ### Claus O. Wilke
-### last updated: 2021-04-07
+### last updated: 2021-09-23
 
 ---
 
@@ -137,6 +137,8 @@ Alaska is the largest state; 2.2 the size of Texas
 
 Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
 
+[//]: # "segment ends here"
+
 ---
 class: center middle
 
@@ -218,6 +220,8 @@ Each state is shown as an equally sized square
 
 Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
 
+[//]: # "segment ends here"
+
 ---
 class: center middle
 
@@ -268,6 +272,8 @@ Location of individual wind turbines in the Shiloh Wind Farm
 
 Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
 
+[//]: # "segment ends here"
+
 ---
 class: middle center
 
@@ -282,9 +288,13 @@ background-size: 65%
 
 &lt;a href = "https://gist.github.com/edzer/f461a3a95570c4ab7edf3125c2f19d20"&gt;&lt;img src="https://user-images.githubusercontent.com/520851/34887433-ce1d130e-f7c6-11e7-83fc-d60ad4fae6bd.gif", style = "position: absolute; top: 10%; right: 10%;"/&gt;&lt;/a&gt;
 
+.absolute-bottom-right[
+Artwork by &lt;a href="https://twitter.com/allison_horst/status/1071456081308614656"&gt;Allison Horst&lt;/a&gt;
+]
+
 ???
 
-Illustration by &lt;a href="https://twitter.com/allison_horst/status/1071456081308614656"&gt;Allison Horst&lt;/a&gt;
+Artwork by &lt;a href="https://twitter.com/allison_horst/status/1071456081308614656"&gt;Allison Horst&lt;/a&gt;
 
 ---
 
@@ -298,10 +308,10 @@ texas_income
 
 ```
 Simple feature collection with 254 features and 4 fields
-geometry type:  MULTIPOLYGON
-dimension:      XY
-bbox:           xmin: -106.6456 ymin: 25.83738 xmax: -93.50829 ymax: 36.5007
-geographic CRS: NAD83
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: -106.6456 ymin: 25.83738 xmax: -93.50829 ymax: 36.5007
+Geodetic CRS:  NAD83
 First 10 features:
     FIPS    county median_income  moe                       geometry
 1  48001  Anderson         41327 1842 MULTIPOLYGON (((-96.0648 31...
@@ -329,10 +339,10 @@ texas_income$geometry
 
 ```
 Geometry set for 254 features 
-geometry type:  MULTIPOLYGON
-dimension:      XY
-bbox:           xmin: -106.6456 ymin: 25.83738 xmax: -93.50829 ymax: 36.5007
-geographic CRS: NAD83
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: -106.6456 ymin: 25.83738 xmax: -93.50829 ymax: 36.5007
+Geodetic CRS:  NAD83
 First 5 geometries:
 ```
 
@@ -370,10 +380,10 @@ texas_income %&gt;%
 
 ```
 Simple feature collection with 1 feature and 4 fields
-geometry type:  MULTIPOLYGON
-dimension:      XY
-bbox:           xmin: -98.17298 ymin: 30.0245 xmax: -97.36954 ymax: 30.62825
-geographic CRS: NAD83
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: -98.17298 ymin: 30.0245 xmax: -97.36954 ymax: 30.62825
+Geodetic CRS:  NAD83
    FIPS county median_income moe                       geometry
 1 48453 Travis         61451 591 MULTIPOLYGON (((-98.15927 3...
 ```
@@ -726,6 +736,10 @@ ggplot(texas_income) +
 .absolute-bottom-left[
 Reference: https://spatialreference.org/ref/epsg/3338/
 ]
+
+
+[//]: # "segment ends here"
+
 
 ---
 

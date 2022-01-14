@@ -14,7 +14,7 @@ class: center, middle, title-slide
 
 # Visualizing uncertainty
 ### Claus O. Wilke
-### last updated: 2021-03-25
+### last updated: 2021-09-23
 
 ---
 
@@ -101,9 +101,16 @@ Possible outcomes from 100 individual games played
 
 This type of visualization is called "frequency framing"
 
+[//]: # "segment ends here"
+
+---
+class: center middle
+
+## Visualizing the uncertainty of point estimates
+
 ---
 
-## Visualizing uncertainty of point estimates
+## Visualizing the uncertainty of point estimates
 
 --
 
@@ -244,9 +251,16 @@ Other visualization options: quantile dotplot
 ![](visualizing-uncertainty_files/figure-html/everest_margins6-1.svg)&lt;!-- --&gt;
 ]
 
+[//]: # "segment ends here"
+
+---
+class: center middle
+
+## Uncertainty visualizations in R
+
 ---
 
-## Making a plot with error bars in R
+## Making a plot with error bars
 
 --
 
@@ -260,7 +274,7 @@ Example: Relationship between life expectancy and GDP per capita
 
 ---
 
-## Making a plot with error bars in R
+## Making a plot with error bars
 
 .small-font[
 Example: Relationship between life expectancy and GDP per capita
@@ -278,7 +292,7 @@ Example: Relationship between life expectancy and GDP per capita
 
 ---
 
-## Making a plot with error bars in R
+## Making a plot with error bars
 
 .tiny-font[
 
@@ -290,7 +304,7 @@ lm_data
 ```
 
 ```
-# A tibble: 60 x 3
+# A tibble: 60 × 3
    continent  year data             
    &lt;fct&gt;     &lt;int&gt; &lt;list&gt;           
  1 Asia       1952 &lt;tibble [33 × 4]&gt;
@@ -309,7 +323,7 @@ lm_data
 
 ---
 
-## Making a plot with error bars in R
+## Making a plot with error bars
 
 .tiny-font[
 
@@ -324,7 +338,7 @@ lm_data
 ```
 
 ```
-# A tibble: 60 x 4
+# A tibble: 60 × 4
    continent  year data              fit   
    &lt;fct&gt;     &lt;int&gt; &lt;list&gt;            &lt;list&gt;
  1 Asia       1952 &lt;tibble [33 × 4]&gt; &lt;lm&gt;  
@@ -343,7 +357,7 @@ lm_data
 
 ---
 
-## Making a plot with error bars in R
+## Making a plot with error bars
 
 .tiny-font[
 
@@ -359,7 +373,7 @@ lm_data
 ```
 
 ```
-# A tibble: 60 x 5
+# A tibble: 60 × 5
    continent  year data              fit    tidy_out        
    &lt;fct&gt;     &lt;int&gt; &lt;list&gt;            &lt;list&gt; &lt;list&gt;          
  1 Asia       1952 &lt;tibble [33 × 4]&gt; &lt;lm&gt;   &lt;tibble [2 × 5]&gt;
@@ -378,7 +392,7 @@ lm_data
 
 ---
 
-## Making a plot with error bars in R
+## Making a plot with error bars
 
 .tiny-font[
 
@@ -395,7 +409,7 @@ lm_data
 ```
 
 ```
-# A tibble: 120 x 9
+# A tibble: 120 × 9
    continent  year data      fit    term    estimate std.error statistic p.value
    &lt;fct&gt;     &lt;int&gt; &lt;list&gt;    &lt;list&gt; &lt;chr&gt;      &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
  1 Asia       1952 &lt;tibble … &lt;lm&gt;   (Inter…    15.8       9.27      1.71 9.78e-2
@@ -414,7 +428,7 @@ lm_data
 
 ---
 
-## Making a plot with error bars in R
+## Making a plot with error bars
 
 .tiny-font[
 
@@ -432,7 +446,7 @@ lm_data
 ```
 
 ```
-# A tibble: 120 x 7
+# A tibble: 120 × 7
    continent  year term           estimate std.error statistic  p.value
    &lt;fct&gt;     &lt;int&gt; &lt;chr&gt;             &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
  1 Asia       1952 (Intercept)       15.8       9.27      1.71 0.0978  
@@ -452,7 +466,7 @@ lm_data
 
 ---
 
-## Making a plot with error bars in R
+## Making a plot with error bars
 
 .tiny-font[
 
@@ -471,7 +485,7 @@ lm_data
 ```
 
 ```
-# A tibble: 48 x 7
+# A tibble: 48 × 7
    continent  year term           estimate std.error statistic       p.value
    &lt;fct&gt;     &lt;int&gt; &lt;chr&gt;             &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt;
  1 Asia       1952 log(gdpPercap)     4.16     1.25       3.33 0.00228      
@@ -491,7 +505,7 @@ lm_data
 
 ---
 
-## Making a plot with error bars in R
+## Making a plot with error bars
 
 .tiny-font.pull-left[
 
@@ -657,6 +671,8 @@ lm_data %&gt;%
 .pull-right[
 ![](visualizing-uncertainty_files/figure-html/gapminder-quantiledots2-out-1.svg)&lt;!-- --&gt;
 ]
+
+[//]: # "segment ends here"
 
 
 ---

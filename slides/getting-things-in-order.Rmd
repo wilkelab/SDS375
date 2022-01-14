@@ -97,6 +97,23 @@ penguins %>%
 - For factors, ggplot generally places visual elements in the order defined by the levels
 ]
 
+---
+
+## We order things in ggplot with factors
+
+.tiny-font[
+```{r}
+penguins %>%
+  mutate(species = fct_relevel(species, "Chinstrap", "Gentoo", "Adelie")) %>%
+  slice(1:30) %>%   # get first 30 rows
+  pull(species)     # pull out just the `species` column
+
+# the order of factor levels is independent of the order of values in the table
+penguins %>% 
+  mutate(species = fct_relevel(species, "Chinstrap", "Gentoo", "Adelie"))
+```
+]
+
 
 ---
 
@@ -403,11 +420,13 @@ penguins %>%
 ```
 ]
 
+[//]: # "segment ends here"
+
 ---
 
 class: middle, center
 
-# We can do more than just order bars
+# Ordering other plot elements
 
 ---
 
@@ -1013,6 +1032,8 @@ Function           | Use case        | Documentation
 ]
 
 For more options, check out the [reference documentation](https://forcats.tidyverse.org/reference/index.html) of the **forcats** package
+
+[//]: # "segment ends here"
 
 ---
 

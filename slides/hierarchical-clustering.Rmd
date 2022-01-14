@@ -22,57 +22,1246 @@ library(tidyverse)
 library(here)
 library(ggdendro)
 library(cowplot)
+library(colorspace)
+library(kableExtra)
+library(ggforce)
+library(broom)
+
+US_regions <- read_csv(here("datasets", "US_regions.csv"))
+US_state_stats <- read_csv(here("datasets", "US_state_stats.csv")) %>%
+  filter(state != "District of Columbia")
+
 # ggplot2 settings so plots scale well for slide size 
 theme_set(theme_gray(16)) # 16 for full width, 18 for half width 
 update_geom_defaults("point", list(size = 2)) # 2 for full width, 2.5 for half width
 ```
 
+## Example data: State level statistics for US
+
+.tiny-font[
 ```{r}
-library(tidyverse)
-library(usdata)
-library(ggdendro)
-
-state_data <- state_stats %>%
-  mutate(
-    popdens2010 = pop2010/land_area
-  ) %>%
-  select(-abbr, -fips, -pop2000, -pop2010, -land_area)
-
-state_data_named <- state_data %>%
-  select(-state) %>%
-  as.data.frame()
-row.names(state_data_named) <- state_data$state
-
-dd <- dist(scale(state_data_named), method = "euclidean")
-hc <- hclust(dd, method = "ward.D2")
-
-ggdendrogram(hc, rotate = TRUE)
+US_state_stats
+```
+]
 
 
-dhc <- as.dendrogram(hc)
-# Rectangular lines
-ddata <- dendro_data(dhc, type = "rectangle")
+---
+
+## PCA reveals broad trends
+
+.center[
+```{r US_states_pca, echo = FALSE, message = FALSE, fig.width = 8., fig.asp = .618, dev = "svg"}
+pca_fit <- US_state_stats %>%
+  select(-state, -murder, -robbery, -agg_assault, -larceny, -motor_theft) %>%
+  scale() %>%
+  prcomp()
+
+pca_fit %>%
+  # add PCs to the original dataset
+  augment(US_state_stats) %>%
+  left_join(US_regions) %>%
+  ggplot(aes(.fittedPC1, .fittedPC2)) +
+  geom_point(aes(color = region, fill = region, shape = region), size = 3) +
+  scale_shape_manual(
+    values = c(21, 22, 23, 24),
+    name = NULL
+  ) +
+  scale_color_manual(
+    values = darken(c("#56B4E9", "#E69F00", "#009E73", "#F0E442"), 0.3),
+    name = NULL
+  ) +
+  scale_fill_manual(
+    values = c("#56B4E9C0", "#E69F00C0", "#009E73C0", "#F0E442C0"),
+    name = NULL
+  ) +
+  scale_x_continuous(
+    name = "PC 1",
+    limits = c(-5, 6),
+    breaks = c(-4, -2, 0, 2, 4, 6)
+    
+  ) +
+  scale_y_continuous(
+    name = "PC 2",
+    limits = c(-4, 3)
+  ) +
+  coord_fixed() +
+  theme_minimal_grid(rel_small = 1)
+```
+]
+
+---
+class: middle, center
+
+## Can we get a more detailed picture?
+
+---
+
+
+## Hierarchical clustering
+
+
+.center[
+```{r US_states_dendro, echo = FALSE, fig.width = 12, fig.asp = .45, dev = "svg"}
+hc <- US_state_stats %>%
+  column_to_rownames(var = "state") %>%
+  scale() %>%
+  dist(method = "euclidean") %>%
+  hclust(method = "ward.D2")
+
+ddata <- dendro_data(as.dendrogram(hc), type = "rectangle")
 segments <- segment(ddata)
 labels <- label(ddata) %>%
-  left_join(dviz.supp::US_regions, by = c("label" = "state"))
+  left_join(US_regions, by = c("label" = "state"))
 
 ggplot() + 
-  geom_segment(data = segments, aes(y, x, xend = yend, yend = xend)) + 
-  geom_text(data = labels, aes(y, x, label = label, color = region), hjust = 1) +
-  scale_x_continuous(limits = c(-10, 25)) +
-  theme_void()
-
-head(segment(ddata))
-head(label(ddata))
-
-
+  geom_segment(data = segments, aes(x, -y, xend = xend, yend = -yend)) + 
+  geom_text(
+    data = labels,
+    aes(x, -y+.5, label = label, color = region),
+    hjust = 0,
+    angle = 90,
+    key_glyph = "point",
+    size = 4
+  ) +
+  scale_color_manual(
+    values = darken(c("#56B4E9", "#E69F00", "#009E73", "#F0E442"), 0.3),
+    name = NULL
+  ) +
+  scale_x_continuous(name = NULL) +
+  scale_y_continuous(name = NULL, limits = c(-20, 6), expand = c(0, 0)) +
+  guides(
+    color = guide_legend(
+      override.aes = list(color = c("#56B4E9", "#E69F00", "#009E73", "#F0E442"))
+    )
+  ) +
+  theme_void(16)
 ```
+]
+
+--
+
+This visualization is called a dendrogram
+
+---
+
+## Cut the dendrogram to obtain defined clusters
+
+```{r US_states_dendro_cut, echo = FALSE, fig.width = 12, fig.asp = .45, dev = "svg"}
+cut_height <- 14.7
+clusters <- cutree(hc, h = cut_height)
+clustered_labels <- left_join(
+  labels,
+  tibble(label = names(clusters), cluster = factor(clusters)),
+  by = "label"
+) 
+
+ggplot() + 
+  geom_segment(data = segments, aes(x, -y, xend = xend, yend = -yend)) + 
+  geom_text(
+    data = clustered_labels,
+    aes(x, -y+.5, label = label, color = cluster),
+    hjust = 0,
+    angle = 90,
+    key_glyph = "point",
+    size = 4
+  ) +
+  geom_hline(yintercept = -cut_height, linetype = 2) +
+  scale_color_viridis_d(option = "B", begin = 0.2, end = 0.8) +
+  scale_x_continuous(name = NULL) +
+  scale_y_continuous(name = NULL, limits = c(-20, 6), expand = c(0, 0)) +
+  theme_void(16)
+```
+
+---
+
+## Cut the dendrogram to obtain defined clusters
+
+```{r US_states_dendro_cut2, echo = FALSE, fig.width = 12, fig.asp = .45, dev = "svg"}
+cut_height <- 10.9
+clusters <- cutree(hc, h = cut_height)
+clustered_labels <- left_join(
+  labels,
+  tibble(label = names(clusters), cluster = factor(clusters)),
+  by = "label"
+) 
+
+ggplot() + 
+  geom_segment(data = segments, aes(x, -y, xend = xend, yend = -yend)) + 
+  geom_text(
+    data = clustered_labels,
+    aes(x, -y+.5, label = label, color = cluster),
+    hjust = 0,
+    angle = 90,
+    key_glyph = "point",
+    size = 4
+  ) +
+  geom_hline(yintercept = -cut_height, linetype = 2) +
+  scale_color_viridis_d(option = "B", begin = 0.2, end = 0.8) +
+  scale_x_continuous(name = NULL) +
+  scale_y_continuous(name = NULL, limits = c(-20, 6), expand = c(0, 0)) +
+  theme_void(16)
+```
+
+---
+
+## Cut the dendrogram to obtain defined clusters
+
+```{r US_states_dendro_cut3, echo = FALSE, fig.width = 12, fig.asp = .45, dev = "svg"}
+cut_height <- 7.5
+clusters <- cutree(hc, h = cut_height)
+clustered_labels <- left_join(
+  labels,
+  tibble(label = names(clusters), cluster = factor(clusters)),
+  by = "label"
+) 
+
+ggplot() + 
+  geom_segment(data = segments, aes(x, -y, xend = xend, yend = -yend)) + 
+  geom_text(
+    data = clustered_labels,
+    aes(x, -y+.5, label = label, color = cluster),
+    hjust = 0,
+    angle = 90,
+    key_glyph = "point",
+    size = 4
+  ) +
+  geom_hline(yintercept = -cut_height, linetype = 2) +
+  scale_color_viridis_d(option = "B", begin = 0.05, end = 0.95) +
+  scale_x_continuous(name = NULL) +
+  scale_y_continuous(name = NULL, limits = c(-20, 6), expand = c(0, 0)) +
+  theme_void(16)
+```
+
+---
+
+## Cut the dendrogram to obtain defined clusters
+
+```{r US_states_dendro_cut4, echo = FALSE, fig.width = 12, fig.asp = .45, dev = "svg"}
+cut_height <- 5.0
+clusters <- cutree(hc, h = cut_height)
+clustered_labels <- left_join(
+  labels,
+  tibble(label = names(clusters), cluster = factor(clusters)),
+  by = "label"
+) 
+
+ggplot() + 
+  geom_segment(data = segments, aes(x, -y, xend = xend, yend = -yend)) + 
+  geom_text(
+    data = clustered_labels,
+    aes(x, -y+.5, label = label, color = cluster),
+    hjust = 0,
+    angle = 90,
+    key_glyph = "point",
+    size = 4
+  ) +
+  geom_hline(yintercept = -cut_height, linetype = 2) +
+  scale_color_viridis_d(option = "B", begin = 0.05, end = 0.95) +
+  scale_x_continuous(name = NULL) +
+  scale_y_continuous(name = NULL, limits = c(-20, 6), expand = c(0, 0)) +
+  theme_void(16)
+```
+
+---
+
+## Cut the dendrogram to obtain defined clusters
+
+```{r US_states_dendro_cut5, echo = FALSE, fig.width = 12, fig.asp = .45, dev = "svg"}
+cut_height <- 10.9
+clusters <- cutree(hc, h = cut_height)
+clustered_labels <- left_join(
+  labels,
+  tibble(label = names(clusters), cluster = factor(clusters)),
+  by = "label"
+) 
+
+ggplot() + 
+  geom_segment(data = segments, aes(x, -y, xend = xend, yend = -yend)) + 
+  geom_text(
+    data = clustered_labels,
+    aes(x, -y+.5, label = label, color = cluster),
+    hjust = 0,
+    angle = 90,
+    key_glyph = "point",
+    size = 4
+  ) +
+  geom_hline(yintercept = -cut_height, linetype = 2) +
+  scale_color_viridis_d(option = "B", begin = 0.2, end = 0.8) +
+  scale_x_continuous(name = NULL) +
+  scale_y_continuous(name = NULL, limits = c(-20, 6), expand = c(0, 0)) +
+  theme_void(16)
+```
+
+---
+
+## Display clusters in PCA space
+
+.center[
+```{r US_states_pca_cluster, echo = FALSE, message = FALSE, fig.width = 8., fig.asp = .618, dev = "svg"}
+pca_fit %>%
+  # add PCs to the original dataset
+  augment(US_state_stats) %>%
+  left_join(
+    tibble(state = names(clusters), cluster = factor(clusters)),
+    by = "state"
+  ) %>%
+  left_join(US_regions, by = "state") %>%
+  ggplot(aes(.fittedPC1, .fittedPC2)) +
+  geom_point(aes(color = cluster, fill = cluster, shape = region), size = 3) +
+  scale_shape_manual(
+    values = c(21, 22, 23, 24),
+    name = NULL
+  ) +
+  scale_color_viridis_d(
+    name = "cluster",
+    option = "B", begin = 0, end = 0.8
+  ) +
+  scale_fill_viridis_d(
+    name = "cluster",
+    option = "B", begin = 0.4, end = 1
+  ) +
+  scale_x_continuous(
+    name = "PC 1",
+    limits = c(-5, 6),
+    breaks = c(-4, -2, 0, 2, 4, 6)
+  ) +
+  scale_y_continuous(
+    name = "PC 2",
+    limits = c(-4, 3)
+  ) +
+  guides(
+    color = guide_legend(
+      order = 1,
+      override.aes = list(shape = 21)
+    ),
+    fill = guide_legend(
+      order = 1
+    ),
+    shape = guide_legend(
+      order = 2,
+      override.aes = list(fill = "gray80")
+    )
+  ) +
+  coord_fixed() +
+  theme_minimal_grid(rel_small = 1)
+```
+]
+
+---
+
+## Hierarchical clustering can be useful with heatmaps
+
+.pull-left[
+Arbitrary ordering:
+```{r forensic-correlations1, echo = FALSE, message = FALSE, fig.width = 4., fig.asp = 1, dev = "svg"}
+forensic_glass <- read_csv(here("datasets", "forensic_glass.csv"))
+
+cm <- cor(select(forensic_glass, -type, -RI, -Si))
+df_wide <- as.data.frame(cm)
+df_long <- stack(df_wide)
+names(df_long) <- c("cor", "var1")
+df_long <- cbind(df_long, var2 = rep(rownames(cm), length(rownames(cm))))
+clust <- hclust(as.dist(1-cm), method="average") 
+levels <- clust$labels[clust$order]
+df_long$var1 <- factor(df_long$var1, levels = sort(levels))
+df_long$var2 <- factor(df_long$var2, levels = sort(levels))
+
+ggplot(filter(df_long, as.integer(var1) < as.integer(var2)),
+       aes(var1, var2, fill=cor)) + 
+  geom_tile(color = "white", size = 1) + 
+  scale_x_discrete(position = "top", name = NULL, expand = c(0, 0)) +
+  scale_y_discrete(name = NULL, expand = c(0, 0)) +
+  scale_fill_continuous_diverging(
+    name = "correlation",
+    limits = c(-.5, .5),
+    breaks = c(-.5, 0, .5),
+    labels = c("–0.5", "0.0", "0.5"),
+    palette = "Blue-Red",
+    rev = TRUE
+  ) +
+  guides(
+    fill = guide_colorbar(
+      direction = "horizontal",
+      label.position = "bottom",
+      title.position = "top",
+      barwidth = grid::unit(140, "pt"),
+      barheight = grid::unit(17.5, "pt"),
+      ticks.linewidth = 1
+    )
+  ) +
+  coord_fixed() +
+  theme_half_open(rel_small = 1) +
+  theme(
+    axis.line = element_blank(),
+    axis.ticks = element_blank(),
+    axis.ticks.length = grid::unit(3, "pt"),
+    legend.position = c(.97, .0),
+    legend.justification = c(1, 0),
+    legend.title.align = 0.5
+  )
+```
+]
+
+--
+
+.pull-right[
+Ordering by clustering similarity:
+```{r forensic-correlations2, echo = FALSE, message = FALSE, fig.width = 4., fig.asp = 1, dev = "svg"}
+df_long$var1 <- factor(df_long$var1, levels = levels)
+df_long$var2 <- factor(df_long$var2, levels = levels)
+
+ggplot(filter(df_long, as.integer(var1) < as.integer(var2)),
+       aes(var1, var2, fill=cor)) + 
+  geom_tile(color = "white", size = 1) + 
+  scale_x_discrete(position = "top", name = NULL, expand = c(0, 0)) +
+  scale_y_discrete(name = NULL, expand = c(0, 0)) +
+  scale_fill_continuous_diverging(
+    name = "correlation",
+    limits = c(-.5, .5),
+    breaks = c(-.5, 0, .5),
+    labels = c("–0.5", "0.0", "0.5"),
+    palette = "Blue-Red",
+    rev = TRUE
+  ) +
+  guides(
+    fill = guide_colorbar(
+      direction = "horizontal",
+      label.position = "bottom",
+      title.position = "top",
+      barwidth = grid::unit(140, "pt"),
+      barheight = grid::unit(17.5, "pt"),
+      ticks.linewidth = 1
+    )
+  ) +
+  coord_fixed() +
+  theme_half_open(rel_small = 1) +
+  theme(
+    axis.line = element_blank(),
+    axis.ticks = element_blank(),
+    axis.ticks.length = grid::unit(3, "pt"),
+    legend.position = c(.97, .0),
+    legend.justification = c(1, 0),
+    legend.title.align = 0.5
+  )
+```
+]
+
+```{r eval = FALSE, echo = FALSE}
+## delete?
+
+df_long %>%
+  filter(
+    as.integer(factor(as.character(var1))) <
+      as.integer(factor(as.character(var2)))
+  ) %>%
+  arrange(as.character(var1), as.character(var2)) %>%
+  mutate(id = n():1) %>%
+  ggplot(aes(1, id, fill=cor)) + 
+  geom_tile(color = "white", size = 1) + 
+  geom_text(
+    aes(x = 1.75, label = var1), size = 12/.pt, hjust = 0
+  ) +
+  geom_text(
+    aes(x = 2.5, label = var2), size = 12/.pt, hjust = 0
+  ) +
+  scale_x_continuous(limits = c(0, 8)) +
+  scale_fill_continuous_diverging(
+    name = "correlation",
+    limits = c(-.5, .5),
+    breaks = c(-.5, 0, .5),
+    labels = c("–0.5", "0.0", "0.5"),
+    palette = "Blue-Red",
+    rev = TRUE
+  ) +
+  guides(
+    fill = guide_colorbar(
+      direction = "horizontal",
+      label.position = "bottom",
+      title.position = "top",
+      barwidth = grid::unit(120, "pt"),
+      barheight = grid::unit(12, "pt"),
+      ticks.linewidth = 1
+    )
+  ) +
+  theme_map(12, rel_small = 1) +
+  theme(
+    legend.position = c(.97, .1),
+    legend.justification = c(1, .5),
+    legend.title.align = 0.5
+  )
+```
+
+```{r eval = FALSE, echo = FALSE}
+df_long %>%
+  filter(as.integer(var1) < as.integer(var2)) %>%
+  arrange(desc(var1), desc(var2)) %>%
+  mutate(id = n():1) %>%
+  ggplot(aes(1, id, fill=cor)) + 
+  geom_tile(color = "white", size = 1) + 
+  geom_text(
+    aes(x = 1.75, label = var1), size = 12/.pt, hjust = 0
+  ) +
+  geom_text(
+    aes(x = 2.5, label = var2), size = 12/.pt, hjust = 0
+  ) +
+  scale_x_continuous(limits = c(0, 8)) +
+  scale_fill_continuous_diverging(
+    name = "correlation",
+    limits = c(-.5, .5),
+    breaks = c(-.5, 0, .5),
+    labels = c("–0.5", "0.0", "0.5"),
+    palette = "Blue-Red",
+    rev = TRUE
+  ) +
+  guides(
+    fill = guide_colorbar(
+      direction = "horizontal",
+      label.position = "bottom",
+      title.position = "top",
+      barwidth = grid::unit(120, "pt"),
+      barheight = grid::unit(12, "pt"),
+      ticks.linewidth = 1
+    )
+  ) +
+  theme_map(12, rel_small = 1) +
+  theme(
+    legend.position = c(.97, .1),
+    legend.justification = c(1, .5),
+    legend.title.align = 0.5
+  )
+```
+
+[//]: # "segment ends here"
+
+---
+class: center middle
+
+
+## Hierarchical clustering via UPGMA
+
+
+---
+
+## Hierarchical clustering methods require two ingredients
+
+--
+
+1\. Distance metric
+
+Examples: Euclidean distance, maximum distance
+
+<br>
+--
+
+2\. Linkage criteria
+
+Examples:
+- Unweighted average linkage clustering  
+   (unweighted pair group method with arithmetic mean, UPGMA)
+- Complete linkage clustering
+- Minimum energy clustering
+
+(See: https://en.wikipedia.org/wiki/Hierarchical_clustering)
+ 
+
+---
+
+## Hierarchical clustering via UPGMA
+
+.pull-left.move-up-1em[
+```{r UPGMA-step1, echo = FALSE, message = FALSE, fig.width = 4.5, fig.asp = 1, dev = "svg"}
+data <- tibble(
+  x = c(0.50, .5, 3.75, 1.70, 3.30),
+  y = c(4.2, 1.6, 3.75, 1, 3.1),
+  label = c(LETTERS[1:5]),
+  fill = c("white", "white", "white", "white", "white"),
+  cluster = c(3, 2, 1, 2, 1)
+)
+
+ggplot(data, aes(x, y)) +
+  geom_point(aes(fill = fill), size = 10, shape = 21, stroke = 1) +
+  geom_text(aes(label = label), size = 14/.pt, fontface = "bold") +
+  coord_fixed(clip = "off", xlim = c(-.1, 4.1)) +
+  scale_fill_identity() +
+  theme_minimal_grid(16, rel_small = 1)
+```
+]
+
+--
+
+.pull-right[
+Distance matrix:
+
+```{r echo = FALSE}
+dt <- data %>%
+  column_to_rownames("label") %>%
+  select(-fill) %>%
+  as.matrix() %>%
+  dist()
+
+dt %>%
+  as.matrix() %>%
+  signif(3) %>%
+  kbl() %>%
+  kable_paper(full_width = F, html_font = "sans-serif") %>%
+  row_spec(0, bold = TRUE, background = "white", color = "black") %>%
+  column_spec(1, bold = TRUE, color = "black", background = "white") %>%
+  column_spec(2, color = "black", background = "white") %>%
+  column_spec(3, color = "black", background = "white") %>%
+  column_spec(4, color = "black", background = "white") %>%
+  column_spec(5, color = "black", background = "white") %>%
+  column_spec(6, color = "black", background = "white")
+```
+]
+
+---
+
+## Hierarchical clustering via UPGMA
+
+.pull-left.move-up-1em[
+```{r UPGMA-step2, echo = FALSE, message = FALSE, fig.width = 4.5, fig.asp = 1, dev = "svg"}
+data$fill <- c("white", "white", "yellow", "white", "yellow")
+
+ggplot(data, aes(x, y)) +
+  geom_mark_hull(
+    aes(filter = cluster < 2),
+    expand = unit(5, "mm"),
+    radius = unit(5, "mm")
+  ) +
+  geom_point(aes(fill = fill), size = 10, shape = 21, stroke = 1) +
+  geom_text(aes(label = label), size = 14/.pt, fontface = "bold") +
+  coord_fixed(clip = "off", xlim = c(-.1, 4.1)) +
+  scale_fill_identity() +
+  theme_minimal_grid(16, rel_small = 1)
+```
+]
+
+.pull-right[
+Distance matrix:
+
+```{r echo = FALSE}
+dt %>%
+  as.matrix() %>%
+  signif(3) %>%
+  kbl() %>%
+  kable_paper(full_width = F, html_font = "sans-serif") %>%
+  row_spec(0, bold = TRUE, background = "white", color = "black") %>%
+  column_spec(1, bold = TRUE, color = "black", background = "white") %>%
+  column_spec(2, color = "black", background = "white") %>%
+  column_spec(3, color = "black", background = "white") %>%
+  column_spec(4, color = "black", background = c("white", "white", "white", "white", "yellow")) %>%
+  column_spec(5, color = "black", background = "white") %>%
+  column_spec(6, color = "black", background = c("white", "white", "yellow", "white", "white"))
+```
+
+Join points with minimum distance
+]
+
+---
+
+## Hierarchical clustering via UPGMA
+
+.pull-left.move-up-1em[
+```{r UPGMA-step3, echo = FALSE, message = FALSE, fig.width = 4.5, fig.asp = 1, dev = "svg"}
+data$fill <- c("white", "white", "gray90", "white", "gray90")
+
+ggplot(data, aes(x, y)) +
+  geom_mark_hull(
+    aes(filter = cluster < 2),
+    expand = unit(5, "mm"),
+    radius = unit(5, "mm")
+  ) +
+  geom_point(aes(fill = fill), size = 10, shape = 21, stroke = 1) +
+  geom_text(aes(label = label), size = 14/.pt, fontface = "bold") +
+  coord_fixed(clip = "off", xlim = c(-.1, 4.1)) +
+  scale_fill_identity() +
+  theme_minimal_grid(16, rel_small = 1)
+```
+]
+
+.pull-right[
+Update distances by averaging:
+$$d_{A:(C, E)} = (d_{A:C} + d_{A:E})/2,$$
+
+similarly for points B and D
+]
+---
+
+## Hierarchical clustering via UPGMA
+
+.pull-left.move-up-1em[
+![](`r knitr::fig_chunk("UPGMA-step3", "svg")`)
+]
+
+.pull-right[
+Updated distance matrix:
+
+```{r echo = FALSE}
+UPGMA_step <- function(m, i1, i2, n1, n2) {
+  labels <- rownames(m)
+  label_new <- glue::glue("({labels[i1]}, {labels[i2]})")
+  row_new <- (1/(n1+n2))*(n1*m[i1, ] + n2*m[i2, ])[c(-i1, -i2)]
+  names_new <- c(names(row_new), label_new)
+  row_new_padded <- c(row_new, 0)
+  m2 <- cbind(rbind(m[c(-i1, -i2), c(-i1, -i2)], row_new), row_new_padded)
+  colnames(m2) <- names_new
+  rownames(m2) <- names_new
+  m2
+}
+
+m2 <- dt %>%
+  as.matrix() %>%
+  UPGMA_step(3, 5, 1, 1)  
+
+m2 %>%
+  signif(3) %>%
+  kbl() %>%
+  kable_paper(full_width = F, html_font = "sans-serif") %>%
+  row_spec(0, bold = TRUE, background = "white", color = "black") %>%
+  column_spec(1, bold = TRUE, color = "black", background = "white") %>%
+  column_spec(2, color = "black", background = "white") %>%
+  column_spec(3, color = "black", background = "white") %>%
+  column_spec(4, color = "black", background = "white") %>%
+  column_spec(5, color = "black", background = "white")
+```
+]
+
+---
+
+## Hierarchical clustering via UPGMA
+
+.pull-left.move-up-1em[
+```{r UPGMA-step4, echo = FALSE, message = FALSE, fig.width = 4.5, fig.asp = 1, dev = "svg"}
+data$fill <- c("white", "yellow", "gray90", "yellow", "gray90")
+
+ggplot(data, aes(x, y)) +
+  geom_mark_hull(
+    aes(filter = cluster == 1),
+    expand = unit(5, "mm"),
+    radius = unit(5, "mm")
+  ) +
+  geom_mark_hull(
+    aes(filter = cluster == 2),
+    expand = unit(5, "mm"),
+    radius = unit(5, "mm")
+  ) +
+  geom_point(aes(fill = fill), size = 10, shape = 21, stroke = 1) +
+  geom_text(aes(label = label), size = 14/.pt, fontface = "bold") +
+  coord_fixed(clip = "off", xlim = c(-.1, 4.1)) +
+  scale_fill_identity() +
+  theme_minimal_grid(16, rel_small = 1)
+```
+]
+
+.pull-right[
+Updated distance matrix:
+
+```{r echo = FALSE}
+m2 %>%
+  signif(3) %>%
+  kbl() %>%
+  kable_paper(full_width = F, html_font = "sans-serif") %>%
+  row_spec(0, bold = TRUE, background = "white", color = "black") %>%
+  column_spec(1, bold = TRUE, color = "black", background = "white") %>%
+  column_spec(2, color = "black", background = "white") %>%
+  column_spec(3, color = "black", background = c("white", "white", "yellow", "white")) %>%
+  column_spec(4, color = "black", background = c("white", "yellow", "white", "white")) %>%
+  column_spec(5, color = "black", background = "white")
+```
+
+Continue joining points with minimum distance
+]
+
+---
+
+## Hierarchical clustering via UPGMA
+
+.pull-left.move-up-1em[
+```{r UPGMA-step5, echo = FALSE, message = FALSE, fig.width = 4.5, fig.asp = 1, dev = "svg"}
+data$fill = c("white", "gray90", "gray90", "gray90", "gray90")
+
+ggplot(data, aes(x, y)) +
+  geom_mark_hull(
+    aes(filter = cluster == 1),
+    expand = unit(5, "mm"),
+    radius = unit(5, "mm")
+  ) +
+  geom_mark_hull(
+    aes(filter = cluster == 2),
+    expand = unit(5, "mm"),
+    radius = unit(5, "mm")
+  ) +
+  geom_point(aes(fill = fill), size = 10, shape = 21, stroke = 1) +
+  geom_text(aes(label = label), size = 14/.pt, fontface = "bold") +
+  coord_fixed(clip = "off", xlim = c(-.1, 4.1)) +
+  scale_fill_identity() +
+  theme_minimal_grid(16, rel_small = 1)
+```
+]
+
+.pull-right[
+Updated distance matrix:
+
+```{r echo = FALSE}
+m3 <- m2 %>%
+  UPGMA_step(2, 3, 1, 1)  
+
+m3 %>%
+  signif(3) %>%
+  kbl() %>%
+  kable_paper(full_width = F, html_font = "sans-serif") %>%
+  row_spec(0, bold = TRUE, background = "white", color = "black") %>%
+  column_spec(1, bold = TRUE, color = "black", background = "white") %>%
+  column_spec(2, color = "black", background = "white") %>%
+  column_spec(3, color = "black", background = "white") %>%
+  column_spec(4, color = "black", background = "white")
+```
+]
+
+---
+
+## Hierarchical clustering via UPGMA
+
+.pull-left.move-up-1em[
+```{r UPGMA-step6, echo = FALSE, message = FALSE, fig.width = 4.5, fig.asp = 1, dev = "svg"}
+data$fill <- c("yellow", "gray90", "gray90", "gray90", "gray90")
+
+ggplot(data, aes(x, y)) +
+  geom_mark_hull(
+    aes(filter = cluster %in% c(2, 3)),
+    expand = unit(6, "mm"),
+    radius = unit(5, "mm")
+  ) +
+  geom_mark_hull(
+    aes(filter = cluster == 2),
+    expand = unit(5, "mm"),
+    radius = unit(5, "mm"),
+    fill = "yellow",
+    alpha = .7
+  ) +
+  geom_mark_hull(
+    aes(filter = cluster == 1),
+    expand = unit(5, "mm"),
+    radius = unit(5, "mm")
+  ) +
+  geom_point(aes(fill = fill), size = 10, shape = 21, stroke = 1) +
+  geom_text(aes(label = label), size = 14/.pt, fontface = "bold") +
+  coord_fixed(clip = "off", xlim = c(-.1, 4.1)) +
+  scale_fill_identity() +
+  theme_minimal_grid(16, rel_small = 1)
+```
+]
+
+.pull-right[
+Updated distance matrix:
+
+```{r echo = FALSE}
+m3 %>%
+  as.matrix() %>%
+  signif(3) %>%
+  kbl() %>%
+  kable_paper(full_width = F, html_font = "sans-serif") %>%
+  row_spec(0, bold = TRUE, background = "white", color = "black") %>%
+  column_spec(1, bold = TRUE, color = "black", background = "white") %>%
+  column_spec(2, color = "black", background = c("white", "white", "yellow")) %>%
+  column_spec(3, color = "black", background = "white") %>%
+  column_spec(4, color = "black", background = c("yellow", "white", "white"))
+```
+]
+
+---
+
+## Hierarchical clustering via UPGMA
+
+.pull-left.move-up-1em[
+![](`r knitr::fig_chunk("UPGMA-step6", "svg")`)
+]
+
+.pull-right[
+In general, distances are weighted by # of data points added to the new cluster:
+$$\begin{eqnarray}
+  d_{(C, E): (A, (B, D))} &=& \\
+   \qquad\qquad(d_{(C, E): A} &+& 2 d_{(C, E): (B, D)})/(1+2)
+  \end{eqnarray}$$
+]
+
+---
+
+## Hierarchical clustering via UPGMA
+
+.pull-left.move-up-1em[
+```{r UPGMA-step7, echo = FALSE, message = FALSE, fig.width = 4.5, fig.asp = 1, dev = "svg"}
+data$fill <- c("gray90", "gray90", "gray90", "gray90", "gray90")
+  
+ggplot(data, aes(x, y)) +
+  geom_mark_hull(
+    aes(filter = cluster %in% c(2, 3)),
+    expand = unit(6, "mm"),
+    radius = unit(5, "mm")
+  ) +
+  geom_mark_hull(
+    aes(filter = cluster == 2),
+    expand = unit(5, "mm"),
+    radius = unit(5, "mm")
+  ) +
+  geom_mark_hull(
+    aes(filter = cluster == 1),
+    expand = unit(5, "mm"),
+    radius = unit(5, "mm")
+  ) +
+  geom_point(aes(fill = fill), size = 10, shape = 21, stroke = 1) +
+  geom_text(aes(label = label), size = 14/.pt, fontface = "bold") +
+  coord_fixed(clip = "off", xlim = c(-.1, 4.1)) +
+  scale_fill_identity() +
+  theme_minimal_grid(16, rel_small = 1)
+```
+]
+
+
+.pull-right[
+Distance matrix:
+
+```{r echo = FALSE}
+m4 <- m3 %>%
+  UPGMA_step(1, 3, 1, 2)  
+
+m4 %>%
+  signif(3) %>%
+  kbl() %>%
+  kable_paper(full_width = F, html_font = "sans-serif") %>%
+  row_spec(0, bold = TRUE, background = "white", color = "black") %>%
+  column_spec(1, bold = TRUE, color = "black", background = "white") %>%
+  column_spec(2, color = "black", background = "white") %>%
+  column_spec(3, color = "black", background = "white")
+```
+]
+
+
+---
+
+## Hierarchical clustering via UPGMA
+
+.pull-left.move-up-1em[
+```{r UPGMA-step8, echo = FALSE, message = FALSE, fig.width = 4.5, fig.asp = 1, dev = "svg"}
+data$fill = c("gray90", "gray90", "gray90", "gray90", "gray90")
+
+ggplot(data, aes(x, y)) +
+  geom_mark_hull(
+    aes(filter = cluster < 5),
+    expand = unit(7, "mm"),
+    radius = unit(5, "mm")
+  ) +
+   geom_mark_hull(
+    aes(filter = cluster %in% c(2, 3)),
+    expand = unit(6, "mm"),
+    radius = unit(5, "mm")
+  ) +
+  geom_mark_hull(
+    aes(filter = cluster == 2),
+    expand = unit(5, "mm"),
+    radius = unit(5, "mm")
+  ) +
+  geom_mark_hull(
+    aes(filter = cluster == 1),
+    expand = unit(5, "mm"),
+    radius = unit(5, "mm")
+  ) +
+ geom_point(aes(fill = fill), size = 10, shape = 21, stroke = 1) +
+  geom_text(aes(label = label), size = 14/.pt, fontface = "bold") +
+  coord_fixed(clip = "off", xlim = c(-.1, 4.1)) +
+  scale_fill_identity() +
+  theme_minimal_grid(16, rel_small = 1)
+```
+]
+
+.pull-right[
+Final clustering: <br><br>
+((A, (B, D)), (C, E))
+]
+
+
+---
+
+## Hierarchical clustering via UPGMA
+
+.pull-left.move-up-1em[
+![](`r knitr::fig_chunk("UPGMA-step8", "svg")`)
+]
+
+.pull-right.move-up-1em[
+Final clustering:
+
+```{r UPGMA-dendro, echo = FALSE, message = FALSE, fig.width = 4.5, fig.asp = 1, dev = "svg"}
+dt %>%
+  hclust(method = "average") %>%
+  ggdendrogram(rotate = TRUE, theme_dendro = FALSE) +
+  coord_flip(expand = FALSE) +
+  theme_half_open(20) +
+  ylab("distance") +
+  theme(
+    axis.line = element_blank(),
+    axis.title.y = element_blank(),
+    axis.ticks = element_blank()
+  )
+```
+
+]
+
+[//]: # "segment ends here"
+
+---
+class: center middle
+
+## Doing hierarchical clustering in R
+
+---
+
+## Doing hierarchical clustering in R
+
+We'll cluster the US state stats dataset
+
+.tiny-font[
+```{r}
+US_state_stats 
+```
+]
+
+---
+## Step 1: Calculate the distance matrix
+
+.tiny-font[
+```{r echo = FALSE}
+options(width = 200)
+```
+
+```{r}
+US_state_stats %>%
+  column_to_rownames(var = "state") %>%
+  scale() %>%
+  dist(method = "euclidean")
+```
+]
+
+---
+## Step 1: Calculate the distance matrix
+
+.tiny-font[
+```{r}
+US_state_stats %>%
+  column_to_rownames(var = "state") %>%
+  scale() %>%
+  dist(method = "manhattan")
+```
+]
+
+---
+
+## Step 1: Calculate the distance matrix
+
+.tiny-font[
+```{r}
+US_state_stats %>%
+  column_to_rownames(var = "state") %>%
+  scale() %>%
+  dist(method = "maximum")
+```
+]
+
+---
+## Step 1: Calculate the distance matrix
+
+.tiny-font[
+```{r}
+US_state_stats %>%
+  column_to_rownames(var = "state") %>%
+  scale() %>%
+  dist(method = "euclidean")
+```
+]
+
+---
+## Step 2: Cluster and plot
+
+.tiny-font.pull-left[
+```{r US_states_simple_dendro, eval = FALSE}
+dist_out <- US_state_stats %>%
+  column_to_rownames(var = "state") %>%
+  scale() %>%
+  dist(method = "euclidean")
+
+hc_out <- hclust(
+  dist_out, method = "average"
+)
+
+library(ggdendro)
+ggdendrogram(hc_out, rotate = TRUE)
+```
+
+`method = "average"`: UPGMA
+]
+
+.pull-right.width-40.move-up-6em[
+```{r US_states_simple_dendro-out, ref.label="US_states_simple_dendro", fig.width = 3.5, fig.asp = 2, echo=FALSE, warning=FALSE, dev = "svg"}
+```
+]
+---
+## Step 2: Cluster and plot
+
+.tiny-font.pull-left[
+```{r US_states_simple_dendro2, eval = FALSE}
+dist_out <- US_state_stats %>%
+  column_to_rownames(var = "state") %>%
+  scale() %>%
+  dist(method = "euclidean")
+
+hc_out <- hclust(
+  dist_out, method = "ward.D2"
+)
+
+library(ggdendro)
+ggdendrogram(hc_out, rotate = TRUE)
+```
+`method = "ward.D2"`: Ward's minimum variance method 
+
+]
+
+.pull-right.width-40.move-up-6em[
+```{r US_states_simple_dendro2-out, ref.label="US_states_simple_dendro2", fig.width = 3.5, fig.asp = 2, echo=FALSE, warning=FALSE, dev = "svg"}
+```
+]
+
+---
+## Step 2: Cluster and plot
+
+.tiny-font.pull-left[
+```{r US_states_simple_dendro3, eval = FALSE}
+dist_out <- US_state_stats %>%
+  column_to_rownames(var = "state") %>%
+  scale() %>%
+  dist(method = "euclidean")
+
+hc_out <- hclust(
+  dist_out, method = "complete"
+)
+
+library(ggdendro)
+ggdendrogram(hc_out, rotate = TRUE)
+```
+
+`method = "complete"`: complete linkage method 
+
+]
+
+.pull-right.width-40.move-up-6em[
+```{r US_states_simple_dendro3-out, ref.label="US_states_simple_dendro3", fig.width = 3.5, fig.asp = 2, echo=FALSE, warning=FALSE, dev = "svg"}
+```
+]
+
+---
+## We can also plot manually
+
+.tiny-font.pull-left[
+```{r US_states_dendro_manual, eval = FALSE}
+ddata <- dendro_data(
+  hc_out,
+  type = "rectangle"
+)
+segments <- segment(ddata)
+labels <- label(ddata)
+
+ggplot() + 
+  geom_segment(
+    data = segments,
+    aes(x, y, xend = xend, yend = yend)
+  ) + 
+  geom_text(
+    data = labels,
+    aes(x, y - .5, label = label),
+    hjust = 1,
+    size = 8/.pt
+  ) +
+  coord_flip(ylim = c(-5, 12))
+```
+]
+
+.pull-right.width-45.move-up-3em[
+```{r US_states_dendro_manual-out, ref.label="US_states_dendro_manual", fig.width = 3.7, fig.asp = 1.6, echo=FALSE, warning=FALSE, dev = "svg"}
+```
+]
+
+
+---
+## Assign clusters by cutting the dendrogram
+
+.tiny-font[
+```{r echo = FALSE}
+options(width = 100)
+```
+
+```{r}
+# cut dendrogram at height 5
+cutree(hc_out, h = 5) 
+```
+]
+
+---
+## Assign clusters by cutting the dendrogram
+
+.tiny-font[
+```{r}
+# cut dendrogram at height 8
+cutree(hc_out, h = 8) 
+```
+]
+
+---
+## Assign clusters by cutting the dendrogram
+
+.tiny-font[
+```{r}
+# cut dendrogram so there are 4 clusters
+cutree(hc_out, k = 4) 
+```
+]
+
+---
+
+## Add cluster info into scatterplot
+
+.pull-left.tiny-font[
+```{r US_states_cluster_scatter, eval = FALSE}
+# cut dendrogram so there are 4 clusters
+cluster <- cutree(hc_out, k = 4)
+
+US_state_stats %>%
+  left_join(
+    tibble(
+      state = names(cluster),
+      cluster = factor(cluster)
+    )
+  ) %>%
+  ggplot(aes(income, tr_deaths)) +
+  geom_point(aes(color = cluster))
+```
+]
+
+
+.pull-right[
+```{r US_states_cluster_scatter-out, ref.label="US_states_cluster_scatter", fig.width = 5.5, fig.asp = .618, echo=FALSE, warning=FALSE, message = FALSE, dev = "svg"}
+```
+]
+
+[//]: # "segment ends here"
 
 ---
 
 ## Further reading
 
-- **ggdendro2** reference documentation: 
+- Wikipedia: [Hierarchical clustering](https://en.wikipedia.org/wiki/Hierarchical_clustering)
+
+- **ggdendro** documentation: [Introduction to ggdendro](https://cran.r-project.org/web/packages/ggdendro/vignettes/ggdendro.html)
+
+- **ggdendro** documentation: [reference documentation (pdf)](https://cran.r-project.org/web/packages/ggdendro/ggdendro.pdf)
 
 
 

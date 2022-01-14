@@ -41,18 +41,19 @@ blue_jays %>%
   geom_point(aes(fill = "blue jay birds"), pch = 21, color = "white", size = 2.5) +
   scale_fill_manual(
     values = c(`blue jay birds` = "black", `regression line` = "black"),
-    breaks = c("blue jay birds", "regression line"),
-    labels = c("blue jay birds   ", "regression line"),
+    limits = c("blue jay birds"),
     name = NULL,
     guide = guide_legend(
       direction = "horizontal",
-      override.aes = list(size = 2.5, linetype = 0)
+      override.aes = list(
+        size = 2.5,
+        linetype = 0
+      )
     )
   ) +
   scale_color_manual(
     values = c(`blue jay birds` = "black", `regression line` = "black"),
-    breaks = c("blue jay birds", "regression line"),
-    labels = c("blue jay birds   ", "regression line"),
+    limits = c("blue jay birds"),
     name = NULL
   ) +
   scale_x_continuous(name = "body mass (g)", limits = c(58.7, 81.6)) +
@@ -86,18 +87,21 @@ blue_jays %>%
   geom_smooth(aes(color = "regression line"), method = "lm", size = 0.75, se = FALSE, fullrange = TRUE) +
   scale_fill_manual(
     values = c(`blue jay birds` = "black", `regression line` = "black"),
-    breaks = c("blue jay birds", "regression line"),
-    labels = c("blue jay birds   ", "regression line"),
+    breaks = c("regression line", "blue jay birds"),
+    labels = c("regression line   ", "blue jay birds"),
     name = NULL,
     guide = guide_legend(
       direction = "horizontal",
-      override.aes = list(size = 2.5, linetype = 0)
+      override.aes = list(
+        size = c(0.75, 2.5),
+        linetype = c(1, 0)
+      )
     )
   ) +
   scale_color_manual(
     values = c(`blue jay birds` = "black", `regression line` = "black"),
-    breaks = c("blue jay birds", "regression line"),
-    labels = c("blue jay birds   ", "regression line"),
+    breaks = c("regression line", "blue jay birds"),
+    labels = c("regression line   ", "blue jay birds"),
     name = NULL
   ) +
   scale_x_continuous(name = "body mass (g)", limits = c(58.7, 81.6)) +
@@ -843,6 +847,7 @@ Did housing prices in West Virginia recover by 2017?  — no
 
 Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
 
+[//]: # "segment ends here"
 
 ---
 class: middle, center
@@ -1258,6 +1263,8 @@ Caution: Exact shape of smoothing line depends on method details
 .small-font[
 Smoothing lines are particularly unreliable near their endpoints
 ]
+
+[//]: # "segment ends here"
 
 ---
 

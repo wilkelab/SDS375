@@ -14,7 +14,7 @@ class: center, middle, title-slide
 
 # Data wrangling 2
 ### Claus O. Wilke
-### last updated: 2021-02-17
+### last updated: 2021-09-23
 
 ---
 
@@ -123,7 +123,7 @@ penguins %&gt;%
 
 
 ```
-# A tibble: 3 x 2
+# A tibble: 3 × 2
   species       n
   &lt;fct&gt;     &lt;int&gt;
 1 Adelie      152
@@ -151,19 +151,19 @@ penguins
 ```
 
 ```
-# A tibble: 344 x 8
-   species island bill_length_mm bill_depth_mm flipper_length_… body_mass_g
-   &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;            &lt;int&gt;       &lt;int&gt;
- 1 Adelie  Torge…           39.1          18.7              181        3750
- 2 Adelie  Torge…           39.5          17.4              186        3800
- 3 Adelie  Torge…           40.3          18                195        3250
- 4 Adelie  Torge…           NA            NA                 NA          NA
- 5 Adelie  Torge…           36.7          19.3              193        3450
- 6 Adelie  Torge…           39.3          20.6              190        3650
- 7 Adelie  Torge…           38.9          17.8              181        3625
- 8 Adelie  Torge…           39.2          19.6              195        4675
- 9 Adelie  Torge…           34.1          18.1              193        3475
-10 Adelie  Torge…           42            20.2              190        4250
+# A tibble: 344 × 8
+   species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
+   &lt;fct&gt;   &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt;
+ 1 Adelie  Torgersen           39.1          18.7               181        3750
+ 2 Adelie  Torgersen           39.5          17.4               186        3800
+ 3 Adelie  Torgersen           40.3          18                 195        3250
+ 4 Adelie  Torgersen           NA            NA                  NA          NA
+ 5 Adelie  Torgersen           36.7          19.3               193        3450
+ 6 Adelie  Torgersen           39.3          20.6               190        3650
+ 7 Adelie  Torgersen           38.9          17.8               181        3625
+ 8 Adelie  Torgersen           39.2          19.6               195        4675
+ 9 Adelie  Torgersen           34.1          18.1               193        3475
+10 Adelie  Torgersen           42            20.2               190        4250
 # … with 334 more rows, and 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;
 ```
 ]
@@ -184,20 +184,20 @@ penguins %&gt;%
 ```
 
 ```
-# A tibble: 344 x 8
+# A tibble: 344 × 8
 # Groups:   species [3]
-   species island bill_length_mm bill_depth_mm flipper_length_… body_mass_g
-   &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;            &lt;int&gt;       &lt;int&gt;
- 1 Adelie  Torge…           39.1          18.7              181        3750
- 2 Adelie  Torge…           39.5          17.4              186        3800
- 3 Adelie  Torge…           40.3          18                195        3250
- 4 Adelie  Torge…           NA            NA                 NA          NA
- 5 Adelie  Torge…           36.7          19.3              193        3450
- 6 Adelie  Torge…           39.3          20.6              190        3650
- 7 Adelie  Torge…           38.9          17.8              181        3625
- 8 Adelie  Torge…           39.2          19.6              195        4675
- 9 Adelie  Torge…           34.1          18.1              193        3475
-10 Adelie  Torge…           42            20.2              190        4250
+   species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
+   &lt;fct&gt;   &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt;
+ 1 Adelie  Torgersen           39.1          18.7               181        3750
+ 2 Adelie  Torgersen           39.5          17.4               186        3800
+ 3 Adelie  Torgersen           40.3          18                 195        3250
+ 4 Adelie  Torgersen           NA            NA                  NA          NA
+ 5 Adelie  Torgersen           36.7          19.3               193        3450
+ 6 Adelie  Torgersen           39.3          20.6               190        3650
+ 7 Adelie  Torgersen           38.9          17.8               181        3625
+ 8 Adelie  Torgersen           39.2          19.6               195        4675
+ 9 Adelie  Torgersen           34.1          18.1               193        3475
+10 Adelie  Torgersen           42            20.2               190        4250
 # … with 334 more rows, and 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;
 ```
 ]
@@ -222,7 +222,7 @@ penguins %&gt;%
 
 
 ```
-# A tibble: 3 x 2
+# A tibble: 3 × 2
   species       n
   &lt;fct&gt;     &lt;int&gt;
 1 Adelie      152
@@ -249,20 +249,20 @@ penguins %&gt;%
 ```
 
 ```
-# A tibble: 344 x 8
+# A tibble: 344 × 8
 # Groups:   species, island [5]
-   species island bill_length_mm bill_depth_mm flipper_length_… body_mass_g
-   &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;            &lt;int&gt;       &lt;int&gt;
- 1 Adelie  Torge…           39.1          18.7              181        3750
- 2 Adelie  Torge…           39.5          17.4              186        3800
- 3 Adelie  Torge…           40.3          18                195        3250
- 4 Adelie  Torge…           NA            NA                 NA          NA
- 5 Adelie  Torge…           36.7          19.3              193        3450
- 6 Adelie  Torge…           39.3          20.6              190        3650
- 7 Adelie  Torge…           38.9          17.8              181        3625
- 8 Adelie  Torge…           39.2          19.6              195        4675
- 9 Adelie  Torge…           34.1          18.1              193        3475
-10 Adelie  Torge…           42            20.2              190        4250
+   species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
+   &lt;fct&gt;   &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt;
+ 1 Adelie  Torgersen           39.1          18.7               181        3750
+ 2 Adelie  Torgersen           39.5          17.4               186        3800
+ 3 Adelie  Torgersen           40.3          18                 195        3250
+ 4 Adelie  Torgersen           NA            NA                  NA          NA
+ 5 Adelie  Torgersen           36.7          19.3               193        3450
+ 6 Adelie  Torgersen           39.3          20.6               190        3650
+ 7 Adelie  Torgersen           38.9          17.8               181        3625
+ 8 Adelie  Torgersen           39.2          19.6               195        4675
+ 9 Adelie  Torgersen           34.1          18.1               193        3475
+10 Adelie  Torgersen           42            20.2               190        4250
 # … with 334 more rows, and 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;
 ```
 ]
@@ -289,7 +289,7 @@ penguins %&gt;%
 ```
 
 ```
-# A tibble: 5 x 3
+# A tibble: 5 × 3
 # Groups:   species [3]
   species   island        n
   &lt;fct&gt;     &lt;fct&gt;     &lt;int&gt;
@@ -321,7 +321,7 @@ penguins %&gt;%
 
 
 ```
-# A tibble: 3 x 2
+# A tibble: 3 × 2
   species       n
   &lt;fct&gt;     &lt;int&gt;
 1 Adelie      152
@@ -346,7 +346,7 @@ penguins %&gt;%
 
 
 ```
-# A tibble: 3 x 2
+# A tibble: 3 × 2
   species       n
   &lt;fct&gt;     &lt;int&gt;
 1 Adelie      152
@@ -387,7 +387,7 @@ penguins %&gt;%
 
 
 ```
-# A tibble: 3 x 5
+# A tibble: 3 × 5
   species       n mean_mass max_flipper_length percent_female
   &lt;fct&gt;     &lt;int&gt;     &lt;dbl&gt;              &lt;int&gt;          &lt;dbl&gt;
 1 Adelie      152       NA                  NA           NA  
@@ -428,7 +428,7 @@ penguins %&gt;%
 
 
 ```
-# A tibble: 3 x 5
+# A tibble: 3 × 5
   species       n mean_mass max_flipper_length percent_female
   &lt;fct&gt;     &lt;int&gt;     &lt;dbl&gt;              &lt;int&gt;          &lt;dbl&gt;
 1 Adelie      152     3701.                210          0.5  
@@ -439,6 +439,13 @@ penguins %&gt;%
 ]
 
 We typically need to tell R how exactly `NA`s should be handled
+
+[//]: # "segment ends here"
+
+---
+class: center middle
+
+## Reshaping: Making tables wider or longer
 
 ---
 
@@ -465,7 +472,7 @@ penguins %&gt;%
 ```
 
 ```
-# A tibble: 5 x 3
+# A tibble: 5 × 3
   species   island        n
   &lt;fct&gt;     &lt;fct&gt;     &lt;int&gt;
 1 Adelie    Biscoe       44
@@ -490,7 +497,7 @@ penguins %&gt;%
 ```
 
 ```
-# A tibble: 3 x 4
+# A tibble: 3 × 4
   species   Biscoe Dream Torgersen
   &lt;fct&gt;      &lt;int&gt; &lt;int&gt;     &lt;int&gt;
 1 Adelie        44    56        52
@@ -518,7 +525,7 @@ penguins_wide %&gt;%
 ```
 
 ```
-# A tibble: 9 x 3
+# A tibble: 9 × 3
   species   island        n
   &lt;fct&gt;     &lt;chr&gt;     &lt;int&gt;
 1 Adelie    Biscoe       44
@@ -550,7 +557,7 @@ penguins_wide %&gt;%
 ```
 
 ```
-# A tibble: 9 x 3
+# A tibble: 9 × 3
   species   island        n
   &lt;fct&gt;     &lt;chr&gt;     &lt;int&gt;
 1 Adelie    Biscoe       44
@@ -582,7 +589,7 @@ penguins_wide %&gt;%
 ```
 
 ```
-# A tibble: 9 x 3
+# A tibble: 9 × 3
   species   island        n
   &lt;fct&gt;     &lt;chr&gt;     &lt;int&gt;
 1 Adelie    Biscoe       44
@@ -614,7 +621,7 @@ penguins_wide %&gt;%
 ```
 
 ```
-# A tibble: 9 x 3
+# A tibble: 9 × 3
   species   island        n
   &lt;fct&gt;     &lt;chr&gt;     &lt;int&gt;
 1 Adelie    Biscoe       44
@@ -630,11 +637,17 @@ penguins_wide %&gt;%
 
 ]
 
+[//]: # "segment ends here"
+
+---
+class: center middle
+
+## Combining datasets: joins
 
 
 ---
 
-## Combine datasets: joins
+## We use joins to add columns from one table into another
 
 .center[
 &lt;img src = "data-wrangling-2_files/join.svg", width = 75%&gt;&lt;/img&gt;
@@ -653,7 +666,7 @@ band_members
 ```
 
 ```
-# A tibble: 3 x 2
+# A tibble: 3 × 2
   name  band   
   &lt;chr&gt; &lt;chr&gt;  
 1 Mick  Stones 
@@ -672,7 +685,7 @@ band_instruments
 ```
 
 ```
-# A tibble: 3 x 2
+# A tibble: 3 × 2
   name  plays 
   &lt;chr&gt; &lt;chr&gt; 
 1 John  guitar
@@ -694,7 +707,7 @@ Joining, by = "name"
 ```
 
 ```
-# A tibble: 3 x 3
+# A tibble: 3 × 3
   name  band    plays 
   &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt; 
 1 Mick  Stones  &lt;NA&gt;  
@@ -715,7 +728,7 @@ band_members
 ```
 
 ```
-# A tibble: 3 x 2
+# A tibble: 3 × 2
   name  band   
   &lt;chr&gt; &lt;chr&gt;  
 1 Mick  Stones 
@@ -732,7 +745,7 @@ band_instruments
 ```
 
 ```
-# A tibble: 3 x 2
+# A tibble: 3 × 2
   name  plays 
   &lt;chr&gt; &lt;chr&gt; 
 1 John  guitar
@@ -752,7 +765,7 @@ Joining, by = "name"
 ```
 
 ```
-# A tibble: 3 x 3
+# A tibble: 3 × 3
   name  band    plays 
   &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt; 
 1 John  Beatles guitar
@@ -774,7 +787,7 @@ band_members
 ```
 
 ```
-# A tibble: 3 x 2
+# A tibble: 3 × 2
   name  band   
   &lt;chr&gt; &lt;chr&gt;  
 1 Mick  Stones 
@@ -791,7 +804,7 @@ band_instruments
 ```
 
 ```
-# A tibble: 3 x 2
+# A tibble: 3 × 2
   name  plays 
   &lt;chr&gt; &lt;chr&gt; 
 1 John  guitar
@@ -811,7 +824,7 @@ Joining, by = "name"
 ```
 
 ```
-# A tibble: 2 x 3
+# A tibble: 2 × 3
   name  band    plays 
   &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt; 
 1 John  Beatles guitar
@@ -832,7 +845,7 @@ band_members
 ```
 
 ```
-# A tibble: 3 x 2
+# A tibble: 3 × 2
   name  band   
   &lt;chr&gt; &lt;chr&gt;  
 1 Mick  Stones 
@@ -849,7 +862,7 @@ band_instruments
 ```
 
 ```
-# A tibble: 3 x 2
+# A tibble: 3 × 2
   name  plays 
   &lt;chr&gt; &lt;chr&gt; 
 1 John  guitar
@@ -869,7 +882,7 @@ Joining, by = "name"
 ```
 
 ```
-# A tibble: 4 x 3
+# A tibble: 4 × 3
   name  band    plays 
   &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt; 
 1 Mick  Stones  &lt;NA&gt;  
@@ -903,6 +916,8 @@ Joining, by = "name"
 
 In my experience, `left_join()` is the right choice  
 70–80% of the time
+
+[//]: # "segment ends here"
 
 ---
 

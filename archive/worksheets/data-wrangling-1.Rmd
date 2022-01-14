@@ -1,0 +1,448 @@
+---
+#############################################################
+#                                                           #
+# Click on "Run Document" in RStudio to run this worksheet. #
+#                                                           #
+#############################################################
+title: "Data wrangling 1"
+author: "Claus O. Wilke"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(tidyverse)
+library(palmerpenguins)
+knitr::opts_chunk$set(echo = FALSE, comment = "")
+```
+
+## Introduction
+
+In this worksheet, we will discuss how to perform basic data manipulations, such as filtering data rows that meet certain conditions, choosing data columns, and arranging data in ascending or descending order.
+
+We will be using two R packages, **tidyverse** for the data manipulation functions `%>%`, `filter()`, `select()`, `arrange()`, `count()`, and `mutate()`, and **palmerpenguins** for the `penguins` dataset.
+
+```{r library-calls, echo = TRUE, eval = FALSE}
+# load required libraries
+library(tidyverse)
+library(palmerpenguins)
+```
+
+We will be working with the dataset `penguins` containing data on individual penguins on Antarctica.
+```{r echo = TRUE}
+penguins
+```
+
+
+## The pipe (`%>%`, read: "and then")
+
+When writing complex data analysis pipelines, we frequently use the pipe operator `%>%` to move data from one analysis step to the next. The pipe is pronounced "and then", and it takes the data on its left and uses it as the first argument for the function on its right.
+
+For example, to see the first few lines of a dataset, we often write `head(data)`. Instead, we can write `data %>% head()`.
+
+Try this yourself. Write code that displays the first few lines of the `penguins` dataset, using `%>%` and `head()`:
+
+```{r pipe, exercise=TRUE, exercise.eval=TRUE}
+penguins
+```
+
+```{r pipe-hint}
+penguins ___ head()
+```
+
+```{r pipe-solution}
+penguins %>% head()
+```
+
+
+## Choosing data rows
+
+The function `filter()` allows you to find rows in a dataset that meet one or more specific conditions. The syntax is `data %>% filter(condition)`, where condition is a logical condition. For example, `filter(x > 5)` would pick all rows for which the value in column `x` is greater than 5.
+
+As an example, the following code picks all penguins from the island Biscoe:
+
+```{r filter-island-demo, echo=TRUE}
+penguins %>%
+  filter(island == "Biscoe")
+```
+
+Now it's your turn. Pick all penguins from the island Dream:
+
+```{r filter-island, exercise=TRUE}
+penguins %>%
+  filter(___)
+```
+
+```{r filter-island-solution}
+penguins %>%
+  filter(island == "Dream")
+```
+
+### Filtering for multiple conditions
+
+You can also state multiple conditions, separated by a comma. For example, `filter(x > 5, y < 2)` would pick all rows for which the value in the column `x` is greater than 5 and the value in the column `y` is less than 2. Note that the conditions are combined via logical and, both need to be satisfied for the row to be picked.
+
+To try this out, pick all penguins of species Chinstrap from the island Dream:
+
+```{r filter-species-island, exercise=TRUE}
+
+```
+
+```{r filter-species-island-hint}
+penguins %>%
+  filter(species == ___, island == ___)
+```
+
+```{r filter-species-island-solution}
+penguins %>%
+  filter(species == "Chinstrap", island == "Dream")
+```
+
+## Choosing data columns
+
+The function `select()` allows you to pick specific data columns by name. This is frequently useful when a dataset has many more columns than we are interested in at the time. For example, if we are only interested in the penguins' species, island, and sex, we could select these three columns:
+
+```{r select-example, echo = TRUE}
+penguins %>%
+  select(species, island, sex)
+```
+
+Try this yourself, picking the columns representing the penguin species (`species`), the bill length (`bill_length_mm`), and then flipper length (`flipper_length_mm`).
+
+```{r select-exercise, exercise=TRUE}
+
+```
+
+```{r select-exercise-hint}
+penguins %>%
+  select(___)
+```
+
+```{r select-exercise-solution}
+penguins %>%
+  select(species, bill_length_mm, flipper_length_mm)
+```
+
+### Choosing columns for removal
+
+Another situation that arises frequently is one where we want to remove specific columns. We can also do this with `select()`, but now write `select(-column)` to remove one or more columns.
+
+Try this. Remove the column `species`.
+
+```{r select-remove, exercise = TRUE}
+
+```
+
+```{r select-remove-hint}
+penguins %>%
+  select(___)
+```
+
+```{r select-remove-solution}
+penguins %>%
+  select(-species)
+```
+
+
+And now remove both `species` and `island`.
+
+```{r select-remove2, exercise = TRUE}
+
+```
+
+```{r select-remove2-hint}
+penguins %>%
+  select(-___, -___)
+```
+
+```{r select-remove2-solution}
+penguins %>%
+  select(-species, -island)
+```
+
+## Sorting data
+
+The function `arrange()` allows you to sort data by one or more columns. For example, `data %>% arrange(x)` would sort the data by increasing values of `x`, and `data %>% arrange(x, y)` would sort the data first by `x` and then, for ties in `x`, by `y`.
+
+As an example, the following code sorts penguins by their flipper length:
+
+```{r arrange-flipper-demo, echo=TRUE}
+penguins %>%
+  arrange(flipper_length_mm)
+```
+
+Now it's your turn. Sort the penguins by bill length:
+
+```{r arrange-bill-length, exercise=TRUE}
+
+```
+
+```{r arrange-bill-length-hint}
+penguins %>%
+  arrange(___)
+```
+
+```{r arrange-bill-length-solution}
+penguins %>%
+  arrange(bill_length_mm)
+```
+
+### Arranging in descending order
+
+To arrange data in descending order, enclose the data column in `desc()`. For example, `data %>% arrange(desc(x))` would sort the data by decreasing values of `x`. (`desc` stands for "descending".)
+
+Try this out. Sort the penguins by bill length, from largest to smallest:
+
+```{r arrange-bill-length-desc, exercise=TRUE}
+
+```
+
+```{r arrange-bill-length-desc-hint-1}
+penguins %>%
+  arrange(___)
+```
+
+```{r arrange-bill-length-desc-hint-2}
+penguins %>%
+  arrange(___(bill_length_mm))
+```
+
+```{r arrange-bill-length-desc-solution}
+penguins %>%
+  arrange(desc(bill_length_mm))
+```
+
+
+## Counting
+
+We frequently want to count how many times a particular value or combination of values occurs in a dataset. We do this using the `count()` function. For example, the following code counts how many penguins of the different species there are in the `penguins` dataset.
+
+```{r count-demo, echo=TRUE}
+penguins %>%
+  count(species)
+```
+
+Now try this yourself. Count how many male and female penguins there are.
+
+```{r count-simple, exercise=TRUE}
+
+```
+
+```{r count-simple-hint}
+penguins %>%
+  count(___)
+```
+
+```{r count-simple-solution}
+penguins %>%
+  count(sex)
+```
+
+We can also perform more fine-grained counts, by providing the `count()` function with more than one column name. See if you can count how many male and female penguins the dataset contains for each species. 
+
+```{r count-complex, exercise=TRUE}
+
+```
+
+```{r count-complex-hint}
+penguins %>%
+  count(___, sex)
+```
+
+```{r count-complex-solution}
+penguins %>%
+  count(species, sex)
+```
+
+Now count how many penguins of each species the dataset contains for each island. 
+
+```{r count-complex2, exercise=TRUE}
+
+```
+
+```{r count-complex2-hint}
+penguins %>%
+  count(___, species)
+```
+
+
+```{r count-complex2-solution}
+penguins %>%
+  count(island, species)
+```
+
+
+### Chaining analysis steps into pipelines
+
+We can chain multiple analysis steps into a pipeline by continuing to add "and then" statements. For example, `data %>% count(...) %>% arrange(...)` would first count and then sort the data.
+
+Try this out by counting the number of penguins of each species and then sorting by the number of penguins.
+
+```{r analysis-chain, exercise=TRUE}
+
+```
+
+```{r analysis-chain-hint-1}
+penguins %>%
+  count(___) %>%
+  arrange(___)
+```
+
+```{r analysis-chain-hint-2}
+penguins %>%
+  count(species) %>%
+  arrange(___)
+```
+
+```{r analysis-chain-solution}
+penguins %>%
+  count(species) %>%
+  arrange(n)
+```
+
+You may remember from before that the default sorting is from the smallest to the largest value. Repeat the previous exercise but now arrange the penguin species from the most frequent to the least frequent:
+
+```{r analysis-chain2, exercise=TRUE}
+
+```
+
+```{r analysis-chain2-hint}
+penguins %>%
+  count(species) %>%
+  arrange(desc(___))
+```
+
+```{r analysis-chain2-solution}
+penguins %>%
+  count(species) %>%
+  arrange(desc(n))
+```
+
+
+## Creating new data columns
+
+The function `mutate()` allows you to add new columns to a data table. For example, `data %>% mutate(sum = x + y)` would create a new column `sum` that is the sum of the columns `x` and `y`:
+
+```{r simple-mutate-example, echo=TRUE, eval=FALSE}
+data <- tibble(x = 1:3, y = c(10, 20, 30))
+data
+```
+
+```{r simple-mutate-example-code, echo=FALSE, eval=TRUE}
+data <- tibble(x = 1:3, y = c(10, 20, 30))
+print(data)
+```
+
+```{r simple-mutate-example2, echo=TRUE, eval=FALSE}
+data %>%
+  mutate(
+    sum = x + y
+  )
+```
+
+```{r simple-mutate-example2-code, echo=FALSE, eval=TRUE}
+data %>%
+  mutate(
+    sum = x + y
+  ) %>%
+  print()
+```
+
+
+Note that the part to the left of the equals sign (here, `sum`) is the name of the new column, and the part to the right of the equals sign (here, `x + y`) is an R expression that evaluates to the values in the new column.
+
+Now apply this concept to the `penguins` dataset. Add a new column `bill_ratio` that is the ratio of bill length and bill depth:
+
+```{r mutate-bill-ratio, exercise=TRUE}
+penguins %>%
+  select(species, bill_length_mm, bill_depth_mm) %>%
+  mutate(
+    ___ = ___
+  )
+```
+
+```{r mutate-bill-ratio-hint}
+penguins %>%
+  select(species, bill_length_mm, bill_depth_mm) %>%
+  mutate(
+    bill_ratio = ___
+  )
+```
+
+```{r mutate-bill-ratio-solution}
+penguins %>%
+  select(species, bill_length_mm, bill_depth_mm) %>%
+  mutate(
+    bill_ratio = bill_length_mm / bill_depth_mm
+  )
+```
+
+### Counting with custom conditions
+
+It is quite common that we want to count items that meet a specific condition. For example, let's say we want to count how many penguins of different species have flippers longer than 200mm. To do this efficiently, we first create a new column that indicates whether the condition is met or not, and we then use count with that indicator column.
+
+The easiest way to create indicator columns is via the function `ifelse()`, which takes three arguments: a condition, a result if the condition is met, and a result if the condition is not met. The following example shows how to create an indicator column showing whether a variable is positive or negative:
+
+```{r indicator-example1, echo=TRUE, eval=FALSE}
+data <- tibble(x = c(-0.5, 2.3, 50, -1.4))
+data
+```
+
+```{r indicator-example1-code, echo=FALSE, eval=TRUE}
+data <- tibble(x = c(-0.5, 2.3, 50, -1.4))
+print(data)
+```
+
+```{r indicator-example2, echo=TRUE, eval=FALSE}
+data %>%
+  mutate(
+    sign_of_x = ifelse(x >= 0, "positive", "negative")
+  )
+```
+
+```{r indicator-example2-code, echo=FALSE, eval=TRUE}
+data %>%
+  mutate(
+    sign_of_x = ifelse(x >= 0, "positive", "negative")
+  ) %>%
+  print()
+```
+
+Now try this yourself. Count how many penguins of different species have flippers longer than 200mm. Then sort your results from most frequent to least frequent.
+
+```{r flipper-length-count, exercise = TRUE}
+penguins %>%
+  mutate(
+    ___
+  ) %>%
+  count(___) %>%
+  arrange(___)
+```
+
+```{r flipper-length-count-hint-1}
+penguins %>%
+  mutate(
+    flipper_length = ifelse(___, "greater than 200mm", "less than 200mm")
+  ) %>%
+  count(___, ___) %>%
+  arrange(___)
+```
+
+```{r flipper-length-count-hint-2}
+penguins %>%
+  mutate(
+    flipper_length = ifelse(___, "greater than 200mm", "less than 200mm")
+  ) %>%
+  count(___, flipper_length) %>%
+  arrange(___(n))
+```
+
+```{r flipper-length-count-solution}
+penguins %>%
+  mutate(
+    flipper_length = ifelse(flipper_length_mm > 200, "greater than 200mm", "less than 200mm")
+  ) %>%
+  count(species, flipper_length) %>%
+  arrange(desc(n))
+```

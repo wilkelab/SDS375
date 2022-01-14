@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Telling a story</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Claus O. Wilke" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="Wilke-slides-theme.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, title-slide
+
+# Telling a story
+### Claus O. Wilke
+### last updated: 2021-04-28
+
+---
+
+
+
+
+## How did I end up teaching a class on data visualization?
+
+--
+
+&lt;img src = "telling-a-story_files/cowplot-logo.svg", width = 30%, style = "position:absolute; top: 22%; left: 13%;"&gt;&lt;/img&gt;
+
+--
+
+&lt;img src = "https://clauswilke.com/dataviz/cover.png", width = 30%, style = "position:absolute; top: 20%; left: 53%; box-shadow: 3px 5px 3px 1px #00000080;"&gt;&lt;/img&gt;
+
+
+---
+
+## What is a story?
+
+--
+
+A story is a collection of observations, facts, or events presented in a specific order such that they create an .highlight[emotional reaction]
+
+---
+
+## Every story has an arc
+
+--
+
+.center[
+Opening
+]
+
+--
+
+.center[
+&lt;img src = "telling-a-story_files/arrow.svg", width = 3%, style = "margin-top: -0.5em; margin-bottom: -1em"&gt;&lt;/img&gt;
+
+Challenge
+]
+
+--
+
+.center[
+&lt;img src = "telling-a-story_files/arrow.svg", width = 3%, style = "margin-top: -0.5em; margin-bottom: -1em"&gt;&lt;/img&gt;
+
+Action
+]
+
+--
+
+.center[
+&lt;img src = "telling-a-story_files/arrow.svg", width = 3%, style = "margin-top: -0.5em; margin-bottom: -1em"&gt;&lt;/img&gt;
+
+Resolution
+]
+
+---
+
+## Every story has an arc
+
+.center[
+Opening
+]
+
+.center[
+&lt;img src = "telling-a-story_files/arrow.svg", width = 3%, style = "margin-top: -0.5em; margin-bottom: -1em"&gt;&lt;/img&gt;
+
+.highlight[Challenge]
+]
+
+.center[
+&lt;img src = "telling-a-story_files/arrow.svg", width = 3%, style = "margin-top: -0.5em; margin-bottom: -1em"&gt;&lt;/img&gt;
+
+Action
+]
+
+.center[
+&lt;img src = "telling-a-story_files/arrow.svg", width = 3%, style = "margin-top: -0.5em; margin-bottom: -1em"&gt;&lt;/img&gt;
+
+.highlight[Resolution]
+]
+
+.absolute-bottom-right[
+Challenge and resolution are&lt;br&gt;the two most important parts
+]
+
+---
+
+## Mapping my story onto this format
+
+--
+
+**Opening:** We need to make many data visualizations in my lab
+
+--
+
+**Challenge:** I end up telling my students the same things over and over
+
+--
+
+**Action:** I go and write a book about data visualization
+
+--
+
+**Resolution:** The book is written. But now I teach the material, so I still keep saying the same things over and over
+
+
+---
+
+## Other story structures
+
+--
+
+.center.move-up-1em[
+Action
+]
+
+--
+
+.center[
+&lt;img src = "telling-a-story_files/arrow.svg", width = 3%, style = "margin-top: -0.5em; margin-bottom: -1em"&gt;&lt;/img&gt;
+
+Background
+]
+
+--
+
+.center[
+&lt;img src = "telling-a-story_files/arrow.svg", width = 3%, style = "margin-top: -0.5em; margin-bottom: -1em"&gt;&lt;/img&gt;
+
+Development
+]
+
+--
+
+.center[
+&lt;img src = "telling-a-story_files/arrow.svg", width = 3%, style = "margin-top: -0.5em; margin-bottom: -1em"&gt;&lt;/img&gt;
+
+Climax
+]
+
+--
+
+.center[
+&lt;img src = "telling-a-story_files/arrow.svg", width = 3%, style = "margin-top: -0.5em; margin-bottom: -1em"&gt;&lt;/img&gt;
+
+Ending
+]
+
+--
+
+.absolute-bottom-right[
+(Better for action movies&lt;br&gt;than for scientific reports)
+]
+
+---
+
+## Mapping my story onto this format
+
+--
+
+**Action:** In May 2017, I embark on a major project: Write a book on data visualization
+
+--
+
+**Background:** I do this because we need to make many data visualizations in my lab, and I end up telling my students the same things over and over
+
+--
+
+**Development:** Writing the book takes me almost two years; along the way, I add many features to ggplot2 and become a member of the ggplot2 team
+
+--
+
+**Climax:** The book is released in April 2019
+
+--
+
+**Ending:** Now I'm a dataviz teacher
+
+
+---
+
+## Other story structures
+
+&lt;br&gt;&lt;br&gt;
+
+--
+
+.center[
+Lead
+]
+
+--
+
+.center[
+&lt;img src = "telling-a-story_files/arrow.svg", width = 3%, style = "margin-top: -0.5em; margin-bottom: -1em"&gt;&lt;/img&gt;
+
+Development
+]
+
+--
+
+.absolute-bottom-right[
+(Commonly used in newspaper articles)
+]
+
+---
+
+## Mapping my story onto this format
+
+--
+
+**Lead:** Because I see the need for more education in data visualization, I have written an entire book about the topic
+
+--
+
+**Development:** I had previously written an R package to improve figure design, but it wasn't sufficient: Good judgement cannot be automated
+
+--
+
+So I wrote a book; the book is entirely about concepts, not about coding, and it is meant as a resource for anybody doing data visualizations, regardless of their preferred visualization software
+
+---
+
+## Writing a scientific paper: The Introduction
+
+--
+
+Three paragraphs:
+
+--
+
+**Paragraph 1:** What is the broad research area?&lt;br&gt;(Opening)
+
+--
+
+**Paragraph 2:** What specifically do we not know?&lt;br&gt;(Challenge)
+
+--
+
+**Paragraph 3:** What was done, what was found?&lt;br&gt;(Action/Resolution)
+
+
+---
+
+## Writing a scientific paper: The Results section
+
+--
+
+Repeat the following structure for each experiment/analysis/figure:
+
+--
+
+- What do we want to know? (Challenge)
+
+--
+
+- What did we do? (Action)
+
+--
+
+- What did we observe? (Results from the action)
+
+--
+
+Don't interpret the findings, just report them
+
+
+---
+
+## Writing a scientific paper: The Discussion section
+
+--
+
+First paragraph, repeat everything said so far:
+
+--
+
+* What do we want to know?
+
+--
+
+* What did we do?
+
+--
+
+* What did we see?
+
+--
+
+&lt;br&gt;
+Subsequent paragraphs, elaborate on these issues:
+
+--
+
+* How can we interpret our findings?
+
+--
+
+* How do our findings relate to other works in the field?
+
+--
+
+* What are weaknesses/drawbacks of our work?
+
+
+---
+class: center middle
+
+## Telling a story with figures
+
+---
+
+## Example: Preprints in biology
+
+.center[
+![](telling-a-story_files/figure-html/preprints-part1-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-right[
+Opening
+]
+
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+
+
+## Example: Preprints in biology
+
+.center[
+![](telling-a-story_files/figure-html/preprints-part1-1.svg)
+]
+
+
+&lt;div style = "position: absolute; top: 50%; left: 57%; width: 3.8in; background: white;"&gt;
+What happened in 2014 to curtail the growth?
+&lt;/div&gt;
+
+.absolute-bottom-right[
+Challenge
+]
+
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Example: Preprints in biology
+
+.center[
+![](telling-a-story_files/figure-html/preprints-part2-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-right[
+Resolution
+]
+
+&lt;div style = "position: absolute; top: 65%; left: 60%; width: 3.8in; background: white;"&gt;
+bioRxiv opened in 2014
+&lt;/div&gt;
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Keep in mind
+
+--
+
+- Every figure needs a clear purpose within the story arc
+
+--
+
+- A complete arc will usually require at least two figures
+
+---
+
+## Prepare figures that make a clear point
+
+--
+
+.center[
+![](telling-a-story_files/figure-html/arrival-delay-vs-distance-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Prepare figures that make a clear point
+
+.center[
+![](telling-a-story_files/figure-html/mean-arrival-delay-nyc-1.svg)&lt;!-- --&gt;
+]
+
+&lt;div style = "position: absolute; top: 24%; left: 45%; background: white;"&gt;
+American and Delta&lt;br&gt;have the shortest delays
+&lt;/div&gt;
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Make your figures memorable
+
+
+
+---
+
+background-image: url("https://clauswilke.com/dataviz/telling_a_story_files/figure-html/petownership-bar-1.png")
+background-position: left 50% top 60%
+background-size: 65%
+
+## Make your figures memorable
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+
+background-image: url("https://clauswilke.com/dataviz/telling_a_story_files/figure-html/petownership-isotype-1.png")
+background-position: left 50% top 60%
+background-size: 65%
+
+## Make your figures memorable
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+
+
+## Further reading
+
+- Fundamentals of Data Visualization: [Chapter 29: Telling a story and making a point](https://clauswilke.com/dataviz/telling-a-story.html)
+
+- Joshua Schimel (2011) Writing Science: How to Write Papers That Get Cited and Proposals That Get Funded
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"slideNumberFormat": ""
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

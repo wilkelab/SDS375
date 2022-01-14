@@ -563,6 +563,55 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 
 ---
 
+# Uses of color in data visualization
+
+<table style = "border: none; line-height: 2.5;">
+<tr style = "background: white;">
+<td style = "text-align: left; width: 50%;">
+1. Distinguish categories (qualitative)
+</td>
+<td>
+<img src = "color-scales_files/qualitative.png" width = 100% style = "text-align: right; vertical-align: middle;"></img>
+</td>
+</tr>
+
+<tr style = "background: white;">
+<td style = "text-align: left;">
+2. Represent numeric values (sequential)
+</td>
+<td>
+<img src = "color-scales_files/sequential.png" width = 100% style = "text-align: right; vertical-align: middle"></img>
+</td>
+</tr>
+
+<tr style = "background: white;">
+<td style = "text-align: left;">
+3. Represent numeric values (diverging)
+</td>
+<td>
+<img src = "color-scales_files/diverging.png" width = 100% style = "text-align: right; vertical-align: middle"></img>
+</td>
+</tr>
+
+<tr style = "background: white;">
+<td style = "text-align: left;">
+4. Highlight
+</td>
+<td>
+<img src = "color-scales_files/highlight.png" width = 100% style = "text-align: right; vertical-align: middle"></img>
+</td>
+</tr>
+</table>
+
+[//]: # "segment ends here"
+
+---
+class: center middle
+
+## Color scales in **ggplot2**
+
+---
+
 ## **ggplot2** color scale functions are a bit of a mess
 
 --
@@ -854,6 +903,14 @@ colorspace::divergingx_palettes(plot = TRUE, n = 9) # all divergingx palettes
 ]
 ]
 
+
+[//]: # "segment ends here"
+
+---
+class: center middle
+
+## Setting colors manually for discrete, qualitative scales
+
 ---
 
 ## Discrete, qualitative scales are best set manually
@@ -958,7 +1015,7 @@ black	         | #000000   | 0, 0, 0
 
 Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
 
-
+[//]: # "segment ends here"
 
 ---
 

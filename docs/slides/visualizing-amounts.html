@@ -14,7 +14,7 @@ class: center, middle, title-slide
 
 # Visualizing amounts
 ### Claus O. Wilke
-### last updated: 2021-01-18
+### last updated: 2021-09-23
 
 ---
 
@@ -22,19 +22,15 @@ class: center, middle, title-slide
 
 
 
-## Dataset: Highest grossing movies Dec. 2017
+## We often encounter datasets containing simple amounts
 
-.tiny-font[
+---
 
-```r
-# Data from Box Office Mojo for Dec. 22-24, 2017. 
-boxoffice &lt;- tibble(
-  rank = 1:5,
-  title = c("Star Wars", "Jumanji", "Pitch Perfect 3", "Greatest Showman", "Ferdinand"),
-  amount = c(71.57, 36.17, 19.93, 8.81, 7.32) # million USD
-)
-```
-]
+## We often encounter datasets containing simple amounts
+
+Example: Highest grossing movies Dec. 2017
+
+&lt;br&gt;
 
 .center[
 &lt;table&gt;
@@ -75,6 +71,206 @@ boxoffice &lt;- tibble(
 &lt;/table&gt;
 ]
 
+.tiny-font.absolute-bottom-right[
+Data source: Box Office Mojo
+]
+
+---
+
+## We can visualize amounts with bar plots
+
+&lt;br&gt;
+
+.center.move-up-1em[
+![](visualizing-amounts_files/figure-html/boxoffice-vertical-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Bars can also run horizontally
+
+&lt;br&gt;
+
+.center.move-up-1em[
+![](visualizing-amounts_files/figure-html/boxoffice-horizontal-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Avoid rotated axis labels
+
+.center[
+![](visualizing-amounts_files/figure-html/boxoffice-rot-axis-tick-labels-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Avoid rotated axis labels
+
+&lt;br&gt;
+
+.center.move-up-1em[
+![](visualizing-amounts_files/figure-html/boxoffice-horizontal-1.svg)
+]
+
+---
+
+## Pay attention to the order of the bars
+
+&lt;br&gt;
+
+.center.move-up-1em[
+![](visualizing-amounts_files/figure-html/boxoffice-horizontal-unordered-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Pay attention to the order of the bars
+
+&lt;br&gt;
+
+.center.move-up-1em[
+![](visualizing-amounts_files/figure-html/boxoffice-horizontal-1.svg)
+]
+
+---
+
+## We can use dots instead of bars
+
+&lt;br&gt;
+
+.center.move-up-1em[
+![](visualizing-amounts_files/figure-html/boxoffice-dotplot-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Dots are preferable if we want to truncate the axes
+
+.center.move-up-1em[
+![](visualizing-amounts_files/figure-html/Americas-life-expect-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Dots are preferable if we want to truncate the axes
+
+.center.move-up-1em[
+![](visualizing-amounts_files/figure-html/Americas-life-expect-bad1-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-right[
+bar lengths do&lt;br&gt;not accurately&lt;br&gt;represent the&lt;br&gt;data values
+]
+
+---
+
+## Dots are preferable if we want to truncate the axes
+
+.center.move-up-1em[
+![](visualizing-amounts_files/figure-html/Americas-life-expect-bad2-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-right[
+key features&lt;br&gt;of the data&lt;br&gt;are obscured
+]
+
+
+---
+
+## Dots are preferable if we want to truncate the axes
+
+.center.move-up-1em[
+![](visualizing-amounts_files/figure-html/Americas-life-expect-1.svg)
+]
+
+[//]: # "segment ends here"
+
+---
+class: center middle
+
+## Grouped bars
+
+---
+
+## We use grouped bars for higher-dimensional datasets
+
+--
+
+&lt;br&gt;
+
+.center.move-up-1em[
+![](visualizing-amounts_files/figure-html/income-by-age-race-dodged-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-right[
+Data source: United States Census Bureau, 2016
+]
+
+---
+
+## We are free to choose by which variable to group
+
+&lt;br&gt;
+
+.center[
+![](visualizing-amounts_files/figure-html/income-by-race-age-dodged-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-right[
+Data source: United States Census Bureau, 2016
+]
+
+---
+
+## We can also use multiple plot panels (facets)
+
+.center[
+![](visualizing-amounts_files/figure-html/income-by-age-race-faceted-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-right[
+Data source: United States Census Bureau, 2016
+]
+
+[//]: # "segment ends here"
+
+---
+class: center middle
+
+## Making bar plots in **ggplot2**
+
+---
+
+## Dataset: Highest grossing movies Dec. 2017
+
+.tiny-font[
+
+```r
+# Data from Box Office Mojo for Dec. 22-24, 2017. 
+boxoffice &lt;- tibble(
+  rank = 1:5,
+  title = c("Star Wars", "Jumanji", "Pitch Perfect 3", "Greatest Showman", "Ferdinand"),
+  amount = c(71.57, 36.17, 19.93, 8.81, 7.32) # million USD
+)
+
+boxoffice
+```
+
+```
+# A tibble: 5 × 3
+   rank title            amount
+  &lt;int&gt; &lt;chr&gt;             &lt;dbl&gt;
+1     1 Star Wars         71.6 
+2     2 Jumanji           36.2 
+3     3 Pitch Perfect 3   19.9 
+4     4 Greatest Showman   8.81
+5     5 Ferdinand          7.32
+```
+]
+
+
 ---
 
 ## Visualize as a bar plot
@@ -93,9 +289,6 @@ ggplot(boxoffice, aes(title, amount)) +
 ![](visualizing-amounts_files/figure-html/boxoffice-naive-out-1.svg)&lt;!-- --&gt;
 ]
 
---
-
-Do you think this is a good visualization?
 
 ---
 
@@ -150,12 +343,18 @@ ggplot(boxoffice, aes(amount, fct_reorder(title, amount))) +
 ]
 
 ---
+class: center middle
+
+## Sometimes we need to count before visualization
+
+
+---
 background-image: url(https://raw.githubusercontent.com/allisonhorst/palmerpenguins/master/man/figures/logo.png)
 background-position: 95% 5%
 background-size: 8%
 
 
-## Sometimes we need to count before visualization
+## Goal: Visualize number of penguins per species
 
 .small-font[
 
@@ -165,7 +364,7 @@ head(penguins)
 ```
 
 ```
-# A tibble: 6 x 8
+# A tibble: 6 × 8
   species island bill_length_mm bill_depth_mm flipper_length_… body_mass_g sex  
   &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;            &lt;int&gt;       &lt;int&gt; &lt;fct&gt;
 1 Adelie  Torge…           39.1          18.7              181        3750 male 
@@ -177,8 +376,6 @@ head(penguins)
 # … with 1 more variable: year &lt;int&gt;
 ```
 ]
-
-Goal: Visualize number of penguins per species
 
 ???
 
@@ -201,6 +398,9 @@ ggplot(penguins, aes(y = species)) + # note: no x aesthetic defined
 ]
 
 
+---
+
+## Getting the bars into the right order
 
 ---
 
@@ -225,12 +425,12 @@ ggplot(penguins, aes(y = fct_relevel(species, "Chinstrap", "Gentoo", "Adelie")))
 
 ## Getting the bars into the right order
 
-Option 2: Using some R magic
+Option 2: Using `fct_rev()` and `fct_infreq()` from the **forcats** package
 
 .tiny-font[
 
 ```r
-ggplot(penguins, aes(y = fct_reorder(species, species, length))) + # Why does this work?
+ggplot(penguins, aes(y = fct_rev(fct_infreq(species)))) +
   geom_bar() +
   ylab(NULL)
 ```
@@ -330,6 +530,8 @@ ggplot(penguins_nomissing, aes(sex, fill = species)) +
 .center[
 ![](visualizing-amounts_files/figure-html/penguins-sex-species-fill-out-1.svg)&lt;!-- --&gt;
 ]
+
+[//]: # "segment ends here"
 
 ---
 

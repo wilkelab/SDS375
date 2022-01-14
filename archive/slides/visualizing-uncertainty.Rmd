@@ -1,0 +1,1173 @@
+---
+title: "Visualizing uncertainty"
+author: "Claus O. Wilke"
+date: "last updated: `r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: [default, "Wilke-slides-theme.css"]
+    lib_dir: libs
+    nature:
+      ratio: '16:9'
+      highlightStyle: github
+      highlightLines: true
+      slideNumberFormat: ''
+      titleSlideClass: [center, middle]
+---
+
+```{r setup, include=FALSE, echo=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(comment = "")
+
+library(tidyverse)
+library(here)
+library(colorspace)
+library(cowplot)
+library(emmeans)
+library(broom)
+library(gapminder)
+# ggplot2 settings so plots scale well for slide size 
+theme_set(theme_gray(16)) # 16 for full width, 18 for half width 
+update_geom_defaults("point", list(size = 2)) # 2 for full width, 2.5 for half width
+
+# Everest dataset
+everest <- read_csv(here("datasets", "everest.csv"))
+```
+
+class: center middle
+
+# Let's imagine we're playing a game
+
+---
+
+class: center middle
+
+# The odds are in your favor:<br>You have a 90% chance of winning!
+
+---
+class: center middle
+background-image: url("visualizing-uncertainty_files/Disappearing_dots.gif")
+background-size: contain
+background-color: #cccccc
+
+<style>
+.move-down { margin-top: -6em; }
+</style>
+
+.move-down[
+# playing
+]
+
+???
+
+Image by Wikiemdia user [Jahobr](https://commons.wikimedia.org/wiki/User:Jahobr), released into the public domain.
+
+https://commons.wikimedia.org/wiki/File:Disappearing_dots.gif
+
+---
+
+class: center middle
+
+# Sorry, you lost.
+
+---
+
+class: center middle
+
+# How does that make you feel?
+
+---
+
+## We are bad at judging uncertainty
+
+--
+
+* You had a 10% chance of losing
+
+--
+
+* One in ten playing this game will lose
+
+--
+
+* 90% chance of winning is nowhere near a certain win
+
+---
+
+## It helps to visualize a set of possible outcomes
+
+.center[
+```{r freq-waffle, fig.width = 4.5, fig.asp = 1, echo = FALSE, dev = "svg"}
+g <- expand.grid(x = 1:10, y = 1:10)
+
+set.seed(84520)
+data <- data.frame(ratio = c(0.99, 0.9, 0.7)) %>%
+  mutate(
+    out = purrr::map(
+      ratio,
+      ~g %>% mutate(
+        value = {
+          n <- n()
+          i <- round(n*.x)
+          sample(c(rep("W", i), rep("L", n - i)), n)
+        }
+      )
+    )
+  ) %>%
+  unnest(cols = out) %>%
+  mutate(
+    label = paste0(round(100*ratio), "% chance")
+  )
+
+data %>% filter(ratio == .9) %>%
+  ggplot(aes(x, y, fill = value)) +
+  geom_tile(color = "white", size = 2) +
+  coord_fixed(expand = FALSE, clip = "off") +
+  scale_x_continuous(name = NULL, breaks = NULL) +
+  scale_y_continuous(name = NULL, breaks = NULL) +
+  scale_fill_manual(
+    name = NULL,
+    breaks = c("W", "L"),
+    labels = c("win   ", "loss"),
+    values = c(
+      "L" = desaturate(darken("#0072B2", .4), .5),
+      "W" = desaturate(lighten("#0072B2", .7), .5)
+    ),
+    guide = guide_legend(override.aes = list(size = 0))
+  ) +
+  facet_wrap(~label) +
+  theme_minimal_grid(20) +
+  theme(
+    legend.position = "bottom",
+    legend.direction = "horizontal",
+    legend.justification = "right",
+    legend.box.spacing = unit(12, "pt"),
+    legend.spacing.x = unit(3, "pt"),
+    legend.key.size = unit(18, "pt")
+  )
+```
+]
+
+Possible outcomes from 100 individual games played
+
+---
+
+<br>
+
+.center[
+```{r freq-waffle2, fig.width = 10, fig.asp = 0.45, echo = FALSE, dev = "svg"}
+ggplot(data, aes(x, y, fill = value)) +
+  geom_tile(color = "white", size = 1.5) +
+  coord_fixed(expand = FALSE, clip = "off") +
+  scale_x_continuous(name = NULL, breaks = NULL) +
+  scale_y_continuous(name = NULL, breaks = NULL) +
+  scale_fill_manual(
+    name = NULL,
+    breaks = c("W", "L"),
+    labels = c("win   ", "loss"),
+    values = c(
+      "L" = desaturate(darken("#0072B2", .4), .5),
+      "W" = desaturate(lighten("#0072B2", .7), .5)
+    ),
+    guide = guide_legend(override.aes = list(size = 0))
+  ) +
+  facet_wrap(~label) +
+  theme_minimal_grid(20) +
+  theme(
+    panel.spacing = unit(36, "pt"),
+    legend.position = "bottom",
+    legend.direction = "horizontal",
+    legend.justification = "right",
+    legend.box.spacing = unit(6, "pt"),
+    legend.spacing.x = unit(3, "pt"),
+    legend.key.size = unit(16, "pt")
+  )
+```
+]
+
+--
+
+This type of visualization is called "frequency framing"
+
+---
+
+## Visualizing uncertainty of point estimates
+
+--
+
+- A point estimate is a single number, such as a mean
+
+--
+
+- Uncertainty is expressed as standard error, confidence interval, or credible interval
+
+--
+
+- Important:<br>Don't confuse the uncertainty of a point estimate with the variation in the sample
+
+---
+
+## Key concepts of statistical sampling
+
+.center[
+```{r sampling-schematic1, echo = FALSE, fig.width = 7, fig.asp = 3/4, dev = "svg"}
+fill_color <- "lightblue"
+
+set.seed(452061)
+
+empty_theme <- theme_half_open(12, rel_small = 1, rel_large = 1) +
+  theme(
+    axis.line = element_blank(),
+    axis.text = element_blank(),
+    axis.ticks = element_blank(),
+    axis.ticks.length = grid::unit(0, "pt")
+  )
+
+x <- c(seq(-4, 4, length.out = 200))
+df_norm <- data.frame(
+  x,
+  y = dnorm(x)
+)
+
+sd_x <- c(-1, 1)
+sd_y <- dnorm(sd_x)
+df_annot <- data.frame(
+  x = c(0.05, sd_x[2] + 0.04, -Inf),
+  y = c(dnorm(0) * 0.4, sd_y[2] * 1.01, Inf), #sd_y[1] * 1.1
+  hjust = c(0, 0, 0),
+  vjust = c(1, 0.5, 1),
+  label = c("mean", "standard deviation", "population distribution")
+)
+
+p1 <- ggplot(df_norm, aes(x, y)) +
+  geom_area(fill = fill_color) +
+  geom_segment( # standard deviation
+    data = data.frame(x = 1),
+    x = 0, xend = sd_x[2], y = sd_y[1], yend = sd_y[2],
+    arrow = arrow(angle = 90, length = grid::unit(3, "pt"), ends = "both", type = "closed"),
+    inherit.aes = FALSE
+  ) +
+  geom_segment( # vertical line representing mean
+    data = data.frame(x = 1),
+    x = 0, xend = 0, y = 0, yend = dnorm(0),
+    linetype = 2,
+    inherit.aes = FALSE
+  ) +
+  geom_text(
+    data = df_annot,
+    aes(x, y, label = label, hjust = hjust, vjust = vjust),
+    size = c(12, 12, 14)/.pt
+  ) +
+  scale_x_continuous(
+    limits = c(-4, 4),
+    expand = c(0, 0),
+    breaks = 0, # workaround to fix missing axis line
+    name = "variable of interest"
+  ) +
+  scale_y_continuous(
+    breaks = NULL, name = NULL,
+    expand = expansion(mult = c(0, 0.1))
+  ) +
+  empty_theme +
+  theme(
+    axis.line.x = element_line(),
+    axis.title.x = element_text(hjust = 1)
+  )
+
+n <- 15
+df_sample <- data.frame(
+  x = rnorm(n),
+  y = 0
+)
+
+df_annot2 <- data.frame(
+  x = c(mean(df_sample$x) + 0.05, sort(df_sample$x)[2],
+        mean(df_sample$x) + sd(df_sample$x) + 0.05, -Inf),
+  y = c(-0.15, 0.12, .13 + 0.01, Inf),
+  hjust = c(0, 0.3, 0, 0),
+  vjust = c(0.5, 0.5, 0.5, 1),
+  label = c("sample mean", "observations", "sample standard deviation", "sample")
+)
+
+p2 <- ggplot(df_sample, aes(x, y)) +
+  geom_point(
+    size = 3, fill = fill_color, shape = 21, stroke = 0.5,
+    position = position_jitter(
+      width = 0, height = 0.01, seed = 127
+    )
+  ) +
+  geom_segment( # vertical bar representing mean
+    data = data.frame(x = 1),
+    aes(x = mean(df_sample$x), xend = mean(df_sample$x), y = -.2, yend = .2),
+    size = 1.5,
+    color = "#D55E00",
+    inherit.aes = FALSE
+  ) +
+  geom_segment( # horizontal bar representing sd
+    data = data.frame(x = 1),
+    x = mean(df_sample$x), xend = mean(df_sample$x) + sd(df_sample$x), y = .13, yend = .13,
+    arrow = arrow(angle = 90, length = grid::unit(3, "pt"), ends = "both", type = "closed"),
+    inherit.aes = FALSE
+  ) +
+  geom_text(
+    data = df_annot2,
+    aes(x, y, label = label, hjust = hjust, vjust = vjust),
+    size = c(12, 12, 12, 14)/.pt
+  ) +
+  scale_x_continuous(
+    limits = c(-4, 4),
+    expand = c(0, 0),
+    breaks = NULL, name = NULL
+  ) +
+  scale_y_continuous(
+    expand = c(0.1, 0),
+    breaks = NULL, name = NULL
+  ) +
+  empty_theme
+
+df_samplingdist <- data.frame(
+  x,
+  y = dnorm(x, 0, 1/sqrt(n))
+)
+
+se_x <- c(-1/sqrt(n), 1/sqrt(n))
+se_y <- dnorm(se_x, 0, 1/sqrt(n))
+df_annot3 <- data.frame(
+  x = c(0.05, se_x[2] + 0.04, -Inf),
+  y = c(dnorm(0, 0, 1/sqrt(n)) * 0.4, se_y[2] * 1.01, Inf),
+  hjust = c(0, 0, 0),
+  vjust = c(1, 0.5, 1),
+  label = c("mean of the sample means", "standard error", "sampling distribution of the mean")
+)
+
+p3 <- ggplot(df_samplingdist, aes(x, y)) +
+  geom_area(fill = fill_color) +
+  geom_segment( # standard error
+    data = data.frame(x = 1),
+    x = 0, xend = se_x[2], y = se_y[1], yend = se_y[2],
+    arrow = arrow(angle = 90, length = grid::unit(3, "pt"), ends = "both", type = "closed"),
+    inherit.aes = FALSE
+  ) +
+  geom_segment(
+    data = data.frame(x = 1),
+    x = 0, xend = 0, y = 0, yend = dnorm(0, 0, 1/sqrt(n)),
+    linetype = 2,
+    inherit.aes = FALSE
+  ) +
+  geom_text(
+    data = df_annot3,
+    aes(x, y, label = label, hjust = hjust, vjust = vjust),
+    size = c(12, 12, 14)/.pt
+  ) +
+  scale_x_continuous(
+    limits = c(-4, 4),
+    expand = c(0, 0),
+    breaks = 0, # workaround to fix missing axis line
+    name = "sample mean"
+  ) +
+  scale_y_continuous(
+    breaks = NULL, name = NULL, 
+    expand = expansion(mult = c(0, 0.1))
+  ) +
+  empty_theme +
+  theme(
+    axis.line.x = element_line(),
+    axis.title.x = element_text(hjust = 1)
+  )
+
+plot_grid(
+  p1,
+  NULL,
+  NULL,
+  ncol = 1, rel_heights = c(1, .4, 1), align = 'v'
+)
+```
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Key concepts of statistical sampling
+
+.center[
+```{r sampling-schematic2, echo = FALSE, fig.width = 7, fig.asp = 3/4, dev = "svg"}
+plot_grid(
+  p1,
+  p2,
+  NULL,
+  ncol = 1, rel_heights = c(1, .4, 1), align = 'v'
+)
+```
+]
+
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Key concepts of statistical sampling
+
+.center[
+```{r sampling-schematic3, echo = FALSE, fig.width = 7, fig.asp = 3/4, dev = "svg"}
+plot_grid(
+  p1,
+  p2,
+  p3,
+  ncol = 1, rel_heights = c(1, .4, 1), align = 'v'
+)
+```
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Frequency interpretation of a confidence interval
+
+.center[
+<img src = "https://clauswilke.com/dataviz/visualizing_uncertainty_files/figure-html/ci-frequentist-expl-1.png" width = "500" />
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+
+## Example: Highest point reached on Everest in 2019
+
+.center[
+```{r everest-highest-point, echo = FALSE, fig.width = 8, fig.asp = 0.5, dev = "svg"}
+everest_2019 <- everest %>%
+  filter(!is.na(highpoint_metres) & success == FALSE) %>%
+  filter(year == 2019)
+
+# color for individual small data points
+#point_color <- darken("#009E73", .3)
+point_color <- darken("lightblue", .5)
+
+# model fit
+fit <- lm(highpoint_metres ~ 1, data = everest_2019)
+CI_df <- data.frame(type = c(0.8, 0.95, 0.99)) %>%
+  mutate(df = map(type, ~summary(emmeans(fit, ~ 1, options = list(level = .x))))) %>%
+  unnest(cols = df) %>%
+  select(type, estimate = emmean, std.error = SE, conf.low = lower.CL, conf.high = upper.CL) %>%
+  mutate(type = paste0(signif(100*type, 2), "% confidence interval"))
+
+CI_df <- rbind(
+  CI_df,
+  data.frame(
+    type = "standard error",
+    estimate = CI_df$estimate[1],
+    std.error = CI_df$std.error[1],
+    conf.low = CI_df$estimate[1] - CI_df$std.error[1],
+    conf.high = CI_df$estimate[1] + CI_df$std.error[1]
+  ),
+  data.frame(
+    type = "standard deviation",
+    estimate = mean(everest_2019$highpoint_metres),
+    std.error = CI_df$std.error[1],
+    conf.low = mean(everest_2019$highpoint_metres) - sd(everest_2019$highpoint_metres),
+    conf.high = mean(everest_2019$highpoint_metres) + sd(everest_2019$highpoint_metres)
+  ),
+  data.frame(
+    type = "sample", estimate = mean(everest_2019$highpoint_metres), std.error = NA,
+    conf.low = NA, conf.high = max(everest_2019$highpoint_metres)
+  )
+) %>%
+  mutate(
+    type = fct_relevel(factor(type), "sample", "standard deviation", "standard error"),
+    label = case_when(
+      type == "sample" ~ NA_character_,
+      type == "standard deviation" ~ "+/- standard deviation",
+      type == "standard error" ~ "+/- standard error",
+      TRUE ~ as.character(type) #paste0("mean +/- ", type)
+    )
+  )
+
+label_x <- filter(CI_df, type == "standard deviation")$conf.high + 70
+
+ggplot(CI_df, aes(estimate, type)) + 
+  geom_point(
+    data = everest_2019, aes(highpoint_metres, "sample"), 
+    position = position_jitter(height = 0.6, width = 0.02, seed = 7843),
+    color = point_color,
+    size = 1.2,
+    na.rm = TRUE
+  ) +
+  geom_errorbarh(
+    aes(xmin = conf.low, xmax = conf.high),
+    height = 0.2, na.rm = TRUE
+  ) +
+  geom_point(size = 2, color = "#D55E00") +
+  geom_text(
+    aes(label_x, label = label),
+    hjust = 0, nudge_y = 0.01, na.rm = TRUE,
+    size = 16/.pt
+  ) +
+  geom_text(
+    data = filter(CI_df, type == "sample"),
+    aes(conf.high + 100, label = type), 
+    hjust = 0, nudge_y = 0.01,
+    size = 16/.pt
+  ) +
+  geom_label(
+    data = filter(CI_df, type == "sample"),
+    aes(estimate, label = "mean"),
+    hjust = 0.2, vjust = 0, nudge_y = 0.1,
+    size = 16/.pt,
+    fill = "#FFFFFFA0",
+    label.size = 0
+  ) +
+  scale_x_continuous(
+    limits = c(5500, 8950),
+    expand = c(0, 0),
+    name = "highest point reached (meters)"
+  ) +
+  scale_y_discrete(
+    name = NULL,
+    limits = rev(levels(CI_df$type)),
+    expand = expansion(add = c(0.6, 0.8)),
+    breaks = NULL
+  ) +
+  coord_cartesian(clip = "off") +
+  theme_minimal_vgrid(16, rel_small = 1) +
+  theme(
+    plot.margin = margin(r = 160),
+    axis.line.x = element_line(),
+    axis.line.y = element_blank(),
+    axis.ticks.x = element_line(color = "black")
+  )
+```
+]
+
+Includes only climbers and expedition members who **did not** summit
+
+---
+
+## Marginal effects example: Height reached on Everest
+
+--
+
+Average height reached relative to:<br>
+a male climber who climbed with oxygen, summited, and survived
+
+--
+
+.center[
+```{r everest_margins, echo = FALSE, fig.width = 8, fig.asp = 0.5, dev = "svg"}
+library(margins)
+
+everest_data <- everest %>%
+  filter(!is.na(age) & !is.na(highpoint_metres)) %>%
+  filter(year == 2019) %>%
+  mutate(
+    sex = fct_relevel(
+      fct_recode(sex, female = "F", male = "M"),
+      "male"
+    ),
+    success = factor(
+      ifelse(success, "yes", "no"),
+      levels = c("yes", "no")
+    ),
+    oxygen_used = factor(
+      ifelse(oxygen_used, "with", "without"),
+      levels = c("with", "without")
+    ),
+  )
+
+evrst_out <- lm(highpoint_metres ~ died + sex + success + oxygen_used, data = everest_data)
+#summary(evrst_out)
+
+evrst_marg <- margins(evrst_out)
+#evrst_marg
+
+evrst_gg <- as_tibble(summary(evrst_marg)) %>%
+  mutate(
+    factor = fct_reorder(
+      fct_recode(
+        factor,
+        "female climber" = "sexfemale",
+        "did not summit" = "successno",
+        "without oxygen" = "oxygen_usedwithout"
+      ), AME
+    )
+  )
+#evrst_gg
+
+ggplot(evrst_gg) +
+  aes(
+    y = factor,
+    x = AME, xmin = lower, xmax = upper
+  ) +
+  geom_vline(xintercept = 0, color = "gray20") +
+  geom_pointrange(color = "#0072B2", size = 1) +
+  scale_x_continuous(
+    name = "average height reached below summit (meters)",
+    limits = c(-1600, 200)
+  ) +
+  scale_y_discrete(name = NULL) +
+  theme_minimal_grid(16, rel_small = 1) +
+  theme(axis.ticks.length.x = grid::unit(0, "pt"))
+```
+]
+
+---
+
+## Marginal effects example: Height reached on Everest
+
+Other visualization options: half-eye
+
+.center[
+```{r everest_margins2, echo = FALSE, fig.width = 8, fig.asp = 0.5, dev = "svg"}
+library(ggdist)
+library(distributional)
+
+ggplot(evrst_gg) +
+  aes(y = factor, x = AME) +
+  geom_vline(xintercept = 0, color = "gray20") +
+  stat_dist_halfeye(
+    aes(dist = dist_normal(mu = AME, sigma = SE)),
+    color = "#0072B2",
+    fill =  "#0072B288",
+    alpha = NA,
+    point_size = 4
+  ) +
+  scale_x_continuous(
+    name = "average height reached below summit (meters)",
+    limits = c(-1600, 200)
+  ) +
+  scale_y_discrete(name = NULL) +
+  theme_minimal_grid(16, rel_small = 1) +
+  theme(axis.ticks.length.x = grid::unit(0, "pt"))
+```
+]
+
+
+---
+
+## Marginal effects example: Height reached on Everest
+
+Other visualization options: gradient interval
+
+.center[
+```{r everest_margins3, echo = FALSE, fig.width = 8, fig.asp = 0.5, dev = "svg"}
+library(ggdist)
+library(distributional) # for dist_normal()
+
+ggplot(evrst_gg) +
+  aes(y = factor, x = AME) +
+  geom_vline(xintercept = 0, color = "gray20") +
+  stat_dist_gradientinterval(
+    aes(dist = dist_normal(mu = AME, sigma = SE)),
+    color = "#0072B2",
+    fill =  "#0072B288",
+    alpha = NA,
+    point_size = 4
+  ) +
+  scale_x_continuous(
+    name = "average height reached below summit (meters)",
+    limits = c(-1600, 200)
+  ) +
+  scale_y_discrete(name = NULL) +
+  theme_minimal_grid(16, rel_small = 1) +
+  theme(axis.ticks.length.x = grid::unit(0, "pt"))
+```
+]
+
+---
+
+## Marginal effects example: Height reached on Everest
+
+Other visualization options: quantile dotplot
+
+.center[
+```{r everest_margins4, echo = FALSE, fig.width = 8, fig.asp = 0.5, dev = "svg"}
+library(ggdist)
+library(distributional) # for dist_normal()
+
+ggplot(evrst_gg) +
+  aes(y = factor, x = AME) +
+  geom_vline(xintercept = 0, color = "gray20") +
+  stat_dist_dotsinterval(
+    aes(dist = dist_normal(mu = AME, sigma = SE)),
+    color = "#0072B2",
+    fill =  "#0072B288",
+    alpha = NA,
+    point_size = 4,
+    quantiles = 20
+  ) +
+  scale_x_continuous(
+    name = "average height reached below summit (meters)",
+    limits = c(-1600, 200)
+  ) +
+  scale_y_discrete(name = NULL) +
+  theme_minimal_grid(16, rel_small = 1) +
+  theme(axis.ticks.length.x = grid::unit(0, "pt"))
+```
+]
+
+---
+
+## Marginal effects example: Height reached on Everest
+
+Other visualization options: quantile dotplot
+
+.center[
+```{r everest_margins5, echo = FALSE, fig.width = 8, fig.asp = 0.5, dev = "svg"}
+library(ggdist)
+library(distributional) # for dist_normal()
+
+ggplot(evrst_gg) +
+  aes(y = factor, x = AME) +
+  geom_vline(xintercept = 0, color = "gray20") +
+  stat_dist_dotsinterval(
+    aes(dist = dist_normal(mu = AME, sigma = SE)),
+    color = "#0072B2",
+    fill =  "#0072B288",
+    alpha = NA,
+    point_size = 4,
+    quantiles = 7
+  ) +
+  scale_x_continuous(
+    name = "average height reached below summit (meters)",
+    limits = c(-1600, 200)
+  ) +
+  scale_y_discrete(name = NULL) +
+  theme_minimal_grid(16, rel_small = 1) +
+  theme(axis.ticks.length.x = grid::unit(0, "pt"))
+```
+]
+
+
+---
+
+## Marginal effects example: Height reached on Everest
+
+Other visualization options: quantile dotplot
+
+.center[
+```{r everest_margins6, echo = FALSE, fig.width = 8, fig.asp = 0.5, dev = "svg"}
+library(ggdist)
+library(distributional) # for dist_normal()
+
+ggplot(evrst_gg) +
+  aes(y = factor, x = AME) +
+  geom_vline(xintercept = 0, color = "gray20") +
+  stat_dist_dotsinterval(
+    aes(dist = dist_normal(mu = AME, sigma = SE)),
+    color = "#0072B2",
+    fill =  "#0072B288",
+    alpha = NA,
+    point_size = 4,
+    quantiles = 50
+  ) +
+  scale_x_continuous(
+    name = "average height reached below summit (meters)",
+    limits = c(-1600, 200)
+  ) +
+  scale_y_discrete(name = NULL) +
+  theme_minimal_grid(16, rel_small = 1) +
+  theme(axis.ticks.length.x = grid::unit(0, "pt"))
+```
+]
+
+---
+
+## Making a plot with error bars in R
+
+--
+
+.small-font[
+Example: Relationship between life expectancy and GDP per capita
+]
+
+.center[
+```{r gapminder-regressions, echo = FALSE, message = FALSE, fig.width = 7, fig.asp = 0.65, dev = "svg"}
+gapminder %>%
+  filter(
+    continent != "Oceania",
+    year %in% c(1952, 1967, 1982, 1997)
+  ) %>%
+  mutate(
+    continent = fct_relevel(continent,  "Americas", "Europe", "Asia",  "Africa")
+  ) %>%
+  ggplot(aes(log(gdpPercap), lifeExp)) +
+  geom_point(size = 0.5, color = "#0072B2") +
+  geom_smooth(method = "lm", color = "black") +
+  xlab("log GDP per capita") +
+  scale_y_continuous(
+    name = "life expectancy",
+    breaks = c(40, 60, 80)
+  ) +
+  facet_grid(year ~ continent) +
+  theme_minimal_grid(14, rel_small = 1) +
+  panel_border(color = "black")
+```
+]
+
+---
+
+## Making a plot with error bars in R
+
+.small-font[
+Example: Relationship between life expectancy and GDP per capita
+]
+
+.pull-left[
+```{r gapminder-regressions2, echo = FALSE, message = FALSE, fig.width = 7, fig.asp = 0.65, dev = "svg"}
+gapminder %>%
+  filter(
+    continent != "Oceania",
+    year %in% c(1952, 1967, 1982, 1997)
+  ) %>%
+  mutate(
+    continent = fct_relevel(continent,  "Americas", "Europe", "Asia",  "Africa")
+  ) %>%
+  ggplot(aes(log(gdpPercap), lifeExp)) +
+  geom_point(size = 0.5, color = "#0072B2") +
+  geom_smooth(method = "lm", color = "black") +
+  xlab("log GDP per capita") +
+  scale_y_continuous(
+    name = "life expectancy",
+    breaks = c(40, 60, 80)
+  ) +
+  facet_grid(year ~ continent) +
+  theme_minimal_grid(14, rel_small = 1) +
+  panel_border(color = "black")
+```
+]
+
+.pull-right[
+<br>
+```{r gapminder-summary, echo = FALSE, message = FALSE, fig.width = 7, fig.asp = 0.5, dev = "svg"}
+gapminder %>%
+  nest(data = -c(continent, year)) %>%
+  mutate(
+    fit = map(data, ~lm(lifeExp ~ log(gdpPercap), data = .x)),
+    tidy_out = map(fit, tidy)
+  ) %>%
+  unnest(cols = tidy_out) %>%
+  filter(term != "(Intercept)", continent != "Oceania") %>%
+  mutate(
+    continent = fct_relevel(continent, "Americas", "Europe", "Asia",  "Africa")
+  ) %>%
+  ggplot() +
+  aes(
+    x = year, y = estimate,
+    ymin = estimate - 1.96*std.error,
+    ymax = estimate + 1.96*std.error,
+    color = continent
+  ) +
+  geom_pointrange(
+    position = position_dodge(width = 1)
+  ) +
+  scale_x_continuous(
+    breaks = c(1952, 1962, 1972, 1982, 1992, 2002)
+  ) + 
+  scale_y_continuous(
+    name = "regression slope"
+  ) +
+  scale_color_manual(
+    values = c(Africa = "#009E73", Americas = "#0072B2", Asia = "#D55E00", Europe = "#F0E442")
+  ) +
+  theme_minimal_grid(16, rel_small = 1) +
+  theme(legend.position = "top")
+```
+
+]
+
+---
+
+## Making a plot with error bars in R
+
+.tiny-font[
+```{r}
+lm_data <- gapminder %>%
+  nest(data = -c(continent, year))
+
+lm_data
+```
+]
+
+---
+
+## Making a plot with error bars in R
+
+.tiny-font[
+```{r}
+lm_data <- gapminder %>%
+  nest(data = -c(continent, year)) %>%
+  mutate(
+    fit = map(data, ~lm(lifeExp ~ log(gdpPercap), data = .x))
+  )
+
+lm_data
+```
+]
+
+---
+
+## Making a plot with error bars in R
+
+.tiny-font[
+```{r}
+lm_data <- gapminder %>%
+  nest(data = -c(continent, year)) %>%
+  mutate(
+    fit = map(data, ~lm(lifeExp ~ log(gdpPercap), data = .x)),
+    tidy_out = map(fit, tidy)
+  )
+
+lm_data
+```
+]
+
+---
+
+## Making a plot with error bars in R
+
+.tiny-font[
+```{r}
+lm_data <- gapminder %>%
+  nest(data = -c(continent, year)) %>%
+  mutate(
+    fit = map(data, ~lm(lifeExp ~ log(gdpPercap), data = .x)),
+    tidy_out = map(fit, tidy)
+  ) %>%
+  unnest(cols = tidy_out)
+
+lm_data
+```
+]
+
+---
+
+## Making a plot with error bars in R
+
+.tiny-font[
+```{r}
+lm_data <- gapminder %>%
+  nest(data = -c(continent, year)) %>%
+  mutate(
+    fit = map(data, ~lm(lifeExp ~ log(gdpPercap), data = .x)),
+    tidy_out = map(fit, tidy)
+  ) %>%
+  unnest(cols = tidy_out) %>%
+  select(-fit, -data)
+
+lm_data
+```
+]
+
+
+---
+
+## Making a plot with error bars in R
+
+.tiny-font[
+```{r}
+lm_data <- gapminder %>%
+  nest(data = -c(continent, year)) %>%
+  mutate(
+    fit = map(data, ~lm(lifeExp ~ log(gdpPercap), data = .x)),
+    tidy_out = map(fit, tidy)
+  ) %>%
+  unnest(cols = tidy_out) %>%
+  select(-fit, -data) %>%
+  filter(term != "(Intercept)", continent != "Oceania")
+
+lm_data
+```
+]
+
+
+---
+
+## Making a plot with error bars in R
+
+.tiny-font.pull-left[
+```{r gapminder-model, eval = FALSE}
+ggplot(lm_data) +
+  aes(
+    x = year, y = estimate,
+    ymin = estimate - 1.96*std.error,
+    ymax = estimate + 1.96*std.error,
+    color = continent
+  ) +
+  geom_pointrange(
+    position = position_dodge(width = 1)
+  ) +
+  scale_x_continuous(
+    breaks = unique(gapminder$year)
+  ) + 
+  theme(legend.position = "top")
+```
+]
+
+.pull-right[
+```{r gapminder-model-out, ref.label = "gapminder-model", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+???
+
+Figure and code idea from [Kieran Healy. Data Visualization: A practical introduction. Princeton University Press, 2019.](https://socviz.co/)
+
+---
+
+## Half-eyes, gradient intervals, etc
+
+--
+
+The **ggdist** package provides many different visualizations of uncertainty
+
+--
+
+.tiny-font.pull-left[
+```{r gapminder-halfeye, eval = FALSE}
+library(ggdist)
+library(distributional) # for dist_normal()
+
+lm_data %>%
+  filter(year == 1952) %>%
+  mutate(
+    continent = 
+      fct_reorder(continent, estimate) 
+  ) %>%
+  ggplot(aes(x = estimate, y = continent)) +
+  stat_dist_halfeye(
+    aes(dist = dist_normal(
+      mu = estimate, sigma = std.error
+    )),
+    point_size = 4
+  )
+```
+]
+
+.pull-right[
+```{r gapminder-halfeye-out, ref.label = "gapminder-halfeye", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+## Half-eyes, gradient intervals, etc
+
+The **ggdist** package provides many different visualizations of uncertainty
+
+.tiny-font.pull-left[
+```{r gapminder-gradinterval, eval = FALSE}
+library(ggdist)
+library(distributional) # for dist_normal()
+
+lm_data %>%
+  filter(year == 1952) %>%
+  mutate(
+    continent = 
+      fct_reorder(continent, estimate) 
+  ) %>%
+  ggplot(aes(x = estimate, y = continent)) +
+  stat_dist_gradientinterval(
+    aes(dist = dist_normal(
+      mu = estimate, sigma = std.error
+    )),
+    point_size = 4,
+    fill = "skyblue"
+  )
+```
+]
+
+.pull-right[
+```{r gapminder-gradinterval-out, ref.label = "gapminder-gradinterval", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+## Half-eyes, gradient intervals, etc
+
+The **ggdist** package provides many different visualizations of uncertainty
+
+.tiny-font.pull-left[
+```{r gapminder-quantiledots, eval = FALSE}
+library(ggdist)
+library(distributional) # for dist_normal()
+
+lm_data %>%
+  filter(year == 1952) %>%
+  mutate(
+    continent = 
+      fct_reorder(continent, estimate) 
+  ) %>%
+  ggplot(aes(x = estimate, y = continent)) +
+  stat_dist_dotsinterval(
+    aes(dist = dist_normal(
+      mu = estimate, sigma = std.error
+    )),
+    point_size = 4,
+    fill = "skyblue",
+    quantiles = 20
+  )
+```
+]
+
+.pull-right[
+```{r gapminder-quantiledots-out, ref.label = "gapminder-quantiledots", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+## Half-eyes, gradient intervals, etc
+
+The **ggdist** package provides many different visualizations of uncertainty
+
+.tiny-font.pull-left[
+```{r gapminder-quantiledots2, eval = FALSE}
+library(ggdist)
+library(distributional) # for dist_normal()
+
+lm_data %>%
+  filter(year == 1952) %>%
+  mutate(
+    continent = 
+      fct_reorder(continent, estimate) 
+  ) %>%
+  ggplot(aes(x = estimate, y = continent)) +
+  stat_dist_dotsinterval(
+    aes(dist = dist_normal(
+      mu = estimate, sigma = std.error
+    )),
+    point_size = 4,
+    fill = "skyblue",
+    quantiles = 10
+  )
+```
+]
+
+.pull-right[
+```{r gapminder-quantiledots2-out, ref.label = "gapminder-quantiledots2", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+
+---
+
+## Further reading
+
+- Fundamentals of Data Visualization: [Chapter 16: Visualizing uncertainty](https://clauswilke.com/dataviz/visualizing-uncertainty.html)
+- Data Visualization—A Practical Introduction: [Chapter 6.6: Grouped analysis and list columns](https://socviz.co/modeling.html#grouped-analysis-and-list-columns)
+- Data Visualization—A Practical Introduction: [Chapter 6.7: Plot marginal effects](https://socviz.co/modeling.html#plot-marginal-effects)
+- **ggdist** reference documentation: https://mjskay.github.io/ggdist/index.html
+- **ggdist** vignette: [Frequentist uncertainty visualization](https://mjskay.github.io/ggdist/articles/freq-uncertainty-vis.html)
+
+
+

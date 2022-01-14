@@ -14,7 +14,7 @@ class: center, middle, title-slide
 
 # Color spaces and color-vision deficiency
 ### Claus O. Wilke
-### last updated: 2021-04-12
+### last updated: 2021-09-23
 
 ---
 
@@ -172,6 +172,14 @@ class: center middle
 ![](color-spaces_files/figure-html/cl-planes-1.svg)&lt;!-- --&gt;
 ]
 
+[//]: # "segment ends here"
+
+
+---
+class: center middle
+
+## Explore HCL colors interactively in R
+
 ---
 
 ## We can explore HCL colors in R
@@ -193,9 +201,17 @@ colorspace::choose_color()
 
 &lt;img src = "color-spaces_files/choose_color3.png", width = 35%, style = "position:absolute; top: 50%; left: 42.5%; box-shadow: 3px 5px 3px 1px #00000080;"&gt;&lt;/img&gt;
 
+
+[//]: # "segment ends here"
+
+---
+class: center middle
+
+## A few considerations when choosing colors
+
 ---
 
-## One important point to remember: Avoid high chroma
+## 1. Avoid high chroma
 
 --
 
@@ -223,7 +239,7 @@ Low chroma: Elegance
 
 ---
 
-## Always be aware of color-vision deficiency
+## 2. Be aware of color-vision deficiency
 
 5%–8% of men are color blind!
 
@@ -235,7 +251,7 @@ Red-green color-vision deficiency is the most common
 
 ---
 
-## Always be aware of color-vision deficiency
+## 2. Be aware of color-vision deficiency
 
 5%–8% of men are color blind!
 
@@ -245,11 +261,37 @@ Blue-green color-vision deficiency is rare but does occur
 
 ---
 
-## Always be aware of color-vision deficiency
+## 2. Be aware of color-vision deficiency
 
 Choose colors that can be distinguished with CVD
 
 &lt;img src = "https://clauswilke.com/dataviz/pitfalls_of_color_use_files/figure-html/PiYG-cvd-sim-1.png", width = 100%&gt;&lt;/img&gt;
+
+---
+
+## Consider using the Okabe-Ito scale
+
+.center[
+&lt;img src = "https://clauswilke.com/dataviz/pitfalls_of_color_use_files/figure-html/palette-Okabe-Ito-1.png", width = 100%&gt;&lt;/img&gt;
+]
+
+.tiny-font[
+Name           | Hex code &amp;nbsp;&amp;nbsp; | R, G, B (0-255)
+:----------    | :-------  | :--------
+orange         | #E69F00   | 230, 159, 0
+sky blue	     | #56B4E9   | 86, 180, 233
+bluish green   | #009E73   | 0, 158, 115
+yellow	       | #F0E442   | 240, 228, 66
+blue	         | #0072B2   | 0, 114, 178
+vermilion	     | #D55E00   | 213, 94, 0
+reddish purple | #CC79A7   | 204, 121, 167
+black	         | #000000   | 0, 0, 0
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
 
 ---
 
@@ -258,6 +300,37 @@ Choose colors that can be distinguished with CVD
 .move-up-1em.center[
 &lt;img src = "https://clauswilke.com/dataviz/pitfalls_of_color_use_files/figure-html/colors-thin-lines-1.png", width = 65%&gt;&lt;/img&gt;
 ]
+
+---
+
+## When in doubt, run CVD simulations
+
+&lt;div class = "move-up-1em" style = "width: 50%; box-shadow: 3px 5px 3px 1px #00000080; padding: 8px;"&gt;
+.small-font[Original]&lt;br&gt;
+&lt;img src = "https://clauswilke.com/dataviz/redundant_coding_files/figure-html/iris-scatter-three-shapes-1.png", width = 100%&gt;&lt;/img&gt;
+&lt;/div&gt;
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## When in doubt, run CVD simulations
+
+&lt;div class = "move-up-1em" style = "width: 50%; box-shadow: 3px 5px 3px 1px #00000080; padding: 8px;"&gt;
+.small-font[Original]&lt;br&gt;
+&lt;img src = "https://clauswilke.com/dataviz/redundant_coding_files/figure-html/iris-scatter-three-shapes-1.png", width = 100%&gt;&lt;/img&gt;
+&lt;/div&gt;
+
+&lt;img src = "https://clauswilke.com/dataviz/redundant_coding_files/figure-html/iris-scatter-three-shapes-cvd-1.png", width = 60% style = "position: absolute; top: 22%; left: 30%; box-shadow: 3px 5px 3px 1px #00000080; padding: 16px 8px 8px 16px; background: white"&gt;&lt;/img&gt;
+
+???
+
+Figures from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+[//]: # "segment ends here"
+
 
 ---
 

@@ -1,0 +1,696 @@
+---
+title: "Dimension reduction 2"
+author: "Claus O. Wilke"
+date: "last updated: `r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: [default, "Wilke-slides-theme.css"]
+    lib_dir: libs
+    nature:
+      ratio: '16:9'
+      highlightStyle: github
+      highlightLines: true
+      slideNumberFormat: ''
+      titleSlideClass: [center, middle]
+params:
+  cache: TRUE
+---
+
+```{r setup, include=FALSE, echo=FALSE, message = FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(comment = "")
+
+library(tidyverse)
+library(broom)
+library(cowplot)
+library(Rtsne)
+library(umap)
+library(kernlab)
+library(colorspace)
+library(here)
+
+# ggplot2 settings so plots scale well for slide size 
+theme_set(theme_gray(16)) # 16 for full width, 18 for half width 
+update_geom_defaults("point", list(size = 2.0)) # 2 for full width, 2.5 for half width
+
+# blue jays dataset
+blue_jays <- read_csv(here("datasets", "blue_jays.csv"))
+
+# spirals
+spirals <- read_csv(here("datasets", "spirals.csv"))
+
+outline_cols <- darken(c("#D55E00", "#0072B2", "#009E73"), .2)
+fill_cols <- c("#D55E0080", "#0072B280", "#009E7380")
+fill_cols_dark <- c("#D55E00C0", "#0072B2C0", "#009E73C0")
+```
+
+## What if a rotation cannot disentangle the data?
+
+--
+
+.center[
+```{r spirals, echo = FALSE, fig.width = 7, fig.asp = 0.618, dev = "svg"}
+ggplot(spirals, aes(x, y, color = group, fill = group)) + 
+  geom_point(pch = 21, size = 2, stroke = 0.2) +
+  scale_x_continuous(
+    name = NULL,
+    limits = c(-4, 4)
+  ) +
+  scale_y_continuous(
+    name = NULL,
+    limits = c(-4, 4)
+  ) +
+  scale_color_manual(
+    values = outline_cols,
+    guide = "none"
+  ) +
+  scale_fill_manual(
+    values = fill_cols_dark,
+    guide = "none"
+  ) +
+  coord_fixed(ratio = 1) +
+  theme_bw(16)
+```
+]
+
+
+---
+
+## PCA analysis of intertwined spirals is not useful
+
+.center[
+```{r pca-spirals, echo = FALSE, fig.width = 7, fig.asp = 0.618, dev = "svg"}
+pca_fit <- spirals %>% 
+  select(where(is.numeric)) %>% # retain only numeric columns
+  scale() %>%       # scale to zero mean and unit variance
+  prcomp()          # do PCA
+
+pca_fit %>%
+  augment(spirals) %>% # add original dataset back in
+  ggplot(aes(.fittedPC1, .fittedPC2, color = group, fill = group)) + 
+  geom_point(pch = 21, size = 2, stroke = 0.2) +
+  scale_x_continuous(
+    name = "PC 1", 
+    limits = c(-2, 2)
+  ) +
+  scale_y_continuous(
+    name = "PC 2",
+    limits = c(-2, 2)
+  ) +
+  scale_color_manual(
+    values = outline_cols,
+    guide = "none"
+  ) +
+  scale_fill_manual(
+    values = fill_cols_dark,
+    guide = "none"
+  ) +
+  coord_fixed(ratio = 1) +
+  theme_bw(16)
+```
+]
+
+---
+
+## One possible approach: Kernel PCA
+
+--
+
+- Kernel PCA performs PCA in a hypothetical, higher-dimensional space
+
+--
+
+- With more dimensions, data points become more separable
+
+--
+
+- Importantly, the space is never explicitly constructed ([kernel trick](https://en.wikipedia.org/wiki/Kernel_method#Mathematics:_the_kernel_trick))
+
+--
+
+- Results from kernel PCA depend on choice of kernel
+
+---
+
+## Kernel PCA can separate the spirals
+
+.center[
+```{r kpca-spirals, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = 0.618, dev = "svg"}
+do_kpca <- function(data, sigma, kernel = "rbfdot") {
+  data_num <- data %>%
+    select(where(is.numeric)) %>%
+    mutate(across(everything(), scale))
+  
+  kpca_fit <- kpca(
+    ~., data = data_num, kernel = kernel,
+    kpar = list(sigma = sigma),
+    features = 2
+  )
+
+  kpca_fit %>%
+    pcv() %>% # extract principal component vectors
+    as.data.frame() %>% # convert to data frame
+    mutate(
+      kernel = kernel,
+      sigma = sigma
+    ) %>%
+    cbind(select(data, -where(is.numeric)))
+}
+
+kpca_data <- 2**(-1:6) %>%
+  signif(2) %>%
+  map_dfr(~do_kpca(spirals, sigma = .x))
+
+kpca_data %>% filter(sigma == 64.) %>%
+  ggplot(aes(V1, V2, color = group, fill = group)) + 
+  geom_point(pch = 21, size = 2, stroke = 0.2) +
+  scale_x_continuous(
+    name = "dimension 1", 
+    limits = c(-3, 1)
+  ) +
+  scale_y_continuous(
+    name = "dimension 2",
+    limits = c(-2.2, 2.2)
+  ) +
+  scale_color_manual(
+    values = outline_cols,
+    guide = "none"
+  ) +
+  scale_fill_manual(
+    values = fill_cols,
+    guide = "none"
+  ) +
+  coord_fixed(ratio = 1) +
+  theme_bw(16)
+```
+]
+
+Gaussian kernel, sigma = 64
+
+---
+
+## But we need to choose the right sigma value
+
+.center[
+```{r kpca-spirals-grid, echo = FALSE, cache = params$cache, fig.width = 10, fig.asp = 0.5, dev = "svg"}
+ggplot(kpca_data, aes(V1, V2, color = group, fill = group)) + 
+  geom_point(pch = 21, size = 2, stroke = 0.2) +
+  facet_wrap(
+    vars(sigma),
+    labeller = as_labeller(function(x) glue::glue("sigma = {x}")),
+    scales = "free",
+    nrow = 2
+  ) +
+  scale_x_continuous(
+    name = "dimension 1",
+    limits = c(-3, 1)
+  ) +
+  scale_y_continuous(
+    name = "dimension 2",
+    limits = c(-2.2, 2.2)
+  ) +
+  scale_color_manual(
+    values = outline_cols,
+    guide = "none"
+  ) +
+  scale_fill_manual(
+    values = fill_cols,
+    guide = "none"
+  ) +
+  theme_bw(16)
+```
+]
+
+---
+
+## Other approaches
+
+--
+
+- t-SNE: t-distributed stochastic neighbor embedding
+
+--
+
+- UMAP: Uniform manifold approximation and projection 
+
+--
+
+Both algorithms look at the local distances between points in the original data space and try to reproduce them in the low-dimensional representation
+
+
+---
+
+## t-SNE can separate the spirals
+
+.center[
+```{r tsne-spirals, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = 0.618, dev = "svg"}
+## Run the t-SNE algorithm and store the results into an object called tsne_results
+set.seed(1234)
+do_tsne <- function(data, perplexity = 5, theta = 0.3, seed = 1234) {
+  set.seed(seed)
+  tsne_fit <- data %>%
+    select(where(is.numeric)) %>%
+    scale() %>%
+    Rtsne(perplexity = perplexity, theta = theta, check_duplicates = FALSE)
+
+  tsne_fit$Y %>%
+    as.data.frame() %>%
+    mutate(
+      perplexity = perplexity,
+      theta = theta,
+      seed = seed
+    ) %>%
+    cbind(select(data, -where(is.numeric)))
+}
+
+tsne_data <- c(1, 2, 3, 4, 5, 10, 15, 20) %>%
+  map_dfr(~do_tsne(spirals, perplexity = .x))
+
+tsne_data %>%
+  filter(perplexity == 5) %>%
+  ggplot(aes(V1, V2, color = group, fill = group)) + 
+  geom_point(pch = 21, size = 2, stroke = 0.2) +
+  scale_x_continuous(
+    name = "dimension 1", 
+    limits = c(-70, 70)
+  ) +
+  scale_y_continuous(
+    name = "dimension 2",
+    limits = c(-70, 70)
+  ) +
+  scale_color_manual(
+    values = outline_cols,
+    guide = "none"
+  ) +
+  scale_fill_manual(
+    values = fill_cols,
+    guide = "none"
+  ) +
+  coord_fixed(ratio = 1) +
+  theme_bw(16)
+```
+]
+
+---
+
+## t-SNE results depend on the perplexity value
+
+.center[
+```{r tsne-spirals-grid, echo = FALSE, cache = params$cache, fig.width = 10, fig.asp = 0.5, dev = "svg"}
+ggplot(tsne_data, aes(V1, V2, color = group, fill = group)) + 
+  geom_point(pch = 21, size = 2, stroke = 0.2) +
+  facet_wrap(
+    vars(perplexity),
+    labeller = as_labeller(function(x) glue::glue("perplexity = {x}")),
+    scales = "free",
+    nrow = 2
+  ) +
+  scale_x_continuous(
+    name = "dimension 1",
+    limits = c(-100, 100)
+  ) +
+  scale_y_continuous(
+    name = "dimension 2",
+    limits = c(-100, 100)
+  ) +
+  scale_color_manual(
+    values = outline_cols,
+    guide = "none"
+  ) +
+  scale_fill_manual(
+    values = fill_cols,
+    guide = "none"
+  ) +
+  theme_bw(16)
+```
+]
+
+
+---
+
+## t-SNE results depend on the random starting point
+
+.center[
+```{r tsne-spirals-grid2, echo = FALSE, cache = params$cache, fig.width = 10, fig.asp = 0.5, dev = "svg"}
+tsne_data2 <- 1:8 %>%
+  map_dfr(~do_tsne(spirals, seed = .x))
+
+ggplot(tsne_data2, aes(V1, V2, color = group, fill = group)) + 
+  geom_point(pch = 21, size = 2, stroke = 0.2) +
+  facet_wrap(
+    vars(seed),
+    labeller = as_labeller(function(x) glue::glue("case {x}")),
+    scales = "free",
+    nrow = 2
+  ) +
+  scale_x_continuous(
+    name = "dimension 1",
+    limits = c(-100, 100)
+  ) +
+  scale_y_continuous(
+    name = "dimension 2",
+    limits = c(-100, 100)
+  ) +
+  scale_color_manual(
+    values = outline_cols,
+    guide = "none"
+  ) +
+  scale_fill_manual(
+    values = fill_cols,
+    guide = "none"
+  ) +
+  theme_bw(16)
+```
+]
+
+---
+
+## UMAP can separate the spirals
+
+.center[
+```{r umap-spirals, echo = FALSE, cache = params$cache, fig.width = 7, fig.asp = 0.618, dev = "svg"}
+do_umap <- function(data, n_neighbors = 15, seed = 123) {
+  custom.config <- umap.defaults
+  custom.config$n_neighbors <- n_neighbors
+  custom.config$random_state <- seed
+  custom.config$n_epochs <- 500 
+
+  umap_fit <- data %>%
+    select(where(is.numeric)) %>%
+    scale() %>%
+    umap(config = custom.config)
+
+  umap_fit$layout %>%
+    as.data.frame() %>%
+    mutate(
+      n_neighbors = n_neighbors,
+      seed = seed
+    ) %>%
+    cbind(select(data, -where(is.numeric)))
+}
+
+umap_data <- c(4, 5, 6, 8, 10, 12, 16, 20) %>%
+  map_dfr(~do_umap(spirals, n_neighbors = .x))
+
+umap_data %>%
+  filter(n_neighbors == 5) %>%
+  ggplot(aes(V1, V2, color = group, fill = group)) + 
+  geom_point(pch = 21, size = 2, stroke = 0.2) +
+  scale_x_continuous(
+    name = "dimension 1", 
+    limits = c(-30, 31)
+  ) +
+  scale_y_continuous(
+    name = "dimension 2",
+    limits = c(-30, 31)
+  ) +
+  scale_color_manual(
+    values = outline_cols,
+    guide = "none"
+  ) +
+  scale_fill_manual(
+    values = fill_cols,
+    guide = "none"
+  ) +
+  coord_fixed(ratio = 1) +
+  theme_bw(16)
+```
+]
+
+---
+
+## UMAP results depend on the number of neighbors
+
+.center[
+```{r umap-spirals-grid, echo = FALSE, cache = params$cache, fig.width = 10, fig.asp = 0.5, dev = "svg"}
+ggplot(umap_data, aes(V1, V2, color = group, fill = group)) + 
+  geom_point(pch = 21, size = 2, stroke = 0.2) +
+  facet_wrap(
+    vars(n_neighbors),
+    labeller = as_labeller(function(x) glue::glue("neighbors = {x}")),
+    scales = "free",
+    nrow = 2
+  ) +
+  scale_x_continuous(
+    name = "dimension 1",
+    limits = c(-30, 31)
+  ) +
+  scale_y_continuous(
+    name = "dimension 2",
+    limits = c(-30, 31)
+  ) +
+  scale_color_manual(
+    values = outline_cols,
+    guide = "none"
+  ) +
+  scale_fill_manual(
+    values = fill_cols,
+    guide = "none"
+  ) +
+  theme_bw(16)
+```
+]
+
+
+---
+
+## Random starting point has some impact on results
+
+.center[
+```{r umap-spirals-grid2, echo = FALSE, cache = params$cache, fig.width = 10, fig.asp = 0.5, dev = "svg"}
+umap_data2 <- 1:8 %>%
+  map_dfr(~do_umap(spirals, n_neighbors = 5, seed = .x))
+
+ggplot(umap_data2, aes(V1, V2, color = group, fill = group)) + 
+  geom_point(pch = 21, size = 2, stroke = 0.2) +
+  facet_wrap(
+    vars(seed),
+    labeller = as_labeller(function(x) glue::glue("case {x}")),
+    scales = "free",
+    nrow = 2
+  ) +
+  scale_x_continuous(
+    name = "dimension 1",
+    limits = c(-30, 31)
+  ) +
+  scale_y_continuous(
+    name = "dimension 2",
+    limits = c(-30, 31)
+  ) +
+  scale_color_manual(
+    values = outline_cols,
+    guide = "none"
+  ) +
+  scale_fill_manual(
+    values = fill_cols,
+    guide = "none"
+  ) +
+  theme_bw(16)
+```
+]
+
+---
+
+## What is the meaning of the tuning parameters?
+
+--
+
+Tuning parameters define when points are close in the original data space
+
+--
+
+This implicitly defines the number of clusters generated
+
+--
+
+These have comparable effects:
+
+- sigma (Gaussian kernel PCA)
+
+- perplexity (t-SNE)
+
+- number of neighbors (UMAP)
+
+---
+class: center middle
+
+## How do these methods perform<br>on the blue jays dataset?
+
+---
+
+## UMAP of blue jays
+
+.center[
+```{r umap-blue-jays-gray, echo = FALSE, cache = params$cache, fig.width = 6, fig.asp = 0.85, dev = "svg"}
+bj_umap_data <- c(16) %>%
+  map_dfr(~do_umap(blue_jays, n_neighbors = .x, seed = 1234))
+
+bj_umap_data %>%
+  filter(n_neighbors == 16) %>%
+  ggplot(aes(V1, V2, color = sex, fill = sex)) + 
+  geom_point(pch = 21, size = 2, stroke = 0.2, color = "black", fill = "#505050D0") +
+  scale_x_continuous(
+    name = "dimension 1" 
+  ) +
+  scale_y_continuous(
+    name = "dimension 2"
+  ) +
+  scale_color_manual(
+    values = outline_cols,
+    guide = "none"
+  ) +
+  scale_fill_manual(
+    values = fill_cols_dark,
+    guide = "none"
+  ) +
+  theme_bw(16)
+```
+]
+
+---
+
+## UMAP of blue jays
+
+.center[
+```{r umap-blue-jays-sex, echo = FALSE, cache = params$cache, fig.width = 6, fig.asp = 0.85, dev = "svg"}
+bj_umap_data %>%
+  filter(n_neighbors == 16) %>%
+  ggplot(aes(V1, V2, color = sex, fill = sex)) + 
+  geom_point(pch = 21, size = 2, stroke = 0.2) +
+  scale_x_continuous(
+    name = "dimension 1"
+  ) +
+  scale_y_continuous(
+    name = "dimension 2"
+  ) +
+  scale_color_manual(
+    values = outline_cols,
+    guide = "none"
+  ) +
+  scale_fill_manual(
+    values = fill_cols_dark,
+    guide = "none"
+  ) +
+  theme_bw(16)
+```
+]
+
+---
+
+## Kernel PCA of blue jays
+
+.center[
+```{r kpca-blue-jays, echo = FALSE, cache = params$cache, fig.width = 6, fig.asp = 0.85, dev = "svg"}
+bj_kpca_data <- c(.0001, .0003, .001, .0025, .01) %>%
+  map_dfr(~do_kpca(blue_jays, sigma = .x))
+
+bj_kpca_data %>%
+  filter(sigma == .001) %>%
+  ggplot(aes(V1, V2, color = sex, fill = sex)) + 
+  geom_point(pch = 21, size = 2, stroke = 0.2) +
+  scale_x_continuous(
+    name = "dimension 1"
+  ) +
+  scale_y_continuous(
+    name = "dimension 2"
+  ) +
+  scale_color_manual(
+    values = outline_cols,
+    guide = "none"
+  ) +
+  scale_fill_manual(
+    values = fill_cols_dark,
+    guide = "none"
+  ) +
+  theme_bw(16)
+```
+]
+
+---
+
+## Nonlinear methods have important downsides
+
+--
+
+- Results depend on parameter fine tuning
+
+--
+
+- Low-dimensional embedding cannot be interpreted<br>
+  (no rotation matrix plot)
+
+--
+
+Use only when linear methods clearly aren't working
+
+---
+
+## Doing nonlinear dimension reduction in R
+
+--
+
+- All these methods require special packages:<br>
+  **kernlab** (kernel PCA)<br>
+  **Rtsne** (t-SNE)<br>
+  **umap** (UMAP)
+
+--
+
+- Code examples are somewhat messy
+
+--
+
+- Will do UMAP as example
+
+---
+
+## Doing UMAP in R
+
+.tiny-font[
+```{r}
+library(umap)
+
+# set up UMAP parameters
+custom.config <- umap.defaults
+custom.config$n_neighbors <- 16       # number of neighbors
+custom.config$n_epochs <- 500         # number of iterations for convergence
+custom.config$random_state <- 1234    # random seed
+
+# calculate UMAP fit object
+umap_fit <- blue_jays %>%
+  select(where(is.numeric)) %>%       # retain only numeric columns
+  scale() %>%                         # scale to zero mean and unit variance
+  umap(config = custom.config)        # perform UMAP
+```
+]
+
+---
+
+## Doing UMAP in R
+
+.pull-left.tiny-font[
+```{r umap-ggplot-demo, eval = FALSE}
+# extract data and plot
+umap_fit$layout %>%
+  as.data.frame() %>%
+  mutate(sex = blue_jays$sex) %>%
+  ggplot(aes(V1, V2, color = sex)) +
+  geom_point()
+```
+]
+
+.pull-right[
+```{r umap-ggplot-demo-out, ref.label="umap-ggplot-demo", fig.width=5., fig.asp = 0.618, echo=FALSE, dev = "svg"}
+```
+]
+
+---
+
+## Further reading
+
+- Wikipedia: [Nonlinear dimensionality reduction](https://en.wikipedia.org/wiki/Nonlinear_dimensionality_reduction)
+- Wikipedia: [t-distributed stochastic neighbor embedding](https://en.wikipedia.org/wiki/T-distributed_stochastic_neighbor_embedding)
+- Wikipedia: [Kernel principal component analysis](https://en.wikipedia.org/wiki/Kernel_principal_component_analysis)
+- **kernlab** reference documentation (for kernel PCA): [pdf document](https://cran.r-project.org/web/packages/kernlab/kernlab.pdf)
+- **Rtsne** reference documentation: [pdf document](https://cran.r-project.org/web/packages/Rtsne/Rtsne.pdf)
+- **umap** vignette: [Uniform Manifold Approximation and Projection in R](https://cran.r-project.org/web/packages/umap/vignettes/umap.html)

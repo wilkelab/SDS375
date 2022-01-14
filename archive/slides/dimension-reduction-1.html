@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Dimension reduction 1</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Claus O. Wilke" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="Wilke-slides-theme.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, title-slide
+
+# Dimension reduction 1
+### Claus O. Wilke
+### last updated: 2021-03-30
+
+---
+
+
+
+
+## Problem:&lt;br&gt;How do we visualize datasets with many variables?
+
+---
+
+## Problem:&lt;br&gt;How do we visualize datasets with many variables?
+
+Example: blue jays dataset
+
+.center.tiny-font[
+
+|bird_id    |sex | bill_depth_mm| bill_width_mm| bill_length_mm| head_length_mm| body_mass_g| skull_size_mm|
+|:----------|:---|-------------:|-------------:|--------------:|--------------:|-----------:|-------------:|
+|0000-00000 |M   |          8.26|          9.21|          25.92|          56.58|       73.30|         30.66|
+|1142-05901 |M   |          8.54|          8.76|          24.99|          56.36|       75.10|         31.38|
+|1142-05905 |M   |          8.39|          8.78|          26.07|          57.32|       70.25|         31.25|
+|1142-05907 |F   |          7.78|          9.30|          23.48|          53.77|       65.50|         30.29|
+|1142-05909 |M   |          8.71|          9.84|          25.47|          57.32|       74.90|         31.85|
+|1142-05911 |F   |          7.28|          9.30|          22.25|          52.25|       63.90|         30.00|
+|1142-05912 |M   |          8.74|          9.28|          25.35|          57.12|       75.10|         31.77|
+|1142-05914 |M   |          8.72|          9.94|          30.00|          60.67|       78.10|         30.67|
+|1142-05917 |F   |          8.20|          9.01|          22.78|          52.83|       64.00|         30.05|
+|1142-05920 |F   |          7.67|          9.31|          24.61|          54.94|       67.33|         30.33|
+|1142-05930 |M   |          8.78|          8.83|          25.72|          56.54|       76.40|         30.82|
+|1142-05941 |F   |          8.15|          8.67|          24.66|          54.69|       71.50|         30.03|
+|1142-05957 |M   |          8.62|          9.28|          24.50|          56.48|       78.20|         31.98|
+|1142-05971 |F   |          7.65|          9.11|          23.93|          55.75|       73.40|         31.83|
+|1142-05981 |M   |          7.96|          9.31|          25.62|          57.34|       77.00|         31.73|
+|1142-05986 |F   |          8.17|          8.49|          23.15|          53.05|       65.00|         29.90|
+|1142-05990 |F   |          8.13|          8.88|          25.00|          54.81|       75.20|         29.81|
+|1142-05991 |M   |          8.19|          9.98|          25.40|          58.70|       75.70|         33.30|
+|1142-05995 |M   |          8.49|          8.81|          25.93|          57.07|       78.40|         31.15|
+|1142-05996 |M   |          8.35|          9.57|          24.40|          55.79|       70.60|         31.39|
+|1142-05997 |M   |          8.53|          9.71|          26.30|          58.31|       74.70|         32.00|
+|1142-05998 |M   |          8.07|          8.38|          23.62|          54.51|       70.00|         30.89|
+|1142-05999 |M   |          8.23|         10.31|          26.66|          58.21|       75.40|         31.55|
+|702-90556  |F   |          7.86|          9.21|          23.87|          54.09|       75.20|         30.22|
+|702-90560  |M   |          8.42|          9.30|          24.98|          56.80|       74.50|         31.83|
+|702-90567  |F   |          8.48|          9.64|          25.40|          56.82|       62.20|         31.42|
+|702-90576  |F   |          8.22|          9.09|          23.00|          55.39|       72.30|         32.39|
+|702-90577  |F   |          8.18|          9.44|          23.44|          54.21|       74.00|         30.77|
+|702-90578  |M   |          8.23|          9.67|          24.86|          56.88|       73.73|         32.02|
+|702-90583  |F   |          8.44|          9.19|          26.14|          56.37|       73.97|         30.24|
+|872-94671  |F   |          7.21|          8.21|          23.13|          53.70|       66.80|         30.57|
+|872-94673  |M   |          8.88|          9.58|          26.19|          55.96|       75.18|         29.77|
+|872-94684  |F   |          8.58|         10.63|          24.75|          55.83|       78.30|         31.08|
+|872-94688  |F   |          8.36|          9.63|          24.92|          55.47|       70.60|         30.55|
+|872-94689  |M   |          8.20|          8.68|          24.24|          55.96|       72.10|         31.72|
+|872-94692  |M   |          8.42|         10.24|          25.40|          56.59|       70.20|         31.19|
+|872-94694  |M   |          8.60|          8.40|          25.50|          57.50|       74.00|         32.00|
+|872-94698  |M   |          7.96|          8.62|          24.55|          56.01|       69.67|         31.46|
+|872-94709  |F   |          7.58|         10.00|          23.42|          54.49|       69.40|         31.07|
+|872-94716  |F   |          8.05|          9.35|          24.46|          56.04|       77.60|         31.58|
+|872-94731  |M   |          8.34|          8.62|          23.92|          53.74|       60.17|         29.82|
+|872-94737  |F   |          7.69|          9.01|          23.31|          54.13|       70.50|         30.82|
+|872-94757  |M   |          8.88|          9.22|          25.68|          56.80|       67.50|         31.12|
+|872-94761  |M   |          8.55|          9.03|          26.55|          57.86|       75.95|         31.31|
+|872-94766  |F   |          8.42|          9.49|          26.30|          56.50|       79.50|         30.20|
+|872-94769  |M   |          8.54|          8.96|          25.73|          56.82|       77.50|         31.09|
+|872-94771  |M   |          8.54|          9.40|          24.29|          56.35|       79.20|         32.06|
+|872-94776  |F   |          7.57|          9.32|          23.48|          54.31|       65.30|         30.83|
+|872-94777  |M   |          8.40|          8.20|          25.70|          56.40|       69.00|         30.70|
+|872-94779  |F   |          8.11|          8.37|          24.07|          53.04|       65.60|         28.97|
+|872-94780  |F   |          8.19|          9.38|          24.93|          55.58|       67.83|         30.64|
+|952-00002  |F   |          8.46|          9.69|          25.30|          56.84|       75.70|         31.54|
+|952-00004  |M   |          8.58|          9.63|          26.12|          57.00|       72.60|         30.88|
+|952-00006  |F   |          7.80|          8.74|          23.89|          53.74|       58.80|         29.85|
+|952-00007  |F   |          8.10|          8.44|          23.75|          55.74|       70.90|         32.00|
+|952-00012  |F   |          8.70|          8.91|          25.46|          55.37|       66.30|         29.91|
+|952-00013  |M   |          8.82|          8.60|          25.46|          56.86|       73.90|         31.40|
+|952-00016  |M   |          8.39|          9.12|          26.58|          57.64|       71.35|         31.06|
+|952-00020  |M   |          7.89|          9.07|          26.12|          57.86|       73.90|         31.74|
+|952-00023  |M   |          7.93|          8.72|          24.93|          55.02|       67.20|         30.09|
+|952-00026  |M   |          8.86|         10.02|          25.04|          57.30|       73.00|         32.26|
+|952-00056  |M   |          9.00|          9.40|          25.50|          56.90|       74.00|         31.40|
+|952-00057  |F   |          8.00|          8.90|          23.60|          52.80|       63.70|         29.20|
+|952-00058  |F   |          8.20|          9.00|          25.00|          54.20|       72.80|         29.20|
+|952-00059  |M   |          8.70|          9.80|          25.60|          57.30|       76.30|         31.70|
+|952-00062  |F   |          7.80|          8.00|          23.10|          53.90|       66.00|         30.80|
+|952-00063  |M   |          8.20|          9.90|          24.40|          56.70|       74.00|         32.30|
+|952-00064  |M   |          8.20|          9.50|          24.00|          56.30|       76.30|         32.30|
+|952-00065  |M   |          8.60|          9.60|          23.70|          55.50|       71.30|         31.80|
+|952-00066  |F   |          7.30|          9.90|          22.40|          53.90|       65.00|         31.50|
+|952-00068  |M   |          8.40|          9.40|          25.00|          56.10|       73.80|         31.10|
+|952-00069  |F   |          8.00|          9.30|          23.40|          54.00|       69.00|         30.60|
+|952-00070  |M   |          8.30|          9.20|          24.30|          54.90|       72.10|         30.60|
+|952-00071  |M   |          8.60|          9.80|          26.00|          59.20|       80.90|         33.20|
+|952-00072  |F   |          8.30|          9.00|          25.70|          55.00|       68.50|         29.30|
+|952-00073  |F   |          8.20|          9.70|          24.60|          54.40|       70.00|         29.80|
+|952-00074  |M   |          8.50|          9.60|          25.50|          56.70|       75.90|         31.20|
+|952-00076  |M   |          8.20|          9.30|          24.90|          55.50|       70.00|         30.60|
+|952-00077  |F   |          8.30|          8.20|          23.70|          53.60|       69.00|         29.90|
+|952-00078  |M   |          8.80|          9.70|          25.30|          56.60|       75.80|         31.30|
+|952-00079  |M   |          8.20|          8.10|          25.90|          57.50|       69.70|         31.60|
+|952-00080  |M   |          8.80|          9.80|          27.30|          56.20|       65.50|         28.90|
+|952-00081  |F   |          7.60|          8.30|          24.80|          56.20|       67.90|         31.40|
+|952-00084  |F   |          8.80|          9.70|          25.50|          56.70|       81.50|         31.20|
+|962-62003  |M   |          8.56|          9.20|          26.62|          56.48|       74.00|         29.86|
+|962-62006  |M   |          8.92|          9.22|          24.78|          56.45|       71.50|         31.67|
+|962-62007  |F   |          7.74|          9.27|          25.05|          55.76|       66.10|         30.71|
+|962-62008  |F   |          7.91|          9.38|          25.73|          55.70|       69.80|         29.97|
+|962-62019  |M   |          8.72|          9.25|          24.30|          54.76|       68.50|         30.46|
+|962-62021  |F   |          7.55|          8.62|          23.55|          52.74|       70.00|         29.19|
+|962-62024  |M   |          8.43|          9.27|          26.32|          56.44|       66.75|         30.12|
+|962-62025  |M   |          8.20|          9.28|          26.27|          58.50|       76.50|         32.23|
+|962-62026  |F   |          7.62|          9.88|          25.71|          55.97|       69.30|         30.26|
+|962-62027  |M   |          8.51|          9.64|          25.91|          55.64|       67.80|         29.73|
+|962-62030  |F   |          8.21|          9.21|          23.60|          53.88|       75.50|         30.28|
+|962-62031  |F   |          7.86|          9.39|          23.36|          54.04|       73.25|         30.69|
+|962-62038  |M   |          8.58|          9.73|          27.04|          57.56|       71.90|         30.52|
+|962-62040  |M   |          8.59|          9.97|          25.88|          56.00|       79.55|         30.12|
+|962-62041  |F   |          7.72|          8.97|          22.88|          53.03|       66.75|         30.15|
+|962-62043  |F   |          7.58|          9.04|          24.02|          55.65|       73.20|         31.63|
+|962-62045  |F   |          8.40|          8.40|          23.90|          54.70|       72.35|         30.80|
+|962-62046  |F   |          7.90|          8.48|          22.78|          51.60|       64.00|         28.82|
+|962-62063  |M   |          8.12|          9.67|          24.90|          55.91|       73.50|         31.01|
+|962-62067  |F   |          7.92|          9.16|          23.92|          54.69|       68.90|         30.77|
+|962-62068  |F   |          7.96|          9.09|          24.33|          54.58|       73.80|         30.25|
+|962-62069  |M   |          8.10|          9.10|          25.90|          57.10|       77.40|         31.20|
+|962-62070  |F   |          7.50|          9.57|          24.60|          53.80|       61.40|         29.20|
+|962-62081  |M   |          8.15|          9.72|          26.05|          56.85|       73.40|         30.80|
+|962-62088  |F   |          7.71|          8.58|          25.06|          54.15|       61.20|         29.09|
+|962-62089  |F   |          8.05|          9.25|          25.20|          56.25|       69.65|         31.05|
+|962-62090  |F   |          8.57|          8.97|          25.15|          54.80|       77.00|         29.64|
+|962-62099  |F   |          8.69|          9.43|          24.94|          56.09|       72.20|         31.15|
+|962-62104  |F   |          8.02|          8.62|          24.09|          55.82|       76.55|         31.73|
+|962-62115  |F   |          8.57|         10.82|          23.68|          53.95|       68.25|         30.27|
+|962-62117  |M   |          8.33|          9.27|          25.78|          56.71|       71.50|         30.93|
+|962-62123  |M   |          8.43|          9.23|          25.28|          57.25|       77.53|         31.97|
+|962-62127  |M   |          8.20|          9.06|          24.22|          54.58|       68.95|         30.36|
+|962-62138  |F   |          8.30|          9.28|          23.92|          56.28|       78.80|         32.36|
+|962-62176  |M   |          8.70|          9.12|          24.62|          56.61|       77.00|         31.99|
+|962-62181  |M   |          7.96|          9.80|          25.07|          55.68|       68.00|         30.61|
+|962-62184  |F   |          7.90|          9.30|          23.60|          53.90|       63.90|         30.30|
+|962-62185  |F   |          7.63|          8.56|          24.29|          54.19|       70.45|         29.90|
+|962-62200  |F   |          7.90|          8.00|          23.00|          52.70|       66.00|         29.70|
+]
+
+---
+
+## All-by-all scatter plots are hard to read 
+
+.center[
+![](dimension-reduction-1_files/figure-html/blue-jays-scattermatrix-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Solution: Dimension reduction
+
+--
+
+- We project the data into a lower-dimensional space
+
+--
+
+- Commonly-used method:&lt;br&gt;Principal Components Analysis (PCA)
+
+--
+
+- PCA is a rotation of the coordinate system
+
+---
+
+## Principal Components Analysis (PCA)
+
+.center[
+![](dimension-reduction-1_files/figure-html/blue-jays-PCA-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Principal Components Analysis (PCA)
+
+.center[
+![](dimension-reduction-1_files/figure-html/blue-jays-PCA2-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+
+## Principal Components Analysis (PCA)
+
+.center[
+![](dimension-reduction-1_files/figure-html/blue-jays-PCA3-1.svg)&lt;!-- --&gt;
+]
+
+--
+
+PCA aligns the major axes with directions of maximum variation in the data
+
+???
+
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## PCA analysis of the entire blue jays dataset
+
+.center[
+![](dimension-reduction-1_files/figure-html/pca-scatter-1.svg)&lt;!-- --&gt;
+]
+
+--
+
+.small-font[
+Male and female birds separate along PC1
+]
+
+---
+
+## The rotation matrix allows us to interpret the PCs
+
+.center[
+![](dimension-reduction-1_files/figure-html/pca-rotation-1.svg)&lt;!-- --&gt;
+]
+
+--
+
+.small-font[
+All variables contribute negatively to PC1; it represents the overall size of the bird
+]
+
+---
+
+## The rotation matrix allows us to interpret the PCs
+
+.center[
+![](dimension-reduction-1_files/figure-html/pca-rotation-1.svg)
+]
+
+.small-font[
+PC2 represents the difference between bill length and skull size
+]
+
+---
+
+## The rotation matrix allows us to interpret the PCs
+
+.pull-left.width-50[
+![](dimension-reduction-1_files/figure-html/pca-scatter-1.svg)
+]
+
+.pull-right.width-50[
+![](dimension-reduction-1_files/figure-html/pca-rotation-1.svg)
+]
+
+- Male birds are larger than female birds
+
+- Both male and female birds have long and short bills relative to their overall size
+
+---
+
+## We also plot the variance explained by each PC
+
+.center[
+![](dimension-reduction-1_files/figure-html/pca-eigenvalues-1.svg)&lt;!-- --&gt;
+]
+
+.medium-font[
+PC 1 captures over 50% of the total variance in the dataset
+]
+
+---
+
+## We also plot the variance explained by each PC
+
+.center[
+![](dimension-reduction-1_files/figure-html/pca-eigenvalues-1.svg)
+]
+
+
+.medium-font[
+Overall bird size explains &gt;50% of the variation in the various measurements
+]
+
+---
+class: center middle
+
+## Doing a principal components analysis (PCA) in R
+
+---
+
+## Prerequisite: Scaling of numeric columns
+
+.pull-left.width-50[
+
+.medium-font[
+Plot without scaling
+]
+
+.tiny-font[
+
+```r
+blue_jays %&gt;% 
+  ggplot() +
+  aes(skull_size_mm, head_length_mm) + 
+  geom_point(aes(color = sex))
+```
+]]
+
+.pull-right[
+![](dimension-reduction-1_files/figure-html/blue-jays-unscaled-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Prerequisite: Scaling of numeric columns
+
+.pull-left.width-50[
+
+.medium-font[
+Plot with scaling
+]
+
+.tiny-font[
+
+```r
+blue_jays %&gt;% 
+  # scale all numeric columns
+  mutate(across(where(is.numeric), scale)) %&gt;%
+  ggplot() +
+  aes(skull_size_mm, head_length_mm) + 
+  geom_point(aes(color = sex))
+```
+]]
+
+.pull-right[
+![](dimension-reduction-1_files/figure-html/blue-jays-scaled-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## We perform a PCA with `prcomp()`
+
+.tiny-font[
+
+```r
+blue_jays %&gt;% 
+  select(where(is.numeric)) %&gt;% # retain only numeric columns
+  scale() %&gt;%                   # scale to zero mean and unit variance
+  prcomp()                      # do PCA
+```
+
+```
+Standard deviations (1, .., p=6):
+[1] 1.801735505 1.001664889 0.898426518 0.736457067 0.633147386
+[6] 0.001337779
+
+Rotation (n x k) = (6 x 6):
+                      PC1          PC2         PC3         PC4
+bill_depth_mm  -0.3969857  0.342262537 -0.15267580  0.70664985
+bill_width_mm  -0.2810408  0.044926541  0.95822204  0.02838445
+bill_length_mm -0.4209312  0.544180448 -0.13629166 -0.43921746
+head_length_mm -0.5231576 -0.007875712 -0.14075388 -0.40403900
+body_mass_g    -0.4308880 -0.277787878 -0.12517605  0.35651048
+skull_size_mm  -0.3561979 -0.712374529 -0.06666709 -0.12876761
+                        PC5           PC6
+bill_depth_mm   0.450105291 -0.0001782600
+bill_width_mm  -0.001569506 -0.0001746131
+bill_length_mm -0.141941341 -0.5431849028
+head_length_mm  0.131442872  0.7251949252
+body_mass_g    -0.770973799  0.0002123608
+skull_size_mm   0.406912265 -0.4231339911
+```
+]
+
+
+---
+
+## Calculate the components and plot
+
+First we run the PCA and store results as `pca_fit`:
+
+.tiny-font[
+
+```r
+pca_fit &lt;- blue_jays %&gt;% 
+  select(where(is.numeric)) %&gt;% # retain only numeric columns
+  scale() %&gt;%                   # scale to zero mean and unit variance
+  prcomp()                      # do PCA
+```
+]
+
+--
+
+Then we add PC coordinates into original dataset and plot:
+
+.tiny-font[
+
+```r
+library(broom)  # for augment(), tidy()
+
+pca_fit %&gt;%
+  # add PCs to the original dataset
+  augment(blue_jays) %&gt;%
+  ggplot(aes(.fittedPC1, .fittedPC2)) +
+  geom_point(aes(color = sex))
+```
+]
+
+---
+
+
+## Calculate the components and plot
+
+.pull-left[
+.medium-font[
+Plot PC 2 against PC 1
+]
+
+.tiny-font[
+
+```r
+pca_fit %&gt;%
+  # add PCs to the original dataset
+  augment(blue_jays) %&gt;%
+  ggplot(aes(.fittedPC1, .fittedPC2)) +
+  geom_point(aes(color = sex))
+```
+]]
+
+.pull-right[
+![](dimension-reduction-1_files/figure-html/blue-jays-pca-plot-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Calculate the components and plot
+
+.pull-left[
+.medium-font[
+Plot PC 3 against PC 2
+]
+
+
+.tiny-font[
+
+```r
+pca_fit %&gt;%
+  # add PCs to the original dataset
+  augment(blue_jays) %&gt;%
+  ggplot(aes(.fittedPC2, .fittedPC3)) +
+  geom_point(aes(color = sex))
+```
+]]
+
+.pull-right[
+![](dimension-reduction-1_files/figure-html/blue-jays-pca-plot2-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Plot the rotation matrix
+
+.tiny-font.pull-left.width-50[
+
+```r
+arrow_style &lt;- arrow(
+  angle = 20, length = grid::unit(8, "pt"),
+  ends = "first", type = "closed"
+)
+
+pca_fit %&gt;%
+  # extract rotation matrix
+  tidy(matrix = "rotation") %&gt;%
+  pivot_wider(
+    names_from = "PC", values_from = "value",
+    names_prefix = "PC"
+  ) %&gt;%
+  ggplot(aes(PC1, PC2)) +
+  geom_segment(
+    xend = 0, yend = 0,
+    arrow = arrow_style
+  ) +
+  geom_text(aes(label = column), hjust = 1) +
+  xlim(-1.5, 0.5) + ylim(-1, 1) + 
+  coord_fixed()
+```
+]
+.pull-right.width-50[
+![](dimension-reduction-1_files/figure-html/blue-jays-pca-rotation-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Plot the variance explained
+
+.pull-left.tiny-font.width-50[
+
+```r
+pca_fit %&gt;%
+  # extract eigenvalues
+  tidy(matrix = "eigenvalues") %&gt;%
+  ggplot(aes(PC, percent)) + 
+  geom_col() + 
+  scale_x_continuous(
+    # create one axis tick per PC
+    breaks = 1:6
+  ) +
+  scale_y_continuous(
+    name = "variance explained",
+    # format y axis ticks as percent values
+    label = scales::label_percent(accuracy = 1)
+  )
+```
+]
+
+.pull-right[
+![](dimension-reduction-1_files/figure-html/blue-jays-pca-eigenvalues-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Further reading
+
+- Fundamentals of Data Visualization: [Chapter 12.3: Dimension reduction](https://clauswilke.com/dataviz/visualizing-associations.html#dimension-reduction)
+- Blogpost on PCA: [Principal Component Analysis
+Explained Visually](https://setosa.io/ev/principal-component-analysis/)
+- PCA tutorial with mathematical background: [A Tutorial on Principal Component Analysis](https://arxiv.org/pdf/1404.1100.pdf)
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"slideNumberFormat": ""
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

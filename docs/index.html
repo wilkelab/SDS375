@@ -23,6 +23,7 @@
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
@@ -2373,7 +2374,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     color: var(--hover-color, white);
   }</style>
   <!--/radix_placeholder_distill-->
-  <script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
+  <script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
   <script src="site_libs/popper-2.6.0/popper.min.js"></script>
   <link href="site_libs/tippy-6.2.7/tippy.css" rel="stylesheet" />
   <link href="site_libs/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
@@ -2415,32 +2416,33 @@ Slides
 <div class="nav-dropdown-content">
 <a href="slides/introduction.html">Class 1: Introduction</a>
 <a href="slides/aesthetic-mappings.html">Class 2: Aesthetic mappings</a>
-<a href="slides/visualizing-amounts.html">Class 3: Visualizing amounts</a>
-<a href="slides/visualizing-distributions-1.html">Class 4: Visualizing distributions 1</a>
-<a href="slides/visualizing-distributions-2.html">Class 5: Visualizing distributions 2</a>
-<a href="slides/coordinate-systems-axes.html">Class 6: Coordinate systems and axes</a>
-<a href="slides/color-scales.html">Class 7: Color scales</a>
-<a href="slides/figure-design.html">Class 8: Figure design</a>
+<a href="slides/telling-a-story.html">Class 3: Telling a story</a>
+<a href="slides/visualizing-amounts.html">Class 4: Visualizing amounts</a>
+<a href="slides/coordinate-systems-axes.html">Class 5: Coordinate systems and axes</a>
+<a href="slides/visualizing-distributions-1.html">Class 6: Visualizing distributions 1</a>
+<a href="slides/visualizing-distributions-2.html">Class 7: Visualizing distributions 2</a>
+<a href="slides/color-scales.html">Class 8: Color scales</a>
 <a href="slides/data-wrangling-1.html">Class 9: Data wrangling 1</a>
 <a href="slides/data-wrangling-2.html">Class 10: Data wrangling 2</a>
-<a href="slides/getting-things-in-order.html">Class 11: Getting things into the right order</a>
-<a href="slides/visualizing-proportions.html">Class 12: Visualizing proportions</a>
-<a href="slides/visualizing-trends.html">Class 13: Visualizing trends</a>
-<a href="slides/working-with-models.html">Class 14: Working with models</a>
-<a href="slides/visualizing-uncertainty.html">Class 15: Visualizing uncertainty</a>
-<a href="slides/dimension-reduction-1.html">Class 16: Dimension reduction 1</a>
-<a href="slides/dimension-reduction-2.html">Class 17: Dimension reduction 2</a>
-<a href="slides/clustering.html">Class 18: Clustering</a>
-<a href="slides/geospatial-data.html">Class 19: Visualizing geospatial data</a>
-<a href="slides/color-spaces.html">Class 20: Color spaces and color-vision deficiency</a>
-<a href="slides/redundant-coding.html">Class 21: Redundant coding, text annotations</a>
-<a href="slides/interactive-plots.html">Class 22: Interactive plots</a>
-<a href="slides/overplotting.html">Class 23: Handling overlapping points</a>
-<a href="slides/compound-figures.html">Class 24: Compound figures</a>
-<a href="slides/telling-a-story.html">Class 25: Telling a story</a>
-<a href="slides/web-design.html">Class 26: Introduction to web design</a>
-<a href="slides/functional-programming.html">Class 27a: Functions and functional programming</a>
-<a href="slides/animations.html">Class 27b: Animations</a>
+<a href="slides/visualizing-proportions.html">Class 11: Visualizing proportions</a>
+<a href="slides/know-your-data-1.html">Class 12: Getting to know your data 1</a>
+<a href="slides/know-your-data-2.html">Class 13: Getting to know your data 2</a>
+<a href="slides/getting-things-in-order.html">Class 14: Getting things into the right order</a>
+<a href="slides/figure-design.html">Class 15: Figure design</a>
+<a href="slides/color-spaces.html">Class 16: Color spaces and color-vision deficiency</a>
+<a href="slides/functional-programming.html">Class 17: Functions and functional programming</a>
+<a href="slides/visualizing-trends.html">Class 18: Visualizing trends</a>
+<a href="slides/working-with-models.html">Class 19: Working with models</a>
+<a href="slides/visualizing-uncertainty.html">Class 20: Visualizing uncertainty</a>
+<a href="slides/dimension-reduction-1.html">Class 21: Dimension reduction 1</a>
+<a href="slides/dimension-reduction-2.html">Class 22: Dimension reduction 2</a>
+<a href="slides/clustering.html">Class 23: Clustering</a>
+<a href="slides/hierarchical-clustering.html">Class 24: Hierarchical clustering</a>
+<a href="slides/geospatial-data.html">Class 25: Visualizing geospatial data</a>
+<a href="slides/redundant-coding.html">Class 26: Redundant coding, text annotations</a>
+<a href="slides/interactive-plots.html">Class 27: Interactive plots</a>
+<a href="slides/overplotting.html">Class 28: Overplotting</a>
+<a href="slides/compound-figures.html">Class 29: Compound figures</a>
 </div>
 </div>
 <div class="nav-dropdown">
@@ -2453,29 +2455,32 @@ Worksheets
 <a href="worksheets/intro-rmarkdown.Rmd">Class 1: Intro to R Markdown</a>
 <a href="worksheets/intro-rmarkdown-solutions.Rmd">Class 1: Intro to R Markdown (Solutions)</a>
 <a href="worksheets/aesthetic-mappings.Rmd">Class 2: Aesthetic mappings</a>
-<a href="worksheets/visualizing-amounts.Rmd">Class 3: Visualizing amounts</a>
-<a href="worksheets/visualizing-distributions-1.Rmd">Class 4: Visualizing distributions 1</a>
-<a href="worksheets/visualizing-distributions-2.Rmd">Class 5: Visualizing distributions 2</a>
-<a href="worksheets/coordinate-systems-axes.Rmd">Class 6: Coordinate systems and axes</a>
-<a href="worksheets/color-scales.Rmd">Class 7: Color scales</a>
-<a href="worksheets/figure-design.Rmd">Class 8: Figure design</a>
+<a href="worksheets/visualizing-amounts.Rmd">Class 4: Visualizing amounts</a>
+<a href="worksheets/coordinate-systems-axes.Rmd">Class 5 : Coordinate systems and axes</a>
+<a href="worksheets/visualizing-distributions-1.Rmd">Class 6: Visualizing distributions 1</a>
+<a href="worksheets/visualizing-distributions-2.Rmd">Class 7: Visualizing distributions 2</a>
+<a href="worksheets/color-scales.Rmd">Class 8: Color scales</a>
 <a href="worksheets/data-wrangling-1.Rmd">Class 9: Data wrangling 1</a>
 <a href="worksheets/data-wrangling-2.Rmd">Class 10: Data wrangling 2</a>
-<a href="worksheets/getting-things-in-order.Rmd">Class 11: Getting things into the right order</a>
-<a href="worksheets/visualizing-proportions.Rmd">Class 12: Visualizing proportions</a>
-<a href="worksheets/visualizing-trends.Rmd">Class 13: Visualizing trends</a>
-<a href="worksheets/working-with-models.Rmd">Class 14: Working with models</a>
-<a href="worksheets/visualizing-uncertainty.Rmd">Class 15: Visualizing uncertainty</a>
-<a href="worksheets/dimension-reduction-1.Rmd">Class 16: Dimension reduction 1</a>
-<a href="worksheets/dimension-reduction-2.Rmd">Class 17: Dimension reduction 2</a>
-<a href="worksheets/clustering.Rmd">Class 18: Clustering</a>
-<a href="worksheets/geospatial-data.Rmd">Class 19: Visualizing geospatial data</a>
-<a href="worksheets/color-spaces.R">Class 20: Color spaces and color-vision deficiency</a>
-<a href="worksheets/redundant-coding.Rmd">Class 21: Redundant coding, text annotations</a>
-<a href="worksheets/interactive-plots.Rmd">Class 22: Interactive plots</a>
-<a href="worksheets/overplotting.Rmd">Class 23: Handling overlapping points</a>
-<a href="worksheets/compound-figures.Rmd">Class 24: Compound figures</a>
-<a href="slides/web-design-worksheet.html">Class 26: Introduction to web design</a>
+<a href="worksheets/visualizing-proportions.Rmd">Class 11: Visualizing proportions</a>
+<a href="worksheets/know-your-data-1.Rmd">Class 12: Getting to know your data 1</a>
+<a href="worksheets/know-your-data-2.Rmd">Class 13: Getting to know your data 2</a>
+<a href="worksheets/getting-things-in-order.Rmd">Class 14: Getting things into the right order</a>
+<a href="worksheets/figure-design.Rmd">Class 15: Figure design</a>
+<a href="worksheets/color-spaces.R">Class 16: Color spaces and color-vision deficiency</a>
+<a href="worksheets/functional-programming.Rmd">Class 17: Functions and functional programming</a>
+<a href="worksheets/visualizing-trends.Rmd">Class 18: Visualizing trends</a>
+<a href="worksheets/working-with-models.Rmd">Class 19: Working with models</a>
+<a href="worksheets/visualizing-uncertainty.Rmd">Class 20: Visualizing uncertainty</a>
+<a href="worksheets/dimension-reduction-1.Rmd">Class 21: Dimension reduction 1</a>
+<a href="worksheets/dimension-reduction-2.Rmd">Class 22: Dimension reduction 2</a>
+<a href="worksheets/clustering.Rmd">Class 23: Clustering</a>
+<a href="worksheets/hierarchical-clustering.Rmd">Class 24: Hierarchical clustering</a>
+<a href="worksheets/geospatial-data.Rmd">Class 25: Visualizing geospatial data</a>
+<a href="worksheets/redundant-coding.Rmd">Class 26: Redundant coding, text annotations</a>
+<a href="worksheets/interactive-plots.Rmd">Class 27: Interactive plots</a>
+<a href="worksheets/overplotting.Rmd">Class 28: Overplotting</a>
+<a href="worksheets/compound-figures.Rmd">Class 29: Compound figures</a>
 </div>
 </div>
 <a href="https://github.com/wilkelab/SDS375" aria-label="Link to source">
@@ -2500,8 +2505,8 @@ Worksheets
 <div class="d-article">
 <p>This is the home page for SDS 375, Data Visualization in R. All course materials will be posted on this site.</p>
 <p>Instructor: <a href="https://clauswilke.com">Claus O. Wilke</a><br />
-Meeting times: TTH 9:30am to 11:00am<br />
-Venue: online<br />
+Meeting times: TTH 3:30pm to 5:00pm<br />
+Venue: UTC 4.110<br />
 Syllabus: <a href="syllabus.html">click here</a><br />
 Upcoming lectures and assignments: <a href="schedule.html">click here</a></p>
 <h2 id="computing-requirements">Computing requirements</h2>
@@ -2512,20 +2517,19 @@ Upcoming lectures and assignments: <a href="schedule.html">click here</a></p>
 <li>A recent version of R, <a href="https://cloud.r-project.org/">download from here.</a></li>
 <li>A recent version of RStudio, <a href="https://rstudio.com/products/rstudio/download/#download">download from here.</a></li>
 <li>The following R packages:<br />
-broom, cluster, colorspace, corrr, cowplot, distill, gapminder, GGally, gganimate, ggiraph, ggdendro, ggdist, ggforce, ggplot2movies, ggpointdensity, ggraph, ggrepel, ggridges, ggtext, ggthemes, gifski, glue, knitr, learnr, lemon, magick, margins, MASS, Matrix, nycflights13, palmerpenguins, patchwork, plotly, plotROC, rgdal, rmarkdown, sf, tidymodels, tidyverse, transformr, treemapify, umap, xaringan</li>
+broom, cluster, colorspace, cowplot, distill, gapminder, GGally, gganimate, ggiraph, ggdendro, ggdist, ggforce, ggplot2movies, ggrepel, ggridges, ggthemes, gifski, glue, knitr, learnr, naniar, margins, MASS, Matrix, nycflights13, palmerpenguins, patchwork, rgdal, rmarkdown, sf, tidyverse, transformr, umap, xaringan</li>
 </ul>
 <p>You can install all required R packages at once by running the following code in the R command line:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/utils/install.packages.html'>install.packages</a></span><span class='op'>(</span>
   <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>
-    <span class='st'>"broom"</span>, <span class='st'>"cluster"</span>, <span class='st'>"colorspace"</span>, <span class='st'>"corrr"</span>, <span class='st'>"cowplot"</span>, <span class='st'>"distill"</span>, <span class='st'>"gapminder"</span>, 
+    <span class='st'>"broom"</span>, <span class='st'>"cluster"</span>, <span class='st'>"colorspace"</span>, <span class='st'>"cowplot"</span>, <span class='st'>"distill"</span>, <span class='st'>"gapminder"</span>, 
     <span class='st'>"GGally"</span>, <span class='st'>"gganimate"</span>, <span class='st'>"ggiraph"</span>, <span class='st'>"ggdendro"</span>, <span class='st'>"ggdist"</span>, <span class='st'>"ggforce"</span>,
-    <span class='st'>"ggplot2movies"</span>, <span class='st'>"ggpointdensity"</span>, <span class='st'>"ggraph"</span>,  <span class='st'>"ggrepel"</span>, <span class='st'>"ggridges"</span>,
-    <span class='st'>"ggtext"</span>, <span class='st'>"ggthemes"</span>, <span class='st'>"gifski"</span>, <span class='st'>"glue"</span>, <span class='st'>"knitr"</span>, <span class='st'>"learnr"</span>, <span class='st'>"lemon"</span>, <span class='st'>"magick"</span>,
-    <span class='st'>"margins"</span>, <span class='st'>"MASS"</span>, <span class='st'>"Matrix"</span>, <span class='st'>"nycflights13"</span>, <span class='st'>"palmerpenguins"</span>, <span class='st'>"patchwork"</span>, <span class='st'>"plotly"</span>,
-    <span class='st'>"plotROC"</span>, <span class='st'>"rgdal"</span>, <span class='st'>"rmarkdown"</span>, <span class='st'>"sf"</span>, <span class='st'>"tidymodels"</span>, <span class='st'>"tidyverse"</span>, <span class='st'>"transformr"</span>,
-    <span class='st'>"treemapify"</span>, <span class='st'>"umap"</span>, <span class='st'>"xaringan"</span>
+    <span class='st'>"ggplot2movies"</span>, <span class='st'>"ggrepel"</span>, <span class='st'>"ggridges"</span>, <span class='st'>"ggthemes"</span>, <span class='st'>"gifski"</span>, <span class='st'>"glue"</span>,
+    <span class='st'>"knitr"</span>, <span class='st'>"learnr"</span>, <span class='st'>"naniar"</span>, <span class='st'>"margins"</span>, <span class='st'>"MASS"</span>, <span class='st'>"Matrix"</span>,
+    <span class='st'>"nycflights13"</span>, <span class='st'>"palmerpenguins"</span>, <span class='st'>"patchwork"</span>, <span class='st'>"rgdal"</span>, <span class='st'>"rmarkdown"</span>,
+    <span class='st'>"sf"</span>, <span class='st'>"tidyverse"</span>, <span class='st'>"transformr"</span>, <span class='st'>"umap"</span>, <span class='st'>"xaringan"</span>
   <span class='op'>)</span>
 <span class='op'>)</span>
 </code></pre>

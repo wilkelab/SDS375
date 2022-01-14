@@ -1,0 +1,595 @@
+---
+title: "Visualizing distributions 2"
+author: "Claus O. Wilke"
+date: "last updated: `r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: [default, "Wilke-slides-theme.css"]
+    lib_dir: libs
+    nature:
+      ratio: '16:9'
+      highlightStyle: github
+      highlightLines: true
+      slideNumberFormat: ''
+      titleSlideClass: [center, middle]
+---
+
+```{r setup, include=FALSE, echo=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(comment = "")
+
+library(tidyverse)
+library(cowplot)
+library(colorspace)
+library(ggridges)
+library(ggforce)
+library(here)
+# ggplot2 settings so plots scale well for slide size 
+theme_set(theme_gray(16)) # 16 for full width, 18 for half width 
+update_geom_defaults("point", list(size = 2)) # 2 for full width, 2.5 for half width
+
+lincoln_temps <- readRDS(here("datasets", "lincoln_temps.rds"))
+```
+
+## Reminder: Density estimates visualize distributions
+
+.pull-left.small-font[
+Mean temperatures in Lincoln, NE, in January 2016:
+
+.center[
+```{r temps_table, echo = FALSE}
+lincoln_temps %>%
+  filter(month == "Jan") %>%
+  select(date, `mean temp` = mean_temp) %>%
+  knitr::kable()
+```
+]]
+
+--
+
+.pull-right[
+```{r temps_densities_january, echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+lincoln_temps %>%
+  filter(month == "Jan") %>%
+  ggplot(aes(mean_temp)) +
+  geom_density(fill = "#56B4E9", alpha = 0.7) +
+  scale_x_continuous(
+    name = "mean temperature (°F)",
+    expand = c(0, 0)
+  ) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.06))) +
+  ggtitle("Temperature distribution") +
+  theme_minimal_grid(18) +
+  theme(
+    plot.title.position = "plot",
+    plot.title = element_text(face = "plain")
+  )
+```
+]
+
+---
+
+
+## Reminder: Density estimates visualize distributions
+
+.pull-left.small-font[
+Mean temperatures in Lincoln, NE, in January 2016:
+
+.center[
+```{r temps_table2, ref.label = "temps_table", echo = FALSE}
+```
+]]
+
+.pull-right[
+```{r temps_densities_january2, ref.label = "temps_densities_january", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```
+
+How can we compare distributions across months?
+]
+
+
+---
+
+## A bad idea: Many overlapping density plots
+
+.center[
+```{r temps_densities_overlapping, echo = FALSE, fig.width = 8, fig.asp = 0.618, dev = "svg"}
+p <- lincoln_temps %>%
+  mutate(
+    month_long = fct_rev(month_long)
+  ) %>%
+  ggplot(aes(mean_temp, fill = month)) +
+  geom_density(alpha = 0.5) +
+  scale_x_continuous(
+    name = "mean temperature (°F)",
+    expand = c(0, 0)
+  ) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.06))) +
+  scale_fill_viridis_d(option = "D") +
+  labs(subtitle = "") + # empty subtitle for some vertical space
+  theme_minimal_grid(16)
+
+stamp_bad(p)
+```
+]
+
+---
+
+## Another bad idea: Stacked density plots
+
+.center[
+```{r temps_densities_stacked, echo = FALSE, fig.width = 8, fig.asp = 0.618, dev = "svg"}
+p <- lincoln_temps %>%
+  mutate(
+    month_long = fct_rev(month_long)
+  ) %>%
+  ggplot(aes(mean_temp, fill = month)) +
+  geom_density(alpha = 0.7, position = "stack") +
+  scale_x_continuous(
+    name = "mean temperature (°F)",
+    expand = c(0, 0)
+  ) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.06))) +
+  scale_fill_viridis_d(option = "D") +
+  labs(subtitle = "") + # empty subtitle for some vertical space
+  theme_minimal_grid(16)
+
+stamp_bad(p)
+```
+]
+
+---
+
+## Somewhat better: Small multiples
+
+.center[
+```{r temps_densities, echo = FALSE, fig.width = 8, fig.asp = 0.618, dev = "svg"}
+lincoln_temps %>%
+  mutate(
+    month_long = fct_rev(month_long)
+  ) %>%
+  ggplot(aes(mean_temp)) +
+  geom_density(fill = "#56B4E9") +
+  scale_x_continuous(
+    name = "mean temperature (°F)",
+    expand = c(0, 0)
+  ) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.06))) +
+  facet_wrap(vars(month_long)) +
+  theme_minimal_grid(16, color = "gray65") +
+  theme(
+    panel.background = element_rect(fill = "gray95")
+  )
+```
+]
+
+---
+
+## Instead: Show values along y, conditions along x
+   
+.center[
+```{r temps_boxplots, echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
+  geom_boxplot(fill = "gray90") + 
+  xlab("month") + 
+  ylab("mean temperature (°F)") +
+  theme_half_open()
+```
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+--
+
+A boxplot is a crude way of visualizing a distribution.
+
+---
+
+## How to read a boxplot
+
+.center[
+```{r boxplot-schematic, echo = FALSE, fig.width = 8, fig.asp = 0.618, dev = "svg"}
+set.seed(3423)
+
+y <- c(rnorm(100), 3.4)
+s <- boxplot.stats(y)
+df <- tibble(
+  y = c(s$stats, max(y)),
+  x = c(1.03, 1.405, 1.405, 1.405, 1.03, 1.04),
+  label = c("minimum", "first quartile", "median", "third quartile", "maximum within upper fence", "outlier")
+)
+
+p_points <- ggplot(tibble(y), aes(x = 0, y = y)) + 
+  geom_point(position = position_jitter(width = .4, height = 0, seed = 320)) +
+  annotate("text", label = "data", x = 0, y = 4, hjust = 0.5, vjust = 1, size = 20/.pt) +
+  scale_x_continuous(limits = c(-1.8, .4), expand = c(0, 0)) +
+  scale_y_continuous(limits = c(-2.55, 4), expand = c(0, 0)) +
+  coord_cartesian(clip = "off") +
+  theme_nothing()
+
+p_boxplot <- ggplot(tibble(y), aes(x = 1, y = y)) + 
+  geom_boxplot(fill = "gray90", outlier.size = 2) +
+  annotate("text", label = "boxplot", x = 1, y = 4, hjust = 0.5, vjust = 1, size = 20/.pt) +
+  geom_text(
+    data = df, aes(x, y, label = label), hjust = 0,
+    size = 16/.pt
+  ) +
+  scale_x_continuous(limits = c(0, 3.5), expand = c(0, 0)) +
+  scale_y_continuous(limits = c(-2.55, 4), expand = c(0, 0)) +
+  coord_cartesian(clip = "off") +
+  theme_nothing()
+
+plot_grid(p_points, p_boxplot, rel_widths = c(.65, 1), nrow = 1)
+```
+]
+
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## If you like density plots, consider violins
+   
+.center[
+```{r temps_violins, echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
+  geom_violin(fill = "gray90") + 
+  xlab("month") + 
+  ylab("mean temperature (°F)") +
+  theme_half_open()
+```
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+--
+
+A violin plot is a density plot rotated 90 degrees and then mirrored.
+
+---
+
+## How to read a violin plot
+
+.center[
+```{r violin-schematic, echo = FALSE, fig.width = 8, fig.asp = 0.618, dev = "svg"}
+set.seed(3423)
+
+y <- c(rnorm(100), 3.4)
+d <- density(y)
+df <- tibble(
+  y = c(min(y), d$x[which(d$y == max(d$y))], max(y)),
+  x = c(1.1, 1.5, 1.08),
+  label = c("minimum data value", "maximum point density", "maximum data value")
+)
+
+p_points <- ggplot(tibble(y), aes(x = 0, y = y)) + 
+  geom_point(position = position_jitter(width = .4, height = 0, seed = 320)) +
+  annotate("text", label = "data", x = 0, y = 4, hjust = 0.5, vjust = 1, size = 20/.pt) +
+  scale_x_continuous(limits = c(-1.8, .4), expand = c(0, 0)) +
+  scale_y_continuous(limits = c(-2.55, 4), expand = c(0, 0)) +
+  coord_cartesian(clip = "off") +
+  theme_nothing()
+
+p_violin <- ggplot(tibble(y), aes(x = 1, y = y)) + 
+  geom_violin(fill = "gray90") +
+  annotate("text", label = "violin plot", x = 1, y = 4, hjust = 0.5, vjust = 1, size = 20/.pt) +
+  geom_text(
+    data = df, aes(x, y, label = label), hjust = 0,
+    size = 16/.pt
+  ) +
+  scale_x_continuous(limits = c(0, 3.5), expand = c(0, 0)) +
+  scale_y_continuous(limits = c(-2.55, 4), expand = c(0, 0)) +
+  coord_cartesian(clip = "off") +
+  theme_nothing()
+
+plot_grid(p_points, p_violin, rel_widths = c(.65, 1), nrow = 1)
+```
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## For small datasets, you can also use a strip chart
+
+Advantage: Can see raw data points instead of abstract representation.
+
+.center[
+```{r temps_stripchart, echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
+  geom_point(
+    position = position_jitter(width = .15, height = 0, seed = 320),
+    size = 0.75
+  ) +
+  xlab("month") + 
+  ylab("mean temperature (°F)") +
+  theme_half_open()
+```
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+--
+
+Horizontal jittering may be necessary to avoid overlapping points.
+
+---
+
+## For small datasets, you can also use a strip chart
+
+Advantage: Can see raw data points instead of abstract representation.
+
+.center[
+```{r temps_stripchart2, echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
+  geom_point(size = 0.75) +
+  xlab("month") + 
+  ylab("mean temperature (°F)") +
+  theme_half_open()
+```
+]
+
+Horizontal jittering may be necessary to avoid overlapping points.
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## For small datasets, you can also use a strip chart
+
+Advantage: Can see raw data points instead of abstract representation.
+
+.center[
+```{r temps_stripchart3, ref.label = "temps_stripchart", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+Horizontal jittering may be necessary to avoid overlapping points.
+
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## We can also jitter points into violins
+   
+.center[
+```{r temps_sina, echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
+  geom_violin(fill = "gray90", color = NA) + 
+  geom_sina(size = 0.75) + 
+  xlab("month") + 
+  ylab("mean temperature (°F)") +
+  theme_half_open()
+```
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+--
+
+Such plots are called sina plots, to honor [Sina Hadi Sohi.](https://clauswilke.com/dataviz/boxplots-violins.html#fig:lincoln-temp-sina)
+
+
+---
+
+## But maybe there's hope for overlapping density plots?
+
+.center[
+```{r temps_densities_overlapping2, echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+lincoln_temps %>%
+  mutate(
+    month_long = fct_rev(month_long)
+  ) %>%
+  ggplot(aes(mean_temp, fill = month)) +
+  geom_density(alpha = 0.5) +
+  scale_x_continuous(
+    name = "mean temperature (°F)",
+    expand = c(0, 0),
+    breaks = c(0, 25, 50, 75)
+  ) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.06))) +
+  scale_fill_viridis_d(option = "D") +
+  theme_minimal_grid(16)
+```
+]
+
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+--
+
+How about we stagger the densities vertically?
+
+---
+
+## Vertically staggered density plots are called ridgelines
+
+.center[
+```{r lincoln-ridgeline-polished, echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+
+ggplot(lincoln_temps, aes(x = mean_temp, y = month_long)) +
+  geom_density_ridges(
+    scale = 3,
+    rel_min_height = 0.01,
+    bandwidth = 3.4,
+    fill = lighten("#56B4E9", .3),
+    color = "white"
+  ) +
+  scale_x_continuous(
+    name = "mean temperature (°F)",
+    expand = c(0, 0)#, breaks = c(0, 25, 50, 75)
+  ) +
+  scale_y_discrete(name = NULL, expand = expansion(add = c(0.2, 2.6))) +
+  theme_minimal_grid(16) +
+  theme(
+    axis.text.y = element_text(vjust = 0)
+  )
+```
+]
+
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+--
+
+Notice the single fill color. More colors would be distracting. 
+
+---
+
+## Making these plots in ggplot
+
+.small-font.center[
+
+Plot type    | Geom                    | Notes
+:----------- | :-----------------      | :-------------------------
+boxplot      | `geom_boxplot()`        |
+violin plot  | `geom_violin()`         |
+strip chart  | `geom_point()`          | Jittering requires `position_jitter()`
+sina plot    | `geom_sina()`           | From package **ggforce**
+ridgeline    | `geom_density_ridges()` | From package **ggridges**
+
+]
+
+---
+
+## Examples: Boxplot
+
+.tiny-font[
+```{r temps-examples-boxplot, eval = FALSE}
+ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
+  geom_boxplot(fill = "skyblue") 
+```
+]
+
+.center[
+```{r temps-examples-boxplot-out, ref.label = "temps-examples-boxplot", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+## Examples: Violins
+
+.tiny-font[
+```{r temps-examples-violins, eval = FALSE}
+ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
+  geom_violin(fill = "skyblue") 
+```
+]
+
+.center[
+```{r temps-examples-violin-out, ref.label = "temps-examples-violins", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+
+---
+
+## Examples: Strip chart (no jitter)
+
+.tiny-font[
+```{r temps-examples-stripchart, eval = FALSE}
+ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
+  geom_point(size = 0.75)  # reduce point size to minimize overplotting 
+```
+]
+
+.center[
+```{r temps-examples-stripchart-out, ref.label = "temps-examples-stripchart", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+
+---
+
+## Examples: Strip chart (w/ jitter)
+
+.tiny-font[
+```{r temps-examples-stripchart-jitter, eval = FALSE}
+ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
+  geom_point(size = 0.75,  # reduce point size to minimize overplotting 
+    position = position_jitter(
+      width = 0.15,  # amount of jitter in horizontal direction
+      height = 0     # amount of jitter in vertical direction (0 = none)
+    )
+  )
+```
+]
+
+.center[
+```{r temps-examples-stripchart-jitter-out, ref.label = "temps-examples-stripchart-jitter", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+
+---
+
+## Examples: Sina plot
+
+.tiny-font[
+```{r temps-examples-sina, eval = FALSE}
+library(ggforce) # for geom_sina()
+
+ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
+  geom_violin(fill = "skyblue", color = NA) + # violins in background
+  geom_sina(size = 0.75) # sina jittered points in foreground
+```
+]
+
+.center[
+```{r temps-examples-sina-out, ref.label = "temps-examples-sina", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+
+---
+
+## Examples: Ridgeline plot
+
+.tiny-font[
+```{r temps-examples-ridgeline, eval = FALSE}
+library(ggridges) # for geom_density_ridges
+
+ggplot(lincoln_temps, aes(x = mean_temp, y = month_long)) +
+  geom_density_ridges()
+```
+]
+
+.center[
+```{r temps-examples-ridgeline-out, ref.label = "temps-examples-ridgeline", echo = FALSE, message = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+## Further reading
+
+- Fundamentals of Data Visualization: [Chapter 7: Visualizing many distributions at once](https://clauswilke.com/dataviz/boxplots-violins.html)
+- **ggplot2** reference documentation: [`geom_boxplot()`](https://ggplot2.tidyverse.org/reference/geom_histogram), [`geom_violin()`](https://ggplot2.tidyverse.org/reference/geom_violin), [`position_jitter()`](https://ggplot2.tidyverse.org/reference/position_jitter.html)
+- **ggforce** reference documentation: [`geom_sina()`](https://ggforce.data-imaginist.com/reference/geom_sina.html)
+- **ggridges** reference documentation: [`geom_density_ridges()`](https://wilkelab.org/ggridges/reference/geom_density_ridges.html)
+
+
+
+

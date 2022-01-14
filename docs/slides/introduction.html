@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>SDS 375—Data Visualization in R</title>
+    <title>Introduction</title>
     <meta charset="utf-8" />
     <meta name="author" content="Claus O. Wilke" />
     <script src="libs/header-attrs/header-attrs.js"></script>
@@ -12,9 +12,9 @@
     <textarea id="source">
 class: center, middle, title-slide
 
-# SDS 375—Data Visualization in R
+# Introduction
 ### Claus O. Wilke
-### last updated: 2021-01-18
+### last updated: 2021-09-23
 
 ---
 
@@ -42,6 +42,26 @@ class: center, middle, title-slide
 &lt;img src = "introduction_files/Data_visualization_venn.svg", width = 60%&gt;&lt;/img&gt;
 ]
 
+
+---
+
+## Why R?
+
+--
+
+&lt;img src = "introduction_files/Rlogo.svg", width = 25%, style = "position:absolute; top: 18%; left: 15%;"&gt;&lt;/img&gt;
+
+&lt;img src = "introduction_files/Data_science_venn.svg", width = 40%, style = "position:absolute; top: 57%; left: 8%;"&gt;&lt;/img&gt;
+
+???
+
+The R logo [is distributed](https://www.r-project.org/logo/) under the terms of the Creative Commons Attribution-ShareAlike 4.0 International license ([CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)).
+
+RStudio hex stickers [are distributed](https://github.com/rstudio/hex-stickers) under [CC0.](https://github.com/rstudio/hex-stickers/blob/master/LICENSE.md)
+
+--
+
+&lt;img src = "introduction_files/package-hexlogos.svg", width = 35%, style = "position:absolute; top: 5%; left: 55%;"&gt;&lt;/img&gt;
 ---
 
 ## Why me?
@@ -82,7 +102,6 @@ https://clauswilke.com/dataviz
 
 &lt;img src = "https://clauswilke.com/dataviz/multi-panel_figures_files/figure-html/athletes-composite-good-1.png",  width = 30%, style = "position:absolute; top: 52%; left: 60%; box-shadow: 3px 5px 3px 1px #00000080;"&gt;&lt;/img&gt;
 
-
 ---
 
 ## Why me?
@@ -97,41 +116,20 @@ https://clauswilke.com/dataviz
 &lt;img src = "introduction_files/ggplot2-website-footer.png", width = 60%&gt;&lt;/img&gt;
 ]
 
-
-
----
-
-## Why R?
-
---
-
-&lt;img src = "introduction_files/Rlogo.svg", width = 25%, style = "position:absolute; top: 18%; left: 15%;"&gt;&lt;/img&gt;
-
-&lt;img src = "introduction_files/Data_science_venn.svg", width = 40%, style = "position:absolute; top: 57%; left: 8%;"&gt;&lt;/img&gt;
-
-???
-
-The R logo [is distributed](https://www.r-project.org/logo/) under the terms of the Creative Commons Attribution-ShareAlike 4.0 International license ([CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)).
-
-RStudio hex stickers [are distributed](https://github.com/rstudio/hex-stickers) under [CC0.](https://github.com/rstudio/hex-stickers/blob/master/LICENSE.md)
-
---
-
-&lt;img src = "introduction_files/package-hexlogos.svg", width = 35%, style = "position:absolute; top: 5%; left: 55%;"&gt;&lt;/img&gt;
-
+[//]: # "segment ends here"
 
 ---
-class: middle
+class: center middle
 
-## Class website/syllabus: https://wilkelab.org/SDS375
+## The first core concept: Markdown
 
 ---
 
 ## The first core concept: Markdown
 
-.small-font[
 **Input:**
 
+.small-font[
 ```
 This is a sentence in Markdown, containing `code`, **bold text**,
 and *italics*.
@@ -141,19 +139,59 @@ and *italics*.
 
 --
 
-.small-font[
 **Output:**
 
+.small-font[
 This is a sentence in Markdown, containing `code`, **bold text**, and *italics*.
 ]
-
 
 ---
 
 ## The first core concept: Markdown
 
-.small-font[
+.pull-left[
 **Input:**
+
+.small-font[
+```
+## 1 Introduction
+
+Data visualization is part art 
+and part science. The challenge 
+is to get the art right without
+getting the science wrong and 
+vice versa.
+```
+]]
+
+
+.pull-right[
+**Output:**
+
+## 1 Introduction
+
+Data visualization is part art 
+and part science. The challenge 
+is to get the art right without
+getting the science wrong and 
+vice versa.
+
+]
+
+
+.absolute-bottom-right[
+Text taken from: C. O. Wilke, [Fundamentals of Data Visualization](https://clauswilke.com/dataviz/introduction.html)
+]
+
+---
+
+## R Markdown combines Markdown and R code
+
+--
+
+**Input:**
+
+.small-font[
 
 ````
 The function `rnorm()` creates normal variates.
@@ -165,8 +203,9 @@ rnorm(5) # create 5 normal variates
 
 --
 
-.small-font[
 **Output:**
+
+.small-font[
 
 The function `rnorm()` creates normal variates.
 
@@ -175,49 +214,16 @@ rnorm(5) # create 5 normal variates
 ```
 
 ```
-[1] 1.1281735 1.7376142 0.7629712 1.1308147 0.9969855
+[1]  1.3671294 -1.6078798 -1.0415095  0.1367683 -0.1165385
 ```
 ]
 
----
-
-## Edupod login: https://edupod.cns.utexas.edu
-
-.center[
-&lt;img src = "introduction_files/edupod-landing.png", width = 60%, style = "position:relative; top:-42px;"&gt;&lt;/img&gt;
-]
+[//]: # "segment ends here"
 
 ---
+class: center middle
 
-## Edupod login: https://edupod.cns.utexas.edu
-
-.center[
-&lt;img src = "introduction_files/edupod-landing-edited.png", width = 60%, style = "position:relative; top:-42px;"&gt;&lt;/img&gt;
-]
-
----
-
-## Edupod login: https://edupod.cns.utexas.edu
-
-.center[
-&lt;img src = "introduction_files/edupod-login.png", width = 60%, style = "position:relative; top:-42px;"&gt;&lt;/img&gt;
-]
-
----
-
-## Using RStudio
-
-.center[
-&lt;img src = "introduction_files/RStudio-clean.png", width = 80%, style = "position:relative; top:-52px;"&gt;&lt;/img&gt;
-]
-
----
-
-## Using RStudio
-
-.center[
-&lt;img src = "introduction_files/RStudio-clean-edited.png", width = 80%, style = "position:relative; top:-52px;"&gt;&lt;/img&gt;
-]
+## Using R Markdown in RStudio
 
 ---
 
@@ -244,37 +250,7 @@ rnorm(5) # create 5 normal variates
 &lt;img src = "introduction_files/markdown-knitted.png", width = 80%, style = "position:relative; top:-52px;"&gt;&lt;/img&gt;
 ]
 
----
-
-## Knitting to pdf
-
-.center[
-&lt;img src = "introduction_files/RStudio-markdown-edited2.png", width = 80%, style = "position:relative; top:-52px;"&gt;&lt;/img&gt;
-]
-
----
-
-## Knitting to pdf
-
-.center[
-&lt;img src = "introduction_files/markdown-knit-pdf-edited.png", width = 80%, style = "position:relative; top:-52px;"&gt;&lt;/img&gt;
-]
-
----
-
-## Knitting to pdf
-
-.center[
-&lt;img src = "introduction_files/markdown-knitted-pdf.png", width = 80%, style = "position:relative; top:-52px;"&gt;&lt;/img&gt;
-]
-
----
-
-## Knitting to pdf
-
-.center[
-&lt;img src = "introduction_files/markdown-knitted-pdf-edited.png", width = 80%, style = "position:relative; top:-52px;"&gt;&lt;/img&gt;
-]
+[//]: # "segment ends here"
 
 ---
 

@@ -31,7 +31,11 @@ titanic <- read_csv(here("datasets", "titanic.csv")) %>%
   arrange(age, sex, class)
 ```
 
+class: center middle
 
+## Histograms and density plots
+
+---
 
 ## Passengers on the Titanic
 
@@ -414,6 +418,15 @@ titanic %>%
 
 Figures redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
 
+[//]: # "segment ends here"
+
+
+---
+class: center middle
+
+## Histograms and density plots in **ggplot2**
+
+
 ---
 
 ## Making histograms with ggplot: `geom_histogram()`
@@ -570,6 +583,14 @@ ggplot(titanic, aes(age)) +
 ```
 ]
 
+[//]: # "segment ends here"
+
+
+---
+class: center middle
+
+## Setting stats explicitly in **ggplot2**
+
 ---
 
 ## Statistical transformations (stats) can be set explicitly
@@ -721,6 +742,8 @@ ggplot(titanic, aes(age)) +
 ```{r titanic-stat-demo8-out, ref.label = "titanic-stat-demo8", echo = FALSE, fig.width = 10, fig.asp = 0.3, dev = "svg"}
 ```
 ]
+
+[//]: # "segment ends here"
 
 ---
 

@@ -21,59 +21,60 @@ navbar:
           href: slides/introduction.html
         - text: "Class 2: Aesthetic mappings"
           href: slides/aesthetic-mappings.html
-        - text: "Class 3: Visualizing amounts"
+        - text: "Class 3: Telling a story"
+          href: slides/telling-a-story.html
+        - text: "Class 4: Visualizing amounts"
           href: slides/visualizing-amounts.html
-        - text: "Class 4: Visualizing distributions 1"
-          href: slides/visualizing-distributions-1.html
-        - text: "Class 5: Visualizing distributions 2"
-          href: slides/visualizing-distributions-2.html
-        - text: "Class 6: Coordinate systems and axes"
+        - text: "Class 5: Coordinate systems and axes"
           href: slides/coordinate-systems-axes.html
-        - text: "Class 7: Color scales"
+        - text: "Class 6: Visualizing distributions 1"
+          href: slides/visualizing-distributions-1.html
+        - text: "Class 7: Visualizing distributions 2"
+          href: slides/visualizing-distributions-2.html
+        - text: "Class 8: Color scales"
           href: slides/color-scales.html
-        - text: "Class 8: Figure design"
-          href: slides/figure-design.html
         - text: "Class 9: Data wrangling 1"
           href: slides/data-wrangling-1.html
         - text: "Class 10: Data wrangling 2"
           href: slides/data-wrangling-2.html
-        - text: "Class 11: Getting things into the right order"
-          href: slides/getting-things-in-order.html
-        - text: "Class 12: Visualizing proportions"
+        - text: "Class 11: Visualizing proportions"
           href: slides/visualizing-proportions.html
-        - text: "Class 13: Visualizing trends"
-          href: slides/visualizing-trends.html
-        - text: "Class 14: Working with models"
-          href: slides/working-with-models.html
-        - text: "Class 15: Visualizing uncertainty"
-          href: slides/visualizing-uncertainty.html
-        - text: "Class 16: Dimension reduction 1"
-          href: slides/dimension-reduction-1.html
-        - text: "Class 17: Dimension reduction 2"
-          href: slides/dimension-reduction-2.html
-        - text: "Class 18: Clustering"
-          href: slides/clustering.html
-        - text: "Class 19: Visualizing geospatial data"
-          href: slides/geospatial-data.html
-        - text: "Class 20: Color spaces and color-vision deficiency"
+        - text: "Class 12: Getting to know your data 1"
+          href: slides/know-your-data-1.html
+        - text: "Class 13: Getting to know your data 2"
+          href: slides/know-your-data-2.html
+        - text: "Class 14: Getting things into the right order"
+          href: slides/getting-things-in-order.html
+        - text: "Class 15: Figure design"
+          href: slides/figure-design.html
+        - text: "Class 16: Color spaces and color-vision deficiency"
           href: slides/color-spaces.html
-        - text: "Class 21: Redundant coding, text annotations"
-          href: slides/redundant-coding.html
-        - text: "Class 22: Interactive plots"
-          href: slides/interactive-plots.html
-        - text: "Class 23: Handling overlapping points"
-          href: slides/overplotting.html
-        - text: "Class 24: Compound figures"
-          href: slides/compound-figures.html
-        - text: "Class 25: Telling a story"
-          href: slides/telling-a-story.html
-        - text: "Class 26: Introduction to web design"
-          href: slides/web-design.html
-        - text: "Class 27a: Functions and functional programming"
+        - text: "Class 17: Functions and functional programming"
           href: slides/functional-programming.html
-        - text: "Class 27b: Animations"
-          href: slides/animations.html
-          
+        - text: "Class 18: Visualizing trends"
+          href: slides/visualizing-trends.html
+        - text: "Class 19: Working with models"
+          href: slides/working-with-models.html
+        - text: "Class 20: Visualizing uncertainty"
+          href: slides/visualizing-uncertainty.html
+        - text: "Class 21: Dimension reduction 1"
+          href: slides/dimension-reduction-1.html
+        - text: "Class 22: Dimension reduction 2"
+          href: slides/dimension-reduction-2.html
+        - text: "Class 23: Clustering"
+          href: slides/clustering.html
+        - text: "Class 24: Hierarchical clustering"
+          href: slides/hierarchical-clustering.html
+        - text: "Class 25: Visualizing geospatial data"
+          href: slides/geospatial-data.html
+        - text: "Class 26: Redundant coding, text annotations"
+          href: slides/redundant-coding.html
+        - text: "Class 27: Interactive plots"
+          href: slides/interactive-plots.html
+        - text: "Class 28: Overplotting"
+          href: slides/overplotting.html
+        - text: "Class 29: Compound figures"
+          href: slides/compound-figures.html
 
     - text: "Worksheets"
       menu:
@@ -83,51 +84,57 @@ navbar:
           href: worksheets/intro-rmarkdown-solutions.Rmd
         - text: "Class 2: Aesthetic mappings"
           href: worksheets/aesthetic-mappings.Rmd
-        - text: "Class 3: Visualizing amounts"
+        - text: "Class 4: Visualizing amounts"
           href: worksheets/visualizing-amounts.Rmd
-        - text: "Class 4: Visualizing distributions 1"
-          href: worksheets/visualizing-distributions-1.Rmd
-        - text: "Class 5: Visualizing distributions 2"
-          href: worksheets/visualizing-distributions-2.Rmd
-        - text: "Class 6: Coordinate systems and axes"
+        - text: "Class 5 : Coordinate systems and axes"
           href: worksheets/coordinate-systems-axes.Rmd
-        - text: "Class 7: Color scales"
+        - text: "Class 6: Visualizing distributions 1"
+          href: worksheets/visualizing-distributions-1.Rmd
+        - text: "Class 7: Visualizing distributions 2"
+          href: worksheets/visualizing-distributions-2.Rmd
+        - text: "Class 8: Color scales"
           href: worksheets/color-scales.Rmd
-        - text: "Class 8: Figure design"
-          href: worksheets/figure-design.Rmd
         - text: "Class 9: Data wrangling 1"
           href: worksheets/data-wrangling-1.Rmd
         - text: "Class 10: Data wrangling 2"
           href: worksheets/data-wrangling-2.Rmd
-        - text: "Class 11: Getting things into the right order"
-          href: worksheets/getting-things-in-order.Rmd
-        - text: "Class 12: Visualizing proportions"
+        - text: "Class 11: Visualizing proportions"
           href: worksheets/visualizing-proportions.Rmd
-        - text: "Class 13: Visualizing trends"
-          href: worksheets/visualizing-trends.Rmd
-        - text: "Class 14: Working with models"
-          href: worksheets/working-with-models.Rmd
-        - text: "Class 15: Visualizing uncertainty"
-          href: worksheets/visualizing-uncertainty.Rmd
-        - text: "Class 16: Dimension reduction 1"
-          href: worksheets/dimension-reduction-1.Rmd
-        - text: "Class 17: Dimension reduction 2"
-          href: worksheets/dimension-reduction-2.Rmd
-        - text: "Class 18: Clustering"
-          href: worksheets/clustering.Rmd
-        - text: "Class 19: Visualizing geospatial data"
-          href: worksheets/geospatial-data.Rmd
-        - text: "Class 20: Color spaces and color-vision deficiency"
+        - text: "Class 12: Getting to know your data 1"
+          href: worksheets/know-your-data-1.Rmd
+        - text: "Class 13: Getting to know your data 2"
+          href: worksheets/know-your-data-2.Rmd
+        - text: "Class 14: Getting things into the right order"
+          href: worksheets/getting-things-in-order.Rmd
+        - text: "Class 15: Figure design"
+          href: worksheets/figure-design.Rmd
+        - text: "Class 16: Color spaces and color-vision deficiency"
           href: worksheets/color-spaces.R
-        - text: "Class 21: Redundant coding, text annotations"
+        - text: "Class 17: Functions and functional programming"
+          href: worksheets/functional-programming.Rmd
+        - text: "Class 18: Visualizing trends"
+          href: worksheets/visualizing-trends.Rmd
+        - text: "Class 19: Working with models"
+          href: worksheets/working-with-models.Rmd
+        - text: "Class 20: Visualizing uncertainty"
+          href: worksheets/visualizing-uncertainty.Rmd
+        - text: "Class 21: Dimension reduction 1"
+          href: worksheets/dimension-reduction-1.Rmd
+        - text: "Class 22: Dimension reduction 2"
+          href: worksheets/dimension-reduction-2.Rmd
+        - text: "Class 23: Clustering"
+          href: worksheets/clustering.Rmd
+        - text: "Class 24: Hierarchical clustering"
+          href: worksheets/hierarchical-clustering.Rmd
+        - text: "Class 25: Visualizing geospatial data"
+          href: worksheets/geospatial-data.Rmd
+        - text: "Class 26: Redundant coding, text annotations"
           href: worksheets/redundant-coding.Rmd
-        - text: "Class 22: Interactive plots"
+        - text: "Class 27: Interactive plots"
           href: worksheets/interactive-plots.Rmd
-        - text: "Class 23: Handling overlapping points"
+        - text: "Class 28: Overplotting"
           href: worksheets/overplotting.Rmd
-        - text: "Class 24: Compound figures"
+        - text: "Class 29: Compound figures"
           href: worksheets/compound-figures.Rmd
-        - text: "Class 26: Introduction to web design"
-          href: slides/web-design-worksheet.html
- 
+
 output: distill::distill_article

@@ -14,7 +14,7 @@ class: center, middle, title-slide
 
 # Clustering
 ### Claus O. Wilke
-### last updated: 2021-04-04
+### last updated: 2021-09-23
 
 ---
 
@@ -763,6 +763,19 @@ class: center middle
 
 ## k-means clustering works best when&lt;br&gt;data forms distinct, compact clusters
 
+---
+
+## Other clustering algorithms
+
+.center[
+&lt;img src = "clustering_files/clustering_examples.png", width = 75%&gt;&lt;/img&gt;
+]
+
+.absolute-bottom-right.tiny-font[
+From George Seif (2018) [The 5 Clustering Algorithms Data Scientists Need to Know](https://towardsdatascience.com/the-5-clustering-algorithms-data-scientists-need-to-know-a36d136ef68)
+]
+
+[//]: # "segment ends here"
 
 ---
 class: center middle
@@ -982,11 +995,11 @@ Cluster means:
 3     5.901613    2.748387     4.393548    1.433871
 
 Clustering vector:
-  [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
- [31] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 3 3 2 3 3 3 3 3 3 3
- [61] 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 2 3 3 3 3 3 3 3 3 3 3 3 3
- [91] 3 3 3 3 3 3 3 3 3 3 2 3 2 2 2 2 3 2 2 2 2 2 2 3 3 2 2 2 2 3
-[121] 2 3 2 3 2 2 3 3 2 2 2 2 2 3 2 2 2 2 3 2 2 2 3 2 2 2 3 2 2 3
+  [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+ [38] 1 1 1 1 1 1 1 1 1 1 1 1 1 3 3 2 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3
+ [75] 3 3 3 2 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 2 3 2 2 2 2 3 2 2 2 2
+[112] 2 2 3 3 2 2 2 2 3 2 3 2 3 2 2 3 3 2 2 2 2 2 3 2 2 2 2 3 2 2 2 3 2 2 2 3 2
+[149] 2 3
 
 Within cluster sum of squares by cluster:
 [1] 15.15100 23.87947 39.82097
@@ -994,9 +1007,8 @@ Within cluster sum of squares by cluster:
 
 Available components:
 
-[1] "cluster"      "centers"      "totss"        "withinss"    
-[5] "tot.withinss" "betweenss"    "size"         "iter"        
-[9] "ifault"      
+[1] "cluster"      "centers"      "totss"        "withinss"     "tot.withinss"
+[6] "betweenss"    "size"         "iter"         "ifault"      
 ```
 ]
 
@@ -1019,11 +1031,11 @@ Cluster means:
 3     5.901613    2.748387     4.393548    1.433871
 
 Clustering vector:
-  [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
- [31] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 3 3 2 3 3 3 3 3 3 3
- [61] 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 2 3 3 3 3 3 3 3 3 3 3 3 3
- [91] 3 3 3 3 3 3 3 3 3 3 2 3 2 2 2 2 3 2 2 2 2 2 2 3 3 2 2 2 2 3
-[121] 2 3 2 3 2 2 3 3 2 2 2 2 2 3 2 2 2 2 3 2 2 2 3 2 2 2 3 2 2 3
+  [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+ [38] 1 1 1 1 1 1 1 1 1 1 1 1 1 3 3 2 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3
+ [75] 3 3 3 2 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 2 3 2 2 2 2 3 2 2 2 2
+[112] 2 2 3 3 2 2 2 2 3 2 3 2 3 2 2 3 3 2 2 2 2 2 3 2 2 2 2 3 2 2 2 3 2 2 2 3 2
+[149] 2 3
 
 Within cluster sum of squares by cluster:
 [1] 15.15100 23.87947 39.82097
@@ -1031,9 +1043,8 @@ Within cluster sum of squares by cluster:
 
 Available components:
 
-[1] "cluster"      "centers"      "totss"        "withinss"    
-[5] "tot.withinss" "betweenss"    "size"         "iter"        
-[9] "ifault"      
+[1] "cluster"      "centers"      "totss"        "withinss"     "tot.withinss"
+[6] "betweenss"    "size"         "iter"         "ifault"      
 ```
 ]
 
@@ -1217,6 +1228,8 @@ tibble(centers = 1:15) %&gt;%
 .small-font[
 Plot suggests number of clusters of about 3
 ]]
+
+[//]: # "segment ends here"
 
 ---
 

@@ -1,0 +1,444 @@
+---
+#############################################################
+#                                                           #
+# Click on "Run Document" in RStudio to run this worksheet. #
+#                                                           #
+#############################################################
+title: "Data wrangling 2"
+author: "Claus O. Wilke"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(tidyverse)
+library(palmerpenguins)
+knitr::opts_chunk$set(echo = FALSE, comment = "")
+
+# long and wide summary tables to be used later
+penguins_long <- penguins %>%
+  filter(!is.na(sex)) %>%
+  group_by(species, sex) %>%
+  summarize(mean_weight = mean(body_mass_g))
+
+penguins_wide <- penguins_long %>%
+  pivot_wider(names_from = "sex", values_from = "mean_weight")
+
+# for join examples
+TX_population <- read_csv(file =
+"city,year,population
+Houston,2014,2239558
+San Antonio,2014,1436697
+Austin,2014,912791
+Austin,2010,790390")
+
+TX_area <- read_csv(file =
+"city,area
+Houston,607.5
+Dallas,385.6
+Austin,307.2")
+```
+
+## Introduction
+
+In this worksheet, we will continue with basic data manipulations, now moving on to grouping and summarizing, making data tables wider or longer, and joining data tables.
+
+We will be using two R packages, **tidyverse** for the data manipulation functions `%>%`, `group_by()`, `summarize()`, `pivot_wider()`, `pivot_longer()`, and join functions such as `left_join()`, and **palmerpenguins** for the `penguins` dataset.
+
+
+```{r library-calls, echo = TRUE, eval = FALSE}
+# load required libraries
+library(tidyverse)
+library(palmerpenguins)
+```
+
+
+We will be working with the dataset `penguins` containing data on individual penguins on Antarctica.
+```{r echo = TRUE}
+penguins
+```
+
+
+## Analyzing subsets
+
+In many data analysis settings, we want to break a dataset into subsets and then perform some summary calculation on each subset. The simplest example is counting, which we have done previously with the `count()` function.
+
+```{r count-demo, echo=TRUE}
+penguins %>%
+  count(species)
+```
+
+This function subdivides the `penguins` dataset into subsets for each species and then calculates the number `n` for each subset, which is the number of observations in each subset.
+
+The function `count()` here does all the work for us, but what if instead of counting we wanted to calculate the mean weight of the penguins for each species, or calculate the mean weight and count at the same time? We need a general framework that allows us to do these kinds of calculations with maximum flexibility.
+
+The tidyverse approach is to first group a dataset with `group_by()` and then to calculate grouped summaries with `summarize()`.
+
+### Grouping
+
+Let's first consider just grouping. If we look at the raw R output of just the `penguins` table or the `penguins` table after running it through `group_by(species)`, we see that the table is the same, except in the second case there is a line `# Groups:   species [3]` which indicates that the table is grouped by species and there are three groups. (Here, we need to pipe the tables into the `print()` function to see the raw R output instead of a formatted table that would hide the grouping information.)
+
+```{r echo = TRUE}
+penguins %>%
+  print()
+
+penguins %>%
+  group_by(species) %>%
+  print()
+```
+
+We can also group by multiple data columns at once, and we can undo any grouping with `ungroup()`.
+
+```{r echo = TRUE}
+penguins %>%
+  group_by(species, island) %>%
+  print()
+
+penguins %>%
+  group_by(species) %>%
+  ungroup() %>%
+  print()
+```
+
+
+Now try this yourself. Group the penguins dataset by `sex` and `island`.
+
+```{r group-basic, exercise=TRUE}
+penguins %>%
+  ___ %>%
+  print()
+```
+
+```{r group-basic-hint}
+penguins %>%
+  group_by(___) %>%
+  print()
+```
+
+```{r group-basic-solution}
+penguins %>%
+  group_by(sex, island) %>%
+  print()
+```
+
+```{r group-question, echo=FALSE}
+question("How many distinct groups did the previous exercise produce?",
+  answer("9", correct = TRUE),
+  answer("5"),
+  answer("3"),
+  answer("2"),
+  answer("13")
+)
+```
+
+Now undo the previous grouping.
+
+```{r ungroup, exercise = TRUE}
+
+```
+
+```{r ungroup-hint}
+penguins %>%
+  group_by(sex, island) %>%
+  ___ %>%
+  print()
+```
+
+```{r ungroup-solution}
+penguins %>%
+  group_by(sex, island) %>%
+  ungroup() %>%
+  print()
+```
+
+Also verify what the output looks like when you omit the `print()` function at the end.
+
+### Performing summaries
+
+Once we have set up a grouping for a data table, we can then calculate summary data with the `summarize()` function. This function works similarly to `mutate()`, in that we provide it with statements of the form `<new column name> = <computation>`, where `<new column name>` stands for the name of the new column that is being created and `<computation>` stands for the computation that is used to generate the values in the new column. As an example, if we want to calculate the mean weight (body mass) of penguins, we could write `summarize(mean_weight = mean(body_mass_g))`, and this would create a new column called `mean_weight`.
+
+Try this out. First group by `sex` and then calculate the mean weight for each sex.
+
+```{r summarize-simple, exercise = TRUE}
+penguins %>%
+  group_by(sex) %>%
+  ___
+```
+
+```{r summarize-simple-hint}
+penguins %>%
+  group_by(sex) %>%
+  summarize(
+    ___ = ___
+  )
+```
+
+```{r summarize-simple-solution}
+penguins %>%
+  group_by(sex) %>%
+  summarize(
+    mean_weight = mean(body_mass_g)
+  )
+```
+
+We see that male penguins on average are heavier than female penguins. We also see that there is a row containing `NA`s. This happens because there are a few entries in the dataset for which we know neither the penguins' sex nor their weight.
+
+Next, see if the pattern changes if we subdivide the dataset by species.
+
+```{r summarize-simple2, exercise = TRUE}
+penguins %>%
+  group_by(___) %>%
+  ___
+```
+
+```{r summarize-simple2-hint}
+penguins %>%
+  group_by(species, sex) %>%
+  summarize(
+    ___ = ___
+  )
+```
+
+```{r summarize-simple2-solution}
+penguins %>%
+  group_by(species, sex) %>%
+  summarize(
+    mean_weight = mean(body_mass_g)
+  )
+```
+
+When running this code, you see a message that `summarise()` (the tidyverse uses British spelling internally) has grouped the output by `species`. This happens because if you group by multiple variables and then perform a summary it usually makes sense to keep all but the innermost groupings. Verify this is the case by piping the output from `summarize()` into `print()`.
+
+We can perform multiple summaries at once by adding more statements inside the `summarize()` function. To try this out, calculate the mean bill length in addition to the mean weight.
+
+```{r summarize-multiple, exercise = TRUE}
+penguins %>%
+  group_by(species, sex) %>%
+  summarize(
+    ___
+  )
+```
+
+```{r summarize-multiple-hint}
+penguins %>%
+  group_by(species, sex) %>%
+  summarize(
+    mean_weight = ___,
+    mean_bill_length = ___
+  )
+```
+
+```{r summarize-multiple-solution}
+penguins %>%
+  group_by(species, sex) %>%
+  summarize(
+    mean_weight = mean(body_mass_g),
+    mean_bill_length = mean(bill_length_mm)
+  )
+```
+
+When performing summaries, we often want to know how many observations there are in each group (i.e., we want to count). We can do this with the function `n()`, which inside `summarize()` gives us the group size. So, we can count by adding a statement such as `count = n()` inside `summarize()`. Try this out.
+
+```{r summarize-multiple2, exercise = TRUE}
+penguins %>%
+  group_by(species, sex) %>%
+  summarize(
+    ___
+  )
+```
+
+```{r summarize-multiple2-hint}
+penguins %>%
+  group_by(species, sex) %>%
+  summarize(
+    mean_weight = ___,
+    mean_bill_length = ___,
+    count = ___
+  )
+```
+
+```{r summarize-multiple2-solution}
+penguins %>%
+  group_by(species, sex) %>%
+  summarize(
+    mean_weight = mean(body_mass_g),
+    mean_bill_length = mean(bill_length_mm),
+    count = n()
+  )
+```
+
+
+### Removing missing values
+
+If we try the previous calculation but grouping only by species and not by sex, we notice a problem: Most values have been replaced by `NA`.
+
+```{r echo = TRUE}
+penguins %>%
+  group_by(species) %>%
+  summarize(
+    mean_weight = mean(body_mass_g),
+    mean_bill_length = mean(bill_length_mm)
+  )
+```
+
+This happens because R does not like to calculate the mean of a set of numbers where at least one is missing. Whenever there are missing values, we need to think carefully whether we can just ignore them or need to do something more sophisticated. In the penguins dataset there are only a handful of missing values, and therefore ignoring them is fine.
+
+We can ignore missing values by setting `na.rm = TRUE` inside the `mean()` function. Try this out.
+
+```{r summarize-na-rm, exercise = TRUE}
+penguins %>%
+  group_by(species) %>%
+  summarize(
+    ___
+  )
+```
+
+```{r summarize-na-rm-hint}
+penguins %>%
+  group_by(species) %>%
+  summarize(
+    mean_weight = mean(body_mass_g, ___),
+    mean_bill_length = mean(bill_length_mm, ___)
+  )
+```
+
+```{r summarize-na-rm-solution}
+penguins %>%
+  group_by(species) %>%
+  summarize(
+    mean_weight = mean(body_mass_g, na.rm = TRUE),
+    mean_bill_length = mean(bill_length_mm, na.rm = TRUE)
+  )
+```
+
+Alternatively, we could filter out all rows that contain `NA`s in the columns of interest. We test whether a column contains `NA`s with `is.na(<column name>)`, and to keep rows without `NA`s we use `!is.na(<column name>)`. Try this out.
+
+
+```{r summarize-na-rm-filter, exercise = TRUE}
+penguins %>%
+  filter(___) %>%
+  group_by(species) %>%
+  summarize(
+    mean_weight = mean(body_mass_g),
+    mean_bill_length = mean(bill_length_mm)
+  )
+```
+
+```{r summarize-na-rm-filter-hint}
+penguins %>%
+  filter(!is.na(body_mass_g), ___) %>%
+  group_by(species) %>%
+  summarize(
+    mean_weight = mean(body_mass_g),
+    mean_bill_length = mean(bill_length_mm)
+  )
+```
+
+```{r summarize-na-rm-filter-solution}
+penguins %>%
+  filter(!is.na(body_mass_g), !is.na(bill_length_mm)) %>%
+  group_by(species) %>%
+  summarize(
+    mean_weight = mean(body_mass_g),
+    mean_bill_length = mean(bill_length_mm)
+  )
+```
+
+## Making tables wider or longer
+
+For efficient data processing, we usually want tables in long form, where each columns is one variable and each row is one observation. However, in some applications, for example when making a table easier to read for humans, a wide format can be preferred. In a wide format, some variables are displayed as column names, and other variables are distributed over multiple columns.
+
+Consider the following two versions of a summary table. The first is in long format, where sex is one column and the mean weight is another. 
+
+```{r echo = TRUE}
+penguins_long
+```
+
+The second is in wide format, where the values of the sex variable (female or male) are used as column headings, and the mean weight values are distributed over these two columns.
+
+```{r echo = TRUE}
+penguins_wide
+```
+
+You can turn a long table into a wide table using the function `pivot_wider()`, which takes two arguments: `names_from` specifies the long column from which the new wide column names should be taken (here e.g., `"sex"`), and `values_from` specifies the long column from which the new wide values should be taken (here e.g., `"mean_weight"`). Try this out.
+
+```{r pivot-wider, exercise = TRUE}
+penguins_long %>%
+  ___
+```
+
+```{r pivot-wider-hint}
+penguins_long %>%
+  pivot_wider(names_from = ___, values_from = ___)
+```
+
+```{r pivot-wider-solution}
+penguins_long %>%
+  pivot_wider(names_from = "sex", values_from = "mean_weight")
+```
+
+You can similarly turn a wide table into a long one using the function `pivot_longer()`. It has arguments `cols`, `names_to`, and `values_to`. `cols` specifies the wide columns on which to operate, `names_to` specifies into which long columns the names of the wide columns should be written, and `values_to` specfies into which long columns the values of the wide columns should be written. Note that while `names_to` and `values_to` are specified as strings (that is, in quotes, such as `names_to = "sex"`), the `cols` argument does not use quotes (e.g., `cols = c(female, male)`).
+
+Try this out.
+
+```{r pivot-longer, exercise = TRUE}
+penguins_wide %>%
+  ___
+```
+
+```{r pivot-longer-hint}
+penguins_wide %>%
+  pivot_longer(cols = ___, names_to = ___, values_to = ___)
+```
+
+```{r pivot-longer-solution}
+penguins_wide %>%
+  pivot_longer(cols = c(female, male), names_to = "sex", values_to = "mean_weight")
+```
+
+Notice how the arguments `names_from` and `values_from` in `pivot_wider()` are exactly equivalent to `names_to` and `values_to` in `pivot_longer()`.
+
+
+## Combining datasets with joins
+
+Finally, we sometimes encounter the situation where we have two data sets that contain different pieces of information about the same subjects or objects, and we need to merge these tables for further analysis. In this situation, we need to perform a join, and there are multiple different types of joins available: `left_join()`, `right_join()`, `inner_join()`, `full_join()`. These joins all differ in how they handle cases where an observation is present in only one of the two tables but missing in the other.
+
+Two explore joins, consider the following two datasets, which contain the population number of three Texas cities and the city areas, respectively. The cities in the two tables are not the same, on purpose.
+
+```{r echo = TRUE}
+TX_population
+TX_area
+```
+
+Try to merge `TX_area` into `TX_population`, using `left_join()`.
+
+```{r left-join, exercise = TRUE}
+left_join(___)
+```
+
+```{r left-join-hint}
+left_join(___, ___)
+```
+
+```{r left-join-solution}
+left_join(TX_population, TX_area)
+```
+
+What happens if you reverse the two arguments?
+
+Now try the same with `full_join()`.
+
+```{r full-join, exercise = TRUE}
+
+```
+
+```{r full-join-hint}
+full_join(___, ___)
+```
+
+```{r full-join-solution}
+full_join(TX_population, TX_area)
+```
+
+Try also `right_join()` and `inner_join()`. See if you can describe what each join function does and how they differ from one another.

@@ -375,6 +375,13 @@ x
 
 We typically need to tell R how exactly `NA`s should be handled
 
+[//]: # "segment ends here"
+
+---
+class: center middle
+
+## Reshaping: Making tables wider or longer
+
 ---
 
 ## Reshape: `pivot_wider()` and `pivot_longer()`
@@ -479,11 +486,17 @@ penguins_wide %>%
 
 ]
 
+[//]: # "segment ends here"
+
+---
+class: center middle
+
+## Combining datasets: joins
 
 
 ---
 
-## Combine datasets: joins
+## We use joins to add columns from one table into another
 
 .center[
 <img src = "data-wrangling-2_files/join.svg", width = 75%></img>
@@ -616,6 +629,8 @@ full_join(band_members, band_instruments) # merge all cases
 
 In my experience, `left_join()` is the right choice  
 70–80% of the time
+
+[//]: # "segment ends here"
 
 ---
 

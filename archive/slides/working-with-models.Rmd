@@ -1,0 +1,338 @@
+---
+title: "Working with models"
+author: "Claus O. Wilke"
+date: "last updated: `r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: [default, "Wilke-slides-theme.css"]
+    lib_dir: libs
+    nature:
+      ratio: '16:9'
+      highlightStyle: github
+      highlightLines: true
+      slideNumberFormat: ''
+      titleSlideClass: [center, middle]
+---
+
+```{r setup, include=FALSE, echo=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(comment = "")
+
+library(tidyverse)
+library(here)
+library(palmerpenguins)
+library(cowplot)
+# ggplot2 settings so plots scale well for slide size 
+theme_set(theme_gray(16)) # 16 for full width, 18 for half width 
+update_geom_defaults("point", list(size = 2)) # 2 for full width, 2.5 for half width
+```
+
+## How do we obtain information about model fits?
+
+.tiny-font[
+```{r penguins-fits, message = FALSE, warning = FALSE, fig.width = 10, fig.asp = 0.4, dev = "svg"}
+penguins %>%
+  ggplot(aes(body_mass_g, flipper_length_mm)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  facet_wrap(vars(species))
+```
+]
+
+---
+
+## We can fit a linear model with `lm()`
+
+--
+
+.tiny-font[
+```{r}
+penguins_adelie <- filter(penguins, species == "Adelie")
+
+lm_out <- lm(flipper_length_mm ~ body_mass_g, data = penguins_adelie)
+summary(lm_out)
+```
+]
+
+
+---
+
+## Use `map()` to fit models to groups of data
+
+.small-font[
+```{r}
+penguins %>%
+  nest(data = -species) # nest all data except species column
+```
+]
+
+---
+
+## Use `map()` to fit models to groups of data
+
+.small-font[
+```{r}
+penguins %>%
+  nest(data = -species) %>%
+  mutate(
+    # apply linear model to each nested data frame
+    fit = map(data, ~lm(flipper_length_mm ~ body_mass_g, data = .x))
+  )
+```
+]
+
+---
+
+## Use `map()` to fit models to groups of data
+
+.small-font[
+```{r}
+lm_data <- penguins %>%
+  nest(data = -species) %>%
+  mutate(
+    # apply linear model to each nested data frame
+    fit = map(data, ~lm(flipper_length_mm ~ body_mass_g, data = .x))
+  )
+
+lm_data$fit[[1]]  # first model fit, for Adelie species
+```
+]
+
+
+---
+
+.tiny-font[
+```{r}
+summary(lm_data$fit[[1]]) # summarize the first model, which is for Adelie
+```
+]
+
+---
+
+.tiny-font[
+```{r}
+summary(lm_out)
+```
+]
+
+
+---
+
+.tiny-font[
+```{r}
+summary(lm_data$fit[[1]]) # summarize the first model, which is for Adelie
+```
+]
+
+---
+
+.tiny-font[
+```{r}
+summary(lm_data$fit[[2]]) # second model, Chinstrap
+```
+]
+
+---
+
+.tiny-font[
+```{r}
+summary(lm_data$fit[[3]]) # third model, Gentoo
+```
+]
+
+---
+class: center middle
+
+## How do we get this information into a data table?
+
+---
+
+## The **broom** package cleans model output: `glance()`
+
+.small-font[
+`glance()` provides model-wide summary estimates in tidy format
+]
+
+--
+
+.small-font[
+```{r}
+library(broom)
+
+glance(lm_out)
+```
+]
+
+---
+
+## The **broom** package cleans model output: `tidy()`
+
+.small-font[
+`tidy()` provides information about regression coefficients in tidy format
+]
+
+--
+
+.small-font[
+```{r}
+library(broom)
+
+tidy(lm_out)
+```
+]
+
+
+---
+
+## Apply these functions to multiple models with `map()`
+
+--
+
+.small-font[
+Reminder: This is the nested table with fitted models
+```{r}
+lm_data
+```
+]
+
+
+---
+
+## Apply these functions to multiple models with `map()`
+
+.small-font[
+```{r}
+lm_data %>%
+  mutate(
+    glance_out = map(fit, glance)
+  )
+```
+]
+
+---
+
+## Apply these functions to multiple models with `map()`
+
+.small-font[
+```{r}
+lm_data %>%
+  mutate(
+    glance_out = map(fit, ~glance(.x)) # same as just `glance`
+  )
+```
+]
+
+---
+
+## Apply these functions to multiple models with `map()`
+
+.small-font[
+```{r}
+lm_data %>%
+  mutate(
+    glance_out = map(fit, glance)
+  )
+```
+]
+
+---
+
+## And unnest
+
+.small-font[
+```{r}
+lm_data %>%
+  mutate(
+    glance_out = map(fit, glance)
+  ) %>%
+  select(species, glance_out)
+```
+]
+
+---
+
+## And unnest
+
+.small-font[
+```{r}
+lm_data %>%
+  mutate(
+    glance_out = map(fit, glance)
+  ) %>%
+  select(species, glance_out) %>%
+  unnest(cols = glance_out)
+```
+]
+
+
+---
+
+## All in one pipeline
+
+.tiny-font[
+```{r}
+lm_summary <- penguins %>%
+  nest(data = -species) %>%
+  mutate(
+    fit = map(data, ~lm(flipper_length_mm ~ body_mass_g, data = .x)),
+    glance_out = map(fit, glance)
+  ) %>%
+  select(species, glance_out) %>%
+  unnest(cols = glance_out)
+
+lm_summary
+```
+]
+
+
+---
+
+## Make label data
+
+.tiny-font[
+```{r message = FALSE}
+library(glue)  # for easy text formatting
+
+label_data <- lm_summary %>%
+  mutate(
+    rsqr = signif(r.squared, 2),  # round to 2 significant digits
+    pval = signif(p.value, 2),
+    label = glue("R^2 = {rsqr}, P = {pval}"),
+    body_mass_g = 6400, flipper_length_mm = 175 # label position in plot
+  ) %>%
+  select(species, label, body_mass_g, flipper_length_mm)
+
+label_data
+```
+]
+---
+
+## And plot
+
+.tiny-font[
+```{r penguins-fit-w-labels, eval = FALSE}
+ggplot(penguins, aes(body_mass_g, flipper_length_mm)) + geom_point() +
+  geom_text(
+    data = label_data, aes(label = label),
+    size = 10/.pt, hjust = 1  # 10pt, right-justified
+  ) +
+  geom_smooth(method = "lm", se = FALSE) + facet_wrap(vars(species))
+```
+]
+
+.center[
+```{r penguins-fit-w-labels-out, ref.label = "penguins-fit-w-labels", echo = FALSE, message = FALSE, warning = FALSE, fig.width = 9, fig.asp = 0.4, dev = "svg"}
+```
+]
+
+
+---
+
+## Further reading
+
+- Data Visualization—A Practical Introduction: [Chapter 6.5: Tidy model objects with broom](https://socviz.co/modeling.html#tidy-model-objects-with-broom)
+- **broom** reference documentation: https://broom.tidymodels.org/
+- Article on using **broom** with **dplyr**: [**broom** and **dplyr**](https://broom.tidymodels.org/articles/broom_and_dplyr.html)
+
+
+

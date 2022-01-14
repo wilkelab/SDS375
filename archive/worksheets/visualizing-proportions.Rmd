@@ -1,0 +1,390 @@
+---
+#############################################################
+#                                                           #
+# Click on "Run Document" in RStudio to run this worksheet. #
+#                                                           #
+#############################################################
+title: "Visualizing proportions"
+author: "Claus O. Wilke"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(tidyverse)
+library(ggforce)
+knitr::opts_chunk$set(echo = FALSE, comment = "")
+
+bundestag <- tibble(
+  party = c("CDU/CSU", "SPD", "FDP"),
+  seats = c(243, 214, 39)
+)
+marketshare <- read_csv("https://wilkelab.org/SDS375/datasets/marketshare.csv") %>%
+  select(company, year, percent)
+```
+
+## Introduction
+
+In this worksheet, we will discuss how to visualize proportions using stacked or dodged bar plots and pie charts.
+
+We will be using two R packages, **tidyverse** for various data manipulation functions and **ggforce** to make pie charts in Cartesian coordinate systems.
+
+```{r library-calls, echo = TRUE, eval = FALSE}
+# load required libraries
+library(tidyverse)
+library(ggforce)
+```
+
+We will be working with the dataset `bundestag`, which contains the composition of the German parliament (Bundestag) from 1976 to 1980.
+
+```{r echo = TRUE}
+bundestag
+```
+
+We will also be working with the dataset `marketshare`, which contains made-up information about the market share of five hypothetical companies, A, B, C, D, and E, over a time period of three years.
+
+```{r echo = TRUE}
+marketshare
+```
+
+
+## Bars in Cartesian and polar coordinates
+
+There are three main approaches to visualizing proportions: Stacked bars, grouped (dodged) bars, and pie charts. From the perspective of ggplot, these are all bar charts with only minor tweaks, and we can make them all using `geom_bar()` or `geom_col()` (depending on whether the data source contains individual observations or summary counts). The first two types are created by setting position adjustments to `"fill"` and `"dodge"`, respectively, and the third type is created by setting the position adjustment to `"fill"` and adding `coord_polar()` to the plot.
+
+Let's try this on the `bundestag` dataset. We want to lay out the bars horizontally, so let's map the number of seats (`seats`) to `x` and map `party` to `fill`. We have nothing to map to `y`, but ggplot needs something there to generate the plot, so we can write for example `y = "abc"`. (Instead of `"abc"`, you can use any string you want.) First, make a stacked bar plot using these ideas. Remember that the correct geom in this context is `geom_col()`, as the dataset contains summary counts. Also, the position adjustment should be `"fill"`, to show the numbers as relative proportions.
+
+```{r bundestag-stacked, exercise = TRUE}
+ggplot(bundestag, aes(x = ___, y = "abc", fill = ___)) +
+  geom_col(___)
+```
+
+```{r bundestag-stacked-hint}
+ggplot(bundestag, aes(x = seats, y = "abc", fill = party)) +
+  geom_col(position = ___)
+```
+
+```{r bundestag-stacked-solution}
+ggplot(bundestag, aes(x = seats, y = "abc", fill = party)) +
+  geom_col(position = "fill")
+```
+
+Next, modify this plot so the bars a side-by-side rather than stacked.
+
+```{r bundestag-dodged, exercise = TRUE}
+
+```
+
+```{r bundestag-dodged-hint}
+ggplot(bundestag, aes(x = seats, y = "abc", fill = party)) +
+  geom_col(position = ___)
+```
+
+```{r bundestag-dodged-solution}
+ggplot(bundestag, aes(x = seats, y = "abc", fill = party)) +
+  geom_col(position = "dodge")
+```
+
+Can you order the arrangement of the bars such that the party with the most seats is on top and the one with the least seats at the bottom?
+
+Next, use `coord_polar()` to turn this plot into a pie chart. Which position adjustment do you need to use?
+
+```{r bundestag-pie, exercise = TRUE}
+
+```
+
+```{r bundestag-pie-hint}
+ggplot(bundestag, aes(x = seats, y = "abc", fill = party)) +
+  geom_col(position = ___) +
+  coord_polar()
+```
+
+```{r bundestag-pie-solution}
+ggplot(bundestag, aes(x = seats, y = "abc", fill = party)) +
+  geom_col(position = "fill") +
+  coord_polar()
+```
+
+The previous plots showed only a single set of propotions, a snapshot of the parliamentary composition at one point in time. Frequently, however, we want to show multiple proportions, for example from different time points.
+
+We can try this out with the `marketshare` dataset. Remember that this dataset has the columns `company`, `year`, and `percent`. Make a stacked bar plot showing percent along the x axis, year along the y axis, and filled by company name.
+
+**Hint:** Turn `year` into a factor to ensure ggplot interprets it as a categorical variable.
+
+```{r marketshare-stacked, exercise = TRUE}
+
+```
+
+```{r marketshare-stacked-hint}
+ggplot(marketshare, aes(percent, factor(year), fill = ___)) +
+  geom_col(___)
+```
+
+```{r marketshare-stacked-solution}
+ggplot(marketshare, aes(percent, factor(year), fill = company)) +
+  geom_col(position = "fill")
+```
+
+Now convert this plot into side-by-side bars.
+
+```{r marketshare-dodged, exercise = TRUE}
+
+```
+
+```{r marketshare-dodged-hint}
+ggplot(marketshare, aes(percent, factor(year), fill = company)) +
+  geom_col(position = ___)
+```
+
+```{r marketshare-dodged-solution}
+ggplot(marketshare, aes(percent, factor(year), fill = company)) +
+  geom_col(position = "dodge")
+```
+
+And now convert this plot into a set of three pie charts.
+
+**Hint:** You will have to use faceting and plot one pie per facet.
+
+```{r marketshare-pies, exercise = TRUE}
+
+```
+
+```{r marketshare-pies-hint}
+ggplot(marketshare, aes(percent, ___, fill = company)) +
+  geom_col(position = ___) +
+  facet_wrap(___) +
+  ___
+```
+
+```{r marketshare-pies-solution}
+ggplot(marketshare, aes(percent, "abc", fill = company)) +
+  geom_col(position = "fill") +
+  facet_wrap(vars(year)) +
+  coord_polar()
+```
+
+## Pie charts in Cartesian coordinates
+
+The idea that a pie chart is a stacked bar plot in polar coordinates tends to be very appealing to proponents of the Grammar of Graphics (which forms the mathematical underpinnings of ggplot), but it oftentimes is not that useful in practice. Instead, we have much more ability to customize our pie charts if we draw them in Cartesian coordinates, using `geom_arc_bar()` from the package **ggforce**. It allows us to specify the exact location of the pie center in the x-y plane, and it also allows us to specify the inner and outer pie radius. As an example, consider this code.
+
+```{r ggforce-pie, echo = TRUE}
+ggplot(bundestag) +
+  aes(
+    x0 = 0, y0 = 0, # position of pie center
+    r0 = 0, r = 1,  # inner and outer radius
+    amount = seats, # size of pie slices
+    fill = party
+  ) + 
+  geom_arc_bar(stat = "pie") +  # from ggforce
+  coord_fixed()     # ensure the pie is round
+```
+
+Now modify this code to reproduce the marketshare pies from the previous section. Reminder: The columns are `company`, `year`, and `percent`.
+
+```{r marketshare-ggforce, exercise = TRUE}
+
+```
+
+```{r marketshare-ggforce-hint}
+ggplot(marketshare) +
+  aes(
+    ___
+  ) +
+  geom_arc_bar(stat = "pie") +
+  ___ +
+  coord_fixed()
+```
+
+```{r marketshare-ggforce-solution}
+ggplot(marketshare) +
+  aes(
+    x0 = 0, y0 = 0,
+    r0 = 0, r = 1,
+    amount = percent,
+    fill = company
+  ) +
+  geom_arc_bar(stat = "pie") +
+  facet_wrap(vars(year)) +
+  coord_fixed()
+```
+
+You can turn the pies into donuts by modifying `r0`. You can also adjust the plot limits to create some space between the pies and the plot boundaries. Try this out.
+
+```{r marketshare-donut, exercise = TRUE}
+
+```
+
+```{r marketshare-donut-hint}
+ggplot(marketshare) +
+  aes(
+    x0 = 0, y0 = 0,
+    r0 = ___, r = 1,
+    amount = percent,
+    fill = company
+  ) +
+  geom_arc_bar(stat = "pie") +
+  facet_wrap(vars(year)) +
+  coord_fixed() +
+  xlim(___) +
+  ylim(___)
+```
+
+```{r marketshare-donut-solution}
+ggplot(marketshare) +
+  aes(
+    x0 = 0, y0 = 0,
+    r0 = 0.4, r = 1,
+    amount = percent,
+    fill = company
+  ) +
+  geom_arc_bar(stat = "pie") +
+  facet_wrap(vars(year)) +
+  coord_fixed() +
+  xlim(-1.1, 1.1) +
+  ylim(-1.4, 1.4)
+```
+
+Can you plot the year into the center of the donuts? This is an advanced exercise and it's Ok if you can't figure this out.
+
+**Hints:**
+
+- You can draw text with `geom_text()`.
+- You will need to create a new data table just for `geom_text()`.
+- Both geoms will need their own aesthetic mappings.
+
+The final plot could look like this:
+
+```{r marketshare-donut-year-demo, fig.height = 2.5}
+# data table for geom text
+years <- tibble(year = c(2015, 2016, 2017))
+
+ggplot(marketshare) +
+  geom_arc_bar(
+    aes(
+      x0 = 0, y0 = 0,
+      r0 = 0.4, r = 1,
+      amount = percent,
+      fill = company
+    ),
+    stat = "pie"
+  ) +
+  geom_text(data = years, aes(x = 0, y = 0, label = year)) +
+  facet_wrap(vars(year)) +
+  coord_fixed() +
+  xlim(-1.0, 1.0) +
+  ylim(-1.1, 1.4) +
+  theme_void() +
+  theme(
+    strip.text = element_blank(),
+    strip.background = element_blank()
+  )
+```
+
+How close to this can you get with your own code?
+
+```{r marketshare-donut-year, exercise = TRUE}
+
+```
+
+```{r marketshare-donut-year-hint-1}
+# data table for geom text
+years <- tibble(year = c(2015, 2016, 2017))
+
+ggplot(marketshare) +
+  ___
+```
+
+```{r marketshare-donut-year-hint-2}
+# data table for geom text
+years <- tibble(year = c(2015, 2016, 2017))
+
+ggplot(marketshare) +
+  geom_arc_bar(
+    aes(
+      ___
+    ),
+    stat = "pie"
+  ) +
+  geom_text(
+    data = years,
+    aes(___)
+  ) +
+  ____
+```
+
+
+```{r marketshare-donut-year-hint-3}
+# data table for geom text
+years <- tibble(year = c(2015, 2016, 2017))
+
+ggplot(marketshare) +
+  geom_arc_bar(
+    aes(
+      x0 = 0, y0 = 0,
+      r0 = 0.4, r = 1,
+      amount = percent,
+      fill = company
+    ),
+    stat = "pie"
+  ) +
+  geom_text(
+    data = years,
+    aes(x = 0, y = 0, label = year)
+  ) +
+  ___
+```
+
+```{r marketshare-donut-year-hint-4}
+# data table for geom text
+years <- tibble(year = c(2015, 2016, 2017))
+
+ggplot(marketshare) +
+  geom_arc_bar(
+    aes(
+      x0 = 0, y0 = 0,
+      r0 = 0.4, r = 1,
+      amount = percent,
+      fill = company
+    ),
+    stat = "pie"
+  ) +
+  geom_text(
+    data = years,
+    aes(x = 0, y = 0, label = year)
+  ) +
+  facet_wrap(vars(year)) +
+  coord_fixed() +
+  xlim(-1.0, 1.0) +
+  ylim(-1.1, 1.4) +
+  ___ # theme customization here
+```
+
+```{r marketshare-donut-year-solution}
+# data table for geom text
+years <- tibble(year = c(2015, 2016, 2017))
+
+ggplot(marketshare) +
+  geom_arc_bar(
+    aes(
+      x0 = 0, y0 = 0,
+      r0 = 0.4, r = 1,
+      amount = percent,
+      fill = company
+    ),
+    stat = "pie"
+  ) +
+  geom_text(
+    data = years,
+    aes(x = 0, y = 0, label = year)
+  ) +
+  facet_wrap(vars(year)) +
+  coord_fixed() +
+  xlim(-1.0, 1.0) +
+  ylim(-1.1, 1.4) +
+  theme_void() +
+  theme(
+    strip.text = element_blank(),
+    strip.background = element_blank()
+  )
+```

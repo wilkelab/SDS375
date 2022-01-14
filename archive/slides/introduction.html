@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>SDS 375—Data Visualization in R</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Claus O. Wilke" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="Wilke-slides-theme.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, title-slide
+
+# SDS 375—Data Visualization in R
+### Claus O. Wilke
+### last updated: 2021-01-18
+
+---
+
+
+
+
+## Why Data Visualization?
+
+--
+
+&lt;br&gt;
+
+.center[
+&lt;img src = "introduction_files/Data_science_venn.svg", width = 60%&gt;&lt;/img&gt;
+]
+
+---
+
+
+## Why Data Visualization?
+
+&lt;br&gt;
+
+.center[
+&lt;img src = "introduction_files/Data_visualization_venn.svg", width = 60%&gt;&lt;/img&gt;
+]
+
+---
+
+## Why me?
+
+--
+
+&lt;img src = "https://clauswilke.com/dataviz/cover.png", width = 30%, style = "position:absolute; top: 18%; left: 13%; box-shadow: 3px 5px 3px 1px #00000080;"&gt;&lt;/img&gt;
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+.pull-left.small-font[
+
+.center[
+https://clauswilke.com/dataviz
+]
+
+]
+
+
+--
+
+&lt;img src = "https://clauswilke.com/dataviz/coordinate_systems_axes_files/figure-html/worldmap-four-projections-1.png", width = 30%, style = "position:absolute; top: 12%; left: 45%; box-shadow: 3px 5px 3px 1px #00000080;"&gt;&lt;/img&gt;
+
+--
+
+&lt;img src = "https://clauswilke.com/dataviz/nested_proportions_files/figure-html/US-states-treemap-1.png",  width = 30%, style = "position:absolute; top: 22%; left: 55%; box-shadow: 3px 5px 3px 1px #00000080;"&gt;&lt;/img&gt;
+
+
+--
+
+&lt;img src = "https://clauswilke.com/dataviz/geospatial_data_files/figure-html/unemployment-geofacet-1.png",  width = 30%, style = "position:absolute; top: 32%; left: 65%; box-shadow: 3px 5px 3px 1px #00000080;"&gt;&lt;/img&gt;
+
+--
+
+&lt;img src = "https://clauswilke.com/dataviz/redundant_coding_files/figure-html/temp-ridgeline-colorbar-1.png",  width = 30%, style = "position:absolute; top: 42%; left: 50%; box-shadow: 3px 5px 3px 1px #00000080;"&gt;&lt;/img&gt;
+
+--
+
+&lt;img src = "https://clauswilke.com/dataviz/multi-panel_figures_files/figure-html/athletes-composite-good-1.png",  width = 30%, style = "position:absolute; top: 52%; left: 60%; box-shadow: 3px 5px 3px 1px #00000080;"&gt;&lt;/img&gt;
+
+
+---
+
+## Why me?
+
+.center[
+&lt;img src = "introduction_files/ggplot2-website-title.png", width = 60%&gt;&lt;/img&gt;
+]
+
+--
+
+.center[
+&lt;img src = "introduction_files/ggplot2-website-footer.png", width = 60%&gt;&lt;/img&gt;
+]
+
+
+
+---
+
+## Why R?
+
+--
+
+&lt;img src = "introduction_files/Rlogo.svg", width = 25%, style = "position:absolute; top: 18%; left: 15%;"&gt;&lt;/img&gt;
+
+&lt;img src = "introduction_files/Data_science_venn.svg", width = 40%, style = "position:absolute; top: 57%; left: 8%;"&gt;&lt;/img&gt;
+
+???
+
+The R logo [is distributed](https://www.r-project.org/logo/) under the terms of the Creative Commons Attribution-ShareAlike 4.0 International license ([CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)).
+
+RStudio hex stickers [are distributed](https://github.com/rstudio/hex-stickers) under [CC0.](https://github.com/rstudio/hex-stickers/blob/master/LICENSE.md)
+
+--
+
+&lt;img src = "introduction_files/package-hexlogos.svg", width = 35%, style = "position:absolute; top: 5%; left: 55%;"&gt;&lt;/img&gt;
+
+
+---
+class: middle
+
+## Class website/syllabus: https://wilkelab.org/SDS375
+
+---
+
+## The first core concept: Markdown
+
+.small-font[
+**Input:**
+
+```
+This is a sentence in Markdown, containing `code`, **bold text**,
+and *italics*.
+```
+]
+
+
+--
+
+.small-font[
+**Output:**
+
+This is a sentence in Markdown, containing `code`, **bold text**, and *italics*.
+]
+
+
+---
+
+## The first core concept: Markdown
+
+.small-font[
+**Input:**
+
+````
+The function `rnorm()` creates normal variates.
+```{R}
+rnorm(5) # create 5 normal variates
+```
+````
+]
+
+--
+
+.small-font[
+**Output:**
+
+The function `rnorm()` creates normal variates.
+
+```r
+rnorm(5) # create 5 normal variates
+```
+
+```
+[1] 1.1281735 1.7376142 0.7629712 1.1308147 0.9969855
+```
+]
+
+---
+
+## Edupod login: https://edupod.cns.utexas.edu
+
+.center[
+&lt;img src = "introduction_files/edupod-landing.png", width = 60%, style = "position:relative; top:-42px;"&gt;&lt;/img&gt;
+]
+
+---
+
+## Edupod login: https://edupod.cns.utexas.edu
+
+.center[
+&lt;img src = "introduction_files/edupod-landing-edited.png", width = 60%, style = "position:relative; top:-42px;"&gt;&lt;/img&gt;
+]
+
+---
+
+## Edupod login: https://edupod.cns.utexas.edu
+
+.center[
+&lt;img src = "introduction_files/edupod-login.png", width = 60%, style = "position:relative; top:-42px;"&gt;&lt;/img&gt;
+]
+
+---
+
+## Using RStudio
+
+.center[
+&lt;img src = "introduction_files/RStudio-clean.png", width = 80%, style = "position:relative; top:-52px;"&gt;&lt;/img&gt;
+]
+
+---
+
+## Using RStudio
+
+.center[
+&lt;img src = "introduction_files/RStudio-clean-edited.png", width = 80%, style = "position:relative; top:-52px;"&gt;&lt;/img&gt;
+]
+
+---
+
+## Knitting an R Markdown file
+
+.center[
+&lt;img src = "introduction_files/RStudio-markdown.png", width = 80%, style = "position:relative; top:-52px;"&gt;&lt;/img&gt;
+]
+
+---
+
+## Knitting an R Markdown file
+
+.center[
+&lt;img src = "introduction_files/RStudio-markdown-edited.png", width = 80%, style = "position:relative; top:-52px;"&gt;&lt;/img&gt;
+]
+
+---
+
+
+## Knitting an R Markdown file
+
+.center[
+&lt;img src = "introduction_files/markdown-knitted.png", width = 80%, style = "position:relative; top:-52px;"&gt;&lt;/img&gt;
+]
+
+---
+
+## Knitting to pdf
+
+.center[
+&lt;img src = "introduction_files/RStudio-markdown-edited2.png", width = 80%, style = "position:relative; top:-52px;"&gt;&lt;/img&gt;
+]
+
+---
+
+## Knitting to pdf
+
+.center[
+&lt;img src = "introduction_files/markdown-knit-pdf-edited.png", width = 80%, style = "position:relative; top:-52px;"&gt;&lt;/img&gt;
+]
+
+---
+
+## Knitting to pdf
+
+.center[
+&lt;img src = "introduction_files/markdown-knitted-pdf.png", width = 80%, style = "position:relative; top:-52px;"&gt;&lt;/img&gt;
+]
+
+---
+
+## Knitting to pdf
+
+.center[
+&lt;img src = "introduction_files/markdown-knitted-pdf-edited.png", width = 80%, style = "position:relative; top:-52px;"&gt;&lt;/img&gt;
+]
+
+---
+
+## Further reading
+
+- [R Markdown tutorial](https://rmarkdown.rstudio.com/lesson-2.html)
+- [R Markdown cheatsheet](https://github.com/rstudio/cheatsheets/raw/master/rmarkdown-2.0.pdf)
+- [R Markdown book](https://bookdown.org/yihui/rmarkdown/)
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"slideNumberFormat": ""
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

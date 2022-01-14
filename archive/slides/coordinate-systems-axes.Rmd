@@ -1,0 +1,848 @@
+---
+title: "Coordinate systems and axes"
+author: "Claus O. Wilke"
+date: "last updated: `r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: [default, "Wilke-slides-theme.css"]
+    lib_dir: libs
+    nature:
+      ratio: '16:9'
+      highlightStyle: github
+      highlightLines: true
+      slideNumberFormat: ''
+      titleSlideClass: [center, middle]
+---
+
+```{r setup, include=FALSE, echo=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(comment = "")
+
+library(tidyverse)
+library(lubridate)
+library(ggrepel)
+library(cowplot)
+library(here)
+# ggplot2 settings so plots scale well for slide size 
+theme_set(theme_gray(16)) # 16 for full width, 18 for half width 
+#update_geom_defaults("point", list(size = 2)) # 2 for full width, 2.5 for half width
+
+tempnormals <- read_csv(here("datasets", "tempnormals.csv"))
+```
+
+## Most data visualizations use Cartesian coordinates
+
+.center[
+```{r cartesian-coord, echo = FALSE, fig.width = 5.5, fig.asp = 0.8, dev = "svg"}
+df_points <- data.frame(x = c(-1, 0, 2),
+                        y = c(-1, 0, 1),
+                        label = c("(–1, –1)", "(0, 0)", "(2, 1)"),
+                        vjust = c(1.4, -.8, -.8),
+                        hjust = c(1.1, 1.1, -.1))
+df_segments <- data.frame(x0 = c(0, 2, 0, -1),
+                          x1 = c(2, 2, -1, -1),
+                          y0 = c(1, 0, -1, 0),
+                          y1 = c(1, 1, -1, -1))
+df_labels <- data.frame(x = c(-1, -.5, 1, 2),
+                        y = c(-.5, -1, 1, 0.5),
+                        vjust = c(.5, 1.3, -.3, .5),
+                        hjust = c(1.1, .5, .5, -.1),
+                        label = c("y = –1", "x = –1", "x = 2", "y = 1"))
+ggplot(df_points, aes(x, y)) +
+  geom_hline(yintercept = 0, color = "gray50") +
+  geom_vline(xintercept = 0, color = "gray50") +
+  geom_segment(data = df_segments, aes(x = x0, xend = x1, y = y0, yend = y1),
+               linetype = 2) +
+  geom_point(size = 3, color = "#0072B2") +
+  geom_text(aes(label = label, vjust = vjust, hjust = hjust),
+            size = 14/.pt) +
+  geom_text(data = df_labels, aes(label = label, hjust = hjust, vjust = vjust),
+            size = 14/.pt) +
+  coord_fixed(xlim = c(-2.2, 3.2), ylim = c(-2.2, 2.2), expand = FALSE) +
+  scale_x_continuous(
+    name = "x axis",
+    breaks = -2:3,
+    labels = c("–2", "–1", "0", "1", "2", "3")
+  ) +
+  scale_y_continuous(
+    name = "y axis",
+    breaks = -2:2,
+    labels = c("–2", "–1", "0", "1", "2")
+  ) +
+  theme_minimal_grid(16) +
+  theme(
+    axis.ticks.length = grid::unit(0, "pt")
+  )
+```
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Changing units does not change the plot
+
+.pull-left[
+```{r temperature-normals-Houston-San-Diego, echo = FALSE, fig.width = 5, fig.asp = 1, dev = "svg"}
+temps_wide <- tempnormals %>%
+  pivot_wider(
+    id_cols = c("month_name", "month", "day", "date", "day_of_year"),
+    names_from = "location", values_from = "temperature"
+  )
+
+temps_wide_label <- mutate(
+  temps_wide,
+  label = ifelse(
+    date %in% c(ymd("0000-01-01"), ymd("0000-04-01"), ymd("0000-07-01"), ymd("0000-10-01")),
+    format(date, "%b 1st"),
+    ""
+  ),
+  nudge_x = ifelse(
+    date %in% c(ymd("0000-01-01"), ymd("0000-04-01"), ymd("0000-07-01"), ymd("0000-10-01")),
+    c(-1, -2, -2, 1)[round(month(date)/3)+1],
+    0
+  ),
+  nudge_y = ifelse(
+    date %in% c(ymd("0000-01-01"), ymd("0000-04-01"), ymd("0000-07-01"), ymd("0000-10-01")),
+    c(-2, 1, 0.5, -2)[round(month(date)/3)+1],
+    0
+  )
+)
+
+ggplot(temps_wide_label, aes(x = `San Diego`, y = Houston)) +
+  geom_path(size = 1, color = "#0072B2") +
+  geom_text_repel(
+    aes(label = label), point.padding = 0.4, color = "black",
+    min.segment.length = 0, size = 12/.pt,
+    nudge_x = (9/5)*temps_wide_label$nudge_x,
+    nudge_y = (9/5)*temps_wide_label$nudge_y
+  ) +
+  coord_fixed(
+    xlim = c(45, 85), ylim = c(48, 88),
+    expand = FALSE
+  ) +
+  scale_x_continuous(breaks = c(10*(5:8))) +
+  xlab("temperature in San Diego (°F)") +
+  ylab("temperature in Houston (°F)") +
+  theme_minimal_grid(16)
+```
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+--
+
+.pull-right[
+```{r temperature-normals-Houston-San-Diego-Celsius, echo = FALSE, fig.width = 5, fig.asp = 1, dev = "svg"}
+
+# Fahrenheit to Celsius conversion
+F2C <- function(t) {(t-32)*5/9}
+
+ggplot(temps_wide_label, aes(x = F2C(`San Diego`), y = F2C(Houston))) +
+  geom_path(size = 1, color = "#0072B2") +
+  geom_text_repel(
+    aes(label = label), point.padding = 0.4, color = "black",
+    min.segment.length = 0, size = 12/.pt,
+    nudge_x = temps_wide_label$nudge_x,
+    nudge_y = temps_wide_label$nudge_y
+  ) +
+  coord_fixed(
+    xlim = F2C(c(45, 85)), ylim = F2C(c(48, 88)),
+    expand = FALSE
+  ) +
+  scale_x_continuous(breaks = c(5*(2:6))) +
+  xlab("temperature in San Diego (°C)") +
+  ylab("temperature in Houston (°C)") +
+  theme_minimal_grid(16)
+```
+]
+
+---
+
+## If scale units are unrelated, aspect ratio is arbitrary
+
+.center[
+```{r temperature-normals-Houston, echo = FALSE, fig.width = 5*6/4.2, fig.asp = 3/4, dev = "svg"}
+temp_plot <- ggplot(temps_wide_label, aes(x = date, y = Houston)) +
+  geom_line(size = 1, color = "#0072B2") +
+  scale_x_date(
+    name = "month",
+    limits = c(ymd("0000-01-01"), ymd("0001-01-03")),
+    breaks = c(
+      ymd("0000-01-01"), ymd("0000-04-01"), ymd("0000-07-01"),
+      ymd("0000-10-01"), ymd("0001-01-01")
+    ),
+    labels = c("Jan", "Apr", "Jul", "Oct", "Jan"),
+    expand = expansion(add = 2/366)
+  ) + 
+  scale_y_continuous(
+    limits = c(50, 90),
+    name = "temperature (°F)"
+  ) +
+  theme_minimal_grid(14)
+
+plot_grid(
+  plot_grid(
+    temp_plot, NULL, temp_plot, rel_widths = c(1, 0.06, 2),
+    nrow = 1
+  ),
+  NULL, temp_plot,
+  rel_heights = c(1.5, 0.06, 1),
+  ncol = 1
+)
+```
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+
+## Non-linear scales: log-scales
+
+.small-text[
+Visualize these five values: 1, 3.16, 10, 31.6, 100
+]
+
+--
+
+.center.nogap[
+```{r linear-log-scales, echo = FALSE, fig.width = 8, fig.asp = (1/3)*0.5, dev = "svg"}
+df <- tibble(x = c(1, 3.16, 10, 31.6, 100))
+
+xaxis_lin <- ggplot(df, aes(x, y = 1)) + 
+  geom_point(size = 3, color = "#0072B2") + 
+  scale_y_continuous(limits = c(0.8, 1.2), expand = c(0, 0), breaks = 1) +
+  theme_minimal_grid(16, rel_large = 1) +
+  theme(
+    axis.ticks.length = grid::unit(0, "pt"),
+    axis.text.y = element_blank(),
+    axis.title.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    plot.title = element_text(face = "plain")
+  )
+
+xaxis_log <- ggplot(df, aes(log10(x), y = 1)) + 
+  geom_point(size = 3, color = "#0072B2") + 
+  scale_y_continuous(limits = c(0.8, 1.2), expand = c(0, 0), breaks = 1) +
+  theme_minimal_grid(16, rel_large = 1) +
+  theme(
+    axis.ticks.length = grid::unit(0, "pt"),
+    axis.text.y = element_blank(),
+    axis.title.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    plot.title = element_text(face = "plain")
+  )
+
+plotlist <- 
+  align_plots(
+    xaxis_lin + 
+      scale_x_continuous(limits = c(0, 100)) + 
+      ggtitle("original data, linear scale"),
+    xaxis_log + 
+      scale_x_continuous(
+        name = expression(paste("log"["10"], "(x)")),
+        limits = c(0, 2)
+      ) +
+      ggtitle("log-transformed data, linear scale"),
+    xaxis_lin + 
+      scale_x_log10(
+        limits = c(1, 100),
+        breaks = c(1, 3.16, 10, 31.6, 100),
+        labels = c("1", "3.16", "10", "31.6", "100")
+      ) + 
+      ggtitle("original data, logarithmic scale"),
+    align = 'vh'
+  )
+
+ggdraw(plotlist[[1]])
+```
+]
+
+--
+
+.center.nogap[
+```{r linear-log-scales2, echo = FALSE, fig.width = 8, fig.asp = (1/3)*0.5, dev = "svg"}
+ggdraw(plotlist[[2]])
+```
+]
+
+
+--
+
+.center.nogap[
+```{r linear-log-scales3, echo = FALSE, fig.width = 8, fig.asp = (1/3)*0.5, dev = "svg"}
+ggdraw(plotlist[[3]])
+```
+]
+
+---
+
+## Example: Population number of Texas counties
+
+A linear scale emphasizes large counties
+
+.center.nogap[
+```{r texas-counties-linear, echo = FALSE, message = FALSE, fig.width = 7, fig.asp = 0.6, dev = "svg"}
+US_census <- read_csv(here("datasets", "US_census.csv"))
+
+library(ggrepel)
+
+set.seed(3878)
+tx_counties <- US_census %>% 
+  filter(state == "Texas") %>%
+  select(name, pop2010) %>%
+  extract(name, "county", regex = "(.+) County") %>%
+  mutate(popratio = pop2010/median(pop2010)) %>%
+  arrange(desc(popratio)) %>%
+  mutate(
+    index = 1:n(),
+    label = ifelse(index <= 3 | index > n()-3 | runif(n()) < .04, county, ""),
+    label_large = ifelse(index <= 6, county, "")
+  )
+
+ggplot(tx_counties, aes(x = index, y = popratio)) +
+  geom_point(size = 0.5, color = "#0072B2") +
+  geom_text_repel(
+    aes(label = label_large),
+    size = 10/.pt,
+    point.padding = .4, color = "black",
+    min.segment.length = 0,
+    max.overlaps = 1000
+  ) +
+  scale_y_continuous(name = "population number / median") +
+  scale_x_continuous(
+    limits = c(.5, nrow(tx_counties) + .5), expand = c(0, 0),
+    breaks = NULL, #c(1, 50*(1:5)),
+    name = "Texas counties, from most to least populous"
+  ) +
+  theme_minimal_hgrid(14) +
+  theme(axis.line = element_blank())
+```
+]
+
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+
+## Example: Population number of Texas counties
+
+A log scale shows symmetry around the median
+
+.center.nogap[
+```{r texas-counties-log, echo = FALSE, fig.width = 7, fig.asp = 0.6, dev = "svg"}
+ggplot(tx_counties, aes(x = index, y = popratio)) +
+  geom_hline(yintercept = 1, linetype = 2, color = "grey40") +
+  geom_point(size = 0.5, color = "#0072B2") +
+  geom_text_repel(
+    aes(label = label),
+    size = 10/.pt,
+    point.padding = .4, color = "black",
+    min.segment.length = 0,
+    max.overlaps = 1000
+  ) +
+  scale_y_log10(
+    breaks = c(.01, .1, 1, 10, 100),
+    name = "population number / median",
+    labels = expression(10^-2, 10^-1, 10^0, 10^1, 10^2)
+  ) +
+  scale_x_continuous(
+    limits = c(.5, nrow(tx_counties) + .5), expand = c(0, 0),
+    breaks = NULL, #c(1, 50*(1:5)),
+    name = "Texas counties, from most to least populous"
+  ) +
+  theme_minimal_hgrid(14) +
+  theme(axis.line = element_blank())
+```
+]
+
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Nonlinear coordinate systems: Polar coordinates
+
+.pull-left[
+```{r cartesian-polar-left, echo = FALSE, fig.width = 5, fig.asp = 1, dev = "svg"}
+df_points <- tibble(
+  x = c(1, 3.5, 0),
+  y = c(3, 4, 0),
+  label = c("(1, 3)", "(3.5, 4)", "(0, 0)"),
+  vjust_polar = c(1.6, 1, 1.6),
+  hjust_polar = c(.5, -.1, 0.5),
+  vjust_cart = c(1.6, 1.6, -.6),
+  hjust_cart = c(0.5, 1.1, -.1)
+)
+df_segments <- tibble(
+  x0 = c(0, 1, 2, 3, 0, 0, 0, 0),
+  x1 = c(0, 1, 2, 3, 4, 4, 4, 4),
+  y0 = c(0, 0, 0, 0, 1, 2, 3, 4),
+  y1 = c(4, 4, 4, 4, 1, 2, 3, 4)
+)
+
+ggplot(df_points, aes(x, y)) +
+  geom_point(size = 2, color = "#0072B2") +
+  geom_text(
+    aes(label = label, vjust = vjust_cart, hjust = hjust_cart),
+    size = 14/.pt
+  ) +
+  scale_x_continuous(
+    name = "x axis",
+    limits = c(-0.5, 4.5),
+    expand = c(0, 0)
+  ) +
+  scale_y_continuous(
+    name = "y axis",
+    limits = c(-0.5, 4.5),
+    expand = c(0, 0)
+  ) +
+  coord_fixed() +
+  theme_minimal_grid(16) +
+  theme(
+    axis.ticks = element_blank(),
+    axis.ticks.length = grid::unit(0, "pt")
+  )
+```
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+--
+
+.pull-right[
+```{r cartesian-polar-right, echo = FALSE, fig.width = 5, fig.asp = 1, dev = "svg"}
+ggplot(df_points, aes(x, y)) +
+  geom_segment(
+    data = df_segments,
+    aes(x = x0, xend = x1, y = y0, yend = y1),
+    size = theme_minimal_grid(16)$panel.grid$size,
+    color = theme_minimal_grid(16)$panel.grid$colour,
+    inherit.aes = FALSE
+  ) +
+  geom_point(size = 2, color = "#0072B2") +
+  geom_text(
+    aes(label = label, vjust = vjust_polar, hjust = hjust_polar),
+    size = 14/.pt
+  ) +
+  scale_x_continuous(
+    name = "x values (circular axis)",
+    limits = c(0, 4)
+  ) +
+  scale_y_continuous(
+    name = "y values (radial axis)",
+    limits = c(0, 4)
+  ) +
+  coord_polar() +
+  theme_minimal_grid(16) +
+  background_grid(major = "none") +
+  theme(
+    axis.line.x = element_blank(),
+    axis.ticks = element_line(color = "black")
+  )
+```
+]
+
+---
+
+## Cartesian vs polar example
+
+.pull-left[
+```{r temp-normals-vs-time-cartesian, echo=FALSE, message=FALSE, fig.width = 5, fig.asp = 0.618, dev="svg"}
+temps_long <- read_csv(here("datasets", "tempnormals.csv")) %>%
+  mutate(
+    location = factor(
+      location, levels = c("Death Valley", "Houston", "San Diego", "Chicago")
+    )
+  )
+
+ggplot(temps_long, aes(x = date, y = temperature, color = location)) +
+  geom_line(size = 1) +
+  scale_x_date(
+    name = "month",
+    limits = c(ymd("0000-01-01"), ymd("0001-01-04")),
+    breaks = c(
+      ymd("0000-01-01"), ymd("0000-04-01"), ymd("0000-07-01"),
+      ymd("0000-10-01"), ymd("0001-01-01")
+    ),
+    labels = c("Jan", "Apr", "Jul", "Oct", "Jan"), expand = c(1/366, 0)
+  ) + 
+  scale_y_continuous(
+    limits = c(19.9, 107),
+    breaks = seq(20, 100, by = 20),
+    name = "temperature (°F)"
+  ) +
+  scale_color_manual(
+    name = NULL,
+    values = c("#E69F00", "#56B4E9", "#009E73", "#CC79A7")
+  ) +
+  theme_minimal_grid(14)
+```
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+--
+
+.pull-right[
+```{r temp-normals-vs-time-polar, echo=FALSE, message=FALSE, fig.width = 5, fig.asp = 0.618, dev="svg"}
+ggplot(temps_long, aes(x = date, y = temperature, color = location)) +
+  geom_line(size = 1) +
+  scale_x_date(name = "date", expand = c(0, 0)) + 
+  scale_y_continuous(
+    name = "temperature (°F)",
+    limits = c(0, 105),
+    expand = c(0, 0),
+    breaks = seq(-30, 90, by = 30)
+  ) +
+  scale_color_manual(
+    name = NULL,
+    values = c("#E69F00", "#56B4E9", "#009E73", "#CC79A7")
+  ) +
+  coord_polar(theta = "x") +
+  theme_minimal_grid(14)
+```
+]
+
+---
+
+## Scale functions customize the x and y axes
+
+```{r boxoffice-tibble, echo = FALSE}
+boxoffice <- tibble(
+  rank = 1:5,
+  title = c("Star Wars", "Jumanji", "Pitch Perfect 3", "Greatest Showman", "Ferdinand"),
+  amount = c(71.57, 36.17, 19.93, 8.81, 7.32) # million USD
+)
+```
+
+Recall the box-office example from class 3
+
+.pull-left.tiny-font[
+```{r boxoffice-scale-progression1, eval = FALSE}
+ggplot(boxoffice) +
+  aes(amount, fct_reorder(title, amount)) +
+  geom_col()
+```
+]
+
+--
+
+.pull-right[
+```{r boxoffice-scale-progression1-out, ref.label = "boxoffice-scale-progression1", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+
+---
+
+## Scale functions customize the x and y axes
+
+Add scale functions (no change in figure so far)
+
+.pull-left.tiny-font[
+```{r boxoffice-scale-progression2, eval = FALSE}
+ggplot(boxoffice) +
+  aes(amount, fct_reorder(title, amount)) +
+  geom_col() +
+  scale_x_continuous() + #<<
+  scale_y_discrete()     #<<
+```
+]
+
+.pull-right[
+```{r boxoffice-scale-progression2-out, ref.label = "boxoffice-scale-progression2", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+## Scale functions customize the x and y axes
+
+The parameter `name` sets the axis title
+
+.pull-left.tiny-font[
+```{r boxoffice-scale-progression3, eval = FALSE}
+ggplot(boxoffice) +
+  aes(amount, fct_reorder(title, amount)) +
+  geom_col() +
+  scale_x_continuous(
+    name = "weekend gross (million USD)" #<<
+  ) +
+  scale_y_discrete(
+    name = NULL  # no axis title         #<<
+  )
+```
+]
+
+.pull-right[
+```{r boxoffice-scale-progression3-out, ref.label = "boxoffice-scale-progression3", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+Note: We could do the same with `xlab()` and `ylab()`
+
+---
+
+## Scale functions customize the x and y axes
+
+The parameter `limits` sets the scale limits
+
+.pull-left.tiny-font[
+```{r boxoffice-scale-progression4, eval = FALSE}
+ggplot(boxoffice) +
+  aes(amount, fct_reorder(title, amount)) +
+  geom_col() +
+  scale_x_continuous(
+    name = "weekend gross (million USD)",
+    limits = c(0, 80)  #<<
+  ) +
+  scale_y_discrete(
+    name = NULL
+  )
+```
+]
+
+.pull-right[
+```{r boxoffice-scale-progression4-out, ref.label = "boxoffice-scale-progression4", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+Note: We could do the same with `xlim()` and `ylim()`
+
+
+---
+
+## Scale functions customize the x and y axes
+
+The parameter `breaks` sets the axis tick positions
+
+.pull-left.tiny-font[
+```{r boxoffice-scale-progression5, eval = FALSE}
+ggplot(boxoffice) +
+  aes(amount, fct_reorder(title, amount)) +
+  geom_col() +
+  scale_x_continuous(
+    name = "weekend gross (million USD)",
+    limits = c(0, 80),
+    breaks = c(0, 25, 50, 75) #<<
+  ) +
+  scale_y_discrete(
+    name = NULL
+  )
+```
+]
+
+.pull-right[
+```{r boxoffice-scale-progression5-out, ref.label = "boxoffice-scale-progression5", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+## Scale functions customize the x and y axes
+
+The parameter `labels` sets the axis tick labels
+
+.pull-left.tiny-font[
+```{r boxoffice-scale-progression6, eval = FALSE}
+ggplot(boxoffice) +
+  aes(amount, fct_reorder(title, amount)) +
+  geom_col() +
+  scale_x_continuous(
+    name = "weekend gross",
+    limits = c(0, 80),
+    breaks = c(0, 25, 50, 75),
+    labels = c("0", "$25M", "$50M", "$75M") #<<
+  ) +
+  scale_y_discrete(
+    name = NULL
+  )
+```
+]
+
+.pull-right[
+```{r boxoffice-scale-progression6-out, ref.label = "boxoffice-scale-progression6", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+## Scale functions customize the x and y axes
+
+The parameter `expand` sets the axis expansion
+
+.pull-left.tiny-font[
+```{r boxoffice-scale-progression7, eval = FALSE}
+ggplot(boxoffice) +
+  aes(amount, fct_reorder(title, amount)) +
+  geom_col() +
+  scale_x_continuous(
+    name = "weekend gross (million USD)",
+    limits = c(0, 80),
+    breaks = c(0, 25, 50, 75),
+    labels = c("0", "$25M", "$50M", "$75M"),
+    expand = expansion(mult = c(0, 0.06)) #<<
+  ) +
+  scale_y_discrete(
+    name = NULL
+  )
+```
+]
+
+.pull-right[
+```{r boxoffice-scale-progression7-out, ref.label = "boxoffice-scale-progression7", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+## Scale functions define transformations
+
+
+.pull-left.nogap[
+
+Linear y scale:
+
+.tiny-font[
+```{r tx-counties-ggplot-linear, fig.width = 5.5, fig.asp = 0.6, dev = "svg"}
+ggplot(tx_counties) +
+  aes(x = index, y = popratio) +
+  geom_point() +
+  scale_y_continuous()  #<<
+```
+]]
+
+--
+
+.pull-right.nogap[
+
+Log y scale:
+
+.tiny-font[
+```{r tx-counties-ggplot-log, fig.width = 5.5, fig.asp = 0.6, dev = "svg"}
+ggplot(tx_counties) +
+  aes(x = index, y = popratio) +
+  geom_point() +
+  scale_y_log10()  #<<
+```
+]]
+
+
+---
+
+## Scale parameters work the same
+
+
+.pull-left.nogap.tiny-font[
+```{r tx-counties-ggplot-linear2, fig.width = 5.5, fig.asp = 0.6, dev = "svg"}
+ggplot(tx_counties) +
+  aes(x = index, y = popratio) +
+  geom_point() +
+  scale_y_continuous(
+    name = "population number / median",
+    breaks = c(0, 100, 200),
+    labels = c("0", "100", "200")
+  )
+```
+]
+
+.pull-right.nogap.tiny-font[
+```{r tx-counties-ggplot-log2, fig.width = 5.5, fig.asp = 0.6, dev = "svg"}
+ggplot(tx_counties) +
+  aes(x = index, y = popratio) +
+  geom_point() +
+  scale_y_log10(
+    name = "population number / median",
+    breaks = c(0.01, 1, 100),
+    labels = c("0.01", "1", "100")
+  )
+```
+]
+
+---
+
+## Coords define the coordinate system
+
+```{r echo=FALSE}
+temperatures <- temps_long
+```
+
+.nogap.tiny-font[
+```{r temperatures-cartesian, eval = FALSE}
+ggplot(temperatures, aes(day_of_year, temperature, color = location)) +
+  geom_line() +
+  coord_cartesian()  # cartesian coords are the default #<<
+```
+
+.center[
+```{r temperatures-cartesian-out, echo = FALSE, ref.label="temperatures-cartesian", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+
+```
+]]
+
+
+---
+
+## Coords define the coordinate system
+
+.nogap.tiny-font[
+```{r temperatures-polar, eval = FALSE}
+ggplot(temperatures, aes(day_of_year, temperature, color = location)) +
+  geom_line() +
+  coord_polar()   # polar coords  #<<
+```
+
+.center[
+```{r temperatures-polar-out, echo = FALSE, ref.label="temperatures-polar", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+
+```
+]]
+
+
+---
+
+## Coords define the coordinate system
+
+.nogap.tiny-font[
+```{r temperatures-polar2, eval = FALSE}
+ggplot(temperatures, aes(day_of_year, temperature, color = location)) +
+  geom_line() +
+  coord_polar() + 
+  scale_y_continuous(limits = c(0, 105))  # fix up temperature limits #<<
+```
+
+.center[
+```{r temperatures-polar2-out, echo = FALSE, ref.label="temperatures-polar2", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+
+```
+]]
+
+
+---
+
+## Further reading
+
+- Fundamentals of Data Visualization: [Chapter 3: Coordinate systems and axes](https://clauswilke.com/dataviz/coordinate-systems-axes.html)
+- **ggplot2** reference documentation: [Scales](https://ggplot2.tidyverse.org/reference/index.html#section-scales)
+- **ggplot2** reference documentation: [Coordinate systems](https://ggplot2.tidyverse.org/reference/index.html#section-coordinate-systems)
+- **ggplot2** book: [Position scales](https://ggplot2-book.org/scale-position.html)
+- **ggplot2** book: [Coordinate systems](https://ggplot2-book.org/coord.html)
+
+

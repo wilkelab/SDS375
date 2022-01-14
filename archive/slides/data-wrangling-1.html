@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Data wrangling 1</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Claus O. Wilke" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="Wilke-slides-theme.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, title-slide
+
+# Data wrangling 1
+### Claus O. Wilke
+### last updated: 2021-02-24
+
+---
+
+
+
+
+
+## Elementary data manipulations
+
+--
+
+- Pick rows: `filter()`
+
+--
+
+- Pick columns: `select()`
+
+--
+
+- Sort rows: `arrange()`
+
+--
+
+- Count things: `count()`
+
+--
+
+- Make new columns: `mutate()`
+
+---
+class: center, middle
+
+# But first: the pipe operator `%&gt;%`
+
+---
+class: center, middle
+
+# `%&gt;%` is pronounced "and then"
+
+---
+
+## The pipe `%&gt;%` feeds data into functions
+
+.tiny-font[
+
+```r
+head(penguins)
+```
+
+```
+# A tibble: 6 x 8
+  species island bill_length_mm bill_depth_mm flipper_length_… body_mass_g sex  
+  &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;            &lt;int&gt;       &lt;int&gt; &lt;fct&gt;
+1 Adelie  Torge…           39.1          18.7              181        3750 male 
+2 Adelie  Torge…           39.5          17.4              186        3800 fema…
+3 Adelie  Torge…           40.3          18                195        3250 fema…
+4 Adelie  Torge…           NA            NA                 NA          NA &lt;NA&gt; 
+5 Adelie  Torge…           36.7          19.3              193        3450 fema…
+6 Adelie  Torge…           39.3          20.6              190        3650 male 
+# … with 1 more variable: year &lt;int&gt;
+```
+]
+
+---
+
+## The pipe `%&gt;%` feeds data into functions
+
+.tiny-font[
+
+```r
+# head(penguins)
+
+penguins %&gt;%
+  head()
+```
+
+```
+# A tibble: 6 x 8
+  species island bill_length_mm bill_depth_mm flipper_length_… body_mass_g sex  
+  &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;            &lt;int&gt;       &lt;int&gt; &lt;fct&gt;
+1 Adelie  Torge…           39.1          18.7              181        3750 male 
+2 Adelie  Torge…           39.5          17.4              186        3800 fema…
+3 Adelie  Torge…           40.3          18                195        3250 fema…
+4 Adelie  Torge…           NA            NA                 NA          NA &lt;NA&gt; 
+5 Adelie  Torge…           36.7          19.3              193        3450 fema…
+6 Adelie  Torge…           39.3          20.6              190        3650 male 
+# … with 1 more variable: year &lt;int&gt;
+```
+]
+
+
+---
+
+## The pipe `%&gt;%` feeds data into functions
+
+.tiny-font[
+
+```r
+ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = species)) + geom_point()
+```
+]
+
+.center[
+![](data-wrangling-1_files/figure-html/penguins-scatter-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## The pipe `%&gt;%` feeds data into functions
+
+.tiny-font[
+
+```r
+# ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = species)) + geom_point()
+
+penguins %&gt;%
+  ggplot(aes(bill_length_mm, bill_depth_mm, color = species)) + geom_point()
+```
+]
+
+.center[
+![](data-wrangling-1_files/figure-html/penguins-scatter2-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Pick rows from a table: `filter()`
+
+&lt;br&gt;
+
+.center[
+&lt;img src = "data-wrangling-1_files/filter.svg", width = 75%&gt;&lt;/img&gt;
+]
+
+
+---
+
+## Filter out penguins of species Gentoo
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  filter(species == "Gentoo")
+```
+
+```
+# A tibble: 124 x 8
+   species island bill_length_mm bill_depth_mm flipper_length_… body_mass_g
+   &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;            &lt;int&gt;       &lt;int&gt;
+ 1 Gentoo  Biscoe           46.1          13.2              211        4500
+ 2 Gentoo  Biscoe           50            16.3              230        5700
+ 3 Gentoo  Biscoe           48.7          14.1              210        4450
+ 4 Gentoo  Biscoe           50            15.2              218        5700
+ 5 Gentoo  Biscoe           47.6          14.5              215        5400
+ 6 Gentoo  Biscoe           46.5          13.5              210        4550
+ 7 Gentoo  Biscoe           45.4          14.6              211        4800
+ 8 Gentoo  Biscoe           46.7          15.3              219        5200
+ 9 Gentoo  Biscoe           43.3          13.4              209        4400
+10 Gentoo  Biscoe           46.8          15.4              215        5150
+# … with 114 more rows, and 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;
+```
+]
+
+---
+
+## Filter out penguins with bill length &gt; 50 mm
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  filter(bill_length_mm &gt; 50)
+```
+
+```
+# A tibble: 52 x 8
+   species island bill_length_mm bill_depth_mm flipper_length_… body_mass_g
+   &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;            &lt;int&gt;       &lt;int&gt;
+ 1 Gentoo  Biscoe           50.2          14.3              218        5700
+ 2 Gentoo  Biscoe           59.6          17                230        6050
+ 3 Gentoo  Biscoe           50.5          15.9              222        5550
+ 4 Gentoo  Biscoe           50.5          15.9              225        5400
+ 5 Gentoo  Biscoe           50.1          15                225        5000
+ 6 Gentoo  Biscoe           50.4          15.3              224        5550
+ 7 Gentoo  Biscoe           54.3          15.7              231        5650
+ 8 Gentoo  Biscoe           50.7          15                223        5550
+ 9 Gentoo  Biscoe           51.1          16.3              220        6000
+10 Gentoo  Biscoe           52.5          15.6              221        5450
+# … with 42 more rows, and 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;
+```
+]
+
+---
+
+## Pick columns from a table: `select()`
+
+&lt;br&gt;
+
+.center[
+&lt;img src = "data-wrangling-1_files/select.svg", width = 75%&gt;&lt;/img&gt;
+]
+
+
+---
+
+## Pick columns `species`, `island`, and `sex`
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  select(species, island, sex)
+```
+
+```
+# A tibble: 344 x 3
+   species island    sex   
+   &lt;fct&gt;   &lt;fct&gt;     &lt;fct&gt; 
+ 1 Adelie  Torgersen male  
+ 2 Adelie  Torgersen female
+ 3 Adelie  Torgersen female
+ 4 Adelie  Torgersen &lt;NA&gt;  
+ 5 Adelie  Torgersen female
+ 6 Adelie  Torgersen male  
+ 7 Adelie  Torgersen female
+ 8 Adelie  Torgersen male  
+ 9 Adelie  Torgersen &lt;NA&gt;  
+10 Adelie  Torgersen &lt;NA&gt;  
+# … with 334 more rows
+```
+]
+
+---
+
+## Sort the rows in a table: `arrange()`
+
+&lt;br&gt;
+
+.center[
+&lt;img src = "data-wrangling-1_files/arrange.svg", width = 75%&gt;&lt;/img&gt;
+]
+
+---
+
+## Sort penguins by bill length, ascending
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  arrange(bill_length_mm)
+```
+
+```
+# A tibble: 344 x 8
+   species island bill_length_mm bill_depth_mm flipper_length_… body_mass_g
+   &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;            &lt;int&gt;       &lt;int&gt;
+ 1 Adelie  Dream            32.1          15.5              188        3050
+ 2 Adelie  Dream            33.1          16.1              178        2900
+ 3 Adelie  Torge…           33.5          19                190        3600
+ 4 Adelie  Dream            34            17.1              185        3400
+ 5 Adelie  Torge…           34.1          18.1              193        3475
+ 6 Adelie  Torge…           34.4          18.4              184        3325
+ 7 Adelie  Biscoe           34.5          18.1              187        2900
+ 8 Adelie  Torge…           34.6          21.1              198        4400
+ 9 Adelie  Torge…           34.6          17.2              189        3200
+10 Adelie  Biscoe           35            17.9              190        3450
+# … with 334 more rows, and 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;
+```
+]
+
+---
+
+## Sort penguins by bill length, descending
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  arrange(desc(bill_length_mm))
+```
+
+```
+# A tibble: 344 x 8
+   species island bill_length_mm bill_depth_mm flipper_length_… body_mass_g
+   &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;            &lt;int&gt;       &lt;int&gt;
+ 1 Gentoo  Biscoe           59.6          17                230        6050
+ 2 Chinst… Dream            58            17.8              181        3700
+ 3 Gentoo  Biscoe           55.9          17                228        5600
+ 4 Chinst… Dream            55.8          19.8              207        4000
+ 5 Gentoo  Biscoe           55.1          16                230        5850
+ 6 Gentoo  Biscoe           54.3          15.7              231        5650
+ 7 Chinst… Dream            54.2          20.8              201        4300
+ 8 Chinst… Dream            53.5          19.9              205        4500
+ 9 Gentoo  Biscoe           53.4          15.8              219        5500
+10 Chinst… Dream            52.8          20                205        4550
+# … with 334 more rows, and 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;
+```
+]
+
+
+---
+
+## Count things
+
+.tiny-font[
+
+```r
+penguins
+```
+
+```
+# A tibble: 344 x 8
+   species island bill_length_mm bill_depth_mm flipper_length_… body_mass_g
+   &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;            &lt;int&gt;       &lt;int&gt;
+ 1 Adelie  Torge…           39.1          18.7              181        3750
+ 2 Adelie  Torge…           39.5          17.4              186        3800
+ 3 Adelie  Torge…           40.3          18                195        3250
+ 4 Adelie  Torge…           NA            NA                 NA          NA
+ 5 Adelie  Torge…           36.7          19.3              193        3450
+ 6 Adelie  Torge…           39.3          20.6              190        3650
+ 7 Adelie  Torge…           38.9          17.8              181        3625
+ 8 Adelie  Torge…           39.2          19.6              195        4675
+ 9 Adelie  Torge…           34.1          18.1              193        3475
+10 Adelie  Torge…           42            20.2              190        4250
+# … with 334 more rows, and 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;
+```
+]
+
+---
+
+## Count things
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  count(species)
+```
+
+
+```
+# A tibble: 3 x 2
+  species       n
+  &lt;fct&gt;     &lt;int&gt;
+1 Adelie      152
+2 Chinstrap    68
+3 Gentoo      124
+```
+]
+
+---
+
+## Count things
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  count(species, island)
+```
+
+```
+# A tibble: 5 x 3
+  species   island        n
+  &lt;fct&gt;     &lt;fct&gt;     &lt;int&gt;
+1 Adelie    Biscoe       44
+2 Adelie    Dream        56
+3 Adelie    Torgersen    52
+4 Chinstrap Dream        68
+5 Gentoo    Biscoe      124
+```
+]
+
+---
+
+## Use the pipe to build analysis pipelines
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  filter(species == "Adelie")
+```
+
+```
+# A tibble: 152 x 8
+   species island bill_length_mm bill_depth_mm flipper_length_… body_mass_g
+   &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;            &lt;int&gt;       &lt;int&gt;
+ 1 Adelie  Torge…           39.1          18.7              181        3750
+ 2 Adelie  Torge…           39.5          17.4              186        3800
+ 3 Adelie  Torge…           40.3          18                195        3250
+ 4 Adelie  Torge…           NA            NA                 NA          NA
+ 5 Adelie  Torge…           36.7          19.3              193        3450
+ 6 Adelie  Torge…           39.3          20.6              190        3650
+ 7 Adelie  Torge…           38.9          17.8              181        3625
+ 8 Adelie  Torge…           39.2          19.6              195        4675
+ 9 Adelie  Torge…           34.1          18.1              193        3475
+10 Adelie  Torge…           42            20.2              190        4250
+# … with 142 more rows, and 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;
+```
+]
+
+---
+
+## Use the pipe to build analysis pipelines
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  filter(species == "Adelie") %&gt;%
+  select(island, sex)
+```
+
+```
+# A tibble: 152 x 2
+   island    sex   
+   &lt;fct&gt;     &lt;fct&gt; 
+ 1 Torgersen male  
+ 2 Torgersen female
+ 3 Torgersen female
+ 4 Torgersen &lt;NA&gt;  
+ 5 Torgersen female
+ 6 Torgersen male  
+ 7 Torgersen female
+ 8 Torgersen male  
+ 9 Torgersen &lt;NA&gt;  
+10 Torgersen &lt;NA&gt;  
+# … with 142 more rows
+```
+]
+
+
+---
+
+## Use the pipe to build analysis pipelines
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  filter(species == "Adelie") %&gt;%
+  select(island, sex) %&gt;%
+  count(island, sex)
+```
+
+```
+# A tibble: 8 x 3
+  island    sex        n
+  &lt;fct&gt;     &lt;fct&gt;  &lt;int&gt;
+1 Biscoe    female    22
+2 Biscoe    male      22
+3 Dream     female    27
+4 Dream     male      28
+5 Dream     &lt;NA&gt;       1
+6 Torgersen female    24
+7 Torgersen male      23
+8 Torgersen &lt;NA&gt;       5
+```
+]
+
+---
+## Make a new table column: `mutate()`
+
+&lt;br&gt;
+
+.center[
+&lt;img src = "data-wrangling-1_files/mutate.svg", width = 75%&gt;&lt;/img&gt;
+]
+
+---
+
+## Example: flipper length in cm
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  select(species, island, flipper_length_mm)
+```
+
+```
+# A tibble: 344 x 3
+   species island    flipper_length_mm
+   &lt;fct&gt;   &lt;fct&gt;                 &lt;int&gt;
+ 1 Adelie  Torgersen               181
+ 2 Adelie  Torgersen               186
+ 3 Adelie  Torgersen               195
+ 4 Adelie  Torgersen                NA
+ 5 Adelie  Torgersen               193
+ 6 Adelie  Torgersen               190
+ 7 Adelie  Torgersen               181
+ 8 Adelie  Torgersen               195
+ 9 Adelie  Torgersen               193
+10 Adelie  Torgersen               190
+# … with 334 more rows
+```
+]
+
+---
+
+## Example: flipper length in cm
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  select(species, island, flipper_length_mm) %&gt;%
+  mutate(flipper_length_cm = flipper_length_mm / 10)
+```
+
+```
+# A tibble: 344 x 4
+   species island    flipper_length_mm flipper_length_cm
+   &lt;fct&gt;   &lt;fct&gt;                 &lt;int&gt;             &lt;dbl&gt;
+ 1 Adelie  Torgersen               181              18.1
+ 2 Adelie  Torgersen               186              18.6
+ 3 Adelie  Torgersen               195              19.5
+ 4 Adelie  Torgersen                NA              NA  
+ 5 Adelie  Torgersen               193              19.3
+ 6 Adelie  Torgersen               190              19  
+ 7 Adelie  Torgersen               181              18.1
+ 8 Adelie  Torgersen               195              19.5
+ 9 Adelie  Torgersen               193              19.3
+10 Adelie  Torgersen               190              19  
+# … with 334 more rows
+```
+]
+
+---
+
+## Make multiple columns at once
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  select(species, island, flipper_length_mm) %&gt;%
+  mutate(
+    flipper_length_cm = flipper_length_mm / 10,  # &lt;- notice the comma
+    flipper_length_in = flipper_length_mm / 25.4
+  )
+```
+
+```
+# A tibble: 344 x 5
+   species island    flipper_length_mm flipper_length_cm flipper_length_in
+   &lt;fct&gt;   &lt;fct&gt;                 &lt;int&gt;             &lt;dbl&gt;             &lt;dbl&gt;
+ 1 Adelie  Torgersen               181              18.1              7.13
+ 2 Adelie  Torgersen               186              18.6              7.32
+ 3 Adelie  Torgersen               195              19.5              7.68
+ 4 Adelie  Torgersen                NA              NA               NA   
+ 5 Adelie  Torgersen               193              19.3              7.60
+ 6 Adelie  Torgersen               190              19                7.48
+ 7 Adelie  Torgersen               181              18.1              7.13
+ 8 Adelie  Torgersen               195              19.5              7.68
+ 9 Adelie  Torgersen               193              19.3              7.60
+10 Adelie  Torgersen               190              19                7.48
+# … with 334 more rows
+```
+]
+
+
+---
+
+## Further reading
+
+- R for Data Science: [Chapter 5: Data transformation](https://r4ds.had.co.nz/transform.html)
+- R for Data Science: [Chapter 18: Pipes](https://r4ds.had.co.nz/pipes.html)
+- **dplyr** documentation: [Introduction to dplyr](https://dplyr.tidyverse.org/articles/dplyr.html)
+- **dplyr** reference documentation: [One table verbs](https://dplyr.tidyverse.org/reference/index.html#section-one-table-verbs)
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"slideNumberFormat": ""
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

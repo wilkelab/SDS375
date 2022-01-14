@@ -1,0 +1,254 @@
+---
+#############################################################
+#                                                           #
+# Click on "Run Document" in RStudio to run this worksheet. #
+#                                                           #
+#############################################################
+title: "Dimension reduction 2"
+author: "Claus O. Wilke"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(tidyverse)
+library(umap)
+knitr::opts_chunk$set(echo = FALSE, comment = "")
+
+spirals <- read_csv("https://wilkelab.org/SDS375/datasets/spirals.csv")
+blue_jays <- read_csv("https://wilkelab.org/SDS375/datasets/blue_jays.csv")
+
+
+```
+
+## Introduction
+
+In this worksheet, we will discuss how to perform UMAP (uniform manifold approximation and projection).
+
+We will be using the R package **tidyverse** for data manipulation and visualization, and the R package **umap** to perform UMAP.
+
+```{r library-calls, echo = TRUE, eval = FALSE}
+# load required libraries
+library(tidyverse)
+library(umap)
+```
+
+
+We will be working with two datasets, `spirals` and `blue_jays`. The dataset `spirals` contains made-up data in two dimensions that forms three intertwined spirals.
+
+```{r echo = TRUE}
+spirals
+```
+
+The dataset `blue_jays` contains various measurements taken on blue jay birds.
+
+```{r echo = TRUE}
+blue_jays
+```
+
+
+## Performing UMAP on the `spirals` dataset
+
+We start by taking a closer look at the `spirals` dataset. It has three columns, `x`, `y`, and `group`. When we create a scatterplot of `y` against `x` and color by `group` we see three intertwined spirals.
+
+```{r spirals-plot, echo = TRUE}
+ggplot(spirals, aes(x, y, color = group)) +
+  geom_point()
+```
+
+We perform UMAP on this dataset with the function `umap()`. Data preparation is similar to PCA: First, we discard all non-numeric columns. Then, we scale the variables to zero mean and unit variance. For very high-dimensional datasets (hundreds of columns), people often perform a PCA and then apply UMAP to the PC-transformed data, but we will not do this here.
+
+```{r spirals-umap, echo = TRUE}
+# prepare data and run umap
+umap_fit <- spirals %>%
+  select(where(is.numeric)) %>%
+  scale() %>%
+  umap()
+
+# extract coordinates from the `umap_fit` object and plot
+umap_fit$layout %>%
+  as.data.frame() %>%
+  # put non-numeric data columns back in to the dataset
+  cbind(select(spirals, -where(is.numeric))) %>%
+  ggplot(aes(V1, V2, color = group)) +
+  geom_point()
+```
+
+The result looks quite similar to the plot of the raw data. That is the case because we have not customized UMAP appropriately. In particular, we need to choose a smaller number of neighbors. We customize UMAP by setting up a `custom.config` object in which we modify the particular parameters whose defaults we don't like. The most important one is `n-neighbors`. Other important ones are `random_state`, which is an arbitrary integer that determines the initial random state, and `n_epochs`, which determines for how many steps the UMAP algorithm is run until it is considered converged (higher is better).
+
+```{r spirals-umap-config, echo = TRUE}
+# set up umap configuration  
+custom.config <- umap.defaults
+custom.config$n_neighbors <- 5         # number of neighbors
+custom.config$random_state <- 1234     # random seed (any integer)
+custom.config$n_epochs <- 500          # number of iterations to convergence
+
+# prepare data and run umap
+umap_fit <- spirals %>%
+  select(where(is.numeric)) %>%
+  scale() %>%
+  umap(config = custom.config)
+
+# extract coordinates from the `umap_fit` object and plot
+umap_fit$layout %>%
+  as.data.frame() %>%
+  # put non-numeric data columns back in to the dataset
+  cbind(select(spirals, -where(is.numeric))) %>%
+  ggplot(aes(V1, V2, color = group)) +
+  geom_point()
+```
+
+Now, to see how the parameter settings change the UMAP results, run the above code for a few different values of the three custom config parameters we have set up. Pay attention to how the output changes as you change each of these parameters.
+
+```{r umap-exercise, exercise = TRUE}
+
+```
+
+```{r umap-exercise-solution}
+# set up umap configuration  
+custom.config <- umap.defaults
+custom.config$n_neighbors <- 8         # number of neighbors
+custom.config$random_state <- 1231     # random seed (any integer)
+custom.config$n_epochs <- 1000         # number of iterations to convergence
+
+# prepare data and run umap
+umap_fit <- spirals %>%
+  select(where(is.numeric)) %>%
+  scale() %>%
+  umap(config = custom.config)
+
+# extract coordinates from the `umap_fit` object and plot
+umap_fit$layout %>%
+  as.data.frame() %>%
+  # put non-numeric data columns back in to the dataset
+  cbind(select(spirals, -where(is.numeric))) %>%
+  ggplot(aes(V1, V2, color = group)) +
+  geom_point()
+```
+
+## Performing UMAP on the `blue_jays` dataset
+
+Next we will perform UMAP on the `blue_jays` dataset. For reference, this was the code used for the spirals:
+
+```{r echo = TRUE, eval = FALSE}
+# set up umap configuration  
+custom.config <- umap.defaults
+custom.config$n_neighbors <- 8         # number of neighbors
+custom.config$random_state <- 1231     # random seed (any integer)
+custom.config$n_epochs <- 1000         # number of iterations to convergence
+
+# prepare data and run umap
+umap_fit <- spirals %>%
+  select(where(is.numeric)) %>%
+  scale() %>%
+  umap(config = custom.config)
+
+# extract coordinates from the `umap_fit` object and plot
+umap_fit$layout %>%
+  as.data.frame() %>%
+  # put non-numeric data columns back in to the dataset
+  cbind(select(spirals, -where(is.numeric))) %>%
+  ggplot(aes(V1, V2, color = group)) +
+  geom_point()
+```
+
+See if you can adapt this code to work with the `blue_jays` dataset.
+
+```{r umap-blue-jays, exercise = TRUE}
+
+```
+
+```{r umap-blue-jays-hint}
+# set up umap configuration  
+custom.config <- umap.defaults
+custom.config$n_neighbors <- 8         # number of neighbors
+custom.config$random_state <- 1231     # random seed (any integer)
+custom.config$n_epochs <- 1000         # number of iterations to convergence
+
+# prepare data and run umap
+umap_fit <- ___ %>%
+  select(where(is.numeric)) %>%
+  scale() %>%
+  umap(config = custom.config)
+
+# extract coordinates from the `umap_fit` object and plot
+umap_fit$layout %>%
+  as.data.frame() %>%
+  # put non-numeric data columns back in to the dataset
+  cbind(select(___, -where(is.numeric))) %>%
+  ggplot(aes(V1, V2, color = ___)) +
+  geom_point()
+```
+
+```{r umap-blue-jays-solution}
+# set up umap configuration  
+custom.config <- umap.defaults
+custom.config$n_neighbors <- 8         # number of neighbors
+custom.config$random_state <- 1231     # random seed (any integer)
+custom.config$n_epochs <- 1000         # number of iterations to convergence
+
+# prepare data and run umap
+umap_fit <- blue_jays %>%
+  select(where(is.numeric)) %>%
+  scale() %>%
+  umap(config = custom.config)
+
+# extract coordinates from the `umap_fit` object and plot
+umap_fit$layout %>%
+  as.data.frame() %>%
+  # put non-numeric data columns back in to the dataset
+  cbind(select(blue_jays, -where(is.numeric))) %>%
+  ggplot(aes(V1, V2, color = sex)) +
+  geom_point()
+```
+
+As before, change the UMAP configuration parameters and see what effect different choices have on the results you obtain.
+
+```{r umap-blue-jays2, exercise = TRUE}
+
+```
+
+```{r umap-blue-jays2-hint}
+# set up umap configuration  
+custom.config <- umap.defaults
+custom.config$n_neighbors <- ___         # number of neighbors
+custom.config$random_state <- ___        # random seed (any integer)
+custom.config$n_epochs <- ___            # number of iterations to convergence
+
+# prepare data and run umap
+umap_fit <- blue_jays %>%
+  select(where(is.numeric)) %>%
+  scale() %>%
+  umap(config = custom.config)
+
+# extract coordinates from the `umap_fit` object and plot
+umap_fit$layout %>%
+  as.data.frame() %>%
+  # put non-numeric data columns back in to the dataset
+  cbind(select(blue_jays, -where(is.numeric))) %>%
+  ggplot(aes(V1, V2, color = sex)) +
+  geom_point()
+```
+
+```{r umap-blue-jays2-solution}
+# set up umap configuration  
+custom.config <- umap.defaults
+custom.config$n_neighbors <- 5         # number of neighbors
+custom.config$random_state <- 1234     # random seed (any integer)
+custom.config$n_epochs <- 1000         # number of iterations to convergence
+
+# prepare data and run umap
+umap_fit <- blue_jays %>%
+  select(where(is.numeric)) %>%
+  scale() %>%
+  umap(config = custom.config)
+
+# extract coordinates from the `umap_fit` object and plot
+umap_fit$layout %>%
+  as.data.frame() %>%
+  # put non-numeric data columns back in to the dataset
+  cbind(select(blue_jays, -where(is.numeric))) %>%
+  ggplot(aes(V1, V2, color = sex)) +
+  geom_point()
+```

@@ -109,7 +109,7 @@ ggplot(lincoln_temps) +
 You can download the dataset using this code:
 ```{r eval = FALSE}
 lincoln_temps <- readRDS(
-  url("https://wilkelab.org/SDS375/datasets/lincoln_temps.rds")
+  url("https://wilkelab.org/DSC385/datasets/lincoln_temps.rds")
 )
 ```
 ]
@@ -337,6 +337,15 @@ ggplot(lincoln_temps) +
 ```{r lincoln-ridgeline-final-out, ref.label = "lincoln-ridgeline-final", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
+
+
+[//]: # "segment ends here"
+
+
+---
+class: center middle
+
+## Working with ggplot themes
 
 ---
 
@@ -1049,6 +1058,8 @@ ggplot(penguins) +
 ```{r penguins-theme-elements19-out, ref.label = "penguins-theme-elements19", echo = FALSE, warning = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
+
+[//]: # "segment ends here"
 
 ---
 ## Further reading

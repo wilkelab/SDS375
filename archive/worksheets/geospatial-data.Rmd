@@ -1,0 +1,234 @@
+---
+#############################################################
+#                                                           #
+# Click on "Run Document" in RStudio to run this worksheet. #
+#                                                           #
+#############################################################
+title: "Visualizing geospatial data"
+author: "Claus O. Wilke"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(tidyverse)
+library(colorspace)
+library(sf)
+knitr::opts_chunk$set(echo = FALSE, comment = "", paged.print = FALSE)
+
+texas_income <- readRDS(url("https://wilkelab.org/SDS375/datasets/Texas_income.rds"))
+
+US_census <- read_csv("https://wilkelab.org/SDS375/datasets/US_census.csv")
+texas_counties <- US_census %>% 
+  filter(state == "Texas") %>%
+  select(FIPS, name, pop2010, area) %>%
+  extract(name, "county", regex = "(.+) County") %>%
+  mutate(
+    FIPS = as.character(FIPS),
+    popratio = pop2010/median(pop2010),
+  )
+```
+
+## Introduction
+
+In this worksheet, we will discuss how to visualize geospatial data.
+
+We will be using the R package **tidyverse** for general data manipulation and visualization, and the R package **sf** to handle simple features (which represent shapes and locations on the surface of the earth). We also load the package **colorspace** for its color scales.
+
+```{r library-calls, echo = TRUE, eval = FALSE}
+# load required libraries
+library(tidyverse)
+library(sf)
+library(colorspace)
+```
+
+
+We will be working with the datasets `texas_income` and `texas_counties`. The dataset `texas_income` contains the median income of all counties in Texas, as well as the shape information about each county (stored in the `geometry` column). The column `FIPS` contains a five-digit id code that uniquely represents each county.
+
+```{r echo = TRUE}
+texas_income
+```
+
+The dataset `texas_counties` holds information about how many people lived in Texas counties in 2010, as well as the size of each county (column `area`). The column `popratio` is the ratio of the number of inhabitants to the median across all counties. The column `FIPS` contains a five-digit id code that uniquely represents each county.
+
+```{r tx-counties, echo = TRUE}
+texas_counties
+```
+
+## Wrangling data
+
+Before we perform any visualizations, we will first gain some experience manipulating data tables containing geospatial information. This does not require us to learn any new concepts, as data tables with geospatial information (i.e., containing a `geometry` column) can be manipulated just like those without.
+
+Let's try this out. Take the `texas_income` table and filter out the rows for the counties "Travis" and "Harris".
+
+```{r sf-wrangling, exercise = TRUE}
+
+```
+
+```{r sf-wrangling-hint}
+texas_income %>%
+  filter(___)
+```
+
+```{r sf-wrangling-solution}
+texas_income %>%
+  filter(county %in% c("Travis", "Harris"))
+```
+
+Now join the `texas_income` table with the `texas_counties` table and then find the five largest counties.
+
+**Hint:** Use the function `left_join()` to join the tables, and use the functions `arrange()` and `slice()` to find the five largest counties.
+
+```{r sf-wrangling2, exercise = TRUE}
+
+```
+
+```{r sf-wrangling2-hint-1}
+texas_income %>%
+  left_join(___) %>%
+  ___
+```
+
+```{r sf-wrangling2-hint-2}
+texas_income %>%
+  left_join(texas_counties) %>%
+  arrange(___) %>%
+  slice(___)
+```
+
+```{r sf-wrangling2-solution}
+texas_income %>%
+  left_join(texas_counties) %>%
+  arrange(desc(area)) %>%
+  slice(1:5)
+```
+
+```{r median-income-question}
+question('What is the median income of the largest county?',
+  answer("38395", correct = TRUE),
+  answer("35000"),
+  answer("87524"),
+  answer("89152"),
+  answer("22741")
+)
+```
+ 
+## Visualizing simple features
+
+We can visualize datasets containing simple features with the function `geom_sf()`. This geom is very simple to use, as it automatically finds the `geometry` column and draws it in the appropriate coordinate system. All we need to think about is whether we want to apply a color mapping, e.g. to make a choropleth.
+
+Try this out by making a plot of the counties in Texas, without applying any kind of aesthetic mapping. Remember, the dataset `texas_income` contains the required geometry information.
+
+```{r geom-sf, exercise = TRUE}
+
+```
+
+```{r geom-sf-hint}
+ggplot(texas_income) +
+  ___
+```
+
+```{r geom-sf-solution}
+ggplot(texas_income) +
+  geom_sf()
+```
+
+Now map the data column `median_income` to the fill color. Also choose an appropriate color scale from the **colorspace** package. 
+
+**Hint:** You can see the available color palettes [here.](https://colorspace.r-forge.r-project.org/articles/ggplot2_color_scales.html#available-palettes-1)
+
+```{r geom-sf-fill, exercise = TRUE}
+
+```
+
+```{r geom-sf-fill-hint}
+ggplot(texas_income) +
+  geom_sf(aes(fill = ___)) +
+  scale_fill_continuous_sequential(palette = ___)
+```
+
+```{r geom-sf-fill-solution}
+ggplot(texas_income) +
+  geom_sf(aes(fill = median_income)) +
+  scale_fill_continuous_sequential(palette = "Lajolla")
+```
+
+Finally, make a plot that highlights the 10 smallest counties in Texas. This will require you to join `texas_income` and `texas_counties` first.
+
+```{r geom-sf-join, exercise = TRUE}
+
+```
+
+```{r geom-sf-join-hint-1}
+texas_income %>%
+  left_join(texas_counties) %>%
+  mutate(
+    smallest = rank(area) <= 5
+  )
+```
+
+```{r geom-sf-join-hint-2}
+texas_income %>%
+  left_join(texas_counties) %>%
+  mutate(
+    smallest = rank(area) <= 5
+  ) %>%
+  ggplot() +
+  geom_sf(aes(fill = ___))
+```
+
+```{r geom-sf-join-hint-3}
+texas_income %>%
+  left_join(texas_counties) %>%
+  mutate(
+    smallest = rank(area) <= 5
+  ) %>%
+  ggplot() +
+  geom_sf(aes(fill = smallest))
+```
+
+```{r geom-sf-join-solution}
+texas_income %>%
+  left_join(texas_counties) %>%
+  mutate(
+    smallest = rank(area) <= 5
+  ) %>%
+  ggplot() +
+  geom_sf(aes(fill = smallest), size = 0.2) +
+  scale_fill_manual(
+    values = c(
+      `TRUE` = "#D55E00",
+      `FALSE` = "#E8EEF9"
+    )
+  )
+```
+
+## Changing the projection
+
+One major benefit of the sf framework is that different map projections are built in and supported out-of-the-box. We can refer to projections by their EPSG codes, and these codes can be looked up on websites such as https://spatialreference.org/ or https://epsg.io/.
+
+We can set the coordinate system via `coord_sf()`, which takes an argument `crs` that specifies the Coordinate Reference System (CRS). For example, `coord_sf(crs = 3083)` will select a Texas Centric Albers Equal Area projection (https://spatialreference.org/ref/epsg/3083/). Try this out.
+
+```{r coord-sf, exercise = TRUE}
+
+```
+
+```{r coord-sf-hint}
+ggplot(texas_income) +
+  geom_sf() +
+  ___
+```
+
+```{r coord-sf-solution}
+ggplot(texas_income) +
+  geom_sf() +
+  coord_sf(crs = 3083)
+```
+
+Here are a few other coordinate systems to try out, to see how different projections affect how the map looks.
+
+- [EPSG:32139:](https://spatialreference.org/ref/epsg/32139/) Texas Centric Lambert Conformal Conic; notice the subtle changes compared to 3083.
+- [EPSG:3857:](https://spatialreference.org/ref/sr-org/7483/) Web Mercator, used e.g. by Google Maps; not a good projection in practice.
+- [EPSG:3338:](https://spatialreference.org/ref/epsg/3338/) Alaska Albers equal area; not appropriate for Texas, but shows more extreme changes in the plot
+

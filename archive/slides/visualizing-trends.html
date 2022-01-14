@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Visualizing trends</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Claus O. Wilke" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="Wilke-slides-theme.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, title-slide
+
+# Visualizing trends
+### Claus O. Wilke
+### last updated: 2021-03-09
+
+---
+
+
+
+
+## We visualize linear trends with regression lines
+
+.center[
+![](visualizing-trends_files/figure-html/blue-jays-scatter-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## We visualize linear trends with regression lines
+
+.center[
+![](visualizing-trends_files/figure-html/blue-jays-scatter-lm-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## We visualize linear trends with regression lines
+
+.center[
+![](visualizing-trends_files/figure-html/blue-jays-scatter-line-sex-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+
+
+## We visualize linear trends with regression lines
+
+.center[
+![](visualizing-trends_files/figure-html/blue-jays-scatter-female-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+
+## We visualize linear trends with regression lines
+
+.center[
+![](visualizing-trends_files/figure-html/blue-jays-scatter-line-female-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+
+## We visualize linear trends with regression lines
+
+.center[
+![](visualizing-trends_files/figure-html/blue-jays-scatter-male-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+
+## We visualize linear trends with regression lines
+
+.center[
+![](visualizing-trends_files/figure-html/blue-jays-scatter-line-male-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## We visualize linear trends with regression lines
+
+.center[
+![](visualizing-trends_files/figure-html/blue-jays-scatter-sex-line-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Exponential trends are linear trends on a log scale
+
+.center[
+![](visualizing-trends_files/figure-html/biorxiv-nofit-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+
+## Exponential trends are linear trends on a log scale
+
+.center[
+![](visualizing-trends_files/figure-html/biorxiv-expfit-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Exponential trends are linear trends on a log scale
+
+.center[
+![](visualizing-trends_files/figure-html/biorxiv-expfit-logscale-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+
+## Exponential trends are linear trends on a log scale
+
+.center[
+![](visualizing-trends_files/figure-html/biorxiv-logscale-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Exponential trends are linear trends on a log scale
+
+.center[
+![](visualizing-trends_files/figure-html/biorxiv-logscale-doublefit-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Detrending: Removing the underlying trend
+
+.center[
+![](visualizing-trends_files/figure-html/hpi-no-trendline-1.svg)&lt;!-- --&gt;
+]
+
+--
+
+.small-font[
+Did housing prices in California decline substantially from 1990 to 1998?
+]
+
+--
+
+.small-font[
+Did housing prices in West Virginia recover by 2017?
+]
+
+???
+
+Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+
+## Detrending: Removing the underlying trend
+
+.center[
+![](visualizing-trends_files/figure-html/hpi-trends-1.svg)&lt;!-- --&gt;
+]
+
+.small-font[
+Did housing prices in California decline substantially from 1990 to 1998?
+]
+
+.small-font[
+Did housing prices in West Virginia recover by 2017?
+]
+
+???
+
+Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+
+## Detrending: Removing the underlying trend
+
+.center[
+![](visualizing-trends_files/figure-html/hpi-detrended-1.svg)&lt;!-- --&gt;
+]
+
+.small-font[
+Did housing prices in California decline substantially from 1990 to 1998? — yes
+]
+
+.small-font[
+Did housing prices in West Virginia recover by 2017?  — no
+]
+
+???
+
+Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+class: middle, center
+
+# Creating trendlines in **ggplot2**
+
+
+---
+
+## We add trend lines with `geom_smooth()`
+
+.tiny-font.pull-left[
+
+```r
+ggplot(blue_jays) +
+  aes(body_mass_g, head_length_mm) + 
+  geom_point() + theme_bw(14)
+```
+]
+
+.xtiny-font.pull-right[
+![](visualizing-trends_files/figure-html/blue-jays-scatter-gg-out-1.svg)&lt;!-- --&gt;
+]
+
+.small-font[
+Scatter plot only
+]
+
+
+---
+
+## We add trend lines with `geom_smooth()`
+
+.tiny-font.pull-left[
+
+```r
+ggplot(blue_jays) +
+  aes(body_mass_g, head_length_mm) + 
+  geom_point() + theme_bw(14) +
+  geom_smooth()
+```
+]
+
+.xtiny-font.pull-right[
+
+```
+`geom_smooth()` using method = 'loess' and formula 'y ~ x'
+```
+
+![](visualizing-trends_files/figure-html/blue-jays-scatter-gg-smooth-out-1.svg)&lt;!-- --&gt;
+]
+
+.small-font[
+Scatter plot with loess smooth
+]
+
+---
+
+## We add trend lines with `geom_smooth()`
+
+.tiny-font.pull-left[
+
+```r
+ggplot(blue_jays) +
+  aes(body_mass_g, head_length_mm) + 
+  geom_point() + theme_bw(14) +
+  geom_smooth(
+    # smooth using linear model
+    method = "lm"
+  )
+```
+]
+
+.xtiny-font.pull-right[
+
+```
+`geom_smooth()` using formula 'y ~ x'
+```
+
+![](visualizing-trends_files/figure-html/blue-jays-scatter-gg-lm-out-1.svg)&lt;!-- --&gt;
+]
+
+.small-font[
+Scatter plot with linear regression
+]
+
+
+---
+
+## We add trend lines with `geom_smooth()`
+
+.tiny-font.pull-left[
+
+```r
+ggplot(blue_jays) +
+  aes(body_mass_g, head_length_mm) + 
+  geom_point() + theme_bw(14) +
+  geom_smooth(
+    # smooth using linear model
+    method = "lm",
+    # suppress confidence band
+    se = FALSE
+  )
+```
+]
+
+.xtiny-font.pull-right[
+
+```
+`geom_smooth()` using formula 'y ~ x'
+```
+
+![](visualizing-trends_files/figure-html/blue-jays-scatter-gg-lm-nose-out-1.svg)&lt;!-- --&gt;
+]
+
+.small-font[
+Scatter plot with linear regression, no confidence band
+]
+
+---
+
+## We add trend lines with `geom_smooth()`
+
+.tiny-font.pull-left[
+
+```r
+ggplot(blue_jays) +
+  aes(
+    body_mass_g, head_length_mm,
+    color = sex
+  ) + 
+  geom_point() + theme_bw(14) +
+  geom_smooth(
+    # smooth using linear model
+    method = "lm",
+    # suppress confidence band
+    se = FALSE
+  )
+```
+]
+
+.xtiny-font.pull-right[
+
+```
+`geom_smooth()` using formula 'y ~ x'
+```
+
+![](visualizing-trends_files/figure-html/blue-jays-scatter-gg-sex-out-1.svg)&lt;!-- --&gt;
+]
+
+.small-font[
+Scatter plot with linear regression by sex
+]
+
+---
+class: middle, center
+
+# Linear regression can be nonsensical
+
+---
+
+## Example: Fuel-tank capacity versus price in cars
+
+.tiny-font.pull-left[
+
+```r
+ggplot(cars93) +
+  aes(x = Price, y = Fuel.tank.capacity) +
+  geom_point() + theme_bw(14) +
+  geom_smooth(method = "lm")
+```
+]
+
+.xtiny-font.pull-right[
+
+```
+`geom_smooth()` using formula 'y ~ x'
+```
+
+![](visualizing-trends_files/figure-html/cars-lm-out-1.svg)&lt;!-- --&gt;
+]
+
+--
+
+.small-font[
+Do more expensive cars have a larger fuel tank?
+]
+
+---
+
+## Example: Fuel-tank capacity versus price in cars
+
+.tiny-font.pull-left[
+
+```r
+ggplot(cars93) +
+  aes(x = Price, y = Fuel.tank.capacity) +
+  geom_point() + theme_bw(14) +
+  # default: loess smoothing
+  geom_smooth(
+    se = FALSE
+  )
+```
+]
+
+.xtiny-font.pull-right[
+
+```
+`geom_smooth()` using method = 'loess' and formula 'y ~ x'
+```
+
+![](visualizing-trends_files/figure-html/cars-loess-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Example: Fuel-tank capacity versus price in cars
+
+.tiny-font.pull-left[
+
+```r
+ggplot(cars93) +
+  aes(x = Price, y = Fuel.tank.capacity) +
+  geom_point() + theme_bw(14) +
+  # loess smoothing
+  geom_smooth(
+    se = FALSE,
+    method = "loess",
+    formula = y ~ x
+  )
+```
+]
+
+.xtiny-font.pull-right[
+![](visualizing-trends_files/figure-html/cars-loess2-out-1.svg)&lt;!-- --&gt;
+]
+
+--
+
+.small-font[
+Caution: Exact shape of smoothing line depends on method details
+]
+
+
+---
+
+## Example: Fuel-tank capacity versus price in cars
+
+.tiny-font.pull-left[
+
+```r
+ggplot(cars93) +
+  aes(x = Price, y = Fuel.tank.capacity) +
+  geom_point() + theme_bw(14) +
+  # loess smoothing
+  geom_smooth(
+    se = FALSE,
+    method = "loess",
+    formula = y ~ x,
+    span = 0.25
+  )
+```
+]
+
+.xtiny-font.pull-right[
+![](visualizing-trends_files/figure-html/cars-loess3-out-1.svg)&lt;!-- --&gt;
+]
+
+.small-font[
+Caution: Exact shape of smoothing line depends on method details
+]
+
+
+---
+
+## Example: Fuel-tank capacity versus price in cars
+
+.tiny-font.pull-left[
+
+```r
+ggplot(cars93) +
+  aes(x = Price, y = Fuel.tank.capacity) +
+  geom_point() + theme_bw(14) +
+  # loess smoothing
+  geom_smooth(
+    se = FALSE,
+    method = "loess",
+    formula = y ~ x,
+    span = 0.75 # default value
+  )
+```
+]
+
+.xtiny-font.pull-right[
+![](visualizing-trends_files/figure-html/cars-loess4-out-1.svg)&lt;!-- --&gt;
+]
+
+.small-font[
+Caution: Exact shape of smoothing line depends on method details
+]
+
+
+---
+
+## Example: Fuel-tank capacity versus price in cars
+
+.tiny-font.pull-left[
+
+```r
+ggplot(cars93) +
+  aes(x = Price, y = Fuel.tank.capacity) +
+  geom_point() + theme_bw(14) +
+  # loess smoothing
+  geom_smooth(
+    se = FALSE,
+    method = "loess",
+    formula = y ~ x,
+    span = 1.0
+  )
+```
+]
+
+.xtiny-font.pull-right[
+![](visualizing-trends_files/figure-html/cars-loess5-out-1.svg)&lt;!-- --&gt;
+]
+
+.small-font[
+Caution: Exact shape of smoothing line depends on method details
+]
+
+---
+
+## Example: Fuel-tank capacity versus price in cars
+
+.tiny-font.pull-left[
+
+```r
+ggplot(cars93) +
+  aes(x = Price, y = Fuel.tank.capacity) +
+  geom_point() + theme_bw(14) +
+  # loess smoothing
+  geom_smooth(
+    se = FALSE,
+    method = "loess",
+    formula = y ~ x,
+    span = 1.5
+  )
+```
+]
+
+.xtiny-font.pull-right[
+![](visualizing-trends_files/figure-html/cars-loess6-out-1.svg)&lt;!-- --&gt;
+]
+
+.small-font[
+Caution: Exact shape of smoothing line depends on method details
+]
+
+---
+
+## Example: Fuel-tank capacity versus price in cars
+
+.tiny-font.pull-left[
+
+```r
+ggplot(cars93) +
+  aes(x = Price, y = Fuel.tank.capacity) +
+  geom_point() + theme_bw(14) +
+  # cubic spline, 5 knots
+  geom_smooth(
+    se = FALSE,
+    method = "gam",
+    formula = y ~ s(x, k = 5, bs = 'cr')
+  )
+```
+]
+
+.xtiny-font.pull-right[
+![](visualizing-trends_files/figure-html/cars-gam-out-1.svg)&lt;!-- --&gt;
+]
+
+.small-font[
+Caution: Exact shape of smoothing line depends on method details
+]
+
+---
+
+## Example: Fuel-tank capacity versus price in cars
+
+.tiny-font.pull-left[
+
+```r
+ggplot(cars93) +
+  aes(x = Price, y = Fuel.tank.capacity) +
+  geom_point() + theme_bw(14) +
+  # thin-plate spline, 3 knots
+  geom_smooth(
+    se = FALSE,
+    method = "gam",
+    formula = y ~ s(x, k = 3)
+  )
+```
+]
+
+.xtiny-font.pull-right[
+![](visualizing-trends_files/figure-html/cars-gam2-out-1.svg)&lt;!-- --&gt;
+]
+
+.small-font[
+Caution: Exact shape of smoothing line depends on method details
+]
+
+
+---
+
+## Example: Fuel-tank capacity versus price in cars
+
+.tiny-font.pull-left[
+
+```r
+ggplot(cars93) +
+  aes(x = Price, y = Fuel.tank.capacity) +
+  geom_point() + theme_bw(14) +
+  # Gaussian process spline, 6 knots
+  geom_smooth(
+    se = FALSE,
+    method = "gam",
+    formula = y ~ s(x, k = 6, bs = 'gp')
+  )
+```
+]
+
+.xtiny-font.pull-right[
+![](visualizing-trends_files/figure-html/cars-gam3-out-1.svg)&lt;!-- --&gt;
+]
+
+.small-font[
+Caution: Exact shape of smoothing line depends on method details
+]
+
+--
+
+.small-font[
+Smoothing lines are particularly unreliable near their endpoints
+]
+
+---
+
+## Further reading
+
+- Fundamentals of Data Visualization: [Chapter 14: Visualizing trends](https://clauswilke.com/dataviz/visualizing-trends.html)
+- Data Visualization—A Practical Introduction: [Chapter 6: Work with models](https://socviz.co/modeling.html)
+- **ggplot2** reference documentation: [`geom_smooth()`](https://ggplot2.tidyverse.org/reference/geom_smooth.html)
+- **mgcv** reference documentation (for gam smoothing): [pdf document](https://cran.r-project.org/web/packages/mgcv/mgcv.pdf)
+
+
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"slideNumberFormat": ""
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

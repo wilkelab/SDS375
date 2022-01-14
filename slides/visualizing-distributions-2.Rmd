@@ -456,8 +456,13 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 Notice the single fill color. More colors would be distracting. 
 
 ---
+class: center middle
 
-## Making these plots in ggplot
+## Making boxplots, violins, etc. in **ggplot2**
+
+---
+
+## Making boxplots, violins, etc. in **ggplot2**
 
 .small-font.center[
 
@@ -580,6 +585,8 @@ ggplot(lincoln_temps, aes(x = mean_temp, y = month_long)) +
 ```{r temps-examples-ridgeline-out, ref.label = "temps-examples-ridgeline", echo = FALSE, message = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
+
+[//]: # "segment ends here"
 
 ---
 

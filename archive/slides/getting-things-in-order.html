@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Getting things into the right order</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Claus O. Wilke" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="Wilke-slides-theme.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, title-slide
+
+# Getting things into the right order
+### Claus O. Wilke
+### last updated: 2021-03-04
+
+---
+
+
+
+
+
+## Remember from "Visualizing amounts"
+
+.small-font[
+We can use `fct_relevel()` to manually order the bars in a bar plot
+]
+
+--
+
+.tiny-font[
+
+```r
+ggplot(penguins, aes(y = fct_relevel(species, "Chinstrap", "Gentoo", "Adelie"))) +
+  geom_bar()
+```
+]
+
+.center[
+![](getting-things-in-order_files/figure-html/penguins-ordered-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Somewhat cleaner: mutate first, then plot
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  mutate(species = fct_relevel(species, "Chinstrap", "Gentoo", "Adelie")) %&gt;%
+  ggplot(aes(y = species)) +
+  geom_bar()
+```
+]
+
+.center[
+![](getting-things-in-order_files/figure-html/penguins-ordered-pipe-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## We order things in ggplot with factors
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  mutate(species = fct_relevel(species, "Chinstrap", "Gentoo", "Adelie")) %&gt;%
+  slice(1:30) %&gt;%   # get first 30 rows
+  pull(species)     # pull out just the `species` column
+```
+
+```
+ [1] Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie
+[11] Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie
+[21] Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie
+Levels: Chinstrap Gentoo Adelie
+```
+]
+
+--
+
+.small-font[
+- The column `species` is a factor
+]
+
+--
+
+.small-font[
+- A factor is a categorical variable with defined categories called levels
+]
+
+--
+
+.small-font[
+- For factors, ggplot generally places visual elements in the order defined by the levels
+]
+
+
+---
+
+## Manual ordering of factor levels: `fct_relevel()`
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  mutate(species = fct_relevel(species)) %&gt;%
+  slice(1:30) %&gt;%   # get first 30 rows
+  pull(species)     # pull out just the `species` column
+```
+
+```
+ [1] Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie
+[11] Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie
+[21] Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie
+Levels: Adelie Chinstrap Gentoo
+```
+]
+
+.small-font[
+Default: alphabetic order
+]
+---
+
+## Manual ordering of factor levels: `fct_relevel()`
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  mutate(species = fct_relevel(species, "Gentoo")) %&gt;%
+  slice(1:30) %&gt;%   # get first 30 rows
+  pull(species)     # pull out just the `species` column
+```
+
+```
+ [1] Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie
+[11] Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie
+[21] Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie
+Levels: Gentoo Adelie Chinstrap
+```
+]
+
+.small-font[
+Move `"Gentoo"` in front, rest alphabetic
+]
+
+---
+
+## Manual ordering of factor levels: `fct_relevel()`
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  mutate(species = fct_relevel(species, "Chinstrap", "Gentoo")) %&gt;%
+  slice(1:30) %&gt;%   # get first 30 rows
+  pull(species)     # pull out just the `species` column
+```
+
+```
+ [1] Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie
+[11] Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie
+[21] Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie
+Levels: Chinstrap Gentoo Adelie
+```
+
+]
+
+.small-font[
+Move `"Chinstrap"` in front, then `"Gentoo"`, rest alphabetic
+]
+
+---
+
+## Manual ordering of factor levels: `fct_relevel()`
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  mutate(species = fct_relevel(species, "Chinstrap", "Adelie", "Gentoo")) %&gt;%
+  slice(1:30) %&gt;%   # get first 30 rows
+  pull(species)     # pull out just the `species` column
+```
+
+```
+ [1] Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie
+[11] Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie
+[21] Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie
+Levels: Chinstrap Adelie Gentoo
+```
+
+]
+
+.small-font[
+Use order `"Chinstrap"`, `"Adelie"`, `"Gentoo"`
+]
+
+---
+
+## Manual ordering of factor levels: `fct_relevel()`
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  mutate(species = fct_relevel(species, "Gentoo", "Chinstrap", "Adelie")) %&gt;%
+  slice(1:30) %&gt;%   # get first 30 rows
+  pull(species)     # pull out just the `species` column
+```
+
+```
+ [1] Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie
+[11] Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie
+[21] Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie
+Levels: Gentoo Chinstrap Adelie
+```
+
+]
+
+.small-font[
+Use order `"Gentoo"`, `"Chinstrap"`, `"Adelie"`
+]
+
+---
+
+## The order of the y axis is from bottom to top
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  mutate(species = fct_relevel(species, "Chinstrap", "Gentoo", "Adelie")) %&gt;%
+  ggplot(aes(y = species)) +
+  geom_bar()
+```
+]
+
+.center[
+![](getting-things-in-order_files/figure-html/penguins-ordered-pipe2-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Reorder based on frequency: `fct_infreq()`
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  mutate(species = fct_infreq(species)) %&gt;%
+  slice(1:30) %&gt;%   # get first 30 rows
+  pull(species)     # pull out just the `species` column
+```
+
+```
+ [1] Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie
+[11] Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie
+[21] Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie
+Levels: Adelie Gentoo Chinstrap
+```
+
+]
+
+--
+
+.small-font[
+- Use the order defined by the number of penguins of different species
+]
+
+--
+
+.small-font[
+- The order is descending, from most frequent to least frequent
+]
+
+---
+
+## Reorder based on frequency: `fct_infreq()`
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  mutate(species = fct_infreq(species)) %&gt;%
+  ggplot(aes(y = species)) + geom_bar()
+```
+
+]
+
+.center[
+![](getting-things-in-order_files/figure-html/penguins-infreq-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Reverse order: `fct_rev()`
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  mutate(species = fct_rev(fct_infreq(species))) %&gt;%
+  ggplot(aes(y = species)) + geom_bar()
+```
+
+]
+
+.center[
+![](getting-things-in-order_files/figure-html/penguins-infreq-rev-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Reorder based on numeric values: `fct_reorder()`
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  count(species)
+```
+
+
+```
+# A tibble: 3 x 2
+  species       n
+  &lt;fct&gt;     &lt;int&gt;
+1 Adelie      152
+2 Chinstrap    68
+3 Gentoo      124
+```
+
+]
+
+--
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  count(species) %&gt;%
+  mutate(species = fct_reorder(species, n)) %&gt;%
+  pull(species)     # pull out just the `species` column
+```
+
+```
+[1] Adelie    Chinstrap Gentoo   
+Levels: Chinstrap Gentoo Adelie
+```
+
+]
+
+--
+
+.small-font[
+The order is ascending, from smallest to largest value
+]
+
+---
+
+## Reorder based on numeric values: `fct_reorder()`
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  count(species) %&gt;%
+  mutate(species = fct_reorder(species, n)) %&gt;%
+  ggplot(aes(n, species)) + geom_col()
+```
+
+]
+
+.center[
+![](getting-things-in-order_files/figure-html/penguins-reorder-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Compare to see the difference
+
+.xtiny-font.pull-left[
+
+```r
+penguins %&gt;%
+  count(species) %&gt;% # summarize data
+  mutate(species = fct_reorder(species, n))
+```
+
+
+```
+# A tibble: 3 x 2
+  species       n
+  &lt;fct&gt;     &lt;int&gt;
+1 Adelie      152
+2 Chinstrap    68
+3 Gentoo      124
+```
+
+]
+
+--
+
+.xtiny-font.pull-right[
+
+```r
+penguins %&gt;% 
+  # modify the original dataset, no summary
+  mutate(species = fct_infreq(species))
+```
+
+```
+# A tibble: 344 x 8
+   species island bill_length_mm bill_depth_mm flipper_length_… body_mass_g
+   &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;            &lt;int&gt;       &lt;int&gt;
+ 1 Adelie  Torge…           39.1          18.7              181        3750
+ 2 Adelie  Torge…           39.5          17.4              186        3800
+ 3 Adelie  Torge…           40.3          18                195        3250
+ 4 Adelie  Torge…           NA            NA                 NA          NA
+ 5 Adelie  Torge…           36.7          19.3              193        3450
+ 6 Adelie  Torge…           39.3          20.6              190        3650
+ 7 Adelie  Torge…           38.9          17.8              181        3625
+ 8 Adelie  Torge…           39.2          19.6              195        4675
+ 9 Adelie  Torge…           34.1          18.1              193        3475
+10 Adelie  Torge…           42            20.2              190        4250
+# … with 334 more rows, and 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;
+```
+]
+
+
+---
+
+## Compare to see the difference
+
+.xtiny-font.pull-left[
+
+```r
+penguins %&gt;%
+  count(species) %&gt;% # summarize data
+  mutate(species = fct_reorder(species, n)) %&gt;%
+  ggplot(aes(n, species)) + geom_col()
+```
+
+![](getting-things-in-order_files/figure-html/penguins-geom-col-1.svg)&lt;!-- --&gt;
+
+]
+
+.xtiny-font.pull-right[
+
+```r
+penguins %&gt;% 
+  # modify the original dataset, no summary
+  mutate(species = fct_infreq(species)) %&gt;%
+  ggplot(aes(y = species)) + geom_bar()
+```
+
+![](getting-things-in-order_files/figure-html/penguins-geom-bar-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Compare to see the difference
+
+.xtiny-font.pull-left[
+
+```r
+penguins %&gt;%
+  count(species) %&gt;% # summarize data
+  mutate(species = fct_reorder(species, n)) %&gt;%
+  ggplot(aes(n, species)) + geom_col()
+```
+
+![](getting-things-in-order_files/figure-html/penguins-geom-col2-1.svg)&lt;!-- --&gt;
+
+]
+
+.xtiny-font.pull-right[
+
+```r
+penguins %&gt;% 
+  # modify the original dataset, no summary
+  mutate(species = fct_infreq(species)) %&gt;%
+  ggplot(aes(y = fct_rev(species))) + geom_bar()
+```
+
+![](getting-things-in-order_files/figure-html/penguins-geom-bar2-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+class: middle, center
+
+# We can do more than just order bars
+
+---
+
+## The gapminder dataset: Life expectancy data
+
+.tiny-font[
+
+```r
+library(gapminder)
+
+gapminder
+```
+
+```
+# A tibble: 1,704 x 6
+   country     continent  year lifeExp      pop gdpPercap
+   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+ 1 Afghanistan Asia       1952    28.8  8425333      779.
+ 2 Afghanistan Asia       1957    30.3  9240934      821.
+ 3 Afghanistan Asia       1962    32.0 10267083      853.
+ 4 Afghanistan Asia       1967    34.0 11537966      836.
+ 5 Afghanistan Asia       1972    36.1 13079460      740.
+ 6 Afghanistan Asia       1977    38.4 14880372      786.
+ 7 Afghanistan Asia       1982    39.9 12881816      978.
+ 8 Afghanistan Asia       1987    40.8 13867957      852.
+ 9 Afghanistan Asia       1992    41.7 16317921      649.
+10 Afghanistan Asia       1997    41.8 22227415      635.
+# … with 1,694 more rows
+```
+]
+
+---
+
+## Life expectancy in the Americas in 2007
+
+.tiny-font.pull-left[
+
+```r
+gapminder %&gt;%
+  filter(
+    year == 2007,
+    continent == "Americas"
+  ) %&gt;%
+  ggplot(aes(lifeExp, country)) + 
+  geom_point()
+```
+]
+
+.pull-right[
+![](getting-things-in-order_files/figure-html/gapminder-unordered-out-1.svg)&lt;!-- --&gt;
+]
+
+
+
+---
+
+## Life expectancy in the Americas in 2007
+
+.pull-left[
+.tiny-font[
+
+```r
+gapminder %&gt;%
+  filter(
+    year == 2007,
+    continent == "Americas"
+  ) %&gt;%
+  ggplot(aes(lifeExp, country)) + 
+  geom_point()
+```
+]
+
+.small-font[
+Reminder:  
+Default order is alphabetic, from bottom to top
+]]
+
+.pull-right[
+![](getting-things-in-order_files/figure-html/gapminder-unordered2-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Life expectancy, ordered from highest to lowest
+
+.pull-left[.tiny-font[
+
+```r
+gapminder %&gt;%
+  filter(
+    year == 2007,
+    continent == "Americas"
+  ) %&gt;%
+  mutate(
+    country = fct_reorder(country, lifeExp)
+  ) %&gt;%
+  ggplot(aes(lifeExp, country)) + 
+  geom_point()
+```
+]
+
+.small-font[
+Order is ascending from bottom to top
+]]
+
+
+.pull-right[
+![](getting-things-in-order_files/figure-html/gapminder-ordered-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## We can also order facets
+
+.tiny-font[
+
+```r
+gapminder %&gt;%
+  filter(country %in% c("Norway", "Portugal", "Spain", "Austria")) %&gt;%
+  ggplot(aes(year, lifeExp)) + geom_line() +
+  facet_wrap(vars(country), nrow = 1)
+```
+]
+
+.center[
+![](getting-things-in-order_files/figure-html/gapminder-europe-unordered-out-1.svg)&lt;!-- --&gt;
+]
+
+--
+
+.small-font[
+- Default ordering is alphabetic; there's no good reason for this ordering
+]
+
+---
+
+## We can also order facets
+
+.tiny-font[
+
+```r
+gapminder %&gt;%
+  filter(country %in% c("Norway", "Portugal", "Spain", "Austria")) %&gt;%
+  ggplot(aes(year, lifeExp)) + geom_line() +
+  facet_wrap(vars(country), nrow = 1)
+```
+]
+
+.center[
+![](getting-things-in-order_files/figure-html/gapminder-europe-unordered2-out-1.svg)&lt;!-- --&gt;
+]
+
+.small-font[
+- Let's apply `fct_reorder()` and see what happens
+]
+
+
+---
+
+## We can also order facets
+
+.tiny-font[
+
+```r
+gapminder %&gt;%
+  filter(country %in% c("Norway", "Portugal", "Spain", "Austria")) %&gt;%
+  mutate(country = fct_reorder(country, lifeExp)) %&gt;% # default: order by median
+  ggplot(aes(year, lifeExp)) + geom_line() +
+  facet_wrap(vars(country), nrow = 1)
+```
+]
+
+.center[
+![](getting-things-in-order_files/figure-html/gapminder-europe1-out-1.svg)&lt;!-- --&gt;
+]
+
+--
+
+.small-font[
+- When the levels of a factor occur more than once, `fct_reorder()` applies a summary function
+]
+
+
+---
+
+## We can also order facets
+
+.tiny-font[
+
+```r
+gapminder %&gt;%
+  filter(country %in% c("Norway", "Portugal", "Spain", "Austria")) %&gt;%
+  mutate(country = fct_reorder(country, lifeExp)) %&gt;% # default: order by median
+  ggplot(aes(year, lifeExp)) + geom_line() +
+  facet_wrap(vars(country), nrow = 1)
+```
+]
+
+.center[
+![](getting-things-in-order_files/figure-html/gapminder-europe2-out-1.svg)&lt;!-- --&gt;
+]
+
+.small-font[
+- The default summary function is `median()`
+]
+
+
+---
+
+## We can also order facets
+
+.tiny-font[
+
+```r
+gapminder %&gt;%
+  filter(country %in% c("Norway", "Portugal", "Spain", "Austria")) %&gt;%
+  mutate(country = fct_reorder(country, lifeExp, median)) %&gt;% # order by median
+  ggplot(aes(year, lifeExp)) + geom_line() +
+  facet_wrap(vars(country), nrow = 1)
+```
+]
+
+.center[
+![](getting-things-in-order_files/figure-html/gapminder-europe3-out-1.svg)&lt;!-- --&gt;
+]
+
+.small-font[
+- We can also set the summary function explicitly
+]
+
+
+---
+
+## Alternative orderings: By smallest value per facet
+
+.tiny-font[
+
+```r
+gapminder %&gt;%
+  filter(country %in% c("Norway", "Portugal", "Spain", "Austria")) %&gt;%
+  mutate(country = fct_reorder(country, lifeExp, min)) %&gt;% # order by minimum
+  ggplot(aes(year, lifeExp)) + geom_line() +
+  facet_wrap(vars(country), nrow = 1)
+```
+]
+
+.center[
+![](getting-things-in-order_files/figure-html/gapminder-europe4-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Alternative orderings: By largest value per facet
+
+.tiny-font[
+
+```r
+gapminder %&gt;%
+  filter(country %in% c("Norway", "Portugal", "Spain", "Austria")) %&gt;%
+  mutate(country = fct_reorder(country, lifeExp, max)) %&gt;% # order by maximum
+  ggplot(aes(year, lifeExp)) + geom_line() +
+  facet_wrap(vars(country), nrow = 1)
+```
+]
+
+.center[
+![](getting-things-in-order_files/figure-html/gapminder-europe5-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Alternative orderings: By smallest difference
+
+.tiny-font[
+
+```r
+gapminder %&gt;%
+  filter(country %in% c("Norway", "Portugal", "Spain", "Austria")) %&gt;%
+  # order by custom function: here, difference between max and min
+  mutate(country = fct_reorder(country, lifeExp, function(x) { max(x) - min(x) })) %&gt;%
+  ggplot(aes(year, lifeExp)) + geom_line() +
+  facet_wrap(vars(country), nrow = 1)
+```
+]
+
+.center[
+![](getting-things-in-order_files/figure-html/gapminder-europe6-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Alternative orderings: By largest difference
+
+.tiny-font[
+
+```r
+gapminder %&gt;%
+  filter(country %in% c("Norway", "Portugal", "Spain", "Austria")) %&gt;%
+  # order by custom function: here, difference between min and max
+  mutate(country = fct_reorder(country, lifeExp, function(x) { min(x) - max(x) })) %&gt;%
+  ggplot(aes(year, lifeExp)) + geom_line() +
+  facet_wrap(vars(country), nrow = 1)
+```
+]
+
+.center[
+![](getting-things-in-order_files/figure-html/gapminder-europe7-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Final example: Lumping factor levels together
+
+--
+
+.small-font[
+Dataset: Flights out of New York City in 2013
+]
+
+.tiny-font[
+
+```r
+library(nycflights13)
+
+flight_data &lt;- flights %&gt;% # take data on individual flights
+  left_join(airlines) %&gt;%  # add in full-length airline names
+  select(name, carrier, flight, year, month, day, origin, dest) # pick columns of interest
+```
+
+```
+Joining, by = "carrier"
+```
+]
+
+--
+
+.tiny-font[
+
+```r
+flight_data
+```
+
+```
+# A tibble: 336,776 x 8
+   name                     carrier flight  year month   day origin dest 
+   &lt;chr&gt;                    &lt;chr&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;
+ 1 United Air Lines Inc.    UA        1545  2013     1     1 EWR    IAH  
+ 2 United Air Lines Inc.    UA        1714  2013     1     1 LGA    IAH  
+ 3 American Airlines Inc.   AA        1141  2013     1     1 JFK    MIA  
+ 4 JetBlue Airways          B6         725  2013     1     1 JFK    BQN  
+ 5 Delta Air Lines Inc.     DL         461  2013     1     1 LGA    ATL  
+ 6 United Air Lines Inc.    UA        1696  2013     1     1 EWR    ORD  
+ 7 JetBlue Airways          B6         507  2013     1     1 EWR    FLL  
+ 8 ExpressJet Airlines Inc. EV        5708  2013     1     1 LGA    IAD  
+ 9 JetBlue Airways          B6          79  2013     1     1 JFK    MCO  
+10 American Airlines Inc.   AA         301  2013     1     1 LGA    ORD  
+# … with 336,766 more rows
+```
+]
+
+---
+
+## Flights out of New York City in 2013
+
+.pull-left.tiny-font[
+
+```r
+flight_data %&gt;%
+  ggplot(aes(y = name)) + 
+  geom_bar()
+```
+]
+
+.pull-right[
+![](getting-things-in-order_files/figure-html/flights-unordered-out-1.svg)&lt;!-- --&gt;
+]
+
+--
+
+.small-font[
+As (almost) always, the default alphabetic ordering is terrible
+]
+
+
+
+---
+
+## Flights out of New York City in 2013
+
+.pull-left.tiny-font[
+
+```r
+flight_data %&gt;%
+  mutate(
+    name = fct_infreq(name)
+  ) %&gt;%
+  ggplot(aes(y = fct_rev(name))) + 
+  geom_bar()
+```
+]
+
+
+.pull-right[
+![](getting-things-in-order_files/figure-html/flights-ordered-out-1.svg)&lt;!-- --&gt;
+]
+
+--
+
+.small-font[
+Ordering by frequency is better, but do we need to show all airlines?
+]
+
+---
+
+## Flights out of New York City in 2013, with lumping
+
+.pull-left.tiny-font[
+
+```r
+flight_data %&gt;%
+  mutate(
+    # keep only the 7 most common airlines
+    name = fct_lump_n(name, 7)
+  ) %&gt;%
+  ggplot(aes(y = fct_rev(name))) + 
+  geom_bar()
+```
+]
+
+
+.pull-right[
+![](getting-things-in-order_files/figure-html/flights-lumped-out-1.svg)&lt;!-- --&gt;
+]
+
+--
+
+.small-font[
+Now the ordering is again alphabetic...
+]
+
+
+---
+
+## Flights out of New York City in 2013, with lumping
+
+.pull-left.tiny-font[
+
+```r
+flight_data %&gt;%
+  mutate(
+    # order after lumping
+    name = fct_infreq(fct_lump_n(name, 7))
+  ) %&gt;%
+  ggplot(aes(y = fct_rev(name))) + 
+  geom_bar()
+```
+]
+
+.pull-right[
+![](getting-things-in-order_files/figure-html/flights-lumped-ordered-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Flights out of New York City in 2013, with lumping
+
+.pull-left.tiny-font[
+
+```r
+flight_data %&gt;%
+  mutate(
+    # order before lumping
+    name = fct_lump_n(fct_infreq(name), 7)
+  ) %&gt;%
+  ggplot(aes(y = fct_rev(name))) + 
+  geom_bar()
+```
+]
+
+
+.pull-right[
+![](getting-things-in-order_files/figure-html/flights-lumped-ordered2-out-1.svg)&lt;!-- --&gt;
+]
+
+--
+
+.small-font[
+In most cases, you will want to order before lumping
+]
+
+
+---
+
+## Flights out of New York City in 2013, with lumping
+
+.pull-left.tiny-font[
+
+```r
+flight_data %&gt;%
+  mutate(
+    # order before lumping
+    name = fct_lump_n(fct_infreq(name), 7)
+  ) %&gt;%
+  ggplot(aes(y = fct_rev(name))) + 
+  geom_bar()
+```
+]
+
+
+.pull-right[
+![](getting-things-in-order_files/figure-html/flights-lumped-ordered3-out-1.svg)&lt;!-- --&gt;
+]
+
+.small-font[
+Can we visually separate the "Other" category?
+]
+
+---
+
+## Flights out of New York City in 2013, with lumping
+
+.pull-left.tiny-font[
+
+```r
+flight_data %&gt;%
+  mutate(
+    name = fct_lump_n(fct_infreq(name), 7),
+    # Use `fct_other()` to manually lump all
+    # levels not called "Other" into "Named"
+    highlight = fct_other(
+      name,
+      keep = "Other", other_level = "Named"
+    )
+  ) %&gt;%
+  ggplot() +
+  aes(
+    y = fct_rev(name),
+    fill = highlight
+  ) + 
+  geom_bar()
+```
+]
+
+
+.pull-right[
+![](getting-things-in-order_files/figure-html/flights-highlight-out-1.svg)&lt;!-- --&gt;
+]
+
+--
+
+.small-font[
+One annoying issue: The legend is in the wrong order
+]
+
+
+---
+
+## Flights out of New York City in 2013, with lumping
+
+.pull-left.tiny-font[
+
+```r
+flight_data %&gt;%
+  mutate(
+    name = fct_lump_n(fct_infreq(name), 7),
+    # Use `fct_other()` to manually lump all
+    # levels not called "Other" into "Named"
+    highlight = fct_other(
+      name,
+      keep = "Other", other_level = "Named"
+    )
+  ) %&gt;%
+  ggplot() +
+  aes(
+    y = fct_rev(name),
+    # reverse fill aesthetic
+    fill = fct_rev(highlight)
+  ) + 
+  geom_bar()
+```
+]
+
+
+.pull-right[
+![](getting-things-in-order_files/figure-html/flights-highlight2-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Flights out of New York City in 2013, final tweaks
+
+.pull-left.xtiny-font[
+
+```r
+flight_data %&gt;%
+  mutate(
+    name = fct_lump_n(fct_infreq(name), 7),
+    highlight = fct_other(
+      name, keep = "Other", other_level = "Named"
+    )
+  ) %&gt;%
+  ggplot() +
+  aes(y = fct_rev(name), fill = highlight) + 
+  geom_bar() +
+  scale_x_continuous(
+    name = "Number of flights",
+    expand = expansion(mult = c(0, 0.07))
+  ) +
+  scale_y_discrete(name = NULL) +
+  scale_fill_manual(
+    values = c(
+      Named = "gray50", Other = "#98545F"
+    ),
+    guide = "none"
+  ) +
+  theme_minimal_vgrid()
+```
+]
+
+
+.pull-right[
+![](getting-things-in-order_files/figure-html/flights-final-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Summary of key factor manipulation functions
+
+.small-font.center[
+
+Function           | Use case        | Documentation
+:-----------       | :----------     | :----------:
+`fct_relevel()`    | Change order of factor levels manually | [click here](https://forcats.tidyverse.org/reference/fct_relevel.html)
+`fct_infreq()`     | Put levels in descending order of how frequently each level occurs in the data | [click here](https://forcats.tidyverse.org/reference/fct_inorder.html)
+`fct_rev()`        | Reverse the order of factor levels | [click here](https://forcats.tidyverse.org/reference/fct_rev.html)
+`fct_reorder()`    | Put levels in ascending order determined by a numeric variable or summary function | [click here](https://forcats.tidyverse.org/reference/fct_reorder.html)
+`fct_lump_n()`     | Retain the *n* most frequent levels and lump all others into `"Other"` | [click here](https://forcats.tidyverse.org/reference/fct_lump.html)
+`fct_other()`      | Manually group some factor levels into `"Other"` | [click here](https://forcats.tidyverse.org/reference/fct_other.html)
+
+]
+
+For more options, check out the [reference documentation](https://forcats.tidyverse.org/reference/index.html) of the **forcats** package
+
+---
+
+## Further reading
+
+- Fundamentals of Data Visualization: [Chapter 6: Visualizing amounts](https://clauswilke.com/dataviz/visualizing-amounts.html)
+- **forcats** documentation: [Introduction to forcats](https://forcats.tidyverse.org/articles/forcats.html)
+- **forcats** reference documentation: [Change order of levels](https://forcats.tidyverse.org/reference/index.html#section-change-order-of-levels)
+
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"slideNumberFormat": ""
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

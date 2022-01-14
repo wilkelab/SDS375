@@ -1,0 +1,434 @@
+---
+#############################################################
+#                                                           #
+# Click on "Run Document" in RStudio to run this worksheet. #
+#                                                           #
+#############################################################
+title: "Functions and functional programming"
+author: "Claus O. Wilke"
+output:
+  learnr::tutorial:
+    df_print: default
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(tidyverse)
+library(palmerpenguins)
+knitr::opts_chunk$set(echo = FALSE, comment = "")
+
+make_pies <- function(data, island) {
+  data %>%
+    ggplot(aes(y = "", fill = species)) +
+    geom_bar(position = "fill") +
+    scale_y_discrete(name = NULL, breaks = NULL) +
+    scale_x_continuous(labels = scales::percent) +
+    ggtitle(island) +
+    coord_polar()
+}
+```
+
+## Introduction
+
+In this worksheet, we will discuss elements of functional programming in R.
+
+We will be using the R package **tidyverse** for its functional programming features including `map()`, `nest()`, `unnest()`, etc.  The **palmerpenguins** package provides the `penguins` dataset.
+
+```{r library-calls, echo = TRUE, eval = FALSE}
+# load required libraries
+library(tidyverse)
+library(palmerpenguins)
+```
+
+We will be working with the dataset `penguins` containing data on individual penguins on Antarctica.
+```{r echo = TRUE}
+penguins
+```
+
+## Calling functions repeatedly
+
+The core concept in functional programming is a function, which is a way of running the same code multiple times on different input data. In R, functions are defined with the `function` keyword, followed by a list of arguments in parentheses and the body of the function in curly braces. For example, the following code defines a function that squares a numeric value.
+
+```{r echo = TRUE}
+square <- function(x) {
+  x^2
+}
+```
+The variable `x` is the argument of the function, and it can then be used in the body of the function for computations. The result of the last expression in the function body is used as the return value of the function, so this simple function returns the square of its argument. Note that functions are first-class objects in R, and we can assign a function to a variable using `<-`, just like any other assignment in R.
+
+To call a function, we write the name of the function followed by parentheses enclosing the argument(s). For example, the following code calculates the squares of 3, 4, and 5:
+
+```{r echo = TRUE}
+square(3)
+square(4)
+square(5)
+```
+
+We often want to run a function on a set of given input values. In procedural programming, we would typically do this with a `for` loop. The equivalent concept in functional programming is the map. Specifically, the `map()` function takes as input a vector of values (e.g., the numbers from 3 to 5, `3:5`) and a function name (e.g. `square`, note no parentheses) and applies the function to each value in the input vector.
+
+```{r echo = TRUE}
+map(3:5, square)
+```
+
+The return result is a list, hence the weird double brackets (`[[1]]`, `[[2]]`, etc.). If instead we want a regular vector of numbers, we can use `map_dbl()`. Here, "dbl" stands for "double", which is shorthand for "double precision floating point numbers", the default numeric datatype of R.
+
+```{r echo = TRUE}
+map_dbl(3:5, square)
+```
+
+When using any of the map functions, instead of providing a function by name, we can also define a function in place, as a formula. We do so by writing an R expression with a tilde (`~`) in front. The parameter supplied by the map function is always called `.x`. So `~.x^2` is equivalent to `function(.x) { .x^2 }`.
+
+```{r echo = TRUE}
+map_dbl(1:3, ~.x^2)
+```
+
+Now try these concepts yourself. First write a function that calculates the cube of its argument.
+
+```{r cube, exercise = TRUE}
+
+```
+
+```{r cube-hint}
+cube <- function(___) {
+  ___
+}
+
+cube(2)
+cube(3)
+cube(4)
+```
+
+
+```{r cube-solution}
+cube <- function(x) {
+  x^3
+}
+
+cube(2)
+cube(3)
+cube(4)
+```
+
+Now use this function in conjunction with either `map()` or `map_dbl()` to calculate the first 5 cubes.
+
+```{r cube-map, exercise = TRUE}
+
+```
+
+```{r cube-map-hint}
+cube <- function(x) {
+  x^3
+}
+
+map(1:5, ___)
+```
+
+
+```{r cube-map-solution}
+cube <- function(x) {
+  x^3
+}
+
+map(1:5, cube)
+map_dbl(1:5, cube)
+```
+
+
+Now calculate the first 5 cubes using the in-place function definition via a formula.
+
+```{r cube-formula, exercise = TRUE}
+
+```
+
+
+```{r cube-formula-hint}
+map(1:5, ~___)
+```
+
+
+```{r cube-formula-solution}
+map(1:5, ~.x^3)
+map_dbl(1:5, ~.x^3)
+```
+
+The `map()` function applies a function taking a single argument to a single vector of values. But what if we have a function with two arguments, say, a function that takes values `x` and `y` and returns their product? In this case, we can use `map2()`, which requires two input vectors and a function of two arguments.
+
+```{r echo = TRUE}
+map2(1:3, 2:4, function(x, y) x*y)
+```
+
+To try this out, use a single `map2()` expression to calculate the square of 3, the cube of 4, and the fourth power of 5.
+
+```{r map2-exercise, exercise = TRUE}
+
+```
+
+```{r map2-exercise-hint}
+map2(3:5, 2:4, ___)
+```
+
+
+```{r map2-exercise-solution}
+map2(3:5, 2:4, function(x, y) x^y)
+```
+
+Finally, sometimes we want to call a function repeatedly but not to collect the return values but rather for side effects, such as printing output. In this case, we use `walk()` instead of `map()`.
+
+```{r echo = TRUE}
+walk(1:3, print)
+```
+
+Try this out by calling the following function `print_value()` on the input values 1, 2, and 3.
+
+```{r walk-exercise, exercise = TRUE}
+print_value <- function(x) {
+  cat("The value is", x, "\n")
+}
+```
+
+
+```{r walk-exercise-hint}
+print_value <- function(x) {
+  cat("The value is", x, "\n")
+}
+
+walk(1:3, ___)
+```
+
+```{r walk-exercise-solution}
+print_value <- function(x) {
+  cat("The value is", x, "\n")
+}
+
+walk(1:3, print_value)
+```
+
+## Nesting and unnesting
+
+Functional programming becomes a very powerful concept in data analysis when combined with nested data frames, so we will be discussing nesting and unnesting next.
+
+We use the function `nest()` to take rectangular regions in a data table and compress them into a single cell in a higher-level table. This process is useful when we want to store all the information for one category of data in a single cell.
+
+For example, we can store all the penguin data in a nested table with three rows and two columns, where one column contains the penguins species and the other column contains all the data for that species. We generate such a table as follows.
+
+```{r echo = TRUE, eval = FALSE}
+penguins %>%
+  nest(data = -species)
+```
+
+```{r echo = FALSE, eval = TRUE}
+penguins %>%
+  nest(data = -species) %>%
+  print()
+```
+
+The specification `data = -species` means "create a new column called `data` and move everything into this column except the contents of the `species` column". The `nest()` function will automatically generate exactly one row for each unique combination of data values that are not being nested. Therefore, we end up with three rows, one for each species.
+
+The `data` column is a list column, and we can access individual values in it via list indexing, i.e., double square brackets. So, `data[[1]]` is the first nested table, `data[[2]]` is the second nested table, and so on. For example, the following code extracts all the data for Gentoo penguins.
+
+```{r echo = TRUE, eval = FALSE}
+penguins_nested <- penguins %>%
+  nest(data = -species)
+
+penguins_nested$data[[2]] # data table for Gentoo penguins
+```
+
+```{r echo = FALSE, eval = TRUE}
+penguins_nested <- penguins %>%
+  nest(data = -species)
+
+penguins_nested$data[[2]] %>% print()
+```
+
+
+Now try this out. First, make a nested table but nest by `island`.
+
+```{r island-nested, exercise = TRUE}
+penguins %>%
+  nest(___)
+```
+
+```{r island-nested-hint}
+penguins %>%
+  nest(data = ___)
+```
+
+```{r island-nested-solution}
+penguins %>%
+  nest(data = -island)
+```
+
+Now extract the data table for the third island.
+
+```{r island-nested-extract, exercise = TRUE}
+penguins_nested <- penguins %>%
+  ___
+
+penguins_nested$___
+```
+
+```{r island-nested-extract-hint}
+penguins_nested <- penguins %>%
+  nest(data = -island)
+
+penguins_nested$data[[___]]
+```
+
+```{r island-nested-extract-solution}
+penguins_nested <- penguins %>%
+  nest(data = -island)
+
+penguins_nested$data[[3]]
+```
+
+Now nest by `species` and `island` at the same time. You can nest by multiple columns by excluding both from the newly created data column, via `data = -c(species, island)`.
+
+```{r species-island-nested, exercise = TRUE}
+penguins %>%
+  nest(___)
+```
+
+```{r species-island-nested-hint}
+penguins %>%
+  nest(data = ___)
+```
+
+```{r species-island-nested-solution}
+penguins %>%
+  nest(data = -c(species, island))
+```
+
+To unnest, we use the function `unnest()`. Its argument `cols` takes the name of the column to be unnested. For example, if we nest into the `data` column, as we have done in all examples so far, then `cols = data` unnests this column.
+
+```{r echo = TRUE, eval = FALSE}
+penguins_nested <- penguins %>%
+  nest(data = -species)
+
+penguins_nested %>%
+  unnest(cols = data)
+```
+
+```{r echo = FALSE, eval = TRUE}
+penguins_nested <- penguins %>%
+  nest(data = -species)
+
+penguins_nested %>%
+  unnest(cols = data)
+```
+
+Try this for yourself in the following example. Note that the data column has a different name here.
+
+```{r unnest, exercise = TRUE}
+penguins_nested <- penguins %>%
+  nest(species_data = -species)
+
+penguins_nested %>%
+  ___
+```
+
+```{r unnest-hint}
+penguins_nested <- penguins %>%
+  nest(species_data = -species)
+
+penguins_nested %>%
+  unnest(cols = ___)
+```
+
+```{r unnest-solution}
+penguins_nested <- penguins %>%
+  nest(species_data = -species)
+
+penguins_nested %>%
+  unnest(cols = species_data)
+```
+
+## Plotting subsets of data
+
+Now we will use the concepts of mapping and nesting to automatically create plots of subsets of data. Specifically, we will make pie charts of the species composition of penguin species on the different islands. The pie charts will be generated by the following function, which takes as arguments the data for the island and the name of the island.
+
+```{r echo = TRUE}
+make_pies <- function(data, island) {
+  data %>%
+    ggplot(aes(y = "", fill = species)) +
+    geom_bar(position = "fill") +
+    scale_y_discrete(name = NULL, breaks = NULL) +
+    scale_x_continuous(labels = scales::percent) +
+    ggtitle(island) +
+    coord_polar()
+}
+```
+
+We can use this function for a single island like so.
+
+```{r echo = TRUE}
+penguins %>%
+  filter(island == "Dream") %>%
+  make_pies("Dream")
+```
+
+However, here we want to automate the process of calling this function for all islands separately. See if you can make this happen, using the functions `nest()`, `mutate()`, `map2()`, `pull()`, and `walk()`. (Hint: The individual stages of the calculation are provided as hints, so you can just click through the hints one-by-one and run each piece.)
+
+```{r island-pies, exercise = TRUE}
+
+
+```
+
+```{r island-pies-hint-1}
+# First create a nested table so it has three rows, one for each island.
+# The table should have a column `data` whose entries contain all the
+# data for each island.
+```
+
+```{r island-pies-hint-2}
+penguins %>%
+  # move all data for each island into a single
+  # entry in a column called `data`
+  nest(data = -island)
+
+# Next use `mutate()` and `map2()` to run the `make_pies()` function
+# on each subset of data and store the resulting plots.
+```
+
+```{r island-pies-hint-3}
+penguins %>%
+  # move all data for each island into a single
+  # entry in a column called `data`
+  nest(data = -island) %>%
+  # run the `make_pies()` function on each dataset separately,
+  # store result in a column `plots`
+  mutate(
+    plots = map2(data, island, make_pies)
+  )
+
+# Next extract the `plots` column.
+```
+
+```{r island-pies-hint-4}
+penguins %>%
+  # move all data for each island into a single
+  # entry in a column called `data`
+  nest(data = -island) %>%
+  # run the `make_pies()` function on each dataset separately,
+  # store result in a column `plots`
+  mutate(
+    plots = map2(data, island, make_pies)
+  ) %>%
+  pull(plots)     # extract the column holding the plots
+
+# Next use `walk()` to print all the plots.
+```
+
+```{r island-pies-solution}
+penguins %>%
+  # move all data for each island into a single
+  # entry in a column called `data`
+  nest(data = -island) %>%
+  # run the `make_pies()` function on each dataset separately,
+  # store result in a column `plots`
+  mutate(
+    plots = map2(data, island, make_pies)
+  ) %>%
+  pull(plots) %>% # extract the column holding the plots
+  walk(print)     # print all plots one by one
+```

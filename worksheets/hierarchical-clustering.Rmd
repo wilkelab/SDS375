@@ -1,0 +1,324 @@
+---
+#############################################################
+#                                                           #
+# Click on "Run Document" in RStudio to run this worksheet. #
+#                                                           #
+#############################################################
+title: "Clustering"
+author: "Claus O. Wilke"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(tidyverse)
+library(ggdendro)
+library(palmerpenguins)
+knitr::opts_chunk$set(echo = FALSE, comment = "")
+
+penguin_data <- penguins %>%
+  select(-island, -sex, -year) %>%
+  group_by(species) %>%
+  mutate(
+    id = 1:n(),
+    penguin = glue::glue("{species}-{id}")
+  ) %>%
+  na.omit() %>%
+  ungroup() %>%
+  select(-id, -species)
+
+# down-sample
+set.seed(456321)
+penguins_sampled <- penguin_data[sample(1:nrow(penguin_data), 30), ] %>%
+  arrange(penguin) %>%
+  column_to_rownames(var = "penguin")
+
+```
+
+## Introduction
+
+In this worksheet, we will discuss how to perform hierarchical clustering.
+
+We will be using the R package **tidyverse** for data manipulation and visualization, and the R package **ggdendro** to visualize dendrograms obtained from clustering.
+
+```{r library-calls, echo = TRUE, eval = FALSE}
+# load required libraries
+library(tidyverse)
+library(ggdendro)
+```
+
+
+We will be working with the dataset `penguins_sampled`, which is a downsampled and slightly simplified version of the `penguins` dataset from the package **palmerpenguins.**
+
+```{r echo = TRUE}
+penguins_sampled
+```
+
+
+## Calculating a distance matrix
+
+Many hierarchical clustering algorithms start with calculating a distance matrix. This is done with the built-in R function `dist()`. Before calculating distances, though, you should first scale the data to zero mean and unit variance, just like we have done previously for PCA and other multivariate techniques. As a reminder, you scale a dataset with the function `scale()`.
+
+```{r distance-calc, exercise = TRUE}
+penguins_sampled %>%
+  ___ %>%
+  ___
+```
+
+```{r distance-calc-hint}
+penguins_sampled %>%
+  scale() %>%
+  ___
+```
+
+```{r distance-calc-solution}
+penguins_sampled %>%
+  scale() %>%
+  dist()
+```
+
+By default, the `dist()` function calculates Euclidean distances. But other options exist, which can be selected via the `method` argument to the `dist()` function. Commonly used options include `"maximum"`, `"manhattan"`, or `"minkowski"`. Try this out.
+
+```{r distance-calc-methods, exercise = TRUE}
+# first try "maximum"
+penguins_sampled %>%
+  scale() %>%
+  dist(___)
+```
+
+```{r distance-calc-methods-hint-1}
+# first try "maximum"
+penguins_sampled %>%
+  scale() %>%
+  dist(method = ___)
+```
+
+```{r distance-calc-methods-hint-2}
+# first try "maximum"
+penguins_sampled %>%
+  scale() %>%
+  dist(method = "maximum")
+
+# next try "manhattan" and "minkowski"
+```
+
+```{r distance-calc-methods-solution}
+# first try "maximum"
+penguins_sampled %>%
+  scale() %>%
+  dist(method = "maximum")
+
+# next try "manhattan" and "minkowski"
+penguins_sampled %>%
+  scale() %>%
+  dist(method = "manhattan")
+
+penguins_sampled %>%
+  scale() %>%
+  dist(method = "minkowski")
+```
+
+When using the Minkowski distance, you should also set the parameter `p`. The Minkowski distance is a generalization of both the Euclidean and the Manhattan distance, and the parameter `p` interpolates between these distance types.
+
+Verify that the Minkowski distance is identical to the Euclidean distance for `p = 2` and identical to the Manhattan distance for `p = 1`. The simplest way to do this is to calculate the two distance matrices and then subtract them from each other and check that the values are 0.
+
+```{r distance-calc-mikowski, exercise = TRUE}
+
+```
+
+```{r distance-calc-mikowski-hint-1}
+# verify Euclidean
+d_eucl <- penguins_sampled %>%
+  scale() %>%
+  dist(method = "euclidean")
+
+d_mink <- ___
+```
+
+```{r distance-calc-mikowski-hint-2}
+# verify Euclidean
+d_eucl <- penguins_sampled %>%
+  scale() %>%
+  dist(method = "euclidean")
+
+d_mink <- penguins_sampled %>%
+  scale() %>%
+  dist(method = "minkowski", p = ___)
+```
+
+```{r distance-calc-mikowski-hint-3}
+# verify Euclidean
+d_eucl <- penguins_sampled %>%
+  scale() %>%
+  dist(method = "euclidean")
+
+d_mink <- penguins_sampled %>%
+  scale() %>%
+  dist(method = "minkowski", p = 2)
+
+# next subtract to check for equality
+```
+
+```{r distance-calc-mikowski-hint-4}
+# verify Euclidean
+d_eucl <- penguins_sampled %>%
+  scale() %>%
+  dist(method = "euclidean")
+
+d_mink <- penguins_sampled %>%
+  scale() %>%
+  dist(method = "minkowski", p = 2)
+
+# next subtract to check for equality
+d_eucl - d_mink
+
+# next do the same for manhattan
+```
+
+
+```{r distance-calc-mikowski-solution}
+# verify Euclidean
+d_eucl <- penguins_sampled %>%
+  scale() %>%
+  dist(method = "euclidean")
+
+d_mink <- penguins_sampled %>%
+  scale() %>%
+  dist(method = "minkowski", p = 2)
+
+# next subtract to check for equality
+d_eucl - d_mink
+
+# verify Manhattan
+d_eucl <- penguins_sampled %>%
+  scale() %>%
+  dist(method = "manhattan")
+
+d_mink <- penguins_sampled %>%
+  scale() %>%
+  dist(method = "minkowski", p = 1)
+
+d_eucl - d_mink
+```
+
+## Performing hierarchical clustering
+
+To perform hierarchical clustering, you simply run the function `hclust()` on a distance matrix previously computed with `dist()`. You can then visualize the result with `ggdendrogram()` from the **ggdendro** package. Try this out.
+
+```{r ggdendro-simple, exercise = TRUE}
+penguins_sampled %>%
+  scale() %>%
+  dist() %>%
+  ___
+```
+
+```{r ggdendro-simple-hint}
+penguins_sampled %>%
+  scale() %>%
+  dist() %>%
+  hclust() %>%
+  ___
+```
+
+```{r ggdendro-simple-solution}
+penguins_sampled %>%
+  scale() %>%
+  dist() %>%
+  hclust() %>%
+  ggdendrogram()
+```
+
+In the `ggdendrogram()` function, you can set `rotate = TRUE` to arrange the leaves of the dendrogram vertically instead of horizontally. Try this out.
+
+```{r ggdendro-rotated, exercise = TRUE}
+
+```
+
+```{r ggdendro-rotated-hint}
+penguins_sampled %>%
+  scale() %>%
+  dist() %>%
+  hclust() %>%
+  ggdendrogram(rotate = ___)
+```
+
+```{r ggdendro-rotated-solution}
+penguins_sampled %>%
+  scale() %>%
+  dist() %>%
+  hclust() %>%
+  ggdendrogram(rotate = TRUE)
+```
+
+
+You can run different clustering algorithms by changing the `method` argument of `hclust()`. `method = "average"` uses UPGMA, `method = "ward.D2"` uses Ward's minimum variance method, and `method = "complete"` uses the complete linkage method. Modify the example above to try these different methods.
+
+## Assigning observations to clusters
+
+In hierarchical clustering, if we want to assign each observation to a cluster, we need to cut the dendrogram into disjoint parts. There are two ways in which we can do this. First, we can cut such that we obtain a specific number of clusters. Second, we can cut at a set height and see how many clusters we obtain.
+
+We can cut a dendrogram with the function `cutree()`, which takes as input the output from `hclust()` and either an argument `k` to determine how many clusters we want or an argument `h` to determine at which height we want to cut the tree. Let's try the first approach first. Cut the penguin dendrogram such that there are three clusters. Then check whether the three clusters correspond to the three species.
+
+```{r cutree-k, exercise = TRUE}
+penguins_sampled %>%
+  scale() %>%
+  dist() %>%
+  hclust() %>%
+  ___
+```
+
+```{r cutree-k-hint}
+penguins_sampled %>%
+  scale() %>%
+  dist() %>%
+  hclust() %>%
+  cutree(k = ___)
+```
+
+```{r cutree-k-solution}
+penguins_sampled %>%
+  scale() %>%
+  dist() %>%
+  hclust() %>%
+  cutree(k = 3)
+```
+
+Next, by trial-and-error, find a cut height at which you obtain exactly three clusters.
+
+```{r cutree-h, exercise = TRUE}
+
+```
+
+```{r cutree-h-hint}
+penguins_sampled %>%
+  scale() %>%
+  dist() %>%
+  hclust() %>%
+  cutree(h = ___)
+```
+
+```{r cutree-h-solution}
+penguins_sampled %>%
+  scale() %>%
+  dist() %>%
+  hclust() %>%
+  cutree(h = 2.9)
+```
+
+Could you have used the function `ggdendrogram()` to arrive at a good guess for the value of `h`?
+
+Finally, try different distance methods and see whether the clusters continue to match species identity when you cut into `k = 3` clusters. Can you find a distance metric for which the clusters do not match the species?
+
+```{r cutree-dist, exercise = TRUE}
+
+```
+
+```{r cutree-dist-solution}
+# for Manhattan, Adelie and Chinstrap are mixed together
+penguins_sampled %>%
+  scale() %>%
+  dist(method = "manhattan") %>%
+  hclust() %>%
+  cutree(k = 3)
+```

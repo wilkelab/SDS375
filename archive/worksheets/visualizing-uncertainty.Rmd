@@ -1,0 +1,257 @@
+---
+#############################################################
+#                                                           #
+# Click on "Run Document" in RStudio to run this worksheet. #
+#                                                           #
+#############################################################
+title: "Visualizing uncertainty"
+author: "Claus O. Wilke"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(tidyverse)
+library(broom)
+library(ggdist)
+library(distributional)
+library(gapminder)
+knitr::opts_chunk$set(echo = FALSE, comment = "")
+
+# fitted models
+lm_data <- gapminder %>%
+  nest(data = -c(continent, year)) %>%
+  mutate(
+    fit = map(data, ~lm(lifeExp ~ log(gdpPercap), data = .x)),
+    tidy_out = map(fit, tidy)
+  ) %>%
+  unnest(cols = tidy_out) %>%
+  select(-fit, -data) %>%
+  filter(term != "(Intercept)", continent != "Oceania")
+```
+
+## Introduction
+
+In this worksheet, we will discuss how to visualize uncertainty estimates obtained from a model fit.
+
+We will be using the **tidyverse** package for data manipulation and plotting, **broom** package for model tidying, and the **ggdist** and **distributional** packages for uncertainty visualizations. The **gapminder** package provides the `gapminder` dataset.
+
+```{r library-calls, echo = TRUE, eval = FALSE}
+# load required libraries
+library(tidyverse)
+library(broom)
+library(ggdist)
+library(distributional)
+library(gapminder)
+```
+
+We will be working with the dataset `gapminder` containing data on  data on life expectancy, GDP per capita, and population by country and year.
+
+```{r echo = TRUE}
+gapminder
+```
+
+## Plotting model estimates as error bars
+
+Whenever we are working with linear models applied to a complex dataset, we typically end up with a summary table that holds various parameter estimates with associated standard errors. For example, for the `gapminder` dataset, we can fit life expectancy against log-transformed GDP per capita separately for each continent and year. We end up with a set of estimates of the slope of the regression line for each subset of data.
+
+The pipeline to perform these model fits and extract the estimates and standard errors has been discussed in the preceding worksheet, and we take it as a given here.
+
+```{r echo = TRUE}
+lm_data <- gapminder %>%
+  nest(data = -c(continent, year)) %>%
+  mutate(
+    fit = map(data, ~lm(lifeExp ~ log(gdpPercap), data = .x)),
+    tidy_out = map(fit, tidy)
+  ) %>%
+  unnest(cols = tidy_out) %>%
+  select(-fit, -data) %>%
+  # leave out the intercept term and the continent Oceania for simplicity
+  filter(term != "(Intercept)", continent != "Oceania")
+
+lm_data
+```
+
+Next, we can visualize these estimates. Let's focus just on the Americas. We could make a scatter plot of the estimate (which is the slope of the regression line) against year.
+
+```{r point-estimates-viz, echo = TRUE}
+lm_data %>%
+  filter(continent == "Americas") %>%
+  ggplot(aes(year, estimate)) +
+  geom_point()
+```
+
+However, this does not show the uncertainty of each estimate. The simplest way to show uncertainty is via error bars, which we can plot in ggplot with `geom_pointrange()`. This geom takes in addition to the `x` and `y` aesthetics an additional set of aesthetics `ymin` and `ymax` (or alternatively `xmin` and `xmax`, depending on whether error bars should be shown vertically or horizontally), which represent the end points of the error bars. Importantly, you need to calculate these endpoints yourself, the geom cannot calculate them from the estimate and standard error.
+
+For sufficiently large data sets, we can make a normal approximation and assume that the 95% confidence interval corresponds to the mean +/- 1.96 times the error. Thus, we calculate lower and upper bounds in this way and then plot.
+
+```{r point-estimates-error-bars-viz, echo = TRUE}
+lm_data %>%
+  filter(continent == "Americas") %>%
+  mutate(
+    lower = estimate - 1.96*std.error,
+    upper = estimate + 1.96*std.error
+  ) %>%
+  ggplot(aes(year, estimate)) +
+  geom_pointrange(aes(ymin = lower, ymax = upper))
+```
+
+To see if you understand these concepts, repeat this plot but with two modifications:
+
+- Calculate a 99% confidence interval instead of a 95% confidence interval. The multiplier for a 99% confidence interval is 2.58.
+- Plot year along the y axis and the estimate along the x axis. This requires the error bars to be laid out horizontally.
+
+```{r error-bars-horizontal, exercise = TRUE}
+
+```
+
+```{r error-bars-horizontal-hint}
+lm_data %>%
+  filter(continent == "Americas") %>%
+  mutate(
+    lower = estimate - 2.58*std.error,
+    upper = estimate + 2.58*std.error
+  ) %>%
+  ggplot(___) +
+  ___
+```
+
+```{r error-bars-horizontal-solution}
+lm_data %>%
+  filter(continent == "Americas") %>%
+  mutate(
+    lower = estimate - 2.58*std.error,
+    upper = estimate + 2.58*std.error
+  ) %>%
+  ggplot(aes(estimate, year)) +
+  geom_pointrange(aes(xmin = lower, xmax = upper))
+```
+
+There are two related geoms, `geom_linerange()` and `geom_errorbar()`, that differ in minor ways from `geom_pointrange()`. First, both omit the point in the middle, so you have to plot it manually. Second, `geom_errorbar()` shows error bars with a little cap at the end. Repeat the previous plot using both of these geoms.
+
+
+```{r error-bars-horizontal2, exercise = TRUE}
+
+```
+
+```{r error-bars-horizontal2-hint}
+lm_data %>%
+  filter(continent == "Americas") %>%
+  mutate(
+    lower = estimate - 2.58*std.error,
+    upper = estimate + 2.58*std.error
+  ) %>%
+  ggplot(___) +
+  ___
+```
+
+```{r error-bars-horizontal2-solution}
+lm_data %>%
+  filter(continent == "Americas") %>%
+  mutate(
+    lower = estimate - 2.58*std.error,
+    upper = estimate + 2.58*std.error
+  ) %>%
+  ggplot(aes(estimate, year)) +
+  geom_linerange(aes(xmin = lower, xmax = upper)) +
+  geom_point(color = "navyblue")
+
+lm_data %>%
+  filter(continent == "Americas") %>%
+  mutate(
+    lower = estimate - 2.58*std.error,
+    upper = estimate + 2.58*std.error
+  ) %>%
+  ggplot(aes(estimate, year)) +
+  geom_errorbar(aes(xmin = lower, xmax = upper)) +
+  geom_point(color = "navyblue")
+```
+
+
+## Half-eyes, gradient intervals, etc.
+
+If we want to go beyond simple error bars, the **ggdist** package provides many more sophisticated approaches to visualizing uncertainty distributions. These include `stat_dist_halfeye()`, `stat_dist_gradientinterval()`, and `stat_dist_dotsinterval()` to draw half-eyes, gradient intervals, and quantile dotplots, respectively. All these functions take an unusual `aes()` argument of the form `aes(dist = <distribution function>)`. Here, `<distribution function>` is a distribution function from the **distributional** package converting the parameter estimate and standard error (and possibly other values, such as the residual degrees of freedom) into an error distribution. For example, the following mapping would use the `estimate` and `std.error` columns in the data to create a normal error distribution.
+
+```{r echo = TRUE, eval = FALSE}
+aes(dist = dist_normal(mu = estimate, sigma = std.error))
+```
+
+To demonstrate how this works, we'll make a half-eye plot for the gapminder regression models, focusing on the year 1952 but keeping all continents.
+
+```{r halfeye-demo, echo = TRUE}
+lm_data %>%
+  filter(year == 1952) %>%
+  mutate(continent = fct_reorder(continent, estimate)) %>%
+  ggplot(aes(x = estimate, y = continent)) +
+  stat_dist_halfeye(
+    aes(dist = dist_normal(mu = estimate, sigma = std.error)),
+    fill = "skyblue"
+  )
+```
+
+Try this for yourself. To change things up, pick a different year, e.g. 2002, and a different fill color.
+
+```{r halfeye-exercise, exercise = TRUE}
+
+```
+
+```{r halfeye-exercise-solution}
+lm_data %>%
+  filter(year == 2002) %>%
+  mutate(continent = fct_reorder(continent, estimate)) %>%
+  ggplot(aes(x = estimate, y = continent)) +
+  stat_dist_halfeye(
+    aes(dist = dist_normal(mu = estimate, sigma = std.error)),
+    fill = "olivedrab"
+  )
+```
+
+Now use `stat_dist_gradientinterval()` instead of `stat_dist_halfeye()`.
+
+```{r gradientinterval-exercise, exercise = TRUE}
+
+```
+
+```{r gradientinterval-exercise-solution}
+lm_data %>%
+  filter(year == 2002) %>%
+  mutate(continent = fct_reorder(continent, estimate)) %>%
+  ggplot(aes(x = estimate, y = continent)) +
+  stat_dist_gradientinterval(
+    aes(dist = dist_normal(mu = estimate, sigma = std.error)),
+    fill = "olivedrab"
+  )
+```
+
+And finally use `stat_dist_dotsinterval()`. This stat takes an additional parameter `quantiles` that determines the number of quantile dots to draw. Try `quantiles = 20`.
+
+```{r dotsinterval-exercise, exercise = TRUE}
+
+```
+
+```{r dotsinterval-exercise-hint}
+lm_data %>%
+  filter(year == 2002) %>%
+  mutate(continent = fct_reorder(continent, estimate)) %>%
+  ggplot(aes(x = estimate, y = continent)) +
+  stat_dist_dotsinterval(
+    aes(dist = dist_normal(mu = estimate, sigma = std.error)),
+    fill = "olivedrab",
+    quantiles = ___
+  )
+```
+
+```{r dotsinterval-exercise-solution}
+lm_data %>%
+  filter(year == 2002) %>%
+  mutate(continent = fct_reorder(continent, estimate)) %>%
+  ggplot(aes(x = estimate, y = continent)) +
+  stat_dist_dotsinterval(
+    aes(dist = dist_normal(mu = estimate, sigma = std.error)),
+    fill = "olivedrab",
+    quantiles = 20
+  )
+```
+
+Change both the year and the number of quantiles to see how quantile dotplots look in a variety of different scenarios. The possible year values range from 1952 to 2007 in five-year increments.

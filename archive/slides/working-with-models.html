@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Working with models</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Claus O. Wilke" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="Wilke-slides-theme.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, title-slide
+
+# Working with models
+### Claus O. Wilke
+### last updated: 2021-03-19
+
+---
+
+
+
+
+## How do we obtain information about model fits?
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  ggplot(aes(body_mass_g, flipper_length_mm)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  facet_wrap(vars(species))
+```
+
+![](working-with-models_files/figure-html/penguins-fits-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## We can fit a linear model with `lm()`
+
+--
+
+.tiny-font[
+
+```r
+penguins_adelie &lt;- filter(penguins, species == "Adelie")
+
+lm_out &lt;- lm(flipper_length_mm ~ body_mass_g, data = penguins_adelie)
+summary(lm_out)
+```
+
+```
+
+Call:
+lm(formula = flipper_length_mm ~ body_mass_g, data = penguins_adelie)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-14.2769  -3.6192   0.0569   3.4696  18.0477 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 1.652e+02  3.849e+00  42.929  &lt; 2e-16 ***
+body_mass_g 6.677e-03  1.032e-03   6.468 1.34e-09 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 5.798 on 149 degrees of freedom
+  (1 observation deleted due to missingness)
+Multiple R-squared:  0.2192,	Adjusted R-squared:  0.214 
+F-statistic: 41.83 on 1 and 149 DF,  p-value: 1.343e-09
+```
+]
+
+
+---
+
+## Use `map()` to fit models to groups of data
+
+.small-font[
+
+```r
+penguins %&gt;%
+  nest(data = -species) # nest all data except species column
+```
+
+```
+# A tibble: 3 x 2
+  species   data              
+  &lt;fct&gt;     &lt;list&gt;            
+1 Adelie    &lt;tibble [152 × 7]&gt;
+2 Gentoo    &lt;tibble [124 × 7]&gt;
+3 Chinstrap &lt;tibble [68 × 7]&gt; 
+```
+]
+
+---
+
+## Use `map()` to fit models to groups of data
+
+.small-font[
+
+```r
+penguins %&gt;%
+  nest(data = -species) %&gt;%
+  mutate(
+    # apply linear model to each nested data frame
+    fit = map(data, ~lm(flipper_length_mm ~ body_mass_g, data = .x))
+  )
+```
+
+```
+# A tibble: 3 x 3
+  species   data               fit   
+  &lt;fct&gt;     &lt;list&gt;             &lt;list&gt;
+1 Adelie    &lt;tibble [152 × 7]&gt; &lt;lm&gt;  
+2 Gentoo    &lt;tibble [124 × 7]&gt; &lt;lm&gt;  
+3 Chinstrap &lt;tibble [68 × 7]&gt;  &lt;lm&gt;  
+```
+]
+
+---
+
+## Use `map()` to fit models to groups of data
+
+.small-font[
+
+```r
+lm_data &lt;- penguins %&gt;%
+  nest(data = -species) %&gt;%
+  mutate(
+    # apply linear model to each nested data frame
+    fit = map(data, ~lm(flipper_length_mm ~ body_mass_g, data = .x))
+  )
+
+lm_data$fit[[1]]  # first model fit, for Adelie species
+```
+
+```
+
+Call:
+lm(formula = flipper_length_mm ~ body_mass_g, data = .x)
+
+Coefficients:
+(Intercept)  body_mass_g  
+  1.652e+02    6.677e-03  
+```
+]
+
+
+---
+
+.tiny-font[
+
+```r
+summary(lm_data$fit[[1]]) # summarize the first model, which is for Adelie
+```
+
+```
+
+Call:
+lm(formula = flipper_length_mm ~ body_mass_g, data = .x)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-14.2769  -3.6192   0.0569   3.4696  18.0477 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 1.652e+02  3.849e+00  42.929  &lt; 2e-16 ***
+body_mass_g 6.677e-03  1.032e-03   6.468 1.34e-09 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 5.798 on 149 degrees of freedom
+  (1 observation deleted due to missingness)
+Multiple R-squared:  0.2192,	Adjusted R-squared:  0.214 
+F-statistic: 41.83 on 1 and 149 DF,  p-value: 1.343e-09
+```
+]
+
+---
+
+.tiny-font[
+
+```r
+summary(lm_out)
+```
+
+```
+
+Call:
+lm(formula = flipper_length_mm ~ body_mass_g, data = penguins_adelie)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-14.2769  -3.6192   0.0569   3.4696  18.0477 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 1.652e+02  3.849e+00  42.929  &lt; 2e-16 ***
+body_mass_g 6.677e-03  1.032e-03   6.468 1.34e-09 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 5.798 on 149 degrees of freedom
+  (1 observation deleted due to missingness)
+Multiple R-squared:  0.2192,	Adjusted R-squared:  0.214 
+F-statistic: 41.83 on 1 and 149 DF,  p-value: 1.343e-09
+```
+]
+
+
+---
+
+.tiny-font[
+
+```r
+summary(lm_data$fit[[1]]) # summarize the first model, which is for Adelie
+```
+
+```
+
+Call:
+lm(formula = flipper_length_mm ~ body_mass_g, data = .x)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-14.2769  -3.6192   0.0569   3.4696  18.0477 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 1.652e+02  3.849e+00  42.929  &lt; 2e-16 ***
+body_mass_g 6.677e-03  1.032e-03   6.468 1.34e-09 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 5.798 on 149 degrees of freedom
+  (1 observation deleted due to missingness)
+Multiple R-squared:  0.2192,	Adjusted R-squared:  0.214 
+F-statistic: 41.83 on 1 and 149 DF,  p-value: 1.343e-09
+```
+]
+
+---
+
+.tiny-font[
+
+```r
+summary(lm_data$fit[[2]]) # second model, Chinstrap
+```
+
+```
+
+Call:
+lm(formula = flipper_length_mm ~ body_mass_g, data = .x)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-12.0194  -2.7401   0.1781   2.9859   8.9806 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 1.713e+02  4.244e+00   40.36   &lt;2e-16 ***
+body_mass_g 9.039e-03  8.321e-04   10.86   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 4.633 on 121 degrees of freedom
+  (1 observation deleted due to missingness)
+Multiple R-squared:  0.4937,	Adjusted R-squared:  0.4896 
+F-statistic:   118 on 1 and 121 DF,  p-value: &lt; 2.2e-16
+```
+]
+
+---
+
+.tiny-font[
+
+```r
+summary(lm_data$fit[[3]]) # third model, Gentoo
+```
+
+```
+
+Call:
+lm(formula = flipper_length_mm ~ body_mass_g, data = .x)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-14.4296  -3.3315   0.4097   2.8889  11.5941 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 1.514e+02  6.575e+00  23.024  &lt; 2e-16 ***
+body_mass_g 1.191e-02  1.752e-03   6.795 3.75e-09 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 5.512 on 66 degrees of freedom
+Multiple R-squared:  0.4116,	Adjusted R-squared:  0.4027 
+F-statistic: 46.17 on 1 and 66 DF,  p-value: 3.748e-09
+```
+]
+
+---
+class: center middle
+
+## How do we get this information into a data table?
+
+---
+
+## The **broom** package cleans model output: `glance()`
+
+.small-font[
+`glance()` provides model-wide summary estimates in tidy format
+]
+
+--
+
+.small-font[
+
+```r
+library(broom)
+
+glance(lm_out)
+```
+
+```
+# A tibble: 1 x 12
+  r.squared adj.r.squared sigma statistic p.value    df logLik   AIC   BIC
+      &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1     0.219         0.214  5.80      41.8 1.34e-9     1  -479.  963.  972.
+# … with 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;
+```
+]
+
+---
+
+## The **broom** package cleans model output: `tidy()`
+
+.small-font[
+`tidy()` provides information about regression coefficients in tidy format
+]
+
+--
+
+.small-font[
+
+```r
+library(broom)
+
+tidy(lm_out)
+```
+
+```
+# A tibble: 2 x 5
+  term         estimate std.error statistic  p.value
+  &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+1 (Intercept) 165.        3.85        42.9  8.68e-86
+2 body_mass_g   0.00668   0.00103      6.47 1.34e- 9
+```
+]
+
+
+---
+
+## Apply these functions to multiple models with `map()`
+
+--
+
+.small-font[
+Reminder: This is the nested table with fitted models
+
+```r
+lm_data
+```
+
+```
+# A tibble: 3 x 3
+  species   data               fit   
+  &lt;fct&gt;     &lt;list&gt;             &lt;list&gt;
+1 Adelie    &lt;tibble [152 × 7]&gt; &lt;lm&gt;  
+2 Gentoo    &lt;tibble [124 × 7]&gt; &lt;lm&gt;  
+3 Chinstrap &lt;tibble [68 × 7]&gt;  &lt;lm&gt;  
+```
+]
+
+
+---
+
+## Apply these functions to multiple models with `map()`
+
+.small-font[
+
+```r
+lm_data %&gt;%
+  mutate(
+    glance_out = map(fit, glance)
+  )
+```
+
+```
+# A tibble: 3 x 4
+  species   data               fit    glance_out       
+  &lt;fct&gt;     &lt;list&gt;             &lt;list&gt; &lt;list&gt;           
+1 Adelie    &lt;tibble [152 × 7]&gt; &lt;lm&gt;   &lt;tibble [1 × 12]&gt;
+2 Gentoo    &lt;tibble [124 × 7]&gt; &lt;lm&gt;   &lt;tibble [1 × 12]&gt;
+3 Chinstrap &lt;tibble [68 × 7]&gt;  &lt;lm&gt;   &lt;tibble [1 × 12]&gt;
+```
+]
+
+---
+
+## Apply these functions to multiple models with `map()`
+
+.small-font[
+
+```r
+lm_data %&gt;%
+  mutate(
+    glance_out = map(fit, ~glance(.x)) # same as just `glance`
+  )
+```
+
+```
+# A tibble: 3 x 4
+  species   data               fit    glance_out       
+  &lt;fct&gt;     &lt;list&gt;             &lt;list&gt; &lt;list&gt;           
+1 Adelie    &lt;tibble [152 × 7]&gt; &lt;lm&gt;   &lt;tibble [1 × 12]&gt;
+2 Gentoo    &lt;tibble [124 × 7]&gt; &lt;lm&gt;   &lt;tibble [1 × 12]&gt;
+3 Chinstrap &lt;tibble [68 × 7]&gt;  &lt;lm&gt;   &lt;tibble [1 × 12]&gt;
+```
+]
+
+---
+
+## Apply these functions to multiple models with `map()`
+
+.small-font[
+
+```r
+lm_data %&gt;%
+  mutate(
+    glance_out = map(fit, glance)
+  )
+```
+
+```
+# A tibble: 3 x 4
+  species   data               fit    glance_out       
+  &lt;fct&gt;     &lt;list&gt;             &lt;list&gt; &lt;list&gt;           
+1 Adelie    &lt;tibble [152 × 7]&gt; &lt;lm&gt;   &lt;tibble [1 × 12]&gt;
+2 Gentoo    &lt;tibble [124 × 7]&gt; &lt;lm&gt;   &lt;tibble [1 × 12]&gt;
+3 Chinstrap &lt;tibble [68 × 7]&gt;  &lt;lm&gt;   &lt;tibble [1 × 12]&gt;
+```
+]
+
+---
+
+## And unnest
+
+.small-font[
+
+```r
+lm_data %&gt;%
+  mutate(
+    glance_out = map(fit, glance)
+  ) %&gt;%
+  select(species, glance_out)
+```
+
+```
+# A tibble: 3 x 2
+  species   glance_out       
+  &lt;fct&gt;     &lt;list&gt;           
+1 Adelie    &lt;tibble [1 × 12]&gt;
+2 Gentoo    &lt;tibble [1 × 12]&gt;
+3 Chinstrap &lt;tibble [1 × 12]&gt;
+```
+]
+
+---
+
+## And unnest
+
+.small-font[
+
+```r
+lm_data %&gt;%
+  mutate(
+    glance_out = map(fit, glance)
+  ) %&gt;%
+  select(species, glance_out) %&gt;%
+  unnest(cols = glance_out)
+```
+
+```
+# A tibble: 3 x 13
+  species r.squared adj.r.squared sigma statistic  p.value    df logLik   AIC
+  &lt;fct&gt;       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+1 Adelie      0.219         0.214  5.80      41.8 1.34e- 9     1  -479.  963.
+2 Gentoo      0.494         0.490  4.63     118.  1.33e-19     1  -362.  730.
+3 Chinst…     0.412         0.403  5.51      46.2 3.75e- 9     1  -212.  429.
+# … with 4 more variables: BIC &lt;dbl&gt;, deviance &lt;dbl&gt;, df.residual &lt;int&gt;,
+#   nobs &lt;int&gt;
+```
+]
+
+
+---
+
+## All in one pipeline
+
+.tiny-font[
+
+```r
+lm_summary &lt;- penguins %&gt;%
+  nest(data = -species) %&gt;%
+  mutate(
+    fit = map(data, ~lm(flipper_length_mm ~ body_mass_g, data = .x)),
+    glance_out = map(fit, glance)
+  ) %&gt;%
+  select(species, glance_out) %&gt;%
+  unnest(cols = glance_out)
+
+lm_summary
+```
+
+```
+# A tibble: 3 x 13
+  species r.squared adj.r.squared sigma statistic  p.value    df logLik   AIC
+  &lt;fct&gt;       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+1 Adelie      0.219         0.214  5.80      41.8 1.34e- 9     1  -479.  963.
+2 Gentoo      0.494         0.490  4.63     118.  1.33e-19     1  -362.  730.
+3 Chinst…     0.412         0.403  5.51      46.2 3.75e- 9     1  -212.  429.
+# … with 4 more variables: BIC &lt;dbl&gt;, deviance &lt;dbl&gt;, df.residual &lt;int&gt;,
+#   nobs &lt;int&gt;
+```
+]
+
+
+---
+
+## Make label data
+
+.tiny-font[
+
+```r
+library(glue)  # for easy text formatting
+
+label_data &lt;- lm_summary %&gt;%
+  mutate(
+    rsqr = signif(r.squared, 2),  # round to 2 significant digits
+    pval = signif(p.value, 2),
+    label = glue("R^2 = {rsqr}, P = {pval}"),
+    body_mass_g = 6400, flipper_length_mm = 175 # label position in plot
+  ) %&gt;%
+  select(species, label, body_mass_g, flipper_length_mm)
+
+label_data
+```
+
+```
+# A tibble: 3 x 4
+  species   label                   body_mass_g flipper_length_mm
+  &lt;fct&gt;     &lt;glue&gt;                        &lt;dbl&gt;             &lt;dbl&gt;
+1 Adelie    R^2 = 0.22, P = 1.3e-09        6400               175
+2 Gentoo    R^2 = 0.49, P = 1.3e-19        6400               175
+3 Chinstrap R^2 = 0.41, P = 3.7e-09        6400               175
+```
+]
+---
+
+## And plot
+
+.tiny-font[
+
+```r
+ggplot(penguins, aes(body_mass_g, flipper_length_mm)) + geom_point() +
+  geom_text(
+    data = label_data, aes(label = label),
+    size = 10/.pt, hjust = 1  # 10pt, right-justified
+  ) +
+  geom_smooth(method = "lm", se = FALSE) + facet_wrap(vars(species))
+```
+]
+
+.center[
+![](working-with-models_files/figure-html/penguins-fit-w-labels-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Further reading
+
+- Data Visualization—A Practical Introduction: [Chapter 6.5: Tidy model objects with broom](https://socviz.co/modeling.html#tidy-model-objects-with-broom)
+- **broom** reference documentation: https://broom.tidymodels.org/
+- Article on using **broom** with **dplyr**: [**broom** and **dplyr**](https://broom.tidymodels.org/articles/broom_and_dplyr.html)
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"slideNumberFormat": ""
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

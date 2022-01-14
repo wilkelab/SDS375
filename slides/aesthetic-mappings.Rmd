@@ -21,16 +21,55 @@ knitr::opts_chunk$set(comment = "")
 library(tidyverse)
 library(lubridate)
 library(cowplot)
+library(colorspace)
 library(here)
 # ggplot2 settings so plots scale well for slide size 
 theme_set(theme_gray(16)) # 16 for full width, 18 for half width 
 update_geom_defaults("point", list(size = 2)) # 2 for full width, 2.5 for half width
+
+# this function should be added to cowplot
+align_legend <- function(p, hjust = 0.5)
+{
+  # extract legend
+  g <- cowplot::plot_to_gtable(p)
+  grobs <- g$grobs
+  legend_index <- which(sapply(grobs, function(x) x$name) == "guide-box")
+  legend <- grobs[[legend_index]]
+
+  # extract guides table
+  guides_index <- which(sapply(legend$grobs, function(x) x$name) == "layout")
+
+  # there can be multiple guides within one legend box  
+  for (gi in guides_index) {
+    guides <- legend$grobs[[gi]]
+    
+    # add extra column for spacing
+    # guides$width[5] is the extra spacing from the end of the legend text
+    # to the end of the legend title. If we instead distribute it by `hjust:(1-hjust)` on
+    # both sides, we get an aligned legend
+    spacing <- guides$width[5]
+    guides <- gtable::gtable_add_cols(guides, hjust*spacing, 1)
+    guides$widths[6] <- (1-hjust)*spacing
+    title_index <- guides$layout$name == "title"
+    guides$layout$l[title_index] <- 2
+
+    # reconstruct guides and write back
+    legend$grobs[[gi]] <- guides
+  }
+  
+  # reconstruct legend and write back
+  g$grobs[[legend_index]] <- legend
+  g
+}
 ```
 
+class: center middle
 
 ## Plots map data onto graphical elements
 
-Dataset: Daily average temperatures for various locations
+---
+
+## Dataset:<br>Daily average temperatures for various locations
 
 .small-font[.center[
 ```{r echo=FALSE, message=FALSE}
@@ -50,12 +89,10 @@ temps_long %>%
 
 ---
 
-## Plots map data onto graphical elements
-
-Temperatures mapped onto y position:
+## Temperatures mapped onto y position
 
 .center[
-```{r temp-normals-vs-time, echo=FALSE, message=FALSE, fig.width = 6, fig.asp = 0.618, dev="svg"}
+```{r temp-normals-vs-time, echo=FALSE, message=FALSE, fig.width = 7, fig.asp = 0.618, dev="svg"}
 
 ggplot(temps_long, aes(x = date, y = temperature, color = location)) +
   geom_line(size = 1) +
@@ -77,7 +114,7 @@ ggplot(temps_long, aes(x = date, y = temperature, color = location)) +
     name = NULL,
     values = c("#E69F00", "#56B4E9", "#009E73", "#CC79A7")
   ) +
-  theme_minimal_grid()
+  theme_minimal_grid(16)
 ```
 ]
 
@@ -87,12 +124,12 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 
 ---
 
-## Plots map data onto graphical elements
+## Temperatures mapped onto color
 
-Temperatures mapped onto color:
+<br>
 
 .center[
-```{r four-locations-temps-by-month, echo = FALSE, message = FALSE, fig.width = 5.5*6/4.2, fig.asp = .3, dev = "svg"}
+```{r four-locations-temps-by-month, echo = FALSE, message = FALSE, fig.width = 8.5, fig.asp = .3, dev = "svg"}
 
 mean_temps <- temps_long %>%
   group_by(location, month_name) %>%
@@ -113,16 +150,15 @@ p <- ggplot(mean_temps, aes(x = month_name, y = location, fill = mean)) +
   scale_x_discrete(name = "month") +
   scale_y_discrete(name = NULL) +
   coord_fixed(expand = FALSE) +
-  theme_half_open() +
+  theme_half_open(16) +
   theme(
     axis.line = element_blank(),
     axis.ticks = element_blank(),
-    legend.title = element_text(size = 12)
+    legend.title = element_text(size = 14)
   )
 
-p
 # fix legend (make it centered)
-#ggdraw(align_legend(p))
+ggdraw(align_legend(p))
 ```
 ]
 
@@ -157,7 +193,61 @@ Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.
 
 ---
 
-## In ggplot, we define the mapping with `aes()`
+## We can use many different aesthetics at once
+
+<br>
+
+.center.move-up-1em[
+```{r mtcars-five-scale, echo = FALSE, message = FALSE, fig.width = 5.5, fig.asp = .8, dev = "svg"}
+p_mtcars <- ggplot(mtcars, aes(disp, mpg, fill = hp, shape = factor(cyl), size = wt)) + 
+  geom_point(color = "white") +
+  scale_shape_manual(values = c(23, 24, 21), name = "cylinders") +
+  scale_fill_continuous_sequential(
+    palette = "Emrld", name = "power (hp)",
+    breaks = c(100, 200, 300),
+    rev = FALSE
+  ) +
+  xlab("displacement (cu. in.)") +
+  ylab("fuel efficiency (mpg)") +
+  guides(
+    shape = guide_legend(override.aes = list(size = 4, fill = "#329D84")),
+    size = guide_legend(override.aes = list(shape = 21, fill = "#329D84"),
+    title = "weight (1000 lbs)")
+  ) +
+  theme_half_open(14) + background_grid() +
+  theme(
+    legend.box.background = element_rect(fill = "white", color = "white"),
+    legend.position = "top",
+    legend.direction = "vertical",
+    legend.justification = "center",
+    legend.box.margin = margin(7, 7, 7, 7)
+  )
+legend <- get_legend(align_legend(p_mtcars))
+ggdraw() + 
+  draw_plot(p_mtcars + theme(legend.position = "none")) + 
+  draw_grob(
+    legend,
+    vjust = 1, hjust = 1, valign = 1, halign = 1,
+    x = 1, y = 1, width = .65, height = .3
+  )
+```
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+[//]: # "segment ends here"
+
+---
+class: center middle
+
+
+## Creating aesthetic mappings in ggplot
+
+---
+
+## We define the mapping with `aes()`
 
 ```{r echo=FALSE}
 temperatures <- temps_long %>%
@@ -181,7 +271,7 @@ ggplot(
 
 ---
 
-## In ggplot, we define the mapping with `aes()`
+## We define the mapping with `aes()`
 
 .small-font[
 ```{r ggplot-temps-example2, eval = FALSE}
@@ -292,9 +382,17 @@ ggplot(temperatures, aes(month, temperature, fill = location)) +
 ```
 ]
 
+[//]: # "segment ends here"
+
+---
+class: center middle
+
+
+## Important: `color` and `fill` apply to different elements
+
 ---
 
-## Important: `color` and `fill` apply to different things
+## `color` and `fill` apply to different elements
 
 `color`<br>
 Applies color to points, lines, text, borders
@@ -389,6 +487,8 @@ ggplot(temperatures, aes(month, temperature, color = location)) +
 ```{r ggplot-color-fill-params2-out, ref.label="ggplot-color-fill-params2", echo=FALSE, fig.width = 8, fig.asp = 0.5, dev="svg"}
 ```
 ]
+
+[//]: # "segment ends here"
 
 ---
 

@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Visualizing geospatial data</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Claus O. Wilke" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="Wilke-slides-theme.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, title-slide
+
+# Visualizing geospatial data
+### Claus O. Wilke
+### last updated: 2021-04-07
+
+---
+
+
+
+
+background-image: url("https://clauswilke.com/dataviz/geospatial_data_files/figure-html/world-orthographic-1.png")
+background-position: left 50% top 75%
+background-size: 45%
+
+## Parallels (latitude) and meridians (longitude)
+
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+background-image: url("https://clauswilke.com/dataviz/coordinate_systems_axes_files/figure-html/worldmap-four-projections-1.png")
+background-position: left 50% top 75%
+background-size: 65%
+
+## There are many ways to project onto a 2D plane
+
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+background-image: url("https://clauswilke.com/dataviz/geospatial_data_files/figure-html/world-mercator-1.png")
+background-position: left 50% top 70%
+background-size: 45%
+
+## There are many ways to project onto a 2D plane
+
+
+.absolute-bottom-left[
+Mercator projection: Shapes are preserved, areas are severely distorted
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+background-image: url("https://clauswilke.com/dataviz/geospatial_data_files/figure-html/world-goode-1.png")
+background-position: left 50% top 60%
+background-size: 80%
+
+## There are many ways to project onto a 2D plane
+
+
+.absolute-bottom-left[
+Goode homolosine: Areas are preserved, shapes are somewhat distorted
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+background-image: url("https://clauswilke.com/dataviz/geospatial_data_files/figure-html/usa-orthographic-1.png")
+background-position: left 50% top 60%
+background-size: 45%
+
+## Projecting the US
+
+.absolute-bottom-left[
+Alaska, Hawaii, and the lower 48 are far apart; difficult to show on one map
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+background-image: url("https://clauswilke.com/dataviz/geospatial_data_files/figure-html/usa-true-albers-1.png")
+background-position: left 50% top 60%
+background-size: 50%
+
+## Projecting the US
+
+.absolute-bottom-left[
+A fair, area-preserving projection
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+background-image: url("https://clauswilke.com/dataviz/geospatial_data_files/figure-html/usa-albers-1.png")
+background-position: left 50% top 60%
+background-size: 50%
+
+## A common visualization. What happened to Alaska?
+
+.absolute-bottom-left[
+Alaska and Hawaii were moved closer; Alaska was also reduced in size
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+background-image: url("https://clauswilke.com/dataviz/geospatial_data_files/figure-html/usa-albers-revised-1.png")
+background-position: left 50% top 60%
+background-size: 50%
+
+## A fair visualization of the 50 states
+
+.absolute-bottom-left[
+Alaska is the largest state; 2.2 the size of Texas
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+class: center middle
+
+## Choropleth mapping: Coloring areas by a data value
+
+---
+background-image: url("https://clauswilke.com/dataviz/geospatial_data_files/figure-html/population-density-counties-1.png")
+background-position: left 50% top 60%
+background-size: 50%
+
+## US population density as a choropleth map
+
+.absolute-bottom-left[
+Alaska has very low population density
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+background-image: url("https://clauswilke.com/dataviz/geospatial_data_files/figure-html/population-density-counties2-1.png")
+background-position: left 50% top 60%
+background-size: 50%
+
+## US population density as a choropleth map
+
+.absolute-bottom-left[
+Alaska has very low population density
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+background-image: url("https://clauswilke.com/dataviz/geospatial_data_files/figure-html/median-income-counties-binned-1.png")
+background-position: left 50% top 60%
+background-size: 50%
+
+## US median income as a choropleth map
+
+.absolute-bottom-left[
+A binned color scale can make the map more readable
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+background-image: url("https://clauswilke.com/dataviz/geospatial_data_files/figure-html/median-income-states-1.png")
+background-position: left 50% top 60%
+background-size: 50%
+
+## Choropleth maps can be misleading
+
+.absolute-bottom-left[
+Large area of Alaska makes it appear very rich; remember, it's mostly empty
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+background-image: url("https://clauswilke.com/dataviz/geospatial_data_files/figure-html/median-income-statebins-1.png")
+background-position: left 50% top 60%
+background-size: 50%
+
+## A cartogram heatmap may be preferable
+
+.absolute-bottom-left[
+Each state is shown as an equally sized square
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+class: center middle
+
+## Maps and layers
+
+---
+background-image: url("https://clauswilke.com/dataviz/geospatial_data_files/figure-html/sfbay-overview-1.png")
+background-position: left 50% top 60%
+background-size: 50%
+
+## Maps show data in a geospatial context
+
+.absolute-bottom-left[
+Wind turbines in the San Francisco Bay Area
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+background-image: url("https://clauswilke.com/dataviz/geospatial_data_files/figure-html/sfbay-layers-1.png")
+background-position: left 50% top 60%
+background-size: 50%
+
+## Maps are composed of several distinct layers
+
+.absolute-bottom-left[
+Wind turbines in the San Francisco Bay Area
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+background-image: url("https://clauswilke.com/dataviz/geospatial_data_files/figure-html/shiloh-map-1.png")
+background-position: left 50% top 60%
+background-size: 50%
+
+## The concept of aesthetic mappings still applies
+
+.absolute-bottom-left[
+Location of individual wind turbines in the Shiloh Wind Farm
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+class: middle center
+
+## Making geospatial visualizations in R
+
+---
+background-image: url("https://user-images.githubusercontent.com/520851/50280460-e35c1880-044c-11e9-9ed7-cc46754e49db.jpg")
+background-position: left 20% bottom 10%
+background-size: 65%
+
+## The **sf** package: Simple Features in R
+
+&lt;a href = "https://gist.github.com/edzer/f461a3a95570c4ab7edf3125c2f19d20"&gt;&lt;img src="https://user-images.githubusercontent.com/520851/34887433-ce1d130e-f7c6-11e7-83fc-d60ad4fae6bd.gif", style = "position: absolute; top: 10%; right: 10%;"/&gt;&lt;/a&gt;
+
+???
+
+Illustration by &lt;a href="https://twitter.com/allison_horst/status/1071456081308614656"&gt;Allison Horst&lt;/a&gt;
+
+---
+
+## The **sf** package: Simple Features in R
+
+.tiny-font[
+
+```r
+texas_income
+```
+
+```
+Simple feature collection with 254 features and 4 fields
+geometry type:  MULTIPOLYGON
+dimension:      XY
+bbox:           xmin: -106.6456 ymin: 25.83738 xmax: -93.50829 ymax: 36.5007
+geographic CRS: NAD83
+First 10 features:
+    FIPS    county median_income  moe                       geometry
+1  48001  Anderson         41327 1842 MULTIPOLYGON (((-96.0648 31...
+2  48003   Andrews         70423 6038 MULTIPOLYGON (((-103.0647 3...
+3  48005  Angelina         44223 1611 MULTIPOLYGON (((-95.00488 3...
+4  48007   Aransas         41690 3678 MULTIPOLYGON (((-96.8229 28...
+5  48009    Archer         60275 5182 MULTIPOLYGON (((-98.95382 3...
+6  48011 Armstrong         59737 4968 MULTIPOLYGON (((-101.6294 3...
+7  48013  Atascosa         52192 3005 MULTIPOLYGON (((-98.80479 2...
+8  48015    Austin         53687 3810 MULTIPOLYGON (((-96.62085 3...
+9  48017    Bailey         37397 8652 MULTIPOLYGON (((-103.0469 3...
+10 48019   Bandera         49863 7193 MULTIPOLYGON (((-99.60332 2...
+```
+]
+
+---
+
+## The **sf** package: Simple Features in R
+
+.tiny-font[
+
+```r
+texas_income$geometry
+```
+
+```
+Geometry set for 254 features 
+geometry type:  MULTIPOLYGON
+dimension:      XY
+bbox:           xmin: -106.6456 ymin: 25.83738 xmax: -93.50829 ymax: 36.5007
+geographic CRS: NAD83
+First 5 geometries:
+```
+
+```
+MULTIPOLYGON (((-96.0648 31.98066, -96.06305 31...
+```
+
+```
+MULTIPOLYGON (((-103.0647 32.52219, -103.0005 3...
+```
+
+```
+MULTIPOLYGON (((-95.00488 31.42396, -95.00334 3...
+```
+
+```
+MULTIPOLYGON (((-96.8229 28.16743, -96.82127 28...
+```
+
+```
+MULTIPOLYGON (((-98.95382 33.49637, -98.95377 3...
+```
+]
+
+---
+
+## The **sf** package: Simple Features in R
+
+.tiny-font[
+
+```r
+texas_income %&gt;% 
+  filter(county == "Travis")
+```
+
+```
+Simple feature collection with 1 feature and 4 fields
+geometry type:  MULTIPOLYGON
+dimension:      XY
+bbox:           xmin: -98.17298 ymin: 30.0245 xmax: -97.36954 ymax: 30.62825
+geographic CRS: NAD83
+   FIPS county median_income moe                       geometry
+1 48453 Travis         61451 591 MULTIPOLYGON (((-98.15927 3...
+```
+]
+
+
+---
+
+## ggplot supports simple features with `geom_sf()`
+
+.tiny-font.pull-left[
+
+```r
+# plot all of Texas
+ggplot(texas_income) + 
+  geom_sf()
+```
+]
+
+.pull-right.width-50[
+![](geospatial-data_files/figure-html/texas-no-aes-out-1.svg)&lt;!-- --&gt;
+
+]
+
+---
+
+## ggplot supports simple features with `geom_sf()`
+
+.tiny-font.pull-left[
+
+```r
+# plot only Travis County
+texas_income %&gt;% 
+  filter(county == "Travis") %&gt;%
+  ggplot() + 
+  geom_sf()
+```
+]
+
+.pull-right.width-50[
+![](geospatial-data_files/figure-html/texas-sf-filter-out-1.svg)&lt;!-- --&gt;
+
+]
+
+---
+
+## ggplot supports simple features with `geom_sf()`
+
+.tiny-font.pull-left[
+
+```r
+# plot the ten richest counties
+texas_income %&gt;% 
+  slice_max(median_income, n = 10) %&gt;%
+  ggplot() + 
+  geom_sf()
+```
+]
+
+.pull-right.width-50[
+![](geospatial-data_files/figure-html/texas-sf-filter2-out-1.svg)&lt;!-- --&gt;
+
+]
+
+---
+
+## ggplot supports simple features with `geom_sf()`
+
+
+.tiny-font.pull-left[
+
+```r
+# color counties by median income
+texas_income %&gt;%
+  ggplot(aes(fill = median_income)) + 
+  geom_sf()
+```
+]
+
+.pull-right.width-50[
+![](geospatial-data_files/figure-html/texas-no-coordsf-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## ggplot supports simple features with `geom_sf()`
+
+.tiny-font.width-50.pull-left[
+
+```r
+# highlight the ten richest counties
+texas_income %&gt;% 
+  mutate(
+    top_ten = rank(desc(median_income)) &lt;= 10
+  ) %&gt;%
+  ggplot(aes(fill = top_ten)) + 
+  geom_sf() +
+  scale_fill_manual(
+    values = c(
+      `TRUE` = "#D55E00",
+      `FALSE` = "#E8EEF9"
+    )
+  )
+```
+]
+
+.pull-right.width-50[
+![](geospatial-data_files/figure-html/texas-sf-mutate-out-1.svg)&lt;!-- --&gt;
+
+]
+
+---
+
+## ggplot supports simple features with `geom_sf()`
+
+.pull-left.width-50[.tiny-font[
+
+```r
+# highlight the ten richest counties
+texas_income %&gt;% 
+  mutate(
+    top_ten = rank(desc(median_income)) &lt;= 10
+  ) %&gt;%
+  ggplot(aes(fill = top_ten)) + 
+  geom_sf(color = "black", size = 0.1) +
+  scale_fill_manual(
+    name = NULL,
+    values = c(
+      `TRUE` = "#D55E00",
+      `FALSE` = "#E8EEF9"
+    ),
+    breaks = c(TRUE),
+    labels = "top-10 median income"
+  ) +
+  theme_minimal_grid(11)
+```
+]
+
+We apply styling as usual
+]
+
+
+
+.pull-right.width-50[
+![](geospatial-data_files/figure-html/texas-sf-mutate2-out-1.svg)&lt;!-- --&gt;
+
+]
+
+
+---
+
+## We can customize the projection with `coord_sf()`
+
+.tiny-font.pull-left[
+
+```r
+ggplot(texas_income) + 
+  geom_sf(
+    aes(fill = median_income),
+    color = "black", size = 0.1
+  ) +
+  scale_fill_continuous_sequential(
+    palette = "Blues", rev = TRUE
+  ) +
+  theme_minimal_grid(11)
+```
+]
+
+.pull-right.width-50[
+![](geospatial-data_files/figure-html/texas-styled-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## We can customize the projection with `coord_sf()`
+
+.tiny-font.pull-left[
+
+```r
+ggplot(texas_income) + 
+  geom_sf(
+    aes(fill = median_income),
+    color = "black", size = 0.1
+  ) +
+  scale_fill_continuous_sequential(
+    palette = "Blues", rev = TRUE
+  ) +
+* coord_sf() +
+  theme_minimal_grid(11)
+```
+]
+
+.pull-right.width-50[
+![](geospatial-data_files/figure-html/texas-coord-sf-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## We can customize the projection with `coord_sf()`
+
+.tiny-font.pull-left[
+
+```r
+ggplot(texas_income) + 
+  geom_sf(
+    aes(fill = median_income),
+    color = "black", size = 0.1
+  ) +
+  scale_fill_continuous_sequential(
+    palette = "Blues", rev = TRUE
+  ) +
+  coord_sf(
+*   # Texas Centric Albers Equal Area
+*   crs = 3083
+  ) + 
+  theme_minimal_grid(11)
+```
+]
+
+.pull-right.width-50[
+![](geospatial-data_files/figure-html/texas-coord-sf-3083-out-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Reference: https://spatialreference.org/ref/epsg/3083/
+]
+
+---
+
+## We can customize the projection with `coord_sf()`
+
+.tiny-font.pull-left[
+
+```r
+ggplot(texas_income) + 
+  geom_sf(
+    aes(fill = median_income),
+    color = "black", size = 0.1
+  ) +
+  scale_fill_continuous_sequential(
+    palette = "Blues", rev = TRUE
+  ) +
+  coord_sf(
+*   # Texas Centric Lambert Conformal Conic
+*   crs = 32139
+  ) + 
+  theme_minimal_grid(11)
+```
+]
+
+.pull-right.width-50[
+![](geospatial-data_files/figure-html/texas-coord-sf-32139-out-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Reference: https://spatialreference.org/ref/epsg/32139/
+]
+
+---
+
+## We can customize the projection with `coord_sf()`
+
+.tiny-font.pull-left[
+
+```r
+ggplot(texas_income) + 
+  geom_sf(
+    aes(fill = median_income),
+    color = "black", size = 0.1
+  ) +
+  scale_fill_continuous_sequential(
+    palette = "Blues", rev = TRUE
+  ) +
+  coord_sf(
+*   # Web Mercator (Google Maps)
+*   crs = 3857
+  ) + 
+  theme_minimal_grid(11)
+```
+]
+
+.pull-right.width-50[
+![](geospatial-data_files/figure-html/texas-coord-sf-3857-out-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Reference: https://spatialreference.org/ref/sr-org/7483/
+]
+
+---
+
+## We can customize the projection with `coord_sf()`
+
+.tiny-font.pull-left[
+
+```r
+ggplot(texas_income) + 
+  geom_sf(
+    aes(fill = median_income),
+    color = "black", size = 0.1
+  ) +
+  scale_fill_continuous_sequential(
+    palette = "Blues", rev = TRUE
+  ) +
+  coord_sf(
+*   # Longitude-Latitude WGS84 (GPS)
+*   crs = 4326
+  ) + 
+  theme_minimal_grid(11)
+```
+]
+
+.pull-right.width-50[
+![](geospatial-data_files/figure-html/texas-coord-sf-4326-out-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Reference: https://spatialreference.org/ref/epsg/4326/
+]
+
+---
+
+## We can customize the projection with `coord_sf()`
+
+.tiny-font.pull-left[
+
+```r
+ggplot(texas_income) + 
+  geom_sf(
+    aes(fill = median_income),
+    color = "black", size = 0.1
+  ) +
+  scale_fill_continuous_sequential(
+    palette = "Blues", rev = TRUE
+  ) +
+  coord_sf(
+*   # Alaska Albers equal area
+*   crs = 3338
+  ) + 
+  theme_minimal_grid(11)
+```
+]
+
+.pull-right.width-50[
+![](geospatial-data_files/figure-html/texas-coord-sf-3338-out-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+Reference: https://spatialreference.org/ref/epsg/3338/
+]
+
+---
+
+## Further reading
+
+- Fundamentals of Data Visualization: [Chapter 15: Visualizing geospatial data](https://clauswilke.com/dataviz/geospatial-data.html)
+- **sf** package documentation: [Simple Features for R](https://r-spatial.github.io/sf/index.html)
+- **ggplot2** reference documentation: [`geom_sf()`, `coord_sf()`](https://ggplot2.tidyverse.org/reference/ggsf.html)
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"slideNumberFormat": ""
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

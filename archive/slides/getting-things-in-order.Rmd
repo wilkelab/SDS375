@@ -1,0 +1,1027 @@
+---
+title: "Getting things into the right order"
+author: "Claus O. Wilke"
+date: "last updated: `r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: [default, "Wilke-slides-theme.css"]
+    lib_dir: libs
+    nature:
+      ratio: '16:9'
+      highlightStyle: github
+      highlightLines: true
+      slideNumberFormat: ''
+      titleSlideClass: [center, middle]
+---
+
+```{r setup, include=FALSE, echo=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(comment = "")
+
+library(tidyverse)
+library(palmerpenguins)
+library(cowplot)
+
+# ggplot2 settings so plots scale well for slide size 
+theme_set(theme_gray(16)) # 16 for full width, 18 for half width 
+update_geom_defaults("point", list(size = 2)) # 2 for full width, 2.5 for half width
+```
+
+
+## Remember from "Visualizing amounts"
+
+.small-font[
+We can use `fct_relevel()` to manually order the bars in a bar plot
+]
+
+--
+
+.tiny-font[
+```{r penguins-ordered, eval = FALSE}
+ggplot(penguins, aes(y = fct_relevel(species, "Chinstrap", "Gentoo", "Adelie"))) +
+  geom_bar()
+```
+]
+
+.center[
+```{r penguins-ordered-out, ref.label = "penguins-ordered", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+## Somewhat cleaner: mutate first, then plot
+
+.tiny-font[
+```{r penguins-ordered-pipe, eval = FALSE}
+penguins %>%
+  mutate(species = fct_relevel(species, "Chinstrap", "Gentoo", "Adelie")) %>%
+  ggplot(aes(y = species)) +
+  geom_bar()
+```
+]
+
+.center[
+```{r penguins-ordered-pipe-out, ref.label = "penguins-ordered-pipe", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+## We order things in ggplot with factors
+
+.tiny-font[
+```{r}
+penguins %>%
+  mutate(species = fct_relevel(species, "Chinstrap", "Gentoo", "Adelie")) %>%
+  slice(1:30) %>%   # get first 30 rows
+  pull(species)     # pull out just the `species` column
+```
+]
+
+--
+
+.small-font[
+- The column `species` is a factor
+]
+
+--
+
+.small-font[
+- A factor is a categorical variable with defined categories called levels
+]
+
+--
+
+.small-font[
+- For factors, ggplot generally places visual elements in the order defined by the levels
+]
+
+
+---
+
+## Manual ordering of factor levels: `fct_relevel()`
+
+.tiny-font[
+```{r}
+penguins %>%
+  mutate(species = fct_relevel(species)) %>%
+  slice(1:30) %>%   # get first 30 rows
+  pull(species)     # pull out just the `species` column
+```
+]
+
+.small-font[
+Default: alphabetic order
+]
+---
+
+## Manual ordering of factor levels: `fct_relevel()`
+
+.tiny-font[
+```{r}
+penguins %>%
+  mutate(species = fct_relevel(species, "Gentoo")) %>%
+  slice(1:30) %>%   # get first 30 rows
+  pull(species)     # pull out just the `species` column
+```
+]
+
+.small-font[
+Move `"Gentoo"` in front, rest alphabetic
+]
+
+---
+
+## Manual ordering of factor levels: `fct_relevel()`
+
+.tiny-font[
+```{r}
+penguins %>%
+  mutate(species = fct_relevel(species, "Chinstrap", "Gentoo")) %>%
+  slice(1:30) %>%   # get first 30 rows
+  pull(species)     # pull out just the `species` column
+```
+
+]
+
+.small-font[
+Move `"Chinstrap"` in front, then `"Gentoo"`, rest alphabetic
+]
+
+---
+
+## Manual ordering of factor levels: `fct_relevel()`
+
+.tiny-font[
+```{r}
+penguins %>%
+  mutate(species = fct_relevel(species, "Chinstrap", "Adelie", "Gentoo")) %>%
+  slice(1:30) %>%   # get first 30 rows
+  pull(species)     # pull out just the `species` column
+```
+
+]
+
+.small-font[
+Use order `"Chinstrap"`, `"Adelie"`, `"Gentoo"`
+]
+
+---
+
+## Manual ordering of factor levels: `fct_relevel()`
+
+.tiny-font[
+```{r}
+penguins %>%
+  mutate(species = fct_relevel(species, "Gentoo", "Chinstrap", "Adelie")) %>%
+  slice(1:30) %>%   # get first 30 rows
+  pull(species)     # pull out just the `species` column
+```
+
+]
+
+.small-font[
+Use order `"Gentoo"`, `"Chinstrap"`, `"Adelie"`
+]
+
+---
+
+## The order of the y axis is from bottom to top
+
+.tiny-font[
+```{r penguins-ordered-pipe2, eval = FALSE}
+penguins %>%
+  mutate(species = fct_relevel(species, "Chinstrap", "Gentoo", "Adelie")) %>%
+  ggplot(aes(y = species)) +
+  geom_bar()
+```
+]
+
+.center[
+```{r penguins-ordered-pipe2-out, ref.label = "penguins-ordered-pipe2", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+## Reorder based on frequency: `fct_infreq()`
+
+.tiny-font[
+```{r}
+penguins %>%
+  mutate(species = fct_infreq(species)) %>%
+  slice(1:30) %>%   # get first 30 rows
+  pull(species)     # pull out just the `species` column
+```
+
+]
+
+--
+
+.small-font[
+- Use the order defined by the number of penguins of different species
+]
+
+--
+
+.small-font[
+- The order is descending, from most frequent to least frequent
+]
+
+---
+
+## Reorder based on frequency: `fct_infreq()`
+
+.tiny-font[
+```{r penguins-infreq, eval = FALSE}
+penguins %>%
+  mutate(species = fct_infreq(species)) %>%
+  ggplot(aes(y = species)) + geom_bar()
+```
+
+]
+
+.center[
+```{r penguins-infreq-out, ref.label = "penguins-infreq", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+## Reverse order: `fct_rev()`
+
+.tiny-font[
+```{r penguins-infreq-rev, eval = FALSE}
+penguins %>%
+  mutate(species = fct_rev(fct_infreq(species))) %>%
+  ggplot(aes(y = species)) + geom_bar()
+```
+
+]
+
+.center[
+```{r penguins-infreq-rev-out, ref.label = "penguins-infreq-rev", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+## Reorder based on numeric values: `fct_reorder()`
+
+.tiny-font[
+```{r eval = FALSE}
+penguins %>%
+  count(species)
+```
+
+```{r echo = FALSE}
+# remove row names
+x <- penguins %>%
+  count(species)
+
+row.names(x) <- NULL
+x
+```
+
+]
+
+--
+
+.tiny-font[
+```{r}
+penguins %>%
+  count(species) %>%
+  mutate(species = fct_reorder(species, n)) %>%
+  pull(species)     # pull out just the `species` column
+```
+
+]
+
+--
+
+.small-font[
+The order is ascending, from smallest to largest value
+]
+
+---
+
+## Reorder based on numeric values: `fct_reorder()`
+
+.tiny-font[
+```{r penguins-reorder, eval = FALSE}
+penguins %>%
+  count(species) %>%
+  mutate(species = fct_reorder(species, n)) %>%
+  ggplot(aes(n, species)) + geom_col()
+```
+
+]
+
+.center[
+```{r penguins-reorder-out, ref.label = "penguins-reorder", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+## Compare to see the difference
+
+.xtiny-font.pull-left[
+```{r eval = FALSE}
+penguins %>%
+  count(species) %>% # summarize data
+  mutate(species = fct_reorder(species, n))
+```
+
+```{r echo = FALSE}
+# remove row names
+x <- penguins %>%
+  count(species) %>%
+  mutate(species = fct_rev(fct_reorder(species, n)))
+
+row.names(x) <- NULL
+x
+```
+
+]
+
+--
+
+.xtiny-font.pull-right[
+```{r}
+penguins %>% 
+  # modify the original dataset, no summary
+  mutate(species = fct_infreq(species))
+```
+]
+
+
+---
+
+## Compare to see the difference
+
+.xtiny-font.pull-left[
+```{r penguins-geom-col, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+penguins %>%
+  count(species) %>% # summarize data
+  mutate(species = fct_reorder(species, n)) %>%
+  ggplot(aes(n, species)) + geom_col()
+```
+
+]
+
+.xtiny-font.pull-right[
+```{r penguins-geom-bar, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+penguins %>% 
+  # modify the original dataset, no summary
+  mutate(species = fct_infreq(species)) %>%
+  ggplot(aes(y = species)) + geom_bar()
+```
+]
+
+---
+
+## Compare to see the difference
+
+.xtiny-font.pull-left[
+```{r penguins-geom-col2, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+penguins %>%
+  count(species) %>% # summarize data
+  mutate(species = fct_reorder(species, n)) %>%
+  ggplot(aes(n, species)) + geom_col()
+```
+
+]
+
+.xtiny-font.pull-right[
+```{r penguins-geom-bar2, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+penguins %>% 
+  # modify the original dataset, no summary
+  mutate(species = fct_infreq(species)) %>%
+  ggplot(aes(y = fct_rev(species))) + geom_bar()
+```
+]
+
+---
+
+class: middle, center
+
+# We can do more than just order bars
+
+---
+
+## The gapminder dataset: Life expectancy data
+
+.tiny-font[
+```{r}
+library(gapminder)
+
+gapminder
+```
+]
+
+---
+
+## Life expectancy in the Americas in 2007
+
+.tiny-font.pull-left[
+```{r gapminder-unordered, eval = FALSE}
+gapminder %>%
+  filter(
+    year == 2007,
+    continent == "Americas"
+  ) %>%
+  ggplot(aes(lifeExp, country)) + 
+  geom_point()
+```
+]
+
+.pull-right[
+```{r gapminder-unordered-out, ref.label = "gapminder-unordered", echo = FALSE, fig.width = 5, fig.asp = 0.9, dev = "svg"}
+```
+]
+
+
+
+---
+
+## Life expectancy in the Americas in 2007
+
+.pull-left[
+.tiny-font[
+```{r gapminder-unordered2, eval = FALSE}
+gapminder %>%
+  filter(
+    year == 2007,
+    continent == "Americas"
+  ) %>%
+  ggplot(aes(lifeExp, country)) + 
+  geom_point()
+```
+]
+
+.small-font[
+Reminder:  
+Default order is alphabetic, from bottom to top
+]]
+
+.pull-right[
+```{r gapminder-unordered2-out, ref.label = "gapminder-unordered2", echo = FALSE, fig.width = 5, fig.asp = 0.9, dev = "svg"}
+```
+]
+
+---
+
+## Life expectancy, ordered from highest to lowest
+
+.pull-left[.tiny-font[
+```{r gapminder-ordered, eval = FALSE}
+gapminder %>%
+  filter(
+    year == 2007,
+    continent == "Americas"
+  ) %>%
+  mutate(
+    country = fct_reorder(country, lifeExp)
+  ) %>%
+  ggplot(aes(lifeExp, country)) + 
+  geom_point()
+```
+]
+
+.small-font[
+Order is ascending from bottom to top
+]]
+
+
+.pull-right[
+```{r gapminder-ordered-out, ref.label = "gapminder-ordered", echo = FALSE, fig.width = 5, fig.asp = 0.9, dev = "svg"}
+```
+]
+
+
+---
+
+## We can also order facets
+
+.tiny-font[
+```{r gapminder-europe-unordered, eval = FALSE}
+gapminder %>%
+  filter(country %in% c("Norway", "Portugal", "Spain", "Austria")) %>%
+  ggplot(aes(year, lifeExp)) + geom_line() +
+  facet_wrap(vars(country), nrow = 1)
+```
+]
+
+.center[
+```{r gapminder-europe-unordered-out, ref.label = "gapminder-europe-unordered", echo = FALSE, fig.width = 12, fig.asp = 0.25, dev = "svg"}
+```
+]
+
+--
+
+.small-font[
+- Default ordering is alphabetic; there's no good reason for this ordering
+]
+
+---
+
+## We can also order facets
+
+.tiny-font[
+```{r gapminder-europe-unordered2, eval = FALSE}
+gapminder %>%
+  filter(country %in% c("Norway", "Portugal", "Spain", "Austria")) %>%
+  ggplot(aes(year, lifeExp)) + geom_line() +
+  facet_wrap(vars(country), nrow = 1)
+```
+]
+
+.center[
+```{r gapminder-europe-unordered2-out, ref.label = "gapminder-europe-unordered2", echo = FALSE, fig.width = 12, fig.asp = 0.25, dev = "svg"}
+```
+]
+
+.small-font[
+- Let's apply `fct_reorder()` and see what happens
+]
+
+
+---
+
+## We can also order facets
+
+.tiny-font[
+```{r gapminder-europe1, eval = FALSE}
+gapminder %>%
+  filter(country %in% c("Norway", "Portugal", "Spain", "Austria")) %>%
+  mutate(country = fct_reorder(country, lifeExp)) %>% # default: order by median
+  ggplot(aes(year, lifeExp)) + geom_line() +
+  facet_wrap(vars(country), nrow = 1)
+```
+]
+
+.center[
+```{r gapminder-europe1-out, ref.label = "gapminder-europe1", echo = FALSE, fig.width = 12, fig.asp = 0.25, dev = "svg"}
+```
+]
+
+--
+
+.small-font[
+- When the levels of a factor occur more than once, `fct_reorder()` applies a summary function
+]
+
+
+---
+
+## We can also order facets
+
+.tiny-font[
+```{r gapminder-europe2, eval = FALSE}
+gapminder %>%
+  filter(country %in% c("Norway", "Portugal", "Spain", "Austria")) %>%
+  mutate(country = fct_reorder(country, lifeExp)) %>% # default: order by median
+  ggplot(aes(year, lifeExp)) + geom_line() +
+  facet_wrap(vars(country), nrow = 1)
+```
+]
+
+.center[
+```{r gapminder-europe2-out, ref.label = "gapminder-europe2", echo = FALSE, fig.width = 12, fig.asp = 0.25, dev = "svg"}
+```
+]
+
+.small-font[
+- The default summary function is `median()`
+]
+
+
+---
+
+## We can also order facets
+
+.tiny-font[
+```{r gapminder-europe3, eval = FALSE}
+gapminder %>%
+  filter(country %in% c("Norway", "Portugal", "Spain", "Austria")) %>%
+  mutate(country = fct_reorder(country, lifeExp, median)) %>% # order by median
+  ggplot(aes(year, lifeExp)) + geom_line() +
+  facet_wrap(vars(country), nrow = 1)
+```
+]
+
+.center[
+```{r gapminder-europe3-out, ref.label = "gapminder-europe3", echo = FALSE, fig.width = 12, fig.asp = 0.25, dev = "svg"}
+```
+]
+
+.small-font[
+- We can also set the summary function explicitly
+]
+
+
+---
+
+## Alternative orderings: By smallest value per facet
+
+.tiny-font[
+```{r gapminder-europe4, eval = FALSE}
+gapminder %>%
+  filter(country %in% c("Norway", "Portugal", "Spain", "Austria")) %>%
+  mutate(country = fct_reorder(country, lifeExp, min)) %>% # order by minimum
+  ggplot(aes(year, lifeExp)) + geom_line() +
+  facet_wrap(vars(country), nrow = 1)
+```
+]
+
+.center[
+```{r gapminder-europe4-out, ref.label = "gapminder-europe4", echo = FALSE, fig.width = 12, fig.asp = 0.25, dev = "svg"}
+```
+]
+
+
+---
+
+## Alternative orderings: By largest value per facet
+
+.tiny-font[
+```{r gapminder-europe5, eval = FALSE}
+gapminder %>%
+  filter(country %in% c("Norway", "Portugal", "Spain", "Austria")) %>%
+  mutate(country = fct_reorder(country, lifeExp, max)) %>% # order by maximum
+  ggplot(aes(year, lifeExp)) + geom_line() +
+  facet_wrap(vars(country), nrow = 1)
+```
+]
+
+.center[
+```{r gapminder-europe5-out, ref.label = "gapminder-europe5", echo = FALSE, fig.width = 12, fig.asp = 0.25, dev = "svg"}
+```
+]
+
+---
+
+## Alternative orderings: By smallest difference
+
+.tiny-font[
+```{r gapminder-europe6, eval = FALSE}
+gapminder %>%
+  filter(country %in% c("Norway", "Portugal", "Spain", "Austria")) %>%
+  # order by custom function: here, difference between max and min
+  mutate(country = fct_reorder(country, lifeExp, function(x) { max(x) - min(x) })) %>%
+  ggplot(aes(year, lifeExp)) + geom_line() +
+  facet_wrap(vars(country), nrow = 1)
+```
+]
+
+.center[
+```{r gapminder-europe6-out, ref.label = "gapminder-europe6", echo = FALSE, fig.width = 12, fig.asp = 0.25, dev = "svg"}
+```
+]
+
+---
+
+## Alternative orderings: By largest difference
+
+.tiny-font[
+```{r gapminder-europe7, eval = FALSE}
+gapminder %>%
+  filter(country %in% c("Norway", "Portugal", "Spain", "Austria")) %>%
+  # order by custom function: here, difference between min and max
+  mutate(country = fct_reorder(country, lifeExp, function(x) { min(x) - max(x) })) %>%
+  ggplot(aes(year, lifeExp)) + geom_line() +
+  facet_wrap(vars(country), nrow = 1)
+```
+]
+
+.center[
+```{r gapminder-europe7-out, ref.label = "gapminder-europe7", echo = FALSE, fig.width = 12, fig.asp = 0.25, dev = "svg"}
+```
+]
+
+---
+
+## Final example: Lumping factor levels together
+
+--
+
+.small-font[
+Dataset: Flights out of New York City in 2013
+]
+
+.tiny-font[
+```{r}
+library(nycflights13)
+
+flight_data <- flights %>% # take data on individual flights
+  left_join(airlines) %>%  # add in full-length airline names
+  select(name, carrier, flight, year, month, day, origin, dest) # pick columns of interest
+```
+]
+
+--
+
+.tiny-font[
+```{r}
+flight_data
+```
+]
+
+---
+
+## Flights out of New York City in 2013
+
+.pull-left.tiny-font[
+```{r flights-unordered, eval = FALSE}
+flight_data %>%
+  ggplot(aes(y = name)) + 
+  geom_bar()
+```
+]
+
+.pull-right[
+```{r flights-unordered-out, ref.label = "flights-unordered", echo = FALSE, fig.width = 6, fig.asp = 0.75, dev = "svg"}
+```
+]
+
+--
+
+.small-font[
+As (almost) always, the default alphabetic ordering is terrible
+]
+
+
+
+---
+
+## Flights out of New York City in 2013
+
+.pull-left.tiny-font[
+```{r flights-ordered, eval = FALSE}
+flight_data %>%
+  mutate(
+    name = fct_infreq(name)
+  ) %>%
+  ggplot(aes(y = fct_rev(name))) + 
+  geom_bar()
+```
+]
+
+
+.pull-right[
+```{r flights-ordered-out, ref.label = "flights-ordered", echo = FALSE, fig.width = 6, fig.asp = 0.75, dev = "svg"}
+```
+]
+
+--
+
+.small-font[
+Ordering by frequency is better, but do we need to show all airlines?
+]
+
+---
+
+## Flights out of New York City in 2013, with lumping
+
+.pull-left.tiny-font[
+```{r flights-lumped, eval = FALSE}
+flight_data %>%
+  mutate(
+    # keep only the 7 most common airlines
+    name = fct_lump_n(name, 7)
+  ) %>%
+  ggplot(aes(y = fct_rev(name))) + 
+  geom_bar()
+```
+]
+
+
+.pull-right[
+```{r flights-lumped-out, ref.label = "flights-lumped", echo = FALSE, fig.width = 6, fig.asp = 0.75, dev = "svg"}
+```
+]
+
+--
+
+.small-font[
+Now the ordering is again alphabetic...
+]
+
+
+---
+
+## Flights out of New York City in 2013, with lumping
+
+.pull-left.tiny-font[
+```{r flights-lumped-ordered, eval = FALSE}
+flight_data %>%
+  mutate(
+    # order after lumping
+    name = fct_infreq(fct_lump_n(name, 7))
+  ) %>%
+  ggplot(aes(y = fct_rev(name))) + 
+  geom_bar()
+```
+]
+
+.pull-right[
+```{r flights-lumped-ordered-out, ref.label = "flights-lumped-ordered", echo = FALSE, fig.width = 6, fig.asp = 0.75, dev = "svg"}
+```
+]
+
+---
+
+## Flights out of New York City in 2013, with lumping
+
+.pull-left.tiny-font[
+```{r flights-lumped-ordered2, eval = FALSE}
+flight_data %>%
+  mutate(
+    # order before lumping
+    name = fct_lump_n(fct_infreq(name), 7)
+  ) %>%
+  ggplot(aes(y = fct_rev(name))) + 
+  geom_bar()
+```
+]
+
+
+.pull-right[
+```{r flights-lumped-ordered2-out, ref.label = "flights-lumped-ordered2", echo = FALSE, fig.width = 6, fig.asp = 0.75, dev = "svg"}
+```
+]
+
+--
+
+.small-font[
+In most cases, you will want to order before lumping
+]
+
+
+---
+
+## Flights out of New York City in 2013, with lumping
+
+.pull-left.tiny-font[
+```{r flights-lumped-ordered3, eval = FALSE}
+flight_data %>%
+  mutate(
+    # order before lumping
+    name = fct_lump_n(fct_infreq(name), 7)
+  ) %>%
+  ggplot(aes(y = fct_rev(name))) + 
+  geom_bar()
+```
+]
+
+
+.pull-right[
+```{r flights-lumped-ordered3-out, ref.label = "flights-lumped-ordered3", echo = FALSE, fig.width = 6, fig.asp = 0.75, dev = "svg"}
+```
+]
+
+.small-font[
+Can we visually separate the "Other" category?
+]
+
+---
+
+## Flights out of New York City in 2013, with lumping
+
+.pull-left.tiny-font[
+```{r flights-highlight, eval = FALSE}
+flight_data %>%
+  mutate(
+    name = fct_lump_n(fct_infreq(name), 7),
+    # Use `fct_other()` to manually lump all
+    # levels not called "Other" into "Named"
+    highlight = fct_other(
+      name,
+      keep = "Other", other_level = "Named"
+    )
+  ) %>%
+  ggplot() +
+  aes(
+    y = fct_rev(name),
+    fill = highlight
+  ) + 
+  geom_bar()
+```
+]
+
+
+.pull-right[
+```{r flights-highlight-out, ref.label = "flights-highlight", echo = FALSE, fig.width = 6, fig.asp = 0.75, dev = "svg"}
+```
+]
+
+--
+
+.small-font[
+One annoying issue: The legend is in the wrong order
+]
+
+
+---
+
+## Flights out of New York City in 2013, with lumping
+
+.pull-left.tiny-font[
+```{r flights-highlight2, eval = FALSE}
+flight_data %>%
+  mutate(
+    name = fct_lump_n(fct_infreq(name), 7),
+    # Use `fct_other()` to manually lump all
+    # levels not called "Other" into "Named"
+    highlight = fct_other(
+      name,
+      keep = "Other", other_level = "Named"
+    )
+  ) %>%
+  ggplot() +
+  aes(
+    y = fct_rev(name),
+    # reverse fill aesthetic
+    fill = fct_rev(highlight)
+  ) + 
+  geom_bar()
+```
+]
+
+
+.pull-right[
+```{r flights-highlight2-out, ref.label = "flights-highlight2", echo = FALSE, fig.width = 6, fig.asp = 0.75, dev = "svg"}
+```
+]
+
+
+---
+
+## Flights out of New York City in 2013, final tweaks
+
+.pull-left.xtiny-font[
+```{r flights-final, eval = FALSE}
+flight_data %>%
+  mutate(
+    name = fct_lump_n(fct_infreq(name), 7),
+    highlight = fct_other(
+      name, keep = "Other", other_level = "Named"
+    )
+  ) %>%
+  ggplot() +
+  aes(y = fct_rev(name), fill = highlight) + 
+  geom_bar() +
+  scale_x_continuous(
+    name = "Number of flights",
+    expand = expansion(mult = c(0, 0.07))
+  ) +
+  scale_y_discrete(name = NULL) +
+  scale_fill_manual(
+    values = c(
+      Named = "gray50", Other = "#98545F"
+    ),
+    guide = "none"
+  ) +
+  theme_minimal_vgrid()
+
+```
+]
+
+
+.pull-right[
+```{r flights-final-out, ref.label = "flights-final", echo = FALSE, fig.width = 5, fig.asp = 0.75, dev = "svg"}
+```
+]
+
+---
+
+## Summary of key factor manipulation functions
+
+.small-font.center[
+
+Function           | Use case        | Documentation
+:-----------       | :----------     | :----------:
+`fct_relevel()`    | Change order of factor levels manually | [click here](https://forcats.tidyverse.org/reference/fct_relevel.html)
+`fct_infreq()`     | Put levels in descending order of how frequently each level occurs in the data | [click here](https://forcats.tidyverse.org/reference/fct_inorder.html)
+`fct_rev()`        | Reverse the order of factor levels | [click here](https://forcats.tidyverse.org/reference/fct_rev.html)
+`fct_reorder()`    | Put levels in ascending order determined by a numeric variable or summary function | [click here](https://forcats.tidyverse.org/reference/fct_reorder.html)
+`fct_lump_n()`     | Retain the *n* most frequent levels and lump all others into `"Other"` | [click here](https://forcats.tidyverse.org/reference/fct_lump.html)
+`fct_other()`      | Manually group some factor levels into `"Other"` | [click here](https://forcats.tidyverse.org/reference/fct_other.html)
+
+]
+
+For more options, check out the [reference documentation](https://forcats.tidyverse.org/reference/index.html) of the **forcats** package
+
+---
+
+## Further reading
+
+- Fundamentals of Data Visualization: [Chapter 6: Visualizing amounts](https://clauswilke.com/dataviz/visualizing-amounts.html)
+- **forcats** documentation: [Introduction to forcats](https://forcats.tidyverse.org/articles/forcats.html)
+- **forcats** reference documentation: [Change order of levels](https://forcats.tidyverse.org/reference/index.html#section-change-order-of-levels)
+
+
+
+

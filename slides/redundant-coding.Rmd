@@ -554,6 +554,8 @@ ggplot(tx_counties_labels, aes(x = index, y = popratio)) +
 
 Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
 
+[//]: # "segment ends here"
+
 ---
 
 class: center middle
@@ -932,6 +934,9 @@ mtcars_named %>%
 ]
 
 `box.padding` controls how far labels are placed from data points
+
+[//]: # "segment ends here"
+
 ---
 
 ## Further reading

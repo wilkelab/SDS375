@@ -14,7 +14,7 @@ class: center, middle, title-slide
 
 # Color scales
 ### Claus O. Wilke
-### last updated: 2021-02-09
+### last updated: 2021-09-23
 
 ---
 
@@ -315,6 +315,55 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 
 ---
 
+# Uses of color in data visualization
+
+&lt;table style = "border: none; line-height: 2.5;"&gt;
+&lt;tr style = "background: white;"&gt;
+&lt;td style = "text-align: left; width: 50%;"&gt;
+1. Distinguish categories (qualitative)
+&lt;/td&gt;
+&lt;td&gt;
+&lt;img src = "color-scales_files/qualitative.png" width = 100% style = "text-align: right; vertical-align: middle;"&gt;&lt;/img&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr style = "background: white;"&gt;
+&lt;td style = "text-align: left;"&gt;
+2. Represent numeric values (sequential)
+&lt;/td&gt;
+&lt;td&gt;
+&lt;img src = "color-scales_files/sequential.png" width = 100% style = "text-align: right; vertical-align: middle"&gt;&lt;/img&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr style = "background: white;"&gt;
+&lt;td style = "text-align: left;"&gt;
+3. Represent numeric values (diverging)
+&lt;/td&gt;
+&lt;td&gt;
+&lt;img src = "color-scales_files/diverging.png" width = 100% style = "text-align: right; vertical-align: middle"&gt;&lt;/img&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr style = "background: white;"&gt;
+&lt;td style = "text-align: left;"&gt;
+4. Highlight
+&lt;/td&gt;
+&lt;td&gt;
+&lt;img src = "color-scales_files/highlight.png" width = 100% style = "text-align: right; vertical-align: middle"&gt;&lt;/img&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+
+[//]: # "segment ends here"
+
+---
+class: center middle
+
+## Color scales in **ggplot2**
+
+---
+
 ## **ggplot2** color scale functions are a bit of a mess
 
 --
@@ -606,6 +655,14 @@ colorspace::divergingx_palettes(plot = TRUE, n = 9) # all divergingx palettes
 ]
 ]
 
+
+[//]: # "segment ends here"
+
+---
+class: center middle
+
+## Setting colors manually for discrete, qualitative scales
+
 ---
 
 ## Discrete, qualitative scales are best set manually
@@ -710,7 +767,7 @@ black	         | #000000   | 0, 0, 0
 
 Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
 
-
+[//]: # "segment ends here"
 
 ---
 

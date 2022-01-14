@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Dimension reduction 2</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Claus O. Wilke" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="Wilke-slides-theme.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, title-slide
+
+# Dimension reduction 2
+### Claus O. Wilke
+### last updated: 2021-03-31
+
+---
+
+
+
+
+## What if a rotation cannot disentangle the data?
+
+--
+
+.center[
+![](dimension-reduction-2_files/figure-html/spirals-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## PCA analysis of intertwined spirals is not useful
+
+.center[
+![](dimension-reduction-2_files/figure-html/pca-spirals-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## One possible approach: Kernel PCA
+
+--
+
+- Kernel PCA performs PCA in a hypothetical, higher-dimensional space
+
+--
+
+- With more dimensions, data points become more separable
+
+--
+
+- Importantly, the space is never explicitly constructed ([kernel trick](https://en.wikipedia.org/wiki/Kernel_method#Mathematics:_the_kernel_trick))
+
+--
+
+- Results from kernel PCA depend on choice of kernel
+
+---
+
+## Kernel PCA can separate the spirals
+
+.center[
+![](dimension-reduction-2_files/figure-html/kpca-spirals-1.svg)&lt;!-- --&gt;
+]
+
+Gaussian kernel, sigma = 64
+
+---
+
+## But we need to choose the right sigma value
+
+.center[
+![](dimension-reduction-2_files/figure-html/kpca-spirals-grid-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Other approaches
+
+--
+
+- t-SNE: t-distributed stochastic neighbor embedding
+
+--
+
+- UMAP: Uniform manifold approximation and projection 
+
+--
+
+Both algorithms look at the local distances between points in the original data space and try to reproduce them in the low-dimensional representation
+
+
+---
+
+## t-SNE can separate the spirals
+
+.center[
+![](dimension-reduction-2_files/figure-html/tsne-spirals-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## t-SNE results depend on the perplexity value
+
+.center[
+![](dimension-reduction-2_files/figure-html/tsne-spirals-grid-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## t-SNE results depend on the random starting point
+
+.center[
+![](dimension-reduction-2_files/figure-html/tsne-spirals-grid2-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## UMAP can separate the spirals
+
+.center[
+![](dimension-reduction-2_files/figure-html/umap-spirals-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## UMAP results depend on the number of neighbors
+
+.center[
+![](dimension-reduction-2_files/figure-html/umap-spirals-grid-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Random starting point has some impact on results
+
+.center[
+![](dimension-reduction-2_files/figure-html/umap-spirals-grid2-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## What is the meaning of the tuning parameters?
+
+--
+
+Tuning parameters define when points are close in the original data space
+
+--
+
+This implicitly defines the number of clusters generated
+
+--
+
+These have comparable effects:
+
+- sigma (Gaussian kernel PCA)
+
+- perplexity (t-SNE)
+
+- number of neighbors (UMAP)
+
+---
+class: center middle
+
+## How do these methods perform&lt;br&gt;on the blue jays dataset?
+
+---
+
+## UMAP of blue jays
+
+.center[
+![](dimension-reduction-2_files/figure-html/umap-blue-jays-gray-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## UMAP of blue jays
+
+.center[
+![](dimension-reduction-2_files/figure-html/umap-blue-jays-sex-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Kernel PCA of blue jays
+
+.center[
+![](dimension-reduction-2_files/figure-html/kpca-blue-jays-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Nonlinear methods have important downsides
+
+--
+
+- Results depend on parameter fine tuning
+
+--
+
+- Low-dimensional embedding cannot be interpreted&lt;br&gt;
+  (no rotation matrix plot)
+
+--
+
+Use only when linear methods clearly aren't working
+
+---
+
+## Doing nonlinear dimension reduction in R
+
+--
+
+- All these methods require special packages:&lt;br&gt;
+  **kernlab** (kernel PCA)&lt;br&gt;
+  **Rtsne** (t-SNE)&lt;br&gt;
+  **umap** (UMAP)
+
+--
+
+- Code examples are somewhat messy
+
+--
+
+- Will do UMAP as example
+
+---
+
+## Doing UMAP in R
+
+.tiny-font[
+
+```r
+library(umap)
+
+# set up UMAP parameters
+custom.config &lt;- umap.defaults
+custom.config$n_neighbors &lt;- 16       # number of neighbors
+custom.config$n_epochs &lt;- 500         # number of iterations for convergence
+custom.config$random_state &lt;- 1234    # random seed
+
+# calculate UMAP fit object
+umap_fit &lt;- blue_jays %&gt;%
+  select(where(is.numeric)) %&gt;%       # retain only numeric columns
+  scale() %&gt;%                         # scale to zero mean and unit variance
+  umap(config = custom.config)        # perform UMAP
+```
+]
+
+---
+
+## Doing UMAP in R
+
+.pull-left.tiny-font[
+
+```r
+# extract data and plot
+umap_fit$layout %&gt;%
+  as.data.frame() %&gt;%
+  mutate(sex = blue_jays$sex) %&gt;%
+  ggplot(aes(V1, V2, color = sex)) +
+  geom_point()
+```
+]
+
+.pull-right[
+![](dimension-reduction-2_files/figure-html/umap-ggplot-demo-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Further reading
+
+- Wikipedia: [Nonlinear dimensionality reduction](https://en.wikipedia.org/wiki/Nonlinear_dimensionality_reduction)
+- Wikipedia: [t-distributed stochastic neighbor embedding](https://en.wikipedia.org/wiki/T-distributed_stochastic_neighbor_embedding)
+- Wikipedia: [Kernel principal component analysis](https://en.wikipedia.org/wiki/Kernel_principal_component_analysis)
+- **kernlab** reference documentation (for kernel PCA): [pdf document](https://cran.r-project.org/web/packages/kernlab/kernlab.pdf)
+- **Rtsne** reference documentation: [pdf document](https://cran.r-project.org/web/packages/Rtsne/Rtsne.pdf)
+- **umap** vignette: [Uniform Manifold Approximation and Projection in R](https://cran.r-project.org/web/packages/umap/vignettes/umap.html)
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"slideNumberFormat": ""
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

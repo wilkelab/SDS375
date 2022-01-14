@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Visualizing uncertainty</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Claus O. Wilke" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="Wilke-slides-theme.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, title-slide
+
+# Visualizing uncertainty
+### Claus O. Wilke
+### last updated: 2021-03-25
+
+---
+
+
+
+
+class: center middle
+
+# Let's imagine we're playing a game
+
+---
+
+class: center middle
+
+# The odds are in your favor:&lt;br&gt;You have a 90% chance of winning!
+
+---
+class: center middle
+background-image: url("visualizing-uncertainty_files/Disappearing_dots.gif")
+background-size: contain
+background-color: #cccccc
+
+&lt;style&gt;
+.move-down { margin-top: -6em; }
+&lt;/style&gt;
+
+.move-down[
+# playing
+]
+
+???
+
+Image by Wikiemdia user [Jahobr](https://commons.wikimedia.org/wiki/User:Jahobr), released into the public domain.
+
+https://commons.wikimedia.org/wiki/File:Disappearing_dots.gif
+
+---
+
+class: center middle
+
+# Sorry, you lost.
+
+---
+
+class: center middle
+
+# How does that make you feel?
+
+---
+
+## We are bad at judging uncertainty
+
+--
+
+* You had a 10% chance of losing
+
+--
+
+* One in ten playing this game will lose
+
+--
+
+* 90% chance of winning is nowhere near a certain win
+
+---
+
+## It helps to visualize a set of possible outcomes
+
+.center[
+![](visualizing-uncertainty_files/figure-html/freq-waffle-1.svg)&lt;!-- --&gt;
+]
+
+Possible outcomes from 100 individual games played
+
+---
+
+&lt;br&gt;
+
+.center[
+![](visualizing-uncertainty_files/figure-html/freq-waffle2-1.svg)&lt;!-- --&gt;
+]
+
+--
+
+This type of visualization is called "frequency framing"
+
+---
+
+## Visualizing uncertainty of point estimates
+
+--
+
+- A point estimate is a single number, such as a mean
+
+--
+
+- Uncertainty is expressed as standard error, confidence interval, or credible interval
+
+--
+
+- Important:&lt;br&gt;Don't confuse the uncertainty of a point estimate with the variation in the sample
+
+---
+
+## Key concepts of statistical sampling
+
+.center[
+![](visualizing-uncertainty_files/figure-html/sampling-schematic1-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Key concepts of statistical sampling
+
+.center[
+![](visualizing-uncertainty_files/figure-html/sampling-schematic2-1.svg)&lt;!-- --&gt;
+]
+
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Key concepts of statistical sampling
+
+.center[
+![](visualizing-uncertainty_files/figure-html/sampling-schematic3-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Frequency interpretation of a confidence interval
+
+.center[
+&lt;img src = "https://clauswilke.com/dataviz/visualizing_uncertainty_files/figure-html/ci-frequentist-expl-1.png" width = "500" /&gt;
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+
+## Example: Highest point reached on Everest in 2019
+
+.center[
+![](visualizing-uncertainty_files/figure-html/everest-highest-point-1.svg)&lt;!-- --&gt;
+]
+
+Includes only climbers and expedition members who **did not** summit
+
+---
+
+## Marginal effects example: Height reached on Everest
+
+--
+
+Average height reached relative to:&lt;br&gt;
+a male climber who climbed with oxygen, summited, and survived
+
+--
+
+.center[
+![](visualizing-uncertainty_files/figure-html/everest_margins-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Marginal effects example: Height reached on Everest
+
+Other visualization options: half-eye
+
+.center[
+![](visualizing-uncertainty_files/figure-html/everest_margins2-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Marginal effects example: Height reached on Everest
+
+Other visualization options: gradient interval
+
+.center[
+![](visualizing-uncertainty_files/figure-html/everest_margins3-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Marginal effects example: Height reached on Everest
+
+Other visualization options: quantile dotplot
+
+.center[
+![](visualizing-uncertainty_files/figure-html/everest_margins4-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Marginal effects example: Height reached on Everest
+
+Other visualization options: quantile dotplot
+
+.center[
+![](visualizing-uncertainty_files/figure-html/everest_margins5-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Marginal effects example: Height reached on Everest
+
+Other visualization options: quantile dotplot
+
+.center[
+![](visualizing-uncertainty_files/figure-html/everest_margins6-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Making a plot with error bars in R
+
+--
+
+.small-font[
+Example: Relationship between life expectancy and GDP per capita
+]
+
+.center[
+![](visualizing-uncertainty_files/figure-html/gapminder-regressions-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Making a plot with error bars in R
+
+.small-font[
+Example: Relationship between life expectancy and GDP per capita
+]
+
+.pull-left[
+![](visualizing-uncertainty_files/figure-html/gapminder-regressions2-1.svg)&lt;!-- --&gt;
+]
+
+.pull-right[
+&lt;br&gt;
+![](visualizing-uncertainty_files/figure-html/gapminder-summary-1.svg)&lt;!-- --&gt;
+
+]
+
+---
+
+## Making a plot with error bars in R
+
+.tiny-font[
+
+```r
+lm_data &lt;- gapminder %&gt;%
+  nest(data = -c(continent, year))
+
+lm_data
+```
+
+```
+# A tibble: 60 x 3
+   continent  year data             
+   &lt;fct&gt;     &lt;int&gt; &lt;list&gt;           
+ 1 Asia       1952 &lt;tibble [33 × 4]&gt;
+ 2 Asia       1957 &lt;tibble [33 × 4]&gt;
+ 3 Asia       1962 &lt;tibble [33 × 4]&gt;
+ 4 Asia       1967 &lt;tibble [33 × 4]&gt;
+ 5 Asia       1972 &lt;tibble [33 × 4]&gt;
+ 6 Asia       1977 &lt;tibble [33 × 4]&gt;
+ 7 Asia       1982 &lt;tibble [33 × 4]&gt;
+ 8 Asia       1987 &lt;tibble [33 × 4]&gt;
+ 9 Asia       1992 &lt;tibble [33 × 4]&gt;
+10 Asia       1997 &lt;tibble [33 × 4]&gt;
+# … with 50 more rows
+```
+]
+
+---
+
+## Making a plot with error bars in R
+
+.tiny-font[
+
+```r
+lm_data &lt;- gapminder %&gt;%
+  nest(data = -c(continent, year)) %&gt;%
+  mutate(
+    fit = map(data, ~lm(lifeExp ~ log(gdpPercap), data = .x))
+  )
+
+lm_data
+```
+
+```
+# A tibble: 60 x 4
+   continent  year data              fit   
+   &lt;fct&gt;     &lt;int&gt; &lt;list&gt;            &lt;list&gt;
+ 1 Asia       1952 &lt;tibble [33 × 4]&gt; &lt;lm&gt;  
+ 2 Asia       1957 &lt;tibble [33 × 4]&gt; &lt;lm&gt;  
+ 3 Asia       1962 &lt;tibble [33 × 4]&gt; &lt;lm&gt;  
+ 4 Asia       1967 &lt;tibble [33 × 4]&gt; &lt;lm&gt;  
+ 5 Asia       1972 &lt;tibble [33 × 4]&gt; &lt;lm&gt;  
+ 6 Asia       1977 &lt;tibble [33 × 4]&gt; &lt;lm&gt;  
+ 7 Asia       1982 &lt;tibble [33 × 4]&gt; &lt;lm&gt;  
+ 8 Asia       1987 &lt;tibble [33 × 4]&gt; &lt;lm&gt;  
+ 9 Asia       1992 &lt;tibble [33 × 4]&gt; &lt;lm&gt;  
+10 Asia       1997 &lt;tibble [33 × 4]&gt; &lt;lm&gt;  
+# … with 50 more rows
+```
+]
+
+---
+
+## Making a plot with error bars in R
+
+.tiny-font[
+
+```r
+lm_data &lt;- gapminder %&gt;%
+  nest(data = -c(continent, year)) %&gt;%
+  mutate(
+    fit = map(data, ~lm(lifeExp ~ log(gdpPercap), data = .x)),
+    tidy_out = map(fit, tidy)
+  )
+
+lm_data
+```
+
+```
+# A tibble: 60 x 5
+   continent  year data              fit    tidy_out        
+   &lt;fct&gt;     &lt;int&gt; &lt;list&gt;            &lt;list&gt; &lt;list&gt;          
+ 1 Asia       1952 &lt;tibble [33 × 4]&gt; &lt;lm&gt;   &lt;tibble [2 × 5]&gt;
+ 2 Asia       1957 &lt;tibble [33 × 4]&gt; &lt;lm&gt;   &lt;tibble [2 × 5]&gt;
+ 3 Asia       1962 &lt;tibble [33 × 4]&gt; &lt;lm&gt;   &lt;tibble [2 × 5]&gt;
+ 4 Asia       1967 &lt;tibble [33 × 4]&gt; &lt;lm&gt;   &lt;tibble [2 × 5]&gt;
+ 5 Asia       1972 &lt;tibble [33 × 4]&gt; &lt;lm&gt;   &lt;tibble [2 × 5]&gt;
+ 6 Asia       1977 &lt;tibble [33 × 4]&gt; &lt;lm&gt;   &lt;tibble [2 × 5]&gt;
+ 7 Asia       1982 &lt;tibble [33 × 4]&gt; &lt;lm&gt;   &lt;tibble [2 × 5]&gt;
+ 8 Asia       1987 &lt;tibble [33 × 4]&gt; &lt;lm&gt;   &lt;tibble [2 × 5]&gt;
+ 9 Asia       1992 &lt;tibble [33 × 4]&gt; &lt;lm&gt;   &lt;tibble [2 × 5]&gt;
+10 Asia       1997 &lt;tibble [33 × 4]&gt; &lt;lm&gt;   &lt;tibble [2 × 5]&gt;
+# … with 50 more rows
+```
+]
+
+---
+
+## Making a plot with error bars in R
+
+.tiny-font[
+
+```r
+lm_data &lt;- gapminder %&gt;%
+  nest(data = -c(continent, year)) %&gt;%
+  mutate(
+    fit = map(data, ~lm(lifeExp ~ log(gdpPercap), data = .x)),
+    tidy_out = map(fit, tidy)
+  ) %&gt;%
+  unnest(cols = tidy_out)
+
+lm_data
+```
+
+```
+# A tibble: 120 x 9
+   continent  year data      fit    term    estimate std.error statistic p.value
+   &lt;fct&gt;     &lt;int&gt; &lt;list&gt;    &lt;list&gt; &lt;chr&gt;      &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
+ 1 Asia       1952 &lt;tibble … &lt;lm&gt;   (Inter…    15.8       9.27      1.71 9.78e-2
+ 2 Asia       1952 &lt;tibble … &lt;lm&gt;   log(gd…     4.16      1.25      3.33 2.28e-3
+ 3 Asia       1957 &lt;tibble … &lt;lm&gt;   (Inter…    18.1       9.70      1.86 7.20e-2
+ 4 Asia       1957 &lt;tibble … &lt;lm&gt;   log(gd…     4.17      1.28      3.26 2.71e-3
+ 5 Asia       1962 &lt;tibble … &lt;lm&gt;   (Inter…    16.6       9.52      1.74 9.11e-2
+ 6 Asia       1962 &lt;tibble … &lt;lm&gt;   log(gd…     4.59      1.24      3.72 7.94e-4
+ 7 Asia       1967 &lt;tibble … &lt;lm&gt;   (Inter…    19.8       9.05      2.19 3.64e-2
+ 8 Asia       1967 &lt;tibble … &lt;lm&gt;   log(gd…     4.50      1.15      3.90 4.77e-4
+ 9 Asia       1972 &lt;tibble … &lt;lm&gt;   (Inter…    21.9       8.14      2.69 1.13e-2
+10 Asia       1972 &lt;tibble … &lt;lm&gt;   log(gd…     4.44      1.01      4.41 1.16e-4
+# … with 110 more rows
+```
+]
+
+---
+
+## Making a plot with error bars in R
+
+.tiny-font[
+
+```r
+lm_data &lt;- gapminder %&gt;%
+  nest(data = -c(continent, year)) %&gt;%
+  mutate(
+    fit = map(data, ~lm(lifeExp ~ log(gdpPercap), data = .x)),
+    tidy_out = map(fit, tidy)
+  ) %&gt;%
+  unnest(cols = tidy_out) %&gt;%
+  select(-fit, -data)
+
+lm_data
+```
+
+```
+# A tibble: 120 x 7
+   continent  year term           estimate std.error statistic  p.value
+   &lt;fct&gt;     &lt;int&gt; &lt;chr&gt;             &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+ 1 Asia       1952 (Intercept)       15.8       9.27      1.71 0.0978  
+ 2 Asia       1952 log(gdpPercap)     4.16      1.25      3.33 0.00228 
+ 3 Asia       1957 (Intercept)       18.1       9.70      1.86 0.0720  
+ 4 Asia       1957 log(gdpPercap)     4.17      1.28      3.26 0.00271 
+ 5 Asia       1962 (Intercept)       16.6       9.52      1.74 0.0911  
+ 6 Asia       1962 log(gdpPercap)     4.59      1.24      3.72 0.000794
+ 7 Asia       1967 (Intercept)       19.8       9.05      2.19 0.0364  
+ 8 Asia       1967 log(gdpPercap)     4.50      1.15      3.90 0.000477
+ 9 Asia       1972 (Intercept)       21.9       8.14      2.69 0.0113  
+10 Asia       1972 log(gdpPercap)     4.44      1.01      4.41 0.000116
+# … with 110 more rows
+```
+]
+
+
+---
+
+## Making a plot with error bars in R
+
+.tiny-font[
+
+```r
+lm_data &lt;- gapminder %&gt;%
+  nest(data = -c(continent, year)) %&gt;%
+  mutate(
+    fit = map(data, ~lm(lifeExp ~ log(gdpPercap), data = .x)),
+    tidy_out = map(fit, tidy)
+  ) %&gt;%
+  unnest(cols = tidy_out) %&gt;%
+  select(-fit, -data) %&gt;%
+  filter(term != "(Intercept)", continent != "Oceania")
+
+lm_data
+```
+
+```
+# A tibble: 48 x 7
+   continent  year term           estimate std.error statistic       p.value
+   &lt;fct&gt;     &lt;int&gt; &lt;chr&gt;             &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt;
+ 1 Asia       1952 log(gdpPercap)     4.16     1.25       3.33 0.00228      
+ 2 Asia       1957 log(gdpPercap)     4.17     1.28       3.26 0.00271      
+ 3 Asia       1962 log(gdpPercap)     4.59     1.24       3.72 0.000794     
+ 4 Asia       1967 log(gdpPercap)     4.50     1.15       3.90 0.000477     
+ 5 Asia       1972 log(gdpPercap)     4.44     1.01       4.41 0.000116     
+ 6 Asia       1977 log(gdpPercap)     4.87     1.03       4.75 0.0000442    
+ 7 Asia       1982 log(gdpPercap)     4.78     0.852      5.61 0.00000377   
+ 8 Asia       1987 log(gdpPercap)     5.17     0.727      7.12 0.0000000531 
+ 9 Asia       1992 log(gdpPercap)     5.09     0.649      7.84 0.00000000760
+10 Asia       1997 log(gdpPercap)     5.11     0.628      8.15 0.00000000335
+# … with 38 more rows
+```
+]
+
+
+---
+
+## Making a plot with error bars in R
+
+.tiny-font.pull-left[
+
+```r
+ggplot(lm_data) +
+  aes(
+    x = year, y = estimate,
+    ymin = estimate - 1.96*std.error,
+    ymax = estimate + 1.96*std.error,
+    color = continent
+  ) +
+  geom_pointrange(
+    position = position_dodge(width = 1)
+  ) +
+  scale_x_continuous(
+    breaks = unique(gapminder$year)
+  ) + 
+  theme(legend.position = "top")
+```
+]
+
+.pull-right[
+![](visualizing-uncertainty_files/figure-html/gapminder-model-out-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure and code idea from [Kieran Healy. Data Visualization: A practical introduction. Princeton University Press, 2019.](https://socviz.co/)
+
+---
+
+## Half-eyes, gradient intervals, etc
+
+--
+
+The **ggdist** package provides many different visualizations of uncertainty
+
+--
+
+.tiny-font.pull-left[
+
+```r
+library(ggdist)
+library(distributional) # for dist_normal()
+
+lm_data %&gt;%
+  filter(year == 1952) %&gt;%
+  mutate(
+    continent = 
+      fct_reorder(continent, estimate) 
+  ) %&gt;%
+  ggplot(aes(x = estimate, y = continent)) +
+  stat_dist_halfeye(
+    aes(dist = dist_normal(
+      mu = estimate, sigma = std.error
+    )),
+    point_size = 4
+  )
+```
+]
+
+.pull-right[
+![](visualizing-uncertainty_files/figure-html/gapminder-halfeye-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Half-eyes, gradient intervals, etc
+
+The **ggdist** package provides many different visualizations of uncertainty
+
+.tiny-font.pull-left[
+
+```r
+library(ggdist)
+library(distributional) # for dist_normal()
+
+lm_data %&gt;%
+  filter(year == 1952) %&gt;%
+  mutate(
+    continent = 
+      fct_reorder(continent, estimate) 
+  ) %&gt;%
+  ggplot(aes(x = estimate, y = continent)) +
+  stat_dist_gradientinterval(
+    aes(dist = dist_normal(
+      mu = estimate, sigma = std.error
+    )),
+    point_size = 4,
+    fill = "skyblue"
+  )
+```
+]
+
+.pull-right[
+![](visualizing-uncertainty_files/figure-html/gapminder-gradinterval-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Half-eyes, gradient intervals, etc
+
+The **ggdist** package provides many different visualizations of uncertainty
+
+.tiny-font.pull-left[
+
+```r
+library(ggdist)
+library(distributional) # for dist_normal()
+
+lm_data %&gt;%
+  filter(year == 1952) %&gt;%
+  mutate(
+    continent = 
+      fct_reorder(continent, estimate) 
+  ) %&gt;%
+  ggplot(aes(x = estimate, y = continent)) +
+  stat_dist_dotsinterval(
+    aes(dist = dist_normal(
+      mu = estimate, sigma = std.error
+    )),
+    point_size = 4,
+    fill = "skyblue",
+    quantiles = 20
+  )
+```
+]
+
+.pull-right[
+![](visualizing-uncertainty_files/figure-html/gapminder-quantiledots-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Half-eyes, gradient intervals, etc
+
+The **ggdist** package provides many different visualizations of uncertainty
+
+.tiny-font.pull-left[
+
+```r
+library(ggdist)
+library(distributional) # for dist_normal()
+
+lm_data %&gt;%
+  filter(year == 1952) %&gt;%
+  mutate(
+    continent = 
+      fct_reorder(continent, estimate) 
+  ) %&gt;%
+  ggplot(aes(x = estimate, y = continent)) +
+  stat_dist_dotsinterval(
+    aes(dist = dist_normal(
+      mu = estimate, sigma = std.error
+    )),
+    point_size = 4,
+    fill = "skyblue",
+    quantiles = 10
+  )
+```
+]
+
+.pull-right[
+![](visualizing-uncertainty_files/figure-html/gapminder-quantiledots2-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Further reading
+
+- Fundamentals of Data Visualization: [Chapter 16: Visualizing uncertainty](https://clauswilke.com/dataviz/visualizing-uncertainty.html)
+- Data Visualization—A Practical Introduction: [Chapter 6.6: Grouped analysis and list columns](https://socviz.co/modeling.html#grouped-analysis-and-list-columns)
+- Data Visualization—A Practical Introduction: [Chapter 6.7: Plot marginal effects](https://socviz.co/modeling.html#plot-marginal-effects)
+- **ggdist** reference documentation: https://mjskay.github.io/ggdist/index.html
+- **ggdist** vignette: [Frequentist uncertainty visualization](https://mjskay.github.io/ggdist/articles/freq-uncertainty-vis.html)
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"slideNumberFormat": ""
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

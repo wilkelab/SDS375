@@ -1,0 +1,686 @@
+---
+title: "Visualizing geospatial data"
+author: "Claus O. Wilke"
+date: "last updated: `r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: [default, "Wilke-slides-theme.css"]
+    lib_dir: libs
+    nature:
+      ratio: '16:9'
+      highlightStyle: github
+      highlightLines: true
+      slideNumberFormat: ''
+      titleSlideClass: [center, middle]
+params:
+  cache: TRUE
+---
+
+```{r setup, include=FALSE, echo=FALSE, message = FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(comment = "")
+
+library(tidyverse)
+library(cowplot)
+library(colorspace)
+library(sf)
+library(here)
+
+# ggplot2 settings so plots scale well for slide size 
+theme_set(theme_gray(16)) # 16 for full width, 18 for half width 
+update_geom_defaults("point", list(size = 2.0)) # 2 for full width, 2.5 for half width
+
+texas_income <- readRDS(here("datasets", "Texas_income.rds"))
+```
+
+background-image: url("https://clauswilke.com/dataviz/geospatial_data_files/figure-html/world-orthographic-1.png")
+background-position: left 50% top 75%
+background-size: 45%
+
+## Parallels (latitude) and meridians (longitude)
+
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+background-image: url("https://clauswilke.com/dataviz/coordinate_systems_axes_files/figure-html/worldmap-four-projections-1.png")
+background-position: left 50% top 75%
+background-size: 65%
+
+## There are many ways to project onto a 2D plane
+
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+background-image: url("https://clauswilke.com/dataviz/geospatial_data_files/figure-html/world-mercator-1.png")
+background-position: left 50% top 70%
+background-size: 45%
+
+## There are many ways to project onto a 2D plane
+
+
+.absolute-bottom-left[
+Mercator projection: Shapes are preserved, areas are severely distorted
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+background-image: url("https://clauswilke.com/dataviz/geospatial_data_files/figure-html/world-goode-1.png")
+background-position: left 50% top 60%
+background-size: 80%
+
+## There are many ways to project onto a 2D plane
+
+
+.absolute-bottom-left[
+Goode homolosine: Areas are preserved, shapes are somewhat distorted
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+background-image: url("https://clauswilke.com/dataviz/geospatial_data_files/figure-html/usa-orthographic-1.png")
+background-position: left 50% top 60%
+background-size: 45%
+
+## Projecting the US
+
+.absolute-bottom-left[
+Alaska, Hawaii, and the lower 48 are far apart; difficult to show on one map
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+background-image: url("https://clauswilke.com/dataviz/geospatial_data_files/figure-html/usa-true-albers-1.png")
+background-position: left 50% top 60%
+background-size: 50%
+
+## Projecting the US
+
+.absolute-bottom-left[
+A fair, area-preserving projection
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+background-image: url("https://clauswilke.com/dataviz/geospatial_data_files/figure-html/usa-albers-1.png")
+background-position: left 50% top 60%
+background-size: 50%
+
+## A common visualization. What happened to Alaska?
+
+.absolute-bottom-left[
+Alaska and Hawaii were moved closer; Alaska was also reduced in size
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+background-image: url("https://clauswilke.com/dataviz/geospatial_data_files/figure-html/usa-albers-revised-1.png")
+background-position: left 50% top 60%
+background-size: 50%
+
+## A fair visualization of the 50 states
+
+.absolute-bottom-left[
+Alaska is the largest state; 2.2 the size of Texas
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+class: center middle
+
+## Choropleth mapping: Coloring areas by a data value
+
+---
+background-image: url("https://clauswilke.com/dataviz/geospatial_data_files/figure-html/population-density-counties-1.png")
+background-position: left 50% top 60%
+background-size: 50%
+
+## US population density as a choropleth map
+
+.absolute-bottom-left[
+Alaska has very low population density
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+background-image: url("https://clauswilke.com/dataviz/geospatial_data_files/figure-html/population-density-counties2-1.png")
+background-position: left 50% top 60%
+background-size: 50%
+
+## US population density as a choropleth map
+
+.absolute-bottom-left[
+Alaska has very low population density
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+background-image: url("https://clauswilke.com/dataviz/geospatial_data_files/figure-html/median-income-counties-binned-1.png")
+background-position: left 50% top 60%
+background-size: 50%
+
+## US median income as a choropleth map
+
+.absolute-bottom-left[
+A binned color scale can make the map more readable
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+background-image: url("https://clauswilke.com/dataviz/geospatial_data_files/figure-html/median-income-states-1.png")
+background-position: left 50% top 60%
+background-size: 50%
+
+## Choropleth maps can be misleading
+
+.absolute-bottom-left[
+Large area of Alaska makes it appear very rich; remember, it's mostly empty
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+background-image: url("https://clauswilke.com/dataviz/geospatial_data_files/figure-html/median-income-statebins-1.png")
+background-position: left 50% top 60%
+background-size: 50%
+
+## A cartogram heatmap may be preferable
+
+.absolute-bottom-left[
+Each state is shown as an equally sized square
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+class: center middle
+
+## Maps and layers
+
+---
+background-image: url("https://clauswilke.com/dataviz/geospatial_data_files/figure-html/sfbay-overview-1.png")
+background-position: left 50% top 60%
+background-size: 50%
+
+## Maps show data in a geospatial context
+
+.absolute-bottom-left[
+Wind turbines in the San Francisco Bay Area
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+background-image: url("https://clauswilke.com/dataviz/geospatial_data_files/figure-html/sfbay-layers-1.png")
+background-position: left 50% top 60%
+background-size: 50%
+
+## Maps are composed of several distinct layers
+
+.absolute-bottom-left[
+Wind turbines in the San Francisco Bay Area
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+background-image: url("https://clauswilke.com/dataviz/geospatial_data_files/figure-html/shiloh-map-1.png")
+background-position: left 50% top 60%
+background-size: 50%
+
+## The concept of aesthetic mappings still applies
+
+.absolute-bottom-left[
+Location of individual wind turbines in the Shiloh Wind Farm
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+class: middle center
+
+## Making geospatial visualizations in R
+
+---
+background-image: url("https://user-images.githubusercontent.com/520851/50280460-e35c1880-044c-11e9-9ed7-cc46754e49db.jpg")
+background-position: left 20% bottom 10%
+background-size: 65%
+
+## The **sf** package: Simple Features in R
+
+<a href = "https://gist.github.com/edzer/f461a3a95570c4ab7edf3125c2f19d20"><img src="https://user-images.githubusercontent.com/520851/34887433-ce1d130e-f7c6-11e7-83fc-d60ad4fae6bd.gif", style = "position: absolute; top: 10%; right: 10%;"/></a>
+
+???
+
+Illustration by <a href="https://twitter.com/allison_horst/status/1071456081308614656">Allison Horst</a>
+
+---
+
+## The **sf** package: Simple Features in R
+
+.tiny-font[
+```{r}
+texas_income
+```
+]
+
+---
+
+## The **sf** package: Simple Features in R
+
+.tiny-font[
+```{r}
+texas_income$geometry
+```
+]
+
+---
+
+## The **sf** package: Simple Features in R
+
+.tiny-font[
+```{r}
+texas_income %>% 
+  filter(county == "Travis")
+```
+]
+
+
+---
+
+## ggplot supports simple features with `geom_sf()`
+
+.tiny-font.pull-left[
+```{r texas-no-aes, eval = FALSE}
+# plot all of Texas
+ggplot(texas_income) + 
+  geom_sf()
+```
+]
+
+.pull-right.width-50[
+```{r texas-no-aes-out, cache = params$cache, ref.label = "texas-no-aes", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+
+]
+
+---
+
+## ggplot supports simple features with `geom_sf()`
+
+.tiny-font.pull-left[
+```{r texas-sf-filter, eval = FALSE}
+# plot only Travis County
+texas_income %>% 
+  filter(county == "Travis") %>%
+  ggplot() + 
+  geom_sf()
+```
+]
+
+.pull-right.width-50[
+```{r texas-sf-filter-out, cache = params$cache, ref.label = "texas-sf-filter", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+
+]
+
+---
+
+## ggplot supports simple features with `geom_sf()`
+
+.tiny-font.pull-left[
+```{r texas-sf-filter2, eval = FALSE}
+# plot the ten richest counties
+texas_income %>% 
+  slice_max(median_income, n = 10) %>%
+  ggplot() + 
+  geom_sf()
+```
+]
+
+.pull-right.width-50[
+```{r texas-sf-filter2-out, cache = params$cache, ref.label = "texas-sf-filter2", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+
+]
+
+---
+
+## ggplot supports simple features with `geom_sf()`
+
+
+.tiny-font.pull-left[
+```{r texas-no-coordsf, eval = FALSE}
+# color counties by median income
+texas_income %>%
+  ggplot(aes(fill = median_income)) + 
+  geom_sf()
+```
+]
+
+.pull-right.width-50[
+```{r texas-no-coordsf-out, cache = params$cache, ref.label = "texas-no-coordsf", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+
+---
+
+## ggplot supports simple features with `geom_sf()`
+
+.tiny-font.width-50.pull-left[
+```{r texas-sf-mutate, eval = FALSE}
+# highlight the ten richest counties
+texas_income %>% 
+  mutate(
+    top_ten = rank(desc(median_income)) <= 10
+  ) %>%
+  ggplot(aes(fill = top_ten)) + 
+  geom_sf() +
+  scale_fill_manual(
+    values = c(
+      `TRUE` = "#D55E00",
+      `FALSE` = "#E8EEF9"
+    )
+  )
+```
+]
+
+.pull-right.width-50[
+```{r texas-sf-mutate-out, cache = params$cache, ref.label = "texas-sf-mutate", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+
+]
+
+---
+
+## ggplot supports simple features with `geom_sf()`
+
+.pull-left.width-50[.tiny-font[
+```{r texas-sf-mutate2, eval = FALSE}
+# highlight the ten richest counties
+texas_income %>% 
+  mutate(
+    top_ten = rank(desc(median_income)) <= 10
+  ) %>%
+  ggplot(aes(fill = top_ten)) + 
+  geom_sf(color = "black", size = 0.1) +
+  scale_fill_manual(
+    name = NULL,
+    values = c(
+      `TRUE` = "#D55E00",
+      `FALSE` = "#E8EEF9"
+    ),
+    breaks = c(TRUE),
+    labels = "top-10 median income"
+  ) +
+  theme_minimal_grid(11)
+```
+]
+
+We apply styling as usual
+]
+
+
+
+.pull-right.width-50[
+```{r texas-sf-mutate2-out, cache = params$cache, ref.label = "texas-sf-mutate2", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+
+]
+
+
+---
+
+## We can customize the projection with `coord_sf()`
+
+.tiny-font.pull-left[
+```{r texas-styled, eval = FALSE}
+ggplot(texas_income) + 
+  geom_sf(
+    aes(fill = median_income),
+    color = "black", size = 0.1
+  ) +
+  scale_fill_continuous_sequential(
+    palette = "Blues", rev = TRUE
+  ) +
+  theme_minimal_grid(11)
+```
+]
+
+.pull-right.width-50[
+```{r texas-styled-out, cache = params$cache, ref.label = "texas-styled", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+## We can customize the projection with `coord_sf()`
+
+.tiny-font.pull-left[
+```{r texas-coord-sf, eval = FALSE}
+ggplot(texas_income) + 
+  geom_sf(
+    aes(fill = median_income),
+    color = "black", size = 0.1
+  ) +
+  scale_fill_continuous_sequential(
+    palette = "Blues", rev = TRUE
+  ) +
+  coord_sf() + #<<
+  theme_minimal_grid(11)
+```
+]
+
+.pull-right.width-50[
+```{r texas-coord-sf-out, cache = params$cache, ref.label = "texas-coord-sf", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+
+---
+
+## We can customize the projection with `coord_sf()`
+
+.tiny-font.pull-left[
+```{r texas-coord-sf-3083, eval = FALSE}
+ggplot(texas_income) + 
+  geom_sf(
+    aes(fill = median_income),
+    color = "black", size = 0.1
+  ) +
+  scale_fill_continuous_sequential(
+    palette = "Blues", rev = TRUE
+  ) +
+  coord_sf(
+    # Texas Centric Albers Equal Area  #<<
+    crs = 3083                    #<<
+  ) + 
+  theme_minimal_grid(11)
+```
+]
+
+.pull-right.width-50[
+```{r texas-coord-sf-3083-out, cache = params$cache, ref.label = "texas-coord-sf-3083", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+.absolute-bottom-left[
+Reference: https://spatialreference.org/ref/epsg/3083/
+]
+
+---
+
+## We can customize the projection with `coord_sf()`
+
+.tiny-font.pull-left[
+```{r texas-coord-sf-32139, eval = FALSE}
+ggplot(texas_income) + 
+  geom_sf(
+    aes(fill = median_income),
+    color = "black", size = 0.1
+  ) +
+  scale_fill_continuous_sequential(
+    palette = "Blues", rev = TRUE
+  ) +
+  coord_sf(
+    # Texas Centric Lambert Conformal Conic #<<
+    crs = 32139                    #<<
+  ) + 
+  theme_minimal_grid(11)
+```
+]
+
+.pull-right.width-50[
+```{r texas-coord-sf-32139-out, cache = params$cache, ref.label = "texas-coord-sf-32139", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+.absolute-bottom-left[
+Reference: https://spatialreference.org/ref/epsg/32139/
+]
+
+---
+
+## We can customize the projection with `coord_sf()`
+
+.tiny-font.pull-left[
+```{r texas-coord-sf-3857, eval = FALSE}
+ggplot(texas_income) + 
+  geom_sf(
+    aes(fill = median_income),
+    color = "black", size = 0.1
+  ) +
+  scale_fill_continuous_sequential(
+    palette = "Blues", rev = TRUE
+  ) +
+  coord_sf(
+    # Web Mercator (Google Maps)   #<<
+    crs = 3857                     #<<
+  ) + 
+  theme_minimal_grid(11)
+```
+]
+
+.pull-right.width-50[
+```{r texas-coord-sf-3857-out, cache = params$cache, ref.label = "texas-coord-sf-3857", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+.absolute-bottom-left[
+Reference: https://spatialreference.org/ref/sr-org/7483/
+]
+
+---
+
+## We can customize the projection with `coord_sf()`
+
+.tiny-font.pull-left[
+```{r texas-coord-sf-4326, eval = FALSE}
+ggplot(texas_income) + 
+  geom_sf(
+    aes(fill = median_income),
+    color = "black", size = 0.1
+  ) +
+  scale_fill_continuous_sequential(
+    palette = "Blues", rev = TRUE
+  ) +
+  coord_sf(
+    # Longitude-Latitude WGS84 (GPS) #<<
+    crs = 4326                     #<<
+  ) + 
+  theme_minimal_grid(11)
+```
+]
+
+.pull-right.width-50[
+```{r texas-coord-sf-4326-out, cache = params$cache, ref.label = "texas-coord-sf-4326", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+.absolute-bottom-left[
+Reference: https://spatialreference.org/ref/epsg/4326/
+]
+
+---
+
+## We can customize the projection with `coord_sf()`
+
+.tiny-font.pull-left[
+```{r texas-coord-sf-3338, eval = FALSE}
+ggplot(texas_income) + 
+  geom_sf(
+    aes(fill = median_income),
+    color = "black", size = 0.1
+  ) +
+  scale_fill_continuous_sequential(
+    palette = "Blues", rev = TRUE
+  ) +
+  coord_sf(
+    # Alaska Albers equal area     #<<
+    crs = 3338                     #<<
+  ) + 
+  theme_minimal_grid(11)
+```
+]
+
+.pull-right.width-50[
+```{r texas-coord-sf-3338-out, cache = params$cache, ref.label = "texas-coord-sf-3338", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+.absolute-bottom-left[
+Reference: https://spatialreference.org/ref/epsg/3338/
+]
+
+---
+
+## Further reading
+
+- Fundamentals of Data Visualization: [Chapter 15: Visualizing geospatial data](https://clauswilke.com/dataviz/geospatial-data.html)
+- **sf** package documentation: [Simple Features for R](https://r-spatial.github.io/sf/index.html)
+- **ggplot2** reference documentation: [`geom_sf()`, `coord_sf()`](https://ggplot2.tidyverse.org/reference/ggsf.html)

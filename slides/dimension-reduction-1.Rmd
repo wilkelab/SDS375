@@ -508,10 +508,108 @@ PC 1 captures over 50% of the total variance in the dataset
 Overall bird size explains >50% of the variation in the various measurements
 ]
 
+[//]: # "segment ends here"
+
 ---
 class: center middle
 
-## Doing a principal components analysis (PCA) in R
+## The mathematics of principal components analysis
+
+---
+
+## The mathematics of PCA
+
+Variance of one variable $X$:
+
+$$\text{Var}(X) = \frac{1}{n}\sum_j (\bar x - x_j)^2 = \sigma_X^2$$
+
+--
+
+Covariance of two variables $X$ and $Y$:
+
+$$\text{Cov}(X, Y) = \frac{1}{n}\sum_j (\bar x - x_j)(\bar y - y_j) = \sigma_{XY}$$
+
+---
+
+## The mathematics of PCA
+
+Covariance matrix of $n$ variables $X_1 \dots X_n$:
+
+$$\text{C} = \left(
+\begin{array}{cccc}
+  \sigma_{11}^2 & \sigma_{12} & \dots & \sigma_{1n}  \\
+  \sigma_{21} & \sigma_{22}^2 & \dots & \sigma_{2n} \\
+  \vdots & \vdots & \ddots & \vdots \\
+  \sigma_{n1} & \sigma_{n2} & \dots & \sigma_{nn}^2  \\
+\end{array}
+\right)$$
+
+---
+
+## The mathematics of PCA
+
+PCA diagonalizes the covariance matrix $\text{C}$:
+
+$$\begin{eqnarray}
+\text{C} & = & \text{U}\text{D}\text{U}^\text{T}\\
+& = & \text{U}\left(
+\begin{array}{cccc}
+  \lambda_{1}^2 & 0 & \dots & 0  \\
+  0 & \lambda{2}^2 & \dots & 0  \\
+  \vdots & \vdots & \ddots & \vdots \\
+  0 & 0 & \dots & \lambda_{n}^2  \\
+\end{array}
+\right)\text{U}^\text{T}
+\end{eqnarray}$$
+
+--
+
+$\text{U}$: rotation matrix
+
+--
+
+$\text{D}$: diagonal matrix
+
+--
+
+$\lambda_j^2$: eigenvalues (= variance explained by each component)
+
+---
+
+## The mathematics of PCA
+
+PCA diagonalizes the covariance matrix $\text{C}$:
+
+$$\begin{eqnarray}
+\text{C} & = & \text{U}\text{D}\text{U}^\text{T}\\
+& = & \text{U}\left(
+\begin{array}{cccc}
+  \lambda_{1}^2 & 0 & \dots & 0  \\
+  0 & \lambda{2}^2 & \dots & 0  \\
+  \vdots & \vdots & \ddots & \vdots \\
+  0 & 0 & \dots & \lambda_{n}^2  \\
+\end{array}
+\right)\text{U}^\text{T}
+\end{eqnarray}$$
+
+The covariances between components are all 0
+
+Components are uncorrelated
+
+---
+
+## The components are uncorrelated
+
+.center[
+![](`r knitr::fig_chunk("pca-scatter", "svg")`)
+]
+
+[//]: # "segment ends here"
+
+---
+class: center middle
+
+## Doing a PCA in R
 
 ---
 
@@ -720,6 +818,9 @@ pca_fit %>%
 ```{r blue-jays-pca-eigenvalues-out, ref.label="blue-jays-pca-eigenvalues", fig.width=5., fig.asp = 0.75, echo=FALSE, warning=FALSE, dev = "svg"}
 ```
 ]
+
+[//]: # "segment ends here"
+
 
 ---
 

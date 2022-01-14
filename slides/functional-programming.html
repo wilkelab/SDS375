@@ -14,7 +14,7 @@ class: center, middle, title-slide
 
 # Functions and functional programming
 ### Claus O. Wilke
-### last updated: 2021-05-05
+### last updated: 2021-09-23
 
 ---
 
@@ -110,7 +110,7 @@ How can we make our life simpler and avoid massive code duplication?
 .tiny-font.pull-left.width-50[
 
 ```r
-*species = "Adelie"
+*species &lt;- "Adelie"
 
 penguins %&gt;%
 * filter(.data$species == .env$species) %&gt;%
@@ -173,7 +173,7 @@ penguins %&gt;%
 .tiny-font.pull-left.width-50[
 
 ```r
-*species = "Adelie"
+*species &lt;- "Adelie"
 
 penguins %&gt;%
   filter(.data$species == .env$species) %&gt;%
@@ -200,7 +200,7 @@ penguins %&gt;%
 .tiny-font.pull-left.width-50[
 
 ```r
-*species = "Chinstrap"
+*species &lt;- "Chinstrap"
 
 penguins %&gt;%
   filter(.data$species == .env$species) %&gt;%
@@ -226,7 +226,7 @@ penguins %&gt;%
 .tiny-font.pull-left.width-50[
 
 ```r
-*species = "Gentoo"
+*species &lt;- "Gentoo"
 
 penguins %&gt;%
   filter(.data$species == .env$species) %&gt;%
@@ -542,7 +542,7 @@ penguins %&gt;%
 ```
 
 ```
-# A tibble: 3 x 3
+# A tibble: 3 × 3
   species   data               plots 
   &lt;fct&gt;     &lt;list&gt;             &lt;list&gt;
 1 Adelie    &lt;tibble [152 × 7]&gt; &lt;gg&gt;  
@@ -637,6 +637,8 @@ Note: This pipeline automatically processes all species in the dataset, whatever
 
 - Most modern programming languages are moving away from `for` loops&lt;br&gt;
   (examples: Python, Rust, JavaScript)
+
+[//]: # "segment ends here"
 
 ---
 

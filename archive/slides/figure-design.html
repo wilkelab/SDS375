@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Figure design</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Claus O. Wilke" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="Wilke-slides-theme.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, title-slide
+
+# Figure design
+### Claus O. Wilke
+### last updated: 2021-02-11
+
+---
+
+
+
+
+
+.pull-left[
+.title-font[How do you go from this ...]
+
+.center[
+![](figure-design_files/figure-html/lincoln-ridgeline-raw-1.svg)&lt;!-- --&gt;
+]]
+
+--
+
+.pull-right[
+.title-font[... to this?]
+
+
+.center[
+![](figure-design_files/figure-html/lincoln-ridgeline-polished-1.svg)&lt;!-- --&gt;
+]]
+
+--
+
+.small-font[
+Requires coordinated modification of multiple elements:
+]
+
+--
+
+.small-font[
+- geoms (via arguments to geoms)
+- scales (via `scale_*()` functions)
+- plot appearance (via themes)
+]
+
+---
+
+## The starting point, a rough draft
+
+.pull-left.tiny-font[
+
+```r
+ggplot(lincoln_temps) +
+  aes(x = mean_temp, y = month_long) +
+  geom_density_ridges()
+```
+]
+
+.pull-right[
+![](figure-design_files/figure-html/lincoln-ridgeline-progression1-out-1.svg)&lt;!-- --&gt;
+]
+
+--
+
+.tiny-font[
+You can download the dataset using this code:
+
+```r
+lincoln_temps &lt;- readRDS(
+  url("https://wilkelab.org/SDS375/datasets/lincoln_temps.rds")
+)
+```
+]
+
+---
+
+## Set `scale` and `bandwidth` to shape ridgelines
+
+.pull-left.tiny-font[
+
+```r
+ggplot(lincoln_temps) +
+  aes(x = mean_temp, y = month_long) +
+  geom_density_ridges(
+    scale = 3, bandwidth = 3.4
+  )
+```
+]
+
+.pull-right[
+![](figure-design_files/figure-html/lincoln-ridgeline-progression2-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Set `rel_min_height` to cut ridgelines near zero
+
+.pull-left.tiny-font[
+
+```r
+ggplot(lincoln_temps) +
+  aes(x = mean_temp, y = month_long) +
+  geom_density_ridges(
+    scale = 3, bandwidth = 3.4,
+    rel_min_height = 0.01
+  )
+```
+]
+
+.pull-right[
+![](figure-design_files/figure-html/lincoln-ridgeline-progression3-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Use `scale_*()` functions to specify axis labels
+
+.pull-left.tiny-font[
+
+```r
+ggplot(lincoln_temps) +
+  aes(x = mean_temp, y = month_long) +
+  geom_density_ridges(
+    scale = 3, bandwidth = 3.4,
+    rel_min_height = 0.01,
+  ) +
+  scale_x_continuous(
+    name = "mean temperature (°F)"
+  ) +
+  scale_y_discrete(
+    name = NULL  # NULL means no label
+  )
+```
+]
+
+.pull-right[
+![](figure-design_files/figure-html/lincoln-ridgeline-progression4-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Specify scale expansion
+
+.pull-left.tiny-font[
+
+```r
+ggplot(lincoln_temps) +
+  aes(x = mean_temp, y = month_long) +
+  geom_density_ridges(
+    scale = 3, bandwidth = 3.4,
+    rel_min_height = 0.01
+  ) +
+  scale_x_continuous(
+    name = "mean temperature (°F)",
+    expand = c(0, 0)
+  ) +
+  scale_y_discrete(
+    name = NULL,
+    expand = expansion(add = c(0.2, 2.6))
+  )
+```
+]
+
+.pull-right[
+![](figure-design_files/figure-html/lincoln-ridgeline-progression5-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Set overall plot theme
+
+.pull-left.tiny-font[
+
+```r
+ggplot(lincoln_temps) +
+  aes(x = mean_temp, y = month_long) +
+  geom_density_ridges(
+    scale = 3, bandwidth = 3.4,
+    rel_min_height = 0.01
+  ) +
+  scale_x_continuous(
+    name = "mean temperature (°F)",
+    expand = c(0, 0)
+  ) +
+  scale_y_discrete(
+    name = NULL,
+    expand = expansion(add = c(0.2, 2.6))
+  ) +
+  theme_minimal_grid()  # from cowplot
+```
+]
+
+.pull-right[
+![](figure-design_files/figure-html/lincoln-ridgeline-progression6-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Align y axis labels to grid lines
+
+.pull-left.tiny-font[
+
+```r
+ggplot(lincoln_temps) +
+  aes(x = mean_temp, y = month_long) +
+  geom_density_ridges(
+    scale = 3, bandwidth = 3.4,
+    rel_min_height = 0.01
+  ) +
+  scale_x_continuous(
+    name = "mean temperature (°F)",
+    expand = c(0, 0)
+  ) +
+  scale_y_discrete(
+    name = NULL,
+    expand = expansion(add = c(0.2, 2.6))
+  ) +
+  theme_minimal_grid() +
+  theme(
+    axis.text.y = element_text(vjust = 0)
+  )
+```
+]
+
+.pull-right[
+![](figure-design_files/figure-html/lincoln-ridgeline-progression7-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Change fill color from default gray to blue
+
+.pull-left.tiny-font[
+
+```r
+ggplot(lincoln_temps) +
+  aes(x = mean_temp, y = month_long) +
+  geom_density_ridges(
+    scale = 3, bandwidth = 3.4,
+    rel_min_height = 0.01,
+    fill = "#7DCCFF"
+  ) +
+  scale_x_continuous(
+    name = "mean temperature (°F)",
+    expand = c(0, 0)
+  ) +
+  scale_y_discrete(
+    name = NULL,
+    expand = expansion(add = c(0.2, 2.6))
+  ) +
+  theme_minimal_grid() +
+  theme(
+    axis.text.y = element_text(vjust = 0)
+  )
+```
+]
+
+.pull-right[
+![](figure-design_files/figure-html/lincoln-ridgeline-progression8-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Draw lines in white instead of black
+
+.pull-left.tiny-font[
+
+```r
+ggplot(lincoln_temps) +
+  aes(x = mean_temp, y = month_long) +
+  geom_density_ridges(
+    scale = 3, bandwidth = 3.4,
+    rel_min_height = 0.01,
+    fill = "#7DCCFF",
+    color = "white"
+  ) +
+  scale_x_continuous(
+    name = "mean temperature (°F)",
+    expand = c(0, 0)
+  ) +
+  scale_y_discrete(
+    name = NULL,
+    expand = expansion(add = c(0.2, 2.6))
+  ) +
+  theme_minimal_grid() +
+  theme(
+    axis.text.y = element_text(vjust = 0)
+  )
+```
+]
+
+.pull-right[
+![](figure-design_files/figure-html/lincoln-ridgeline-final-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Using ready-made themes
+
+.tiny-font[
+
+```r
+ggplot(penguins, aes(flipper_length_mm, body_mass_g, color = species)) +
+  geom_point()
+  # default theme is theme_gray()
+```
+]
+
+.center[
+![](figure-design_files/figure-html/penguins-complete-themes-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Using ready-made themes
+
+.tiny-font[
+
+```r
+ggplot(penguins, aes(flipper_length_mm, body_mass_g, color = species)) +
+  geom_point() +
+  theme_gray()
+```
+]
+
+.center[
+![](figure-design_files/figure-html/penguins-complete-themes2-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Using ready-made themes
+
+.tiny-font[
+
+```r
+ggplot(penguins, aes(flipper_length_mm, body_mass_g, color = species)) +
+  geom_point() +
+  theme_gray(14) # most themes take a font-size argument to scale text size
+```
+]
+
+.center[
+![](figure-design_files/figure-html/penguins-complete-themes3-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Using ready-made themes
+
+.tiny-font[
+
+```r
+ggplot(penguins, aes(flipper_length_mm, body_mass_g, color = species)) +
+  geom_point() +
+  theme_bw(14)
+```
+]
+
+.center[
+![](figure-design_files/figure-html/penguins-complete-themes4-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Using ready-made themes
+
+.tiny-font[
+
+```r
+ggplot(penguins, aes(flipper_length_mm, body_mass_g, color = species)) +
+  geom_point() +
+  theme_minimal(14)
+```
+]
+
+.center[
+![](figure-design_files/figure-html/penguins-complete-themes5-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Using ready-made themes
+
+.tiny-font[
+
+```r
+ggplot(penguins, aes(flipper_length_mm, body_mass_g, color = species)) +
+  geom_point() +
+  theme_classic(14)
+```
+]
+
+.center[
+![](figure-design_files/figure-html/penguins-complete-themes6-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Using ready-made themes
+
+.tiny-font[
+
+```r
+ggplot(penguins, aes(flipper_length_mm, body_mass_g, color = species)) +
+  geom_point() +
+  theme_half_open()  # from package cowplot
+```
+]
+
+.center[
+![](figure-design_files/figure-html/penguins-complete-themes7-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Using ready-made themes
+
+.tiny-font[
+
+```r
+ggplot(penguins, aes(flipper_length_mm, body_mass_g, color = species)) +
+  geom_point() +
+  theme_minimal_grid()  # from package cowplot
+```
+]
+
+.center[
+![](figure-design_files/figure-html/penguins-complete-themes8-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Using ready-made themes
+
+.tiny-font[
+
+```r
+ggplot(penguins, aes(flipper_length_mm, body_mass_g, color = species)) +
+  geom_point() +
+  theme_minimal_hgrid()  # from package cowplot
+```
+]
+
+.center[
+![](figure-design_files/figure-html/penguins-complete-themes9-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Using ready-made themes
+
+.tiny-font[
+
+```r
+ggplot(penguins, aes(flipper_length_mm, body_mass_g, color = species)) +
+  geom_point() +
+  theme_minimal_vgrid()  # from package cowplot
+```
+]
+
+.center[
+![](figure-design_files/figure-html/penguins-complete-themes10-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Using ready-made themes
+
+
+.tiny-font[
+
+```r
+ggplot(penguins, aes(flipper_length_mm, body_mass_g, color = species)) +
+  geom_point() +
+  theme_economist(14)       # from package ggthemes
+```
+]
+
+.center[
+![](figure-design_files/figure-html/penguins-complete-themes11-out-1.svg)&lt;!-- --&gt;
+]
+
+
+
+---
+
+## Using ready-made themes
+
+.tiny-font[
+
+```r
+ggplot(penguins, aes(flipper_length_mm, body_mass_g, color = species)) +
+  geom_point() +
+  theme_economist(14) + scale_color_economist() # from package ggthemes
+```
+]
+
+.center[
+![](figure-design_files/figure-html/penguins-complete-themes12-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Using ready-made themes
+
+.tiny-font[
+
+```r
+ggplot(penguins, aes(flipper_length_mm, body_mass_g, color = species)) +
+  geom_point() +
+  theme_fivethirtyeight(14) + scale_color_fivethirtyeight() # from package ggthemes
+```
+]
+
+.center[
+![](figure-design_files/figure-html/penguins-complete-themes13-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Customizing theme elements
+
+.pull-left.tiny-font[
+
+```r
+ggplot(penguins) +
+  aes(flipper_length_mm, body_mass_g) +
+  geom_point(aes(color = species)) +
+  theme_minimal_grid()
+```
+]
+
+.pull-right[
+![](figure-design_files/figure-html/penguins-theme-elements1-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Customizing theme elements
+
+.pull-left.tiny-font[
+
+```r
+ggplot(penguins) +
+  aes(flipper_length_mm, body_mass_g) +
+  geom_point(aes(color = species)) +
+  theme_minimal_grid() +
+  theme(
+    # change overall font family
+    # (requires font to be available)
+    text = element_text(
+      family = "Comic Sans MS"
+    )
+  )
+```
+]
+
+.pull-right[
+![](figure-design_files/figure-html/penguins-theme-elements2-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Customizing theme elements
+
+.pull-left.tiny-font[
+
+```r
+ggplot(penguins) +
+  aes(flipper_length_mm, body_mass_g) +
+  geom_point(aes(color = species)) +
+  theme_minimal_grid() +
+  theme(
+    # change color of axis titles
+    axis.title = element_text(
+      color = "royalblue2"
+    )
+  )
+```
+]
+
+.pull-right[
+![](figure-design_files/figure-html/penguins-theme-elements3-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Customizing theme elements
+
+.pull-left.tiny-font[
+
+```r
+ggplot(penguins) +
+  aes(flipper_length_mm, body_mass_g) +
+  geom_point(aes(color = species)) +
+  theme_minimal_grid() +
+  theme(
+    # change color of only the x axis title
+    axis.title.x = element_text(
+      color = "royalblue2"
+    )
+  )
+```
+]
+
+.pull-right[
+![](figure-design_files/figure-html/penguins-theme-elements4-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Customizing theme elements
+
+.pull-left.tiny-font[
+
+```r
+ggplot(penguins) +
+  aes(flipper_length_mm, body_mass_g) +
+  geom_point(aes(color = species)) +
+  theme_minimal_grid() +
+  theme(
+    # change all text colors?
+    # why does it not work?
+    text = element_text(color = "royalblue2")
+  )
+```
+]
+
+.pull-right[
+![](figure-design_files/figure-html/penguins-theme-elements5-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Customizing theme elements
+
+.pull-left.tiny-font[
+
+```r
+ggplot(penguins) +
+  aes(flipper_length_mm, body_mass_g) +
+  geom_point(aes(color = species)) +
+  theme_minimal_grid() +
+  theme(
+    text = element_text(color = "royalblue2"),
+    axis.text = element_text(
+      color = "royalblue2"
+    )
+  )
+```
+]
+
+.pull-right[
+![](figure-design_files/figure-html/penguins-theme-elements6-out-1.svg)&lt;!-- --&gt;
+]
+
+--
+
+.small-font[
+The element `axis.text` has its own color set in the theme. Therefore it doesn't inherit from `text`.
+]
+
+---
+
+## Horizontal and vertical alignment
+
+.pull-left.tiny-font[
+
+```r
+ggplot(penguins) +
+  aes(flipper_length_mm, body_mass_g) +
+  geom_point(aes(color = species)) +
+  theme_minimal_grid() +
+  theme(
+    axis.title.x = element_text(
+      # horizontal justification
+      # (0 = left)
+      hjust = 0
+    )
+  )
+```
+]
+
+.pull-right[
+![](figure-design_files/figure-html/penguins-theme-elements7-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Horizontal and vertical alignment
+
+.pull-left.tiny-font[
+
+```r
+ggplot(penguins) +
+  aes(flipper_length_mm, body_mass_g) +
+  geom_point(aes(color = species)) +
+  theme_minimal_grid() +
+  theme(
+    axis.title.x = element_text(
+      # horizontal justification
+      # (0.5 = center)
+      hjust = 0.5
+    )
+  )
+```
+]
+
+.pull-right[
+![](figure-design_files/figure-html/penguins-theme-elements8-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Horizontal and vertical alignment
+
+.pull-left.tiny-font[
+
+```r
+ggplot(penguins) +
+  aes(flipper_length_mm, body_mass_g) +
+  geom_point(aes(color = species)) +
+  theme_minimal_grid() +
+  theme(
+    axis.title.x = element_text(
+      # horizontal justification
+      # (1 = right)
+      hjust = 1
+    )
+  )
+```
+]
+
+.pull-right[
+![](figure-design_files/figure-html/penguins-theme-elements9-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Horizontal and vertical alignment
+
+.pull-left.tiny-font[
+
+```r
+ggplot(penguins) +
+  aes(flipper_length_mm, body_mass_g) +
+  geom_point(aes(color = species)) +
+  theme_minimal_grid() +
+  theme(
+    axis.text.y = element_text(
+      # vertical justification
+      # (0 = bottom)
+      vjust = 0
+    )
+  )
+```
+]
+
+.pull-right[
+![](figure-design_files/figure-html/penguins-theme-elements10-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Horizontal and vertical alignment
+
+.pull-left.tiny-font[
+
+```r
+ggplot(penguins) +
+  aes(flipper_length_mm, body_mass_g) +
+  geom_point(aes(color = species)) +
+  theme_minimal_grid() +
+  theme(
+    axis.text.y = element_text(
+      # vertical justification
+      # (0.5 = center)
+      vjust = 0.5
+    )
+  )
+```
+]
+
+.pull-right[
+![](figure-design_files/figure-html/penguins-theme-elements11-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Horizontal and vertical alignment
+
+.pull-left.tiny-font[
+
+```r
+ggplot(penguins) +
+  aes(flipper_length_mm, body_mass_g) +
+  geom_point(aes(color = species)) +
+  theme_minimal_grid() +
+  theme(
+    axis.text.y = element_text(
+      # vertical justification
+      # (1 = top)
+      vjust = 1
+    )
+  )
+```
+]
+
+.pull-right[
+![](figure-design_files/figure-html/penguins-theme-elements12-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Remove elements entirely: `element_blank()`
+
+.pull-left.tiny-font[
+
+```r
+ggplot(penguins) +
+  aes(flipper_length_mm, body_mass_g) +
+  geom_point(aes(color = species)) +
+  theme_minimal_grid() +
+  theme(
+    # all text gone
+    text = element_blank()
+  )
+```
+]
+
+.pull-right[
+![](figure-design_files/figure-html/penguins-theme-elements13-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Remove elements entirely: `element_blank()`
+
+.pull-left.tiny-font[
+
+```r
+ggplot(penguins) +
+  aes(flipper_length_mm, body_mass_g) +
+  geom_point(aes(color = species)) +
+  theme_minimal_grid() +
+  theme(
+    # no axis titles
+    axis.title = element_blank()
+  )
+```
+]
+
+.pull-right[
+![](figure-design_files/figure-html/penguins-theme-elements14-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Set background color: `element_rect()`
+
+.pull-left.tiny-font[
+
+```r
+ggplot(penguins) +
+  aes(flipper_length_mm, body_mass_g) +
+  geom_point(aes(color = species)) +
+  theme_minimal_grid() +
+  theme(
+    plot.background = element_rect(
+      fill = "aliceblue"
+    )
+  )
+```
+]
+
+.pull-right[
+![](figure-design_files/figure-html/penguins-theme-elements15-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Set background color: `element_rect()`
+
+.pull-left.tiny-font[
+
+```r
+ggplot(penguins) +
+  aes(flipper_length_mm, body_mass_g) +
+  geom_point(aes(color = species)) +
+  theme_minimal_grid() +
+  theme(
+    panel.background = element_rect(
+      fill = "aliceblue"
+    )
+  )
+```
+]
+
+.pull-right[
+![](figure-design_files/figure-html/penguins-theme-elements16-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Set background color: `element_rect()`
+
+.pull-left.tiny-font[
+
+```r
+ggplot(penguins) +
+  aes(flipper_length_mm, body_mass_g) +
+  geom_point(aes(color = species)) +
+  theme_minimal_grid() +
+  theme(
+    legend.box.background = element_rect(
+      fill = "aliceblue",
+      color = "steelblue4" # line color
+    )
+  )
+```
+]
+
+.pull-right[
+![](figure-design_files/figure-html/penguins-theme-elements17-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Set background color: `element_rect()`
+
+.pull-left.tiny-font[
+
+```r
+ggplot(penguins) +
+  aes(flipper_length_mm, body_mass_g) +
+  geom_point(aes(color = species)) +
+  theme_minimal_grid() +
+  theme(
+    legend.box.background = element_rect(
+      fill = "aliceblue",
+      color = "steelblue4" # line color
+    ),
+    legend.box.margin = margin(7, 7, 7, 7)
+  )
+```
+]
+
+.pull-right[
+![](figure-design_files/figure-html/penguins-theme-elements18-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Move the legend: `legend.position`
+
+.pull-left.tiny-font[
+
+```r
+ggplot(penguins) +
+  aes(flipper_length_mm, body_mass_g) +
+  geom_point(aes(color = species)) +
+  theme_minimal_grid() +
+  theme(
+    legend.box.background = element_rect(
+      fill = "aliceblue",
+      color = "steelblue4" # line color
+    ),
+    legend.box.margin = margin(7, 7, 7, 7),
+    # relative position inside plot panel
+    legend.position = c(1, 0),
+    # justification relative to position
+    legend.justification = c(1, 0)
+  )
+```
+]
+
+.pull-right[
+![](figure-design_files/figure-html/penguins-theme-elements19-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+## Further reading
+
+- Fundamentals of Data Visualization: [Chapter 23: Balance the data and the context](https://clauswilke.com/dataviz/balance-data-context.html)
+- Data Visualization—A Practical Introduction: [Chapter 8.3: Change the appearance of plots with themes](https://socviz.co/refineplots.html#change-the-appearance-of-plots-with-themes)
+- ggplot2 reference documentation: [Complete themes](https://ggplot2.tidyverse.org/reference/ggtheme.html)
+- ggplot2 reference documentation: [Modify components of a theme](https://ggplot2.tidyverse.org/reference/theme.html)
+
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"slideNumberFormat": ""
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

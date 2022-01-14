@@ -1,0 +1,227 @@
+---
+#############################################################
+#                                                           #
+# Click on "Run Document" in RStudio to run this worksheet. #
+#                                                           #
+#############################################################
+title: "Visualizing amounts"
+author: "Claus O. Wilke"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(tidyverse)
+library(palmerpenguins)
+knitr::opts_chunk$set(echo = FALSE, comment = "")
+
+# data prep
+# Data from Box Office Mojo for Dec. 22-24, 2017. 
+boxoffice <- tibble(
+  rank = 1:5,
+  title = c("Star Wars", "Jumanji", "Pitch Perfect 3", "Greatest Showman", "Ferdinand"),
+  amount = c(71.57, 36.17, 19.93, 8.81, 7.32) # million USD
+)
+
+penguins_nomissing <- na.omit(penguins) # remove all rows with any missing values
+```
+
+## Introduction
+
+In this worksheet, we will discuss how to visualize amounts using bars.
+
+We will be using the R package **tidyverse**, which includes `ggplot()` and related functions.
+
+```{r library-calls, echo = TRUE, eval = FALSE}
+# load required library
+library(tidyverse)
+```
+
+We will be working with two datasets. First, box-office gross results for Dec. 22-24, 2017:
+```{r boxoffice, echo = TRUE}
+boxoffice
+```
+
+Second, data on individual penguins on Antarctica. Note that missing values have been removed:
+```{r penguins, echo = TRUE}
+penguins_nomissing
+```
+
+
+## Drawing numerical values as bars
+
+For the `boxoffice` dataset, we want to draw the amount (Weekend gross, in million USD) for each movie as a bar.
+
+```{r boxoffice2, echo = TRUE}
+boxoffice
+```
+
+Somewhat confusingly, the ggplot geom that does this is called `geom_col()`. (There is also a `geom_bar()`, but it works differently. We'll get to that later in this tutorial.) Make a bar plot of `amount` versus `title`. This means `amount` goes on the y axis and `title` on the x axis.
+
+```{r geom-col, exercise=TRUE}
+ggplot(boxoffice, aes(x = ___, y = ___)) +
+  ___()
+```
+
+```{r geom-col-hint}
+ggplot(boxoffice, aes(x = ___, y = ___)) +
+  geom_col()
+```
+
+```{r geom-col-solution}
+ggplot(boxoffice, aes(x = title, y = amount)) +
+  geom_col()
+```
+
+Now flip which column you map onto x and which onto y.
+
+```{r geom-col2, exercise=TRUE}
+ggplot(boxoffice, aes(x = ___, y = ___)) +
+  ___()
+```
+
+```{r geom-col2-hint}
+ggplot(boxoffice, aes(x = ___, y = ___)) +
+  geom_col()
+```
+
+```{r geom-col2-solution}
+ggplot(boxoffice, aes(x = amount, y = title)) +
+  geom_col()
+```
+
+The x-axis label should specify that the amount is in million USD, and the y axis doesn't need the word "title". Use `xlab()` and `ylab()` to make these changes to the plot.
+
+```{r geom-col3, exercise=TRUE}
+ggplot(boxoffice, aes(x = amount, y = title)) +
+  geom_col() +
+  ___() +
+  ___()
+```
+
+```{r geom-col3-hint}
+ggplot(boxoffice, aes(x = amount, y = title)) +
+  geom_col() +
+  xlab(___) +
+  ylab(___)
+```
+
+```{r geom-col3-solution}
+ggplot(boxoffice, aes(x = amount, y = title)) +
+  geom_col() +
+  xlab("weekend gross (million USD)") +
+  ylab(NULL) # NULL means nothing, don't show a y label
+```
+
+## Getting bars into the right order
+
+Whenever we are making bar plots, we need to think about the correct order of the bars. By default, ggplot uses alphabetic ordering, but that is rarely appropriate. If there is no inherent ordering (such as, for example, a temporal progression), then it is usually best to order by the magnitude of the values, i.e., sort the bars by length.
+
+We can do this with the `fct_reorder()` function, which takes two arguments: The categorical variable we want to re-order, and the values by which we want to order. Here, the categorical variable is the column `title` and the values are in the column `amount`. We can apply the `fct_reorder()` function right inside the `aes()` statement.
+
+```{r geom-col-sorted, exercise=TRUE}
+ggplot(boxoffice, aes(x = amount, y = ___)) +
+  geom_col() +
+  xlab("weekend gross (million USD)") +
+  ylab(NULL)
+```
+
+```{r geom-col-sorted-hint}
+ggplot(boxoffice, aes(x = amount, y = fct_reorder(___, ___))) +
+  geom_col() +
+  xlab("weekend gross (million USD)") +
+  ylab(NULL)
+```
+
+```{r geom-col-sorted-solution}
+ggplot(boxoffice, aes(x = amount, y = fct_reorder(title, amount))) +
+  geom_col() +
+  xlab("weekend gross (million USD)") +
+  ylab(NULL)
+```
+
+Try the following additional experiments in the above code:
+
+- What happens when you run the above code without the `ylab(NULL)` statement?
+- Can you make the bars blue?
+- Can you color the bars by `amount` or by `title`?
+
+
+## Drawing bars based on a count
+
+The `boxoffice` dataset contains individual values, the dollar amounts, that we wanted to visualize with bars. Often, however, we encounter a slightly different scenario: A dataset doesn't contain the numeric amounts directly, but instead contains observations we want to count. For example, consider the `penguins_nomissing` dataset:
+
+```{r penguins2, echo = TRUE}
+penguins_nomissing
+```
+
+It contains one row per penguin. If we want to make a bar plot of the number of penguins of each species (Adelie, Chinstrap, Gentoo), we cannot use `geom_col()` as before, because the dataset doesn't have a column that contains these counts.
+
+The solution here is to use `geom_bar()`, which performs a count and then displays the result of that count. Because `geom_bar()` counts automatically, you only have to provide it with a single aesthetic, which specifies the data column in which you are counting.
+
+Try this out. Make a bar plot of the number of penguins per species. Map the penguin species onto the x axis.
+
+```{r geom-bar, exercise=TRUE}
+ggplot(penguins_nomissing, aes(___)) +
+  geom_bar()
+```
+
+```{r geom-bar-hint}
+ggplot(penguins_nomissing, aes(x = ___)) +
+  geom_bar()
+```
+
+```{r geom-bar-solution}
+ggplot(penguins_nomissing, aes(x = species)) +
+  geom_bar()
+```
+
+Try the following additional modifications in the above code:
+
+- Map penguin species onto the y axis.
+- Remove the axis label that says "species".
+- Change the order of the bars manually, using `fct_relevel()` (see slides).
+
+
+## Counting subgroups
+
+`geom_bar()` automatically counts how many cases there are in each unique combination of different categorical aesthetics. In the previous example, we had only one categorical aesthetic, `species`. But we can add a second one, for example `sex`. Then `geom_bar()` counts the number of cases in each unique combination of species and sex and draws separate bars for each. Try this out by mapping the `sex` column onto the `fill` aesthetic.
+
+```{r geom-bar2, exercise=TRUE}
+ggplot(penguins_nomissing, aes(x = species, fill = ___)) +
+  geom_bar()
+```
+
+```{r geom-bar2-solution}
+ggplot(penguins_nomissing, aes(x = species, fill = sex)) +
+  geom_bar()
+```
+
+By default, the bars for different `fill` values but identical `x` values will be drawn on top of one-another. But there are other possibilities, which are controled by the `position` argument to `geom_bar()`. For example, try to set the position to `"dodge"`.
+
+```{r geom-bar-position, exercise=TRUE}
+ggplot(penguins_nomissing, aes(x = species, fill = ___)) +
+  geom_bar(___)
+```
+
+```{r geom-bar-position-hint}
+ggplot(penguins_nomissing, aes(x = species, fill = sex)) +
+  geom_bar(position = ___)
+```
+
+```{r geom-bar-position-solution}
+ggplot(penguins_nomissing, aes(x = species, fill = sex)) +
+  geom_bar(position = "dodge")
+```
+
+In the above code, also try positions `"stack"` and `"fill"`.
+
+```{r position-question}
+question('What does position `"fill"` do?',
+  answer("Place bars with different fill colors side-by-side."),
+  answer("Place bars with different fill colors on top of one-another."),
+  answer("Place bars with different fill colors on top of one-another, and normalize the height of each compound bar to 1.", correct = TRUE),
+  answer("Place bars with different fill colors on top of one-another, and normalize the sum over all bars to 1.")
+)
+```

@@ -1,0 +1,732 @@
+---
+title: "Dimension reduction 1"
+author: "Claus O. Wilke"
+date: "last updated: `r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: [default, "Wilke-slides-theme.css"]
+    lib_dir: libs
+    nature:
+      ratio: '16:9'
+      highlightStyle: github
+      highlightLines: true
+      slideNumberFormat: ''
+      titleSlideClass: [center, middle]
+---
+
+```{r setup, include=FALSE, echo=FALSE, message = FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(comment = "")
+
+library(tidyverse)
+library(broom)
+library(cowplot)
+library(GGally)
+library(here)
+
+# ggplot2 settings so plots scale well for slide size 
+theme_set(theme_gray(16)) # 16 for full width, 18 for half width 
+update_geom_defaults("point", list(size = 2.0)) # 2 for full width, 2.5 for half width
+
+# blue jays dataset
+blue_jays <- read_csv(here("datasets", "blue_jays.csv"))
+```
+
+## Problem:<br>How do we visualize datasets with many variables?
+
+---
+
+## Problem:<br>How do we visualize datasets with many variables?
+
+Example: blue jays dataset
+
+.center.tiny-font[
+```{r echo = FALSE}
+knitr::kable(blue_jays)
+```
+]
+
+---
+
+## All-by-all scatter plots are hard to read 
+
+.center[
+```{r blue-jays-scattermatrix, echo = FALSE, message = FALSE, cache = TRUE, fig.width = 10, fig.asp = 0.5, dev = "svg"}
+blue_jays %>% 
+  rename(
+    `bill depth` = "bill_depth_mm", 
+    `bill width` = "bill_width_mm", 
+    `bill length` = "bill_length_mm",
+    `head length` = "head_length_mm",
+    `body mass` = "body_mass_g",
+    `skull size` = "skull_size_mm"
+  ) %>%
+  ggpairs(
+    mapping = aes(color = sex),
+    columns = c(
+      "bill depth", "bill width", "bill length",
+      "head length", "body mass", "skull size"
+    ),
+    lower = list(
+      continuous = wrap("points", size = 1, alpha = .6)
+    ),
+    upper = list(
+      continuous = wrap("points", size = 1, alpha = .6)
+    ),
+    diag = list(
+      continuous = wrap("densityDiag", alpha = 0.6, size = .1)
+    )
+  ) +
+  theme_bw(9) +
+  scale_fill_manual(values = c(F = "#D55E00", M = "#0072B2")) +
+  scale_color_manual(values = c(F = "#D55E00", M = "#0072B2"))
+```
+]
+
+---
+
+## Solution: Dimension reduction
+
+--
+
+- We project the data into a lower-dimensional space
+
+--
+
+- Commonly-used method:<br>Principal Components Analysis (PCA)
+
+--
+
+- PCA is a rotation of the coordinate system
+
+---
+
+## Principal Components Analysis (PCA)
+
+.center[
+```{r blue-jays-PCA, echo = FALSE, fig.width = 11, fig.asp = 0.35, dev = "svg"}
+p1 <- ggplot(blue_jays, aes(skull_size_mm, head_length_mm, fill = sex)) + 
+  geom_point(pch = 21, color = "white", size = 2, stroke = 0.2) +
+  scale_x_continuous(
+    name = "skull size (mm)", limits = c(26, 36),
+    breaks = c(26, 28, 30, 32, 34, 36)
+  ) +
+  scale_y_continuous(
+    name = "head length (mm)", limits = c(51, 61),
+    breaks = c(52, 54, 56, 58, 60)
+  ) +
+  scale_fill_manual(
+    values = c(F = "#D55E00", M = "#0072B2"),
+    breaks = c("F", "M"),
+    labels = c("female birds   ", "male birds"),
+    name = NULL,
+    guide = guide_legend(
+      direction = "horizontal",
+      override.aes = list(size = 3)
+      )
+    ) +
+  coord_fixed() +
+  theme_minimal_grid(12) +
+  theme(
+    legend.position = "top",
+    legend.justification = "right",
+    legend.box.spacing = unit(3.5, "pt"), # distance between legend and plot
+    legend.text = element_text(vjust = 0.6),
+    legend.spacing.x = unit(2, "pt"),
+    legend.background = element_rect(fill = "white", color = NA),
+    legend.key.width = unit(10, "pt")
+  )
+bj_standard <- data.frame(
+  skull = scale(blue_jays$skull_size_mm),
+  head = scale(blue_jays$head_length_mm),
+  sex = blue_jays$sex
+)
+df_arrows <- data.frame(
+  x = c(-3, 2),
+  y = c(-3, -2),
+  xend = c(3, -2),
+  yend = c(3, 2)
+)
+df_labels <- data.frame(
+  x = c(3.1, -2.1),
+  y = c(3.1, 2.1),
+  hjust = c(0, 1),
+  vjust = c(0, 0),
+  label = c("PC 1", "PC 2")
+)
+p2 <- ggplot(bj_standard, aes(skull, head, fill = sex)) + 
+  geom_point(pch = 21, color = "white", size = 2, stroke = 0.2) +
+  geom_segment(
+    data = df_arrows,
+    aes(x = x, y = y, xend = xend, yend = yend),
+    color = "black",
+    arrow = arrow(angle = 15, length = grid::unit(9, "pt"), type = "closed"),
+    inherit.aes = FALSE
+  ) +
+  geom_text(
+    data = df_labels,
+    aes(x = x, y = y, hjust = hjust, vjust = vjust, label = label),
+    size = 12/.pt,
+    color = "black", inherit.aes = FALSE
+  ) +
+  scale_x_continuous(
+    name = "skull size (scaled)", limits = c(-4, 4),
+    breaks = c(-4, -2, 0, 2, 4), labels = c("-4.0", "-2.0", "0.0", "2.0", "4.0")
+  ) +
+  scale_y_continuous(
+    name = "head length (scaled)", limits = c(-4, 4),
+    breaks = c(-4, -2, 0, 2, 4), labels = c("-4.0", "-2.0", "0.0", "2.0", "4.0")
+  ) +
+  scale_fill_manual(
+    values = c(F = "#D55E00", M = "#0072B2"),
+    breaks = c("F", "M"),
+    labels = c("", ""),
+    name = NULL,
+    guide = guide_legend(
+      direction = "horizontal",
+      override.aes = list(shape = NA)
+      )
+    ) +
+  coord_fixed(ratio = 1) +
+  theme_minimal_grid(12) +
+  theme(
+    legend.position = "top",
+    legend.justification = "right",
+    legend.box.spacing = unit(3.5, "pt"), # distance between legend and plot
+    legend.text = element_text(vjust = 0.6),
+    legend.spacing.x = unit(2, "pt"),
+    legend.background = element_rect(fill = "white", color = NA),
+    legend.key.width = unit(10, "pt")
+  )
+df_arrows <- data.frame(
+  x = c(-5.2, 0),
+  y = c(0, -3.5),
+  xend = c(5.2, 0),
+  yend = c(0, 3.5)
+)
+df_labels <- data.frame(
+  x = c(5.2, 0),
+  y = c(0.4, 3.8),
+  hjust = c(0.9, 0.5),
+  vjust = c(0, 0),
+  label = c("PC 1", "PC 2")
+)
+p3 <- ggplot(bj_standard, aes(skull + head, -skull + head, fill = sex)) + 
+  geom_point(pch = 21, color = "white", size = 2, stroke = 0.2) +
+  geom_segment(
+    data = df_arrows,
+    aes(x = x, y = y, xend = xend, yend = yend),
+    color = "black",
+    arrow = arrow(angle = 15, length = grid::unit(9, "pt"), type = "closed"),
+    inherit.aes = FALSE
+  ) +
+  geom_text(
+    data = df_labels,
+    aes(x = x, y = y, hjust = hjust, vjust = vjust, label = label),
+    size = 12/.pt,
+    color = "black", inherit.aes = FALSE
+  ) +
+  scale_x_continuous(
+    name = "PC 1", limits = c(-5.2, 5.2),
+    breaks = c(-5, -2.5, 0, 2.5, 5), labels = c("-5.0", "-2.5", "0.0", "2.5", "5.0")
+) +
+  scale_y_continuous(
+    name = "PC 2", limits = c(-5.2, 5.2),
+    breaks = c(-5, -2.5, 0, 2.5, 5), labels = c("-5.0", "-2.5", "0.0", "2.5", "5.0")
+  ) +
+  scale_fill_manual(
+    values = c(F = "#D55E00", M = "#0072B2"),
+    breaks = c("F", "M"),
+    labels = c("", ""),
+    name = NULL,
+    guide = guide_legend(
+      direction = "horizontal",
+      override.aes = list(shape = NA)
+      )
+    ) +
+  coord_fixed(ratio = 1) +
+  theme_minimal_grid(12) +
+  theme(
+    legend.position = "top",
+    legend.justification = "right",
+    legend.box.spacing = unit(3.5, "pt"), # distance between legend and plot
+    legend.text = element_text(vjust = 0.6),
+    legend.spacing.x = unit(2, "pt"),
+    legend.background = element_rect(fill = "white", color = NA),
+    legend.key.width = unit(10, "pt")
+  )
+
+aligned <- align_plots(p1, p2, p3, align = "hv")
+p1 <- aligned[[1]]
+p2 <- aligned[[2]]
+p3 <- aligned[[3]]
+
+plot_grid(
+  p1, NULL, NULL, NULL, NULL,
+  nrow = 1, rel_widths = c(1, .04, 1, .04, 1),
+  labels = c("", "", "", "", ""), label_y = 0.985
+)
+```
+]
+
+???
+
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Principal Components Analysis (PCA)
+
+.center[
+```{r blue-jays-PCA2, echo = FALSE, fig.width = 11, fig.asp = 0.35, dev = "svg"}
+plot_grid(
+  p1, NULL, p2, NULL, NULL,
+  nrow = 1, rel_widths = c(1, .04, 1, .04, 1),
+  labels = c("", "", "", "", ""), label_y = 0.985
+)
+```
+]
+
+???
+
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+
+## Principal Components Analysis (PCA)
+
+.center[
+```{r blue-jays-PCA3, echo = FALSE, fig.width = 11, fig.asp = 0.35, dev = "svg"}
+plot_grid(
+  p1, NULL, p2, NULL, p3,
+  nrow = 1, rel_widths = c(1, .04, 1, .04, 1),
+  labels = c("", "", "", "", ""), label_y = 0.985
+)
+```
+]
+
+--
+
+PCA aligns the major axes with directions of maximum variation in the data
+
+???
+
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## PCA analysis of the entire blue jays dataset
+
+.center[
+```{r pca-scatter, echo = FALSE, fig.width = 7, fig.asp = 0.618, dev = "svg"}
+pca_fit <- blue_jays %>% 
+  select(where(is.numeric)) %>% # retain only numeric columns
+  scale() %>%       # scale to zero mean and unit variance
+  prcomp()          # do PCA
+
+pca_fit %>%
+  augment(blue_jays) %>% # add original dataset back in
+  ggplot(aes(.fittedPC1, .fittedPC2, fill = sex)) + 
+  geom_point(pch = 21, color = "white", size = 3, stroke = 0.2) +
+  scale_x_continuous(
+    name = "PC 1", 
+    limits = c(-5.2, 5.2),
+    breaks = c(-5, -2.5, 0, 2.5, 5),
+    labels = c("-5.0", "-2.5", "0.0", "2.5", "5.0")
+  ) +
+  scale_y_continuous(
+    name = "PC 2",
+    limits = c(-3.2, 4.2),
+    breaks = c(-2, 0, 2, 4),
+    labels = c("-2.0", "0.0", "2.0", "4.0")
+  ) +
+  scale_fill_manual(
+    values = c(F = "#D55E00", M = "#0072B2"),
+    breaks = c("M", "F"),
+    labels = c("male birds   ", "female birds"),
+    name = NULL,
+    guide = guide_legend(
+      direction = "horizontal",
+      override.aes = list(shape = 21)
+    )
+  ) +
+  coord_fixed(ratio = 1) +
+  theme_minimal_grid(16) +
+  theme(
+    legend.position = "top",
+    legend.justification = "right",
+    legend.box.spacing = unit(3.5, "pt"), # distance between legend and plot
+    legend.text = element_text(vjust = 0.6),
+    legend.spacing.x = unit(2, "pt"),
+    legend.background = element_rect(fill = "white", color = NA),
+    legend.key.width = unit(10, "pt")
+  )
+```
+]
+
+--
+
+.small-font[
+Male and female birds separate along PC1
+]
+
+---
+
+## The rotation matrix allows us to interpret the PCs
+
+.center[
+```{r pca-rotation, fig.width=7., fig.asp = .618, echo=FALSE, message = FALSE, warning=FALSE, dev = "svg"}
+arrow_style <- arrow(
+  angle = 20, length = grid::unit(8, "pt"),
+  ends = "first", type = "closed"
+)
+
+nudge_df <- tibble(
+  column = c(
+    "bill_depth_mm", "bill_width_mm", "bill_length_mm",
+    "head_length_mm", "body_mass_g", "skull_size_mm"
+  ),
+  nudge_y = c(0, 0.03, 0, -0.02, 0, 0),
+  name = c(
+    "bill depth", "bill width", "bill length",
+    "head length", "body mass", "skull size"
+  )
+)
+
+pca_fit %>%
+  # extract rotation matrix
+  tidy(matrix = "rotation") %>%
+  pivot_wider(
+    names_from = "PC", values_from = "value",
+    names_prefix = "PC"
+  ) %>%
+  left_join(nudge_df) %>%
+  ggplot(aes(PC1, PC2)) +
+  geom_segment(
+    xend = 0, yend = 0,
+    arrow = arrow_style
+  ) +
+  geom_text(
+    aes(y = PC2 + nudge_y, label = name),
+    hjust = 1,
+    nudge_x = -0.03,
+    size = 14/.pt
+    
+  ) +
+  scale_x_continuous(
+    name = "PC 1",
+    limits = c(-1.5, .5)
+  ) +
+  scale_y_continuous(
+    name = "PC 2",
+    limits = c(-1., 1)
+  ) +
+  coord_fixed() +
+  theme_minimal_grid(16)
+```
+]
+
+--
+
+.small-font[
+All variables contribute negatively to PC1; it represents the overall size of the bird
+]
+
+---
+
+## The rotation matrix allows us to interpret the PCs
+
+.center[
+![](`r knitr::fig_chunk("pca-rotation", "svg")`)
+]
+
+.small-font[
+PC2 represents the difference between bill length and skull size
+]
+
+---
+
+## The rotation matrix allows us to interpret the PCs
+
+.pull-left.width-50[
+![](`r knitr::fig_chunk("pca-scatter", "svg")`)
+]
+
+.pull-right.width-50[
+![](`r knitr::fig_chunk("pca-rotation", "svg")`)
+]
+
+- Male birds are larger than female birds
+
+- Both male and female birds have long and short bills relative to their overall size
+
+---
+
+## We also plot the variance explained by each PC
+
+.center[
+```{r pca-eigenvalues, fig.width=7., fig.asp = .618, echo=FALSE, message = FALSE, warning=FALSE, dev = "svg"}
+pca_fit %>%
+  tidy(matrix = "eigenvalues") %>% # extract eigenvalues
+  ggplot(aes(PC, percent)) + 
+  geom_col(
+    fill = "#56B4E9",
+    alpha = 0.9
+  ) + 
+  scale_x_continuous(
+    name = "principal component",
+    breaks = 1:6,
+    expand = expansion(mult = 0, add = 0.1)
+  ) +
+  scale_y_continuous(
+    name = "variance explained",
+    label = scales::label_percent(accuracy = 1),
+    expand = expansion(mult = c(0, 0.05))
+  ) +
+  theme_minimal_hgrid(16)
+```
+]
+
+.medium-font[
+PC 1 captures over 50% of the total variance in the dataset
+]
+
+---
+
+## We also plot the variance explained by each PC
+
+.center[
+![](`r knitr::fig_chunk("pca-eigenvalues", "svg")`)
+]
+
+
+.medium-font[
+Overall bird size explains >50% of the variation in the various measurements
+]
+
+---
+class: center middle
+
+## Doing a principal components analysis (PCA) in R
+
+---
+
+## Prerequisite: Scaling of numeric columns
+
+.pull-left.width-50[
+
+.medium-font[
+Plot without scaling
+]
+
+.tiny-font[
+```{r blue-jays-unscaled, eval = FALSE}
+blue_jays %>% 
+  ggplot() +
+  aes(skull_size_mm, head_length_mm) + 
+  geom_point(aes(color = sex))
+```
+]]
+
+.pull-right[
+```{r blue-jays-unscaled-out, ref.label="blue-jays-unscaled", fig.width = 5, fig.asp = 0.75, echo=FALSE, warning=FALSE, dev = "svg"}
+```
+]
+
+
+---
+
+## Prerequisite: Scaling of numeric columns
+
+.pull-left.width-50[
+
+.medium-font[
+Plot with scaling
+]
+
+.tiny-font[
+```{r blue-jays-scaled, eval = FALSE}
+blue_jays %>% 
+  # scale all numeric columns
+  mutate(across(where(is.numeric), scale)) %>%
+  ggplot() +
+  aes(skull_size_mm, head_length_mm) + 
+  geom_point(aes(color = sex))
+```
+]]
+
+.pull-right[
+```{r blue-jays-scaled-out, ref.label="blue-jays-scaled", fig.width = 5, fig.asp = 0.75, echo=FALSE, warning=FALSE, dev = "svg"}
+```
+]
+
+---
+
+## We perform a PCA with `prcomp()`
+
+.tiny-font[
+```{r}
+blue_jays %>% 
+  select(where(is.numeric)) %>% # retain only numeric columns
+  scale() %>%                   # scale to zero mean and unit variance
+  prcomp()                      # do PCA
+```
+]
+
+
+---
+
+## Calculate the components and plot
+
+First we run the PCA and store results as `pca_fit`:
+
+.tiny-font[
+```{r}
+pca_fit <- blue_jays %>% 
+  select(where(is.numeric)) %>% # retain only numeric columns
+  scale() %>%                   # scale to zero mean and unit variance
+  prcomp()                      # do PCA
+```
+]
+
+--
+
+Then we add PC coordinates into original dataset and plot:
+
+.tiny-font[
+```{r eval = FALSE}
+library(broom)  # for augment(), tidy()
+
+pca_fit %>%
+  # add PCs to the original dataset
+  augment(blue_jays) %>%
+  ggplot(aes(.fittedPC1, .fittedPC2)) +
+  geom_point(aes(color = sex))
+```
+]
+
+---
+
+
+## Calculate the components and plot
+
+.pull-left[
+.medium-font[
+Plot PC 2 against PC 1
+]
+
+.tiny-font[
+```{r blue-jays-pca-plot, eval = FALSE}
+pca_fit %>%
+  # add PCs to the original dataset
+  augment(blue_jays) %>%
+  ggplot(aes(.fittedPC1, .fittedPC2)) +
+  geom_point(aes(color = sex))
+```
+]]
+
+.pull-right[
+```{r blue-jays-pca-plot-out, ref.label="blue-jays-pca-plot", fig.width=5., fig.asp = 0.75, echo=FALSE, warning=FALSE, dev = "svg"}
+```
+]
+
+---
+
+## Calculate the components and plot
+
+.pull-left[
+.medium-font[
+Plot PC 3 against PC 2
+]
+
+
+.tiny-font[
+```{r blue-jays-pca-plot2, eval = FALSE}
+pca_fit %>%
+  # add PCs to the original dataset
+  augment(blue_jays) %>%
+  ggplot(aes(.fittedPC2, .fittedPC3)) +
+  geom_point(aes(color = sex))
+```
+]]
+
+.pull-right[
+```{r blue-jays-pca-plot2-out, ref.label="blue-jays-pca-plot2", fig.width=5., fig.asp = 0.75, echo=FALSE, warning=FALSE, dev = "svg"}
+```
+]
+
+---
+
+## Plot the rotation matrix
+
+.tiny-font.pull-left.width-50[
+```{r blue-jays-pca-rotation, eval = FALSE}
+arrow_style <- arrow(
+  angle = 20, length = grid::unit(8, "pt"),
+  ends = "first", type = "closed"
+)
+
+pca_fit %>%
+  # extract rotation matrix
+  tidy(matrix = "rotation") %>%
+  pivot_wider(
+    names_from = "PC", values_from = "value",
+    names_prefix = "PC"
+  ) %>%
+  ggplot(aes(PC1, PC2)) +
+  geom_segment(
+    xend = 0, yend = 0,
+    arrow = arrow_style
+  ) +
+  geom_text(aes(label = column), hjust = 1) +
+  xlim(-1.5, 0.5) + ylim(-1, 1) + 
+  coord_fixed()
+```
+]
+.pull-right.width-50[
+```{r blue-jays-pca-rotation-out, ref.label="blue-jays-pca-rotation", fig.width=5., fig.asp = 0.75, echo=FALSE, warning=FALSE, dev = "svg"}
+```
+]
+
+
+---
+
+## Plot the variance explained
+
+.pull-left.tiny-font.width-50[
+```{r blue-jays-pca-eigenvalues, eval = FALSE}
+pca_fit %>%
+  # extract eigenvalues
+  tidy(matrix = "eigenvalues") %>%
+  ggplot(aes(PC, percent)) + 
+  geom_col() + 
+  scale_x_continuous(
+    # create one axis tick per PC
+    breaks = 1:6
+  ) +
+  scale_y_continuous(
+    name = "variance explained",
+    # format y axis ticks as percent values
+    label = scales::label_percent(accuracy = 1)
+  )
+```
+]
+
+.pull-right[
+```{r blue-jays-pca-eigenvalues-out, ref.label="blue-jays-pca-eigenvalues", fig.width=5., fig.asp = 0.75, echo=FALSE, warning=FALSE, dev = "svg"}
+```
+]
+
+---
+
+## Further reading
+
+- Fundamentals of Data Visualization: [Chapter 12.3: Dimension reduction](https://clauswilke.com/dataviz/visualizing-associations.html#dimension-reduction)
+- Blogpost on PCA: [Principal Component Analysis
+Explained Visually](https://setosa.io/ev/principal-component-analysis/)
+- PCA tutorial with mathematical background: [A Tutorial on Principal Component Analysis](https://arxiv.org/pdf/1404.1100.pdf)
+

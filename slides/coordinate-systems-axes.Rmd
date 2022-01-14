@@ -201,13 +201,18 @@ plot_grid(
 
 Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
 
+---
+
+class: center middle
+
+## Non-linear scales and coordinate systems
 
 ---
 
-## Non-linear scales: log-scales
+## Logarithmic scales (log scales)
 
 .small-text[
-Visualize these five values: 1, 3.16, 10, 31.6, 100
+Visualize these five values: 1, &nbsp; 3.16, &nbsp; 10, &nbsp; 31.6, &nbsp; 100
 ]
 
 --
@@ -520,6 +525,13 @@ ggplot(temps_long, aes(x = date, y = temperature, color = location)) +
 ```
 ]
 
+[//]: # "segment ends here"
+
+---
+class: center middle
+
+## Scales and coordinate systems in **ggplot2**
+
 ---
 
 ## Scale functions customize the x and y axes
@@ -532,7 +544,7 @@ boxoffice <- tibble(
 )
 ```
 
-Recall the box-office example from class 3
+Recall the box-office example from a prior lecture
 
 .pull-left.tiny-font[
 ```{r boxoffice-scale-progression1, eval = FALSE}
@@ -666,7 +678,7 @@ ggplot(boxoffice) +
   aes(amount, fct_reorder(title, amount)) +
   geom_col() +
   scale_x_continuous(
-    name = "weekend gross",
+    name = "weekend gross (million USD)",
     limits = c(0, 80),
     breaks = c(0, 25, 50, 75),
     labels = c("0", "$25M", "$50M", "$75M") #<<
@@ -747,7 +759,7 @@ ggplot(tx_counties) +
 
 ---
 
-## Scale parameters work the same
+## Parameters work the same for all scale functions
 
 
 .pull-left.nogap.tiny-font[
@@ -834,6 +846,7 @@ ggplot(temperatures, aes(day_of_year, temperature, color = location)) +
 ```
 ]]
 
+[//]: # "segment ends here"
 
 ---
 

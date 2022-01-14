@@ -1,0 +1,291 @@
+---
+#############################################################
+#                                                           #
+# Click on "Run Document" in RStudio to run this worksheet. #
+#                                                           #
+#############################################################
+title: "Dimension reduction 1"
+author: "Claus O. Wilke"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(tidyverse)
+library(broom)
+knitr::opts_chunk$set(echo = FALSE, comment = "")
+
+blue_jays <- read_csv("https://wilkelab.org/SDS375/datasets/blue_jays.csv")
+
+pca_fit <- blue_jays %>%
+  select(where(is.numeric)) %>%
+  scale() %>%
+  prcomp()
+```
+
+## Introduction
+
+In this worksheet, we will discuss how to perform principal components analysis (PCA).
+
+We will be using the R package **tidyverse** for data manipulation and visualization, and the R package **broom** to clean up PCA data.
+
+```{r library-calls, echo = TRUE, eval = FALSE}
+# load required libraries
+library(tidyverse)
+library(broom)
+```
+
+We will be working with the dataset `blue_jays`. It contains various measurements taken on blue jay birds.
+
+```{r echo = TRUE}
+blue_jays
+```
+
+
+## Performing a PCA
+
+We can perform a PCA with the function `prcomp()`. However, we first need to prepare the data. PCA can only take numeric columns, and it is best to scale all variables to zero mean and unit variance. 
+
+We can select all numeric columns in a dataset with `select(where(is.numeric))` and we can scale an entire dataset consisting of only numeric columns with `scale()`. Try this on the `blue_jays` dataset. Modify the dataset so it is entirely numeric and properly scaled.
+
+```{r scaling, exercise = TRUE}
+blue_jays %>%
+  ___
+```
+
+```{r scaling-hint}
+blue_jays %>%
+  select(where(is.numeric)) %>%
+  ___
+```
+
+```{r scaling-solution}
+blue_jays %>%
+  select(where(is.numeric)) %>%
+  scale()
+```
+
+Next run `prcomp()` over this modified dataset.
+
+```{r pca, exercise = TRUE}
+
+```
+
+```{r pca-hint}
+blue_jays %>%
+  select(where(is.numeric)) %>%
+  scale() %>%
+  ___
+```
+
+```{r pca-solution}
+blue_jays %>%
+  select(where(is.numeric)) %>%
+  scale() %>%
+  prcomp()
+```
+
+In practice, we asign the output from `prcomp()` to a variable and then run various functions from the **broom** package on it. For example, the `tidy()` function extracts model parameters in a tidy format. It takes an argument `matrix` that can take the values `"scores"`, `"rotation"`, and `"eigenvalues"`. See what these different options do.
+
+```{r pca-tidy, exercise = TRUE}
+pca_fit <- blue_jays %>%
+  select(where(is.numeric)) %>%
+  scale() %>%
+  prcomp()
+
+pca_fit %>%
+  tidy(matrix = ___)
+```
+
+```{r pca-tidy-solution}
+pca_fit <- blue_jays %>%
+  select(where(is.numeric)) %>%
+  scale() %>%
+  prcomp()
+
+pca_fit %>%
+  tidy(matrix = "scores")
+
+pca_fit %>%
+  tidy(matrix = "rotation")
+
+pca_fit %>%
+  tidy(matrix = "eigenvalues")
+```
+
+We can also add the original dataset back into the PCA coordinates via the `augment()` function. This is helpful for example when we want to plot values from the original dataset (such as some of the categorical variables removed at the first step of the analysis) in the transformed coordinate system. Try out how `augment()` works.
+
+```{r pca-augment, exercise = TRUE}
+pca_fit %>%
+  ___
+```
+
+```{r pca-augment-hint}
+pca_fit %>%
+  augment(___)
+```
+
+```{r pca-augment-solution}
+pca_fit %>%
+  augment(blue_jays)
+```
+
+
+## Making a PCA plot
+
+When plotting the results from a PCA, we usually make three separate plots: (i) we plot the individual data points in PC coordinates, (ii) we plot the rotation matrix, and (iii) we plot the variance explained by each components. Let's discuss each of these in turn.
+
+### Plotting individual data points in PC coordinates
+
+In the previous subsection, we used `augment()` to add the original dataset back into the PCA coordinates. The result from this computation can be used directly in ggplot. Try this out by plotting PC 2 versus PC 1 and coloring by the sex of the birds. Remember: The columns containing PC coordinates are called `.fittedPC1`, `.fittedPC2`, etc.
+
+```{r pca-scatter, exercise = TRUE}
+pca_fit %>%
+  augment(blue_jays) %>%
+  ggplot(___) +
+  ___
+```
+
+```{r pca-scatter-hint}
+pca_fit %>%
+  augment(blue_jays) %>%
+  ggplot(aes(.fittedPC1, .fittedPC2, color = sex)) +
+  ___
+```
+
+```{r pca-scatter-solution}
+pca_fit %>%
+  augment(blue_jays) %>%
+  ggplot(aes(.fittedPC1, .fittedPC2, color = sex)) +
+  geom_point() +
+  coord_fixed()
+```
+
+Try also plotting other PC coordinates, e.g. PC 3 vs PC 2 or PC 3 vs PC 1.
+
+### Plotting the rotation matrix
+
+To plot the rotation matrix we require a bit of boiler-plate code. It is always the same, so it's fine to copy-and-paste when needed. This is the baseline for a rotation-matrix plot:
+
+```{r echo = TRUE, eval = FALSE}
+# define an arrow style
+arrow_style <- arrow(
+  angle = 20, length = grid::unit(8, "pt"),
+  ends = "first", type = "closed"
+)
+
+pca_fit %>%
+  tidy(matrix = "rotation") %>%  # extract rotation matrix
+  pivot_wider(
+    names_from = "PC", values_from = "value",
+    names_prefix = "PC"
+  ) %>%
+  ggplot(aes(PC1, PC2)) +
+  geom_segment(
+    xend = 0, yend = 0,
+    arrow = arrow_style
+  ) +
+  geom_text(aes(label = column)) +
+  coord_fixed()
+```
+
+Use the above code to plot the rotation matrix for the blue jays PCA analysis. Make two customizations: 1. Change the x and y limits to appropriate values. Use `hjust` and/or `vjust` in `geom_text()` to aligne the text labels appropriately.
+
+```{r rotation-plot, exercise = TRUE}
+
+```
+
+```{r rotation-plot-solution}
+# define an arrow style
+arrow_style <- arrow(
+  angle = 20, length = grid::unit(8, "pt"),
+  ends = "first", type = "closed"
+)
+
+pca_fit %>%
+  tidy(matrix = "rotation") %>%  # extract rotation matrix
+  pivot_wider(
+    names_from = "PC", values_from = "value",
+    names_prefix = "PC"
+  ) %>%
+  ggplot(aes(PC1, PC2)) +
+  geom_segment(
+    xend = 0, yend = 0,
+    arrow = arrow_style
+  ) +
+  geom_text(aes(label = column), hjust = 1) +
+  xlim(-1.7, .5) + ylim(-1, 1) +
+  coord_fixed()
+```
+
+Now do the same for PC 2 versus PC 3. (Hint: This means putting PC 3 on the x axis.)
+
+```{r rotation-plot2, exercise = TRUE}
+
+```
+
+```{r rotation-plot2-solution}
+# define an arrow style
+arrow_style <- arrow(
+  angle = 20, length = grid::unit(8, "pt"),
+  ends = "first", type = "closed"
+)
+
+pca_fit %>%
+  tidy(matrix = "rotation") %>%  # extract rotation matrix
+  pivot_wider(
+    names_from = "PC", values_from = "value",
+    names_prefix = "PC"
+  ) %>%
+  ggplot(aes(PC3, PC2)) +
+  geom_segment(
+    xend = 0, yend = 0,
+    arrow = arrow_style
+  ) +
+  geom_text(aes(label = column), hjust = c(1, 0, 1, 1, 1, 1)) +
+  xlim(-1.5, 1.9) + ylim(-1.2, 1.2) +
+  coord_fixed()
+```
+
+### Plotting the eigenvalues (variance explained)
+
+To plot the variance explained, we extract the eigenvalues with the function `tidy()`, as discussed above. As a reminder, do this one more time and inspect the structure of the output.
+
+```{r pca-eigenvalues, exercise = TRUE}
+
+```
+
+```{r pca-eigenvalues-hint}
+pca_fit %>%
+  tidy(___)
+```
+
+```{r pca-eigenvalues-solution}
+pca_fit %>%
+  tidy(matrix = "eigenvalues")
+```
+
+Now make a bar plot of the percent variance explained (column `percent`) by each PC.
+
+```{r pca-eigenvalues-plot, exercise = TRUE}
+
+```
+
+```{r pca-eigenvalues-plot-hint}
+pca_fit %>%
+  tidy(matrix = "eigenvalues") %>%
+  ggplot(___) + 
+  ___
+
+```
+
+```{r pca-eigenvalues-plot-solution}
+pca_fit %>%
+  tidy(matrix = "eigenvalues") %>%
+  ggplot(aes(PC, percent)) +
+  geom_col() +
+  scale_x_continuous(breaks = 1:6) +
+  scale_y_continuous(labels = scales::label_percent())
+```
+

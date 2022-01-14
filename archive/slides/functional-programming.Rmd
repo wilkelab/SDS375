@@ -1,0 +1,640 @@
+---
+title: "Functions and functional programming"
+author: "Claus O. Wilke"
+date: "last updated: `r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: [default, "Wilke-slides-theme.css"]
+    lib_dir: libs
+    nature:
+      ratio: '16:9'
+      highlightStyle: github
+      highlightLines: true
+      slideNumberFormat: ''
+      titleSlideClass: [center, middle]
+params:
+  cache: TRUE
+---
+
+```{r setup, include=FALSE, echo=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(comment = "")
+
+library(tidyverse)
+library(here)
+library(palmerpenguins)
+library(cowplot)
+library(glue)
+# ggplot2 settings so plots scale well for slide size 
+theme_set(theme_gray(16)) # 16 for full width, 18 for half width 
+update_geom_defaults("point", list(size = 2)) # 2 for full width, 2.5 for half width
+```
+
+## We often have to run similar code multiple times
+
+--
+
+.tiny-font.pull-left.width-50[
+```{r penguins-plot-Adelie, eval = FALSE}
+penguins %>%
+  filter(species == "Adelie") %>%
+  ggplot() +
+  aes(bill_length_mm, body_mass_g) +
+  geom_point() +
+  ggtitle("Species: Adelie") +
+  xlab("bill length (mm)") +
+  ylab("body mass (g)") +
+  theme_minimal_grid() +
+  theme(plot.title.position = "plot")
+```
+]
+
+--
+
+.pull-right.width-45.move-up-1em[
+```{r penguins-plot-Adelie-out, ref.label = "penguins-plot-Adelie", cache = params$cache, echo = FALSE, warning = FALSE, fig.width = 6, fig.asp = 0.75, dev = "svg"}
+
+```
+]
+
+---
+
+## We often have to run similar code multiple times
+
+
+.tiny-font.pull-left.width-50[
+```{r penguins-plot-Chinstrap, eval = FALSE}
+penguins %>%
+  filter(species == "Chinstrap") %>%
+  ggplot() +
+  aes(bill_length_mm, body_mass_g) +
+  geom_point() +
+  ggtitle("Species: Chinstrap") +
+  xlab("bill length (mm)") +
+  ylab("body mass (g)") +
+  theme_minimal_grid() +
+  theme(plot.title.position = "plot")
+```
+]
+
+.pull-right.width-45.move-up-1em[
+```{r penguins-plot-Chinstrap-out, ref.label = "penguins-plot-Chinstrap", cache = params$cache, echo = FALSE, warning = FALSE, fig.width = 6, fig.asp = 0.75, dev = "svg"}
+
+```
+]
+
+---
+
+## We often have to run similar code multiple times
+
+
+.tiny-font.pull-left.width-50[
+```{r penguins-plot-Gentoo, eval = FALSE}
+penguins %>%
+  filter(species == "Gentoo") %>%
+  ggplot() +
+  aes(bill_length_mm, body_mass_g) +
+  geom_point() +
+  ggtitle("Species: Gentoo") +
+  xlab("bill length (mm)") +
+  ylab("body mass (g)") +
+  theme_minimal_grid() +
+  theme(plot.title.position = "plot")
+```
+]
+
+.pull-right.width-45.move-up-1em[
+```{r penguins-plot-Gentoo-out, ref.label = "penguins-plot-Gentoo", cache = params$cache, echo = FALSE, warning = FALSE, fig.width = 6, fig.asp = 0.75, dev = "svg"}
+
+```
+]
+
+--
+
+How can we make our life simpler and avoid massive code duplication?
+
+---
+
+## Step 1: Avoid hard-coding specific values
+
+--
+
+.tiny-font.pull-left.width-50[
+```{r penguins-plot-Adelie2, eval = FALSE}
+species = "Adelie" #<<
+
+penguins %>%
+  filter(.data$species == .env$species) %>% #<<
+  ggplot() +
+  aes(bill_length_mm, body_mass_g) +
+  geom_point() +
+  ggtitle(glue("Species: {species}")) + #<<
+  xlab("bill length (mm)") +
+  ylab("body mass (g)") +
+  theme_minimal_grid() +
+  theme(plot.title.position = "plot")
+```
+]
+
+.pull-right.width-45.move-up-1em[
+```{r penguins-plot-Adelie2-out, ref.label = "penguins-plot-Adelie2", cache = params$cache, echo = FALSE, warning = FALSE, fig.width = 6, fig.asp = 0.75, dev = "svg"}
+
+```
+]
+
+
+---
+
+## A quick aside: the pronouns `.data` and `.env`
+
+We can use pronouns to distinguish data columns from variables:
+```r
+species <- "Adelie"
+
+penguins %>%
+  filter(.data$species == .env$species)
+```
+
+--
+
+`.data$species` is a column in the data frame
+
+--
+
+`.env$species` is a variable in the local environment
+
+
+
+---
+
+## A quick aside: the pronouns `.data` and `.env`
+
+Alternatively we would have to make sure the names don't clash:
+
+```r
+species_choice <- "Adelie"
+
+penguins %>%
+  filter(species == species_choice)
+```
+
+
+---
+
+## Step 1: Avoid hard-coding specific values
+
+.tiny-font.pull-left.width-50[
+```{r penguins-plot-Adelie2a, eval = FALSE}
+species = "Adelie" #<<
+
+penguins %>%
+  filter(.data$species == .env$species) %>%
+  ggplot() +
+  aes(bill_length_mm, body_mass_g) +
+  geom_point() +
+  ggtitle(glue("Species: {species}")) +
+  xlab("bill length (mm)") +
+  ylab("body mass (g)") +
+  theme_minimal_grid() +
+  theme(plot.title.position = "plot")
+```
+]
+
+.pull-right.width-45.move-up-1em[
+![](`r knitr::fig_chunk("penguins-plot-Adelie2-out", "svg")`)
+]
+
+
+---
+
+## Step 1: Avoid hard-coding specific values
+
+.tiny-font.pull-left.width-50[
+```{r penguins-plot-Chinstrap2, eval = FALSE}
+species = "Chinstrap" #<<
+
+penguins %>%
+  filter(.data$species == .env$species) %>%
+  ggplot() +
+  aes(bill_length_mm, body_mass_g) +
+  geom_point() +
+  ggtitle(glue("Species: {species}")) +
+  xlab("bill length (mm)") +
+  ylab("body mass (g)") +
+  theme_minimal_grid() +
+  theme(plot.title.position = "plot")
+```
+]
+
+.pull-right.width-45.move-up-1em[
+```{r penguins-plot-Chinstrap2-out, ref.label = "penguins-plot-Chinstrap2", cache = params$cache, echo = FALSE, warning = FALSE, fig.width = 6, fig.asp = 0.75, dev = "svg"}
+
+```
+]
+
+---
+
+## Step 1: Avoid hard-coding specific values
+
+.tiny-font.pull-left.width-50[
+```{r penguins-plot-Gentoo2, eval = FALSE}
+species = "Gentoo" #<<
+
+penguins %>%
+  filter(.data$species == .env$species) %>%
+  ggplot() +
+  aes(bill_length_mm, body_mass_g) +
+  geom_point() +
+  ggtitle(glue("Species: {species}")) +
+  xlab("bill length (mm)") +
+  ylab("body mass (g)") +
+  theme_minimal_grid() +
+  theme(plot.title.position = "plot")
+```
+]
+
+.pull-right.width-45.move-up-1em[
+```{r penguins-plot-Gentoo2-out, ref.label = "penguins-plot-Gentoo2", cache = params$cache, echo = FALSE, warning = FALSE, fig.width = 6, fig.asp = 0.75, dev = "svg"}
+
+```
+]
+
+--
+
+This concept is also called: .highlight[Avoiding magic numbers]
+
+
+---
+
+## Step 2: Define a function
+
+.tiny-font.pull-left.width-50[
+```{r eval = FALSE}
+make_plot <- function(species) { #<<
+  penguins %>%
+    filter(.data$species == .env$species) %>%
+    ggplot() +
+    aes(bill_length_mm, body_mass_g) +
+    geom_point() +
+    ggtitle(glue("Species: {species}")) +
+    xlab("bill length (mm)") +
+    ylab("body mass (g)") +
+    theme_minimal_grid() +
+    theme(plot.title.position = "plot")
+}
+```
+]
+---
+
+## Step 2: Define a function
+
+.tiny-font.pull-left.width-50[
+```{r penguins-plot-Adelie3, eval = FALSE}
+make_plot <- function(species) {
+  penguins %>%
+    filter(.data$species == .env$species) %>%
+    ggplot() +
+    aes(bill_length_mm, body_mass_g) +
+    geom_point() +
+    ggtitle(glue("Species: {species}")) +
+    xlab("bill length (mm)") +
+    ylab("body mass (g)") +
+    theme_minimal_grid() +
+    theme(plot.title.position = "plot")
+}
+
+make_plot("Adelie") #<<
+```
+]
+
+.pull-right.width-45.move-up-1em[
+```{r penguins-plot-Adelie3-out, ref.label = "penguins-plot-Adelie3", cache = params$cache, echo = FALSE, warning = FALSE, fig.width = 6, fig.asp = 0.75, dev = "svg"}
+
+```
+]
+
+---
+
+## Step 2: Define a function
+
+.small-font[
+```{r penguins-plot-all, eval = FALSE}
+make_plot("Adelie")
+make_plot("Chinstrap")
+make_plot("Gentoo")
+```
+]
+
+```{r penguins-plot-all-out, ref.label = "penguins-plot-all", echo = FALSE, warning = FALSE, fig.width = 6, fig.asp = 0.75, out.width = "32%", dev = "svg"}
+
+```
+
+---
+
+## Rules of thumb about functions
+
+--
+
+- You can never write too many functions
+
+--
+
+- When you find yourself writing the same code 2-3 times, put it into a function
+
+--
+
+- A function should be no longer than 20-40 lines
+
+--
+
+- If a function is getting too long, break it into smaller functions
+
+
+---
+
+## Step 3: Automate calling the function
+
+.small-font[
+```{r eval = FALSE}
+species <- c("Adelie", "Chinstrap", "Gentoo")
+plots <- map(species, make_plot)
+```
+]
+
+--
+
+`map` takes each element of the vector `species` and uses it as input for `make_plot()`
+
+--
+
+It returns a list of created plots:
+
+.small-font[
+```{r penguins-plot-map-return, warning = FALSE, fig.width = 6, fig.asp = 0.75, out.width = "32%", dev = "svg"}
+plots[[1]]
+```
+]
+
+---
+
+## Step 3: Automate calling the function
+
+.small-font[
+```{r eval = FALSE}
+species <- c("Adelie", "Chinstrap", "Gentoo")
+plots <- map(species, make_plot)
+```
+]
+
+`map` takes each element of the vector `species` and uses it as input for `make_plot()`
+
+It returns a list of created plots:
+
+.small-font[
+```{r penguins-plot-map-return2, warning = FALSE, fig.width = 6, fig.asp = 0.75, out.width = "32%", dev = "svg"}
+plots[[2]]
+```
+]
+
+---
+
+## Step 3: Automate calling the function
+
+.small-font[
+```{r eval = FALSE}
+species <- c("Adelie", "Chinstrap", "Gentoo")
+plots <- map(species, make_plot)
+```
+]
+
+`map` takes each element of the vector `species` and uses it as input for `make_plot()`
+
+It returns a list of created plots:
+
+.small-font[
+```{r penguins-plot-map-return3, warning = FALSE, fig.width = 6, fig.asp = 0.75, out.width = "32%", dev = "svg"}
+plots[[3]]
+```
+]
+
+
+---
+
+## Step 3: Automate calling the function
+
+.small-font[
+```{r penguins-plot-map, eval = FALSE}
+species <- c("Adelie", "Chinstrap", "Gentoo")
+plots <- map(species, make_plot)
+
+plots[[1]]
+plots[[2]]
+plots[[3]]
+```
+]
+
+```{r penguins-plot-map-out, ref.label = "penguins-plot-map", echo = FALSE, warning = FALSE, fig.width = 6, fig.asp = 0.75, out.width = "32%", dev = "svg"}
+```
+
+---
+
+## Step 3: Automate calling the function
+
+.small-font[
+```{r penguins-plot-walk, eval = FALSE}
+species <- c("Adelie", "Chinstrap", "Gentoo")
+plots <- map(species, make_plot)
+
+# `walk()` is like `map()` but doesn't return a value
+# we use it only for side effects (such as printing)
+walk(plots, print)
+```
+]
+
+```{r penguins-plot-walk-out, ref.label = "penguins-plot-walk", echo = FALSE, warning = FALSE, fig.width = 6, fig.asp = 0.75, out.width = "32%", dev = "svg"}
+```
+
+---
+
+## Step 4: Write a more general function
+
+--
+
+.tiny-font.pull-left.width-50[
+```{r eval = FALSE}
+make_plot <- function(species) {
+  penguins %>% # hard-coded dataset! #<<
+    filter(.data$species == .env$species) %>%
+    ggplot() +
+    aes(bill_length_mm, body_mass_g) +
+    geom_point() +
+    ggtitle(glue("Species: {species}")) +
+    xlab("bill length (mm)") +
+    ylab("body mass (g)") +
+    theme_minimal_grid() +
+    theme(plot.title.position = "plot")
+}
+```
+]
+
+---
+
+## Step 4: Write a more general function
+
+.tiny-font.pull-left.width-50[
+```{r eval = FALSE}
+make_plot2 <- function(data, species) { #<<
+  data %>% #<<
+    # filter no longer needed
+    ggplot() +
+    aes(bill_length_mm, body_mass_g) +
+    geom_point() +
+    ggtitle(glue("Species: {species}")) +
+    xlab("bill length (mm)") +
+    ylab("body mass (g)") +
+    theme_minimal_grid() +
+    theme(plot.title.position = "plot")
+}
+```
+]
+
+---
+
+## Step 4: Write a more general function
+
+.tiny-font.pull-left.width-50[
+```{r penguins-plot-generic, eval = FALSE}
+make_plot2 <- function(data, species) {
+  data %>%
+    # filter no longer needed
+    ggplot() +
+    aes(bill_length_mm, body_mass_g) +
+    geom_point() +
+    ggtitle(glue("Species: {species}")) +
+    xlab("bill length (mm)") +
+    ylab("body mass (g)") +
+    theme_minimal_grid() +
+    theme(plot.title.position = "plot")
+}
+
+data_adelie <- penguins %>%
+  filter(species == "Adelie")
+
+make_plot2(data_adelie, species = "Adelie")
+```
+]
+
+.pull-right.width-45[
+```{r penguins-plot-generic-out, ref.label = "penguins-plot-generic", cache = params$cache, echo = FALSE, warning = FALSE, fig.width = 6, fig.asp = 0.75, dev = "svg"}
+
+```
+]
+
+
+---
+
+## Step 5: Use these concepts in a tidy pipeline
+
+.tiny-font[
+```{r}
+penguins %>%
+  nest(data = -species) %>%
+  mutate(plots = map(species, make_plot))
+```
+]
+
+
+---
+
+## Step 5: Use these concepts in a tidy pipeline
+
+.tiny-font[
+```{r penguins-plot-walk-tidy, eval = FALSE}
+penguins %>%
+  nest(data = -species) %>%
+  mutate(plots = map(species, make_plot)) %>%
+  pull(plots) %>%
+  walk(print)
+```
+]
+
+```{r penguins-plot-walk-tidy-out, ref.label = "penguins-plot-walk-tidy", echo = FALSE, warning = FALSE, fig.width = 6, fig.asp = 0.75, out.width = "32%", dev = "svg"}
+```
+
+---
+
+## Step 5: Use these concepts in a tidy pipeline
+
+.tiny-font[
+```{r penguins-plot-walk-tidy2, eval = FALSE}
+penguins %>%
+  nest(data = -species) %>%
+  mutate(plots = map2(data, species, make_plot2)) %>%
+  pull(plots) %>%
+  walk(print)
+```
+]
+
+```{r penguins-plot-walk-tidy2-out, ref.label = "penguins-plot-walk-tidy2", echo = FALSE, warning = FALSE, fig.width = 6, fig.asp = 0.75, out.width = "32%", dev = "svg"}
+```
+
+--
+
+.small-font[
+`map2()` is like `map()` but for functions with 2 arguments
+]
+
+---
+
+## Step 5: Use these concepts in a tidy pipeline
+
+.tiny-font[
+```{r penguins-plot-walk-tidy3, eval = FALSE}
+penguins %>%
+  nest(data = -species) %>%
+  mutate(plots = map2(data, species, make_plot2)) %>%
+  pull(plots) %>%
+  walk(print)
+```
+]
+
+```{r penguins-plot-walk-tidy3-out, ref.label = "penguins-plot-walk-tidy3", echo = FALSE, warning = FALSE, fig.width = 6, fig.asp = 0.75, out.width = "32%", dev = "svg"}
+```
+
+.small-font[
+Note: This pipeline automatically processes all species in the dataset, whatever they are called
+]
+
+---
+
+## Why no `for` loops?
+
+--
+
+- They often require us to think about data logistics (indexing)
+
+--
+
+- They encourage writing long, monolithic blocks of code
+
+--
+
+- They encourage iterative thinking over conceptual thinking
+
+--
+
+- They cannot easily be parallelized or otherwise optimized
+
+--
+
+- Most modern programming languages are moving away from `for` loops<br>
+  (examples: Python, Rust, JavaScript)
+
+---
+
+## Further reading
+
+- R for Data Science: [Chapter 19: Functions](https://r4ds.had.co.nz/functions.html)
+- R for Data Science: [Chapter 21.5: The map functions](https://r4ds.had.co.nz/iteration.html#the-map-functions)
+- **purrr** reference documentation: [Apply a function to each element of a list or atomic vector](https://purrr.tidyverse.org/reference/map.html)
+

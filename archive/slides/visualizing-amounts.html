@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Visualizing amounts</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Claus O. Wilke" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="Wilke-slides-theme.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, title-slide
+
+# Visualizing amounts
+### Claus O. Wilke
+### last updated: 2021-01-18
+
+---
+
+
+
+
+
+## Dataset: Highest grossing movies Dec. 2017
+
+.tiny-font[
+
+```r
+# Data from Box Office Mojo for Dec. 22-24, 2017. 
+boxoffice &lt;- tibble(
+  rank = 1:5,
+  title = c("Star Wars", "Jumanji", "Pitch Perfect 3", "Greatest Showman", "Ferdinand"),
+  amount = c(71.57, 36.17, 19.93, 8.81, 7.32) # million USD
+)
+```
+]
+
+.center[
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; rank &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; title &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; amount &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Star Wars &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 71.57 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Jumanji &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 36.17 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Pitch Perfect 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.93 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Greatest Showman &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.81 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Ferdinand &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.32 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+
+---
+
+## Visualize as a bar plot
+
+.small-font[
+
+```r
+ggplot(boxoffice, aes(title, amount)) +
+  geom_col()  # "col" stands for column
+```
+]
+
+--
+
+.center[
+![](visualizing-amounts_files/figure-html/boxoffice-naive-out-1.svg)&lt;!-- --&gt;
+]
+
+--
+
+Do you think this is a good visualization?
+
+---
+
+## Order by data value
+
+.small-font[
+
+```r
+ggplot(boxoffice, aes(fct_reorder(title, amount), amount)) +
+  geom_col()
+```
+]
+
+.center[
+![](visualizing-amounts_files/figure-html/boxoffice-ordered-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Order by data value, descending
+
+.small-font[
+
+```r
+ggplot(boxoffice, aes(fct_reorder(title, -amount), amount)) +
+  geom_col() + 
+  xlab(NULL) # remove x axis label
+```
+]
+
+.center[
+![](visualizing-amounts_files/figure-html/boxoffice-ordered2-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Flip x and y, set custom x axis label
+
+.small-font[
+
+```r
+ggplot(boxoffice, aes(amount, fct_reorder(title, amount))) +
+  geom_col() +
+  xlab("amount (in million USD)") +
+  ylab(NULL)
+```
+]
+
+.center[
+![](visualizing-amounts_files/figure-html/boxoffice-ordered3-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+background-image: url(https://raw.githubusercontent.com/allisonhorst/palmerpenguins/master/man/figures/logo.png)
+background-position: 95% 5%
+background-size: 8%
+
+
+## Sometimes we need to count before visualization
+
+.small-font[
+
+```r
+library(palmerpenguins)
+head(penguins)
+```
+
+```
+# A tibble: 6 x 8
+  species island bill_length_mm bill_depth_mm flipper_length_… body_mass_g sex  
+  &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;            &lt;int&gt;       &lt;int&gt; &lt;fct&gt;
+1 Adelie  Torge…           39.1          18.7              181        3750 male 
+2 Adelie  Torge…           39.5          17.4              186        3800 fema…
+3 Adelie  Torge…           40.3          18                195        3250 fema…
+4 Adelie  Torge…           NA            NA                 NA          NA &lt;NA&gt; 
+5 Adelie  Torge…           36.7          19.3              193        3450 fema…
+6 Adelie  Torge…           39.3          20.6              190        3650 male 
+# … with 1 more variable: year &lt;int&gt;
+```
+]
+
+Goal: Visualize number of penguins per species
+
+???
+
+Image credit: [Artwork by @allison_horst](https://github.com/allisonhorst/palmerpenguins/#artwork)
+
+---
+
+## Use `geom_bar()` to count before plotting
+
+.small-font[
+
+```r
+ggplot(penguins, aes(y = species)) + # note: no x aesthetic defined
+  geom_bar()
+```
+]
+
+.center[
+![](visualizing-amounts_files/figure-html/penguins-bars-out-1.svg)&lt;!-- --&gt;
+]
+
+
+
+---
+
+## Getting the bars into the right order
+
+Option 1: Manually, using `fct_relevel()`
+
+.tiny-font[
+
+```r
+ggplot(penguins, aes(y = fct_relevel(species, "Chinstrap", "Gentoo", "Adelie"))) +
+  geom_bar() +
+  ylab(NULL)
+```
+]
+
+.center[
+![](visualizing-amounts_files/figure-html/penguins-bars2-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Getting the bars into the right order
+
+Option 2: Using some R magic
+
+.tiny-font[
+
+```r
+ggplot(penguins, aes(y = fct_reorder(species, species, length))) + # Why does this work?
+  geom_bar() +
+  ylab(NULL)
+```
+]
+
+.center[
+![](visualizing-amounts_files/figure-html/penguins-bars3-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Display counts by species and sex
+
+.small-font[
+
+```r
+ggplot(penguins, aes(sex, fill = species)) +
+  geom_bar()
+```
+]
+
+.center[
+![](visualizing-amounts_files/figure-html/penguins-sex-species-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Remove missing values (`NA`s)
+
+.tiny-font[
+
+```r
+penguins_nomissing &lt;- na.omit(penguins) # remove all rows with any missing values
+
+ggplot(penguins_nomissing, aes(sex, fill = species)) +
+  geom_bar()
+```
+]
+
+.center[
+![](visualizing-amounts_files/figure-html/penguins-sex-species2-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Positions define how subgroups are shown
+
+`position = "dodge"`: Place bars for subgroups side-by-side
+
+.small-font[
+
+```r
+ggplot(penguins_nomissing, aes(sex, fill = species)) +
+  geom_bar(position = "dodge")
+```
+]
+
+.center[
+![](visualizing-amounts_files/figure-html/penguins-sex-species-dodge-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Positions define how subgroups are shown
+
+`position = "stack"`: Place bars for subgroups on top of each other
+
+.small-font[
+
+```r
+ggplot(penguins_nomissing, aes(sex, fill = species)) +
+  geom_bar(position = "stack")
+```
+]
+
+.center[
+![](visualizing-amounts_files/figure-html/penguins-sex-species-stack-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Positions define how subgroups are shown
+
+`position = "fill"`: Like `"stack"`, but scale to 100%
+
+.small-font[
+
+```r
+ggplot(penguins_nomissing, aes(sex, fill = species)) +
+  geom_bar(position = "fill")
+```
+]
+
+.center[
+![](visualizing-amounts_files/figure-html/penguins-sex-species-fill-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Further reading
+
+- Fundamentals of Data Visualization: [Chapter 6: Visualizing amounts](https://clauswilke.com/dataviz/visualizing-amounts.html)
+- Data Visualization—A Practical Introduction: [Chapter 4.4: Geoms can transform data](https://socviz.co/groupfacettx.html#statfunctions)
+- **ggplot2** reference documentation: [`geom_bar()`, `geom_col()`](https://ggplot2.tidyverse.org/reference/geom_bar.html)
+- **ggplot2** reference documentation: [`position_stack()`, `position_fill()`](https://ggplot2.tidyverse.org/reference/position_stack.html)
+
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"slideNumberFormat": ""
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

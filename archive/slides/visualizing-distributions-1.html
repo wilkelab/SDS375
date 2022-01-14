@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Visualizing distributions 1</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Claus O. Wilke" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="Wilke-slides-theme.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, title-slide
+
+# Visualizing distributions 1
+### Claus O. Wilke
+### last updated: 2021-01-28
+
+---
+
+
+
+
+
+
+## Passengers on the Titanic
+
+.center.small-font[
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; age &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; sex &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; class &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; survived &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 0.17 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 3rd &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; survived &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 0.33 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 3rd &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; died &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 0.80 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 2nd &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; survived &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 0.83 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 2nd &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; survived &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 0.83 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 3rd &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; survived &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 0.92 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 1st &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; survived &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1.00 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 2nd &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; survived &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1.00 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 3rd &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; survived &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1.00 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 2nd &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; survived &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1.00 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 2nd &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; survived &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; age &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; sex &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; class &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; survived &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 3rd &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; survived &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 3rd &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; died &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 3rd &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; died &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 1st &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; died &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 2nd &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; survived &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 3rd &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; died &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 3rd &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; died &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 2nd &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; survived &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 2nd &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; survived &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 2nd &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; survived &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; age &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; sex &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; class &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; survived &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 2nd &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; survived &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 3rd &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; survived &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 2nd &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; survived &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 2nd &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; survived &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 3rd &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; survived &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 3rd &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; survived &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 2nd &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; survived &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 2nd &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; survived &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 3rd &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; survived &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 3rd &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; survived &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+
+---
+
+## Histogram: Define bins and count cases
+
+
+
+.pull-left.small-font[
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; age range &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; count &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 0–5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 36 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 6–10 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 11–15 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 16–20 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 99 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 21–25 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 139 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 26–30 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 121 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 31–35 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 76 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 36–40 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 74 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; age range &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; count &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 41–45 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 54 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 46–50 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 50 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 51–55 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 26 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 56–60 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 22 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 61–65 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 66–70 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 71–75 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 76–80 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+
+--
+
+.pull-right[
+![](visualizing-distributions-1_files/figure-html/titanic-age-hist-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+
+# Histograms depend on the chosen bin width
+
+.center[
+![](visualizing-distributions-1_files/figure-html/titanic-age-hist-binwidth-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+
+
+## Alternative to histogram: Kernel density estimate (KDE)
+
+.pull-left[
+![](visualizing-distributions-1_files/figure-html/titanic-age-hist2-1.svg)&lt;!-- --&gt;
+]
+
+--
+
+.pull-right[
+![](visualizing-distributions-1_files/figure-html/titanic-age-kde-1.svg)&lt;!-- --&gt;
+]
+
+--
+
+Histograms show raw counts, KDEs show proportions. (Total area = 1)
+
+???
+
+Figures redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+
+## KDEs also depend on parameter settings
+
+.center[
+![](visualizing-distributions-1_files/figure-html/titanic-age-kde-grid-1.svg)&lt;!-- --&gt;
+]
+
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+
+## Careful: KDEs can show non-sensical data
+
+.center[
+![](visualizing-distributions-1_files/figure-html/titanic-age-kde-wrong-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Careful: Are bars stacked or overlapping?
+
+.pull-left[
+![](visualizing-distributions-1_files/figure-html/titanic-age-hist-stacked-1.svg)&lt;!-- --&gt;
+]
+
+--
+
+.pull-right[
+![](visualizing-distributions-1_files/figure-html/titanic-age-hist-overlap-1.svg)&lt;!-- --&gt;
+]
+
+--
+
+Stacked or overlapping histograms are rarely a good choice.
+
+???
+
+Figures redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Alternatively: Age pyramid
+
+.center[
+![](visualizing-distributions-1_files/figure-html/titanic-age-pyramid-1.svg)&lt;!-- --&gt;
+]
+
+
+???
+
+Figures redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Alternatively: KDEs showing proportions of total
+
+.center[
+![](visualizing-distributions-1_files/figure-html/titanic-age-props-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figures redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Making histograms with ggplot: `geom_histogram()`
+
+.small-font[
+
+```r
+ggplot(titanic, aes(age)) +
+  geom_histogram()
+```
+]
+
+--
+
+.center.small-font[
+
+```
+`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+![](visualizing-distributions-1_files/figure-html/titanic-hist-ggplot-demo-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Setting the bin width
+
+.small-font[
+
+```r
+ggplot(titanic, aes(age)) +
+  geom_histogram(binwidth = 5)
+```
+]
+
+
+.center[
+![](visualizing-distributions-1_files/figure-html/titanic-hist-ggplot-demo2-out-1.svg)&lt;!-- --&gt;
+]
+
+--
+
+Do you like the bin placement?
+
+---
+
+## Always set the center as well
+
+.small-font[
+
+```r
+ggplot(titanic, aes(age)) +
+  geom_histogram(
+    binwidth = 5,  # width of the bins
+    center = 2.5   # center of the bin containing that value
+  )
+```
+]
+
+
+.center[
+![](visualizing-distributions-1_files/figure-html/titanic-hist-ggplot-demo3-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Always set the center as well
+
+.small-font[
+
+```r
+ggplot(titanic, aes(age)) +
+  geom_histogram(
+    binwidth = 5,  # width of the bins
+    center = 12.5  # center of the bin containing that value
+  )
+```
+]
+
+
+.center[
+![](visualizing-distributions-1_files/figure-html/titanic-hist-ggplot-demo4-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Making density plots with ggplot: `geom_density()`
+
+.small-font[
+
+```r
+ggplot(titanic, aes(age)) +
+  geom_density(fill = "skyblue")
+```
+]
+
+--
+
+.center[
+![](visualizing-distributions-1_files/figure-html/titanic-dens-ggplot-demo-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Making density plots with ggplot: `geom_density()`
+
+.small-font[
+
+```r
+ggplot(titanic, aes(age)) +
+  geom_density() # without fill
+```
+]
+
+.center[
+![](visualizing-distributions-1_files/figure-html/titanic-dens-ggplot-demo2-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+
+## Modifying bandwidth (`bw`) and kernel parameters
+
+.tiny-font[
+
+```r
+ggplot(titanic, aes(age)) +
+  geom_density(
+    fill = "skyblue",
+    bw = 0.5,               # a small bandwidth
+    kernel = "gaussian"     # Gaussian kernel (the default)
+  )
+```
+]
+
+.center[
+![](visualizing-distributions-1_files/figure-html/titanic-dens-ggplot-demo3-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Modifying bandwidth (`bw`) and kernel parameters
+
+.tiny-font[
+
+```r
+ggplot(titanic, aes(age)) +
+  geom_density(
+    fill = "skyblue",
+    bw = 2,                 # a moderate bandwidth
+    kernel = "rectangular"  # rectangular kernel
+  )
+```
+]
+
+.center[
+![](visualizing-distributions-1_files/figure-html/titanic-dens-ggplot-demo4-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Statistical transformations (stats) can be set explicitly
+
+.tiny-font[
+
+```r
+ggplot(titanic, aes(age)) +
+  geom_density(
+    stat = "density",    # the default for geom_density()
+    fill = "skyblue"
+  )
+```
+]
+
+.center[
+![](visualizing-distributions-1_files/figure-html/titanic-stat-demo1-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Statistical transformations (stats) can be set explicitly
+
+.tiny-font[
+
+```r
+ggplot(titanic, aes(age)) +
+  geom_area(  # geom_area() does not normally use stat = "density"
+    stat = "density",
+    fill = "skyblue"
+  )
+```
+]
+
+.center[
+![](visualizing-distributions-1_files/figure-html/titanic-stat-demo2-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Statistical transformations (stats) can be set explicitly
+
+.tiny-font[
+
+```r
+ggplot(titanic, aes(age)) +
+  geom_line(  # neither does geom_line()
+    stat = "density"
+  )
+```
+]
+
+.center[
+![](visualizing-distributions-1_files/figure-html/titanic-stat-demo3-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Statistical transformations (stats) can be set explicitly
+
+.tiny-font[
+
+```r
+ggplot(titanic, aes(age)) +
+  # we can use multiple geoms on top of each other
+  geom_area(stat = "density", fill = "skyblue") +
+  geom_line(stat = "density")
+```
+]
+
+.center[
+![](visualizing-distributions-1_files/figure-html/titanic-stat-demo4-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Parameters are handed through to the stat
+
+.pull-left.tiny-font[
+
+```r
+ggplot(titanic, aes(age)) +
+  geom_line(stat = "density", bw = 3)
+```
+
+.center[
+![](visualizing-distributions-1_files/figure-html/titanic-stat-demo5-out-1.svg)&lt;!-- --&gt;
+]]
+
+.pull-right.tiny-font[
+
+```r
+ggplot(titanic, aes(age)) +
+  geom_line(stat = "density", bw = 0.3)
+```
+
+.center[
+![](visualizing-distributions-1_files/figure-html/titanic-stat-demo6-out-1.svg)&lt;!-- --&gt;
+]]
+
+--
+
+Here, `bw` is a parameter of `stat_density()`, not of `geom_line()`.
+
+---
+
+## We can explicitly map results from stat computations
+
+.tiny-font[
+
+```r
+ggplot(titanic, aes(age)) +
+  geom_tile( # geom_tile() draws rectangular colored areas
+    aes(
+      y = 1, # draw all tiles at the same y location
+      fill = after_stat(density)  # use computed density for fill
+    ),
+    stat = "density",
+    n = 20    # number of points calculated by stat_density() 
+  ) 
+```
+]
+
+.center[
+![](visualizing-distributions-1_files/figure-html/titanic-stat-demo7-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## We can explicitly map results from stat computations
+
+.tiny-font[
+
+```r
+ggplot(titanic, aes(age)) +
+  geom_tile( # geom_tile() draws rectangular colored areas
+    aes(
+      y = 1, # draw all tiles at the same y location
+      fill = after_stat(density)  # use computed density for fill
+    ),
+    stat = "density",
+    n = 200   # number of points calculated by stat_density() 
+  ) 
+```
+]
+
+.center[
+![](visualizing-distributions-1_files/figure-html/titanic-stat-demo8-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Further reading
+
+- Fundamentals of Data Visualization: [Chapter 7: Visualizing distributions](https://clauswilke.com/dataviz/histograms-density-plots.html)
+- Data Visualization—A Practical Introduction: [4.6 Histograms and density plots](https://socviz.co/groupfacettx.html#histograms)
+- **ggplot2** reference documentation: [`geom_histogram()`](https://ggplot2.tidyverse.org/reference/geom_histogram)
+- **ggplot2** reference documentation: [`geom_density()`](https://ggplot2.tidyverse.org/reference/geom_density)
+
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"slideNumberFormat": ""
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

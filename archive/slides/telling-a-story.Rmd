@@ -1,0 +1,644 @@
+---
+title: "Telling a story"
+author: "Claus O. Wilke"
+date: "last updated: `r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: [default, "Wilke-slides-theme.css"]
+    lib_dir: libs
+    nature:
+      ratio: '16:9'
+      highlightStyle: github
+      highlightLines: true
+      slideNumberFormat: ''
+      titleSlideClass: [center, middle]
+params:
+  cache: TRUE
+---
+
+```{r setup, include=FALSE, echo=FALSE, message = FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(comment = "")
+
+library(tidyverse)
+library(cowplot)
+library(colorspace)
+library(here)
+
+# ggplot2 settings so plots scale well for slide size 
+theme_set(theme_gray(16)) # 16 for full width, 18 for half width 
+update_geom_defaults("point", list(size = 2.0)) # 2 for full width, 2.5 for half width
+
+preprints <- read_csv(here("datasets", "preprints.csv"))
+```
+
+## How did I end up teaching a class on data visualization?
+
+--
+
+<img src = "telling-a-story_files/cowplot-logo.svg", width = 30%, style = "position:absolute; top: 22%; left: 13%;"></img>
+
+--
+
+<img src = "https://clauswilke.com/dataviz/cover.png", width = 30%, style = "position:absolute; top: 20%; left: 53%; box-shadow: 3px 5px 3px 1px #00000080;"></img>
+
+
+---
+
+## What is a story?
+
+--
+
+A story is a collection of observations, facts, or events presented in a specific order such that they create an .highlight[emotional reaction]
+
+---
+
+## Every story has an arc
+
+--
+
+.center[
+Opening
+]
+
+--
+
+.center[
+<img src = "telling-a-story_files/arrow.svg", width = 3%, style = "margin-top: -0.5em; margin-bottom: -1em"></img>
+
+Challenge
+]
+
+--
+
+.center[
+<img src = "telling-a-story_files/arrow.svg", width = 3%, style = "margin-top: -0.5em; margin-bottom: -1em"></img>
+
+Action
+]
+
+--
+
+.center[
+<img src = "telling-a-story_files/arrow.svg", width = 3%, style = "margin-top: -0.5em; margin-bottom: -1em"></img>
+
+Resolution
+]
+
+---
+
+## Every story has an arc
+
+.center[
+Opening
+]
+
+.center[
+<img src = "telling-a-story_files/arrow.svg", width = 3%, style = "margin-top: -0.5em; margin-bottom: -1em"></img>
+
+.highlight[Challenge]
+]
+
+.center[
+<img src = "telling-a-story_files/arrow.svg", width = 3%, style = "margin-top: -0.5em; margin-bottom: -1em"></img>
+
+Action
+]
+
+.center[
+<img src = "telling-a-story_files/arrow.svg", width = 3%, style = "margin-top: -0.5em; margin-bottom: -1em"></img>
+
+.highlight[Resolution]
+]
+
+.absolute-bottom-right[
+Challenge and resolution are<br>the two most important parts
+]
+
+---
+
+## Mapping my story onto this format
+
+--
+
+**Opening:** We need to make many data visualizations in my lab
+
+--
+
+**Challenge:** I end up telling my students the same things over and over
+
+--
+
+**Action:** I go and write a book about data visualization
+
+--
+
+**Resolution:** The book is written. But now I teach the material, so I still keep saying the same things over and over
+
+
+---
+
+## Other story structures
+
+--
+
+.center.move-up-1em[
+Action
+]
+
+--
+
+.center[
+<img src = "telling-a-story_files/arrow.svg", width = 3%, style = "margin-top: -0.5em; margin-bottom: -1em"></img>
+
+Background
+]
+
+--
+
+.center[
+<img src = "telling-a-story_files/arrow.svg", width = 3%, style = "margin-top: -0.5em; margin-bottom: -1em"></img>
+
+Development
+]
+
+--
+
+.center[
+<img src = "telling-a-story_files/arrow.svg", width = 3%, style = "margin-top: -0.5em; margin-bottom: -1em"></img>
+
+Climax
+]
+
+--
+
+.center[
+<img src = "telling-a-story_files/arrow.svg", width = 3%, style = "margin-top: -0.5em; margin-bottom: -1em"></img>
+
+Ending
+]
+
+--
+
+.absolute-bottom-right[
+(Better for action movies<br>than for scientific reports)
+]
+
+---
+
+## Mapping my story onto this format
+
+--
+
+**Action:** In May 2017, I embark on a major project: Write a book on data visualization
+
+--
+
+**Background:** I do this because we need to make many data visualizations in my lab, and I end up telling my students the same things over and over
+
+--
+
+**Development:** Writing the book takes me almost two years; along the way, I add many features to ggplot2 and become a member of the ggplot2 team
+
+--
+
+**Climax:** The book is released in April 2019
+
+--
+
+**Ending:** Now I'm a dataviz teacher
+
+
+---
+
+## Other story structures
+
+<br><br>
+
+--
+
+.center[
+Lead
+]
+
+--
+
+.center[
+<img src = "telling-a-story_files/arrow.svg", width = 3%, style = "margin-top: -0.5em; margin-bottom: -1em"></img>
+
+Development
+]
+
+--
+
+.absolute-bottom-right[
+(Commonly used in newspaper articles)
+]
+
+---
+
+## Mapping my story onto this format
+
+--
+
+**Lead:** Because I see the need for more education in data visualization, I have written an entire book about the topic
+
+--
+
+**Development:** I had previously written an R package to improve figure design, but it wasn't sufficient: Good judgement cannot be automated
+
+--
+
+So I wrote a book; the book is entirely about concepts, not about coding, and it is meant as a resource for anybody doing data visualizations, regardless of their preferred visualization software
+
+---
+
+## Writing a scientific paper: The Introduction
+
+--
+
+Three paragraphs:
+
+--
+
+**Paragraph 1:** What is the broad research area?<br>(Opening)
+
+--
+
+**Paragraph 2:** What specifically do we not know?<br>(Challenge)
+
+--
+
+**Paragraph 3:** What was done, what was found?<br>(Action/Resolution)
+
+
+---
+
+## Writing a scientific paper: The Results section
+
+--
+
+Repeat the following structure for each experiment/analysis/figure:
+
+--
+
+- What do we want to know? (Challenge)
+
+--
+
+- What did we do? (Action)
+
+--
+
+- What did we observe? (Results from the action)
+
+--
+
+Don't interpret the findings, just report them
+
+
+---
+
+## Writing a scientific paper: The Discussion section
+
+--
+
+First paragraph, repeat everything said so far:
+
+--
+
+* What do we want to know?
+
+--
+
+* What did we do?
+
+--
+
+* What did we see?
+
+--
+
+<br>
+Subsequent paragraphs, elaborate on these issues:
+
+--
+
+* How can we interpret our findings?
+
+--
+
+* How do our findings relate to other works in the field?
+
+--
+
+* What are weaknesses/drawbacks of our work?
+
+
+---
+class: center middle
+
+## Telling a story with figures
+
+---
+
+## Example: Preprints in biology
+
+.center[
+```{r preprints-part1, cache = params$cache, echo = FALSE, fig.width = 7.5, fig.asp = 0.618, dev = "svg"}
+df_preprints <- preprints %>% 
+  filter(archive %in% c("bioRxiv", "arXiv q-bio")) %>%
+  filter(count > 0)
+df_final <- filter(df_preprints, date == max(date))
+df_final_qbio <- filter(df_final, archive == "arXiv q-bio")
+
+df_preprints %>%
+  filter(archive == "arXiv q-bio") %>%
+  ggplot() +
+  aes(date, count, color = archive) + 
+  geom_line(size = 0.75) +
+  scale_y_log10(
+    limits = c(40, 400),
+    breaks = c(50, 100, 200, 300),
+    expand = c(0, 0),
+    name = "preprints / month",
+    sec.axis = dup_axis(
+      breaks = df_final_qbio$count,
+      labels = df_final_qbio$archive,
+      name = NULL
+    )
+  ) + 
+  scale_x_date(name = "year", expand = c(0, 0)) +
+  scale_color_manual(values = c("#D55E00", "#0072B2"), guide = "none") +
+  theme_minimal_grid() +
+  theme(
+    axis.ticks.y.right = element_blank(),
+    axis.text.y.right = element_text(
+      size = 14,
+      margin = margin(0, 0, 0, 0)
+    )
+  )
+```
+]
+
+.absolute-bottom-right[
+Opening
+]
+
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+
+
+## Example: Preprints in biology
+
+.center[
+![](`r knitr::fig_chunk("preprints-part1", "svg")`)
+]
+
+
+<div style = "position: absolute; top: 50%; left: 57%; width: 3.8in; background: white;">
+What happened in 2014 to curtail the growth?
+</div>
+
+.absolute-bottom-right[
+Challenge
+]
+
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Example: Preprints in biology
+
+.center[
+```{r preprints-part2, cache = params$cache, echo = FALSE, fig.width = 7.5, fig.asp = 0.618, dev = "svg"}
+ggplot(df_preprints, aes(date, count, color = archive)) + 
+  geom_line(size = 0.75) +
+  scale_y_log10(
+    limits = c(29, 1600),
+    breaks = c(30, 100, 300, 1000),
+    expand = c(0, 0),
+    name = "preprints / month",
+    sec.axis = dup_axis(
+      breaks = df_final$count,
+      labels = df_final$archive,
+      name = NULL
+    )
+  ) + 
+  scale_x_date(name = "year", expand = c(0, 0)) +
+  scale_color_manual(values = c("#D55E00", "#0072B2"), guide = "none") +
+  theme_minimal_grid() +
+  theme(
+    axis.ticks.y.right = element_blank(),
+    axis.text.y.right = element_text(
+      size = 14,
+      margin = margin(0, 0, 0, 0)
+    )
+  )
+```
+]
+
+.absolute-bottom-right[
+Resolution
+]
+
+<div style = "position: absolute; top: 65%; left: 60%; width: 3.8in; background: white;">
+bioRxiv opened in 2014
+</div>
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Keep in mind
+
+--
+
+- Every figure needs a clear purpose within the story arc
+
+--
+
+- A complete arc will usually require at least two figures
+
+---
+
+## Prepare figures that make a clear point
+
+--
+
+.center[
+```{r arrival-delay-vs-distance, cache = params$cache, echo = FALSE, message = FALSE, fig.width = 7.5, fig.asp = 0.618, dev = "svg"}
+library(nycflights13)
+carrier_names <- tibble(
+  carrier = c("9E", "AA", "B6", "DL", "EV", "MQ", "UA", "US", "WN", "--"),
+  name = c("Endeavor", "American", "JetBlue", "Delta", "ExpressJet", "Envoy", "United", "US Airways", "Southwest", "other")
+)
+
+flights_clean <- flights %>%
+  filter(!dest %in% c("HNL", "ANC")) %>% # remove Honolulu and Anchorage because they're so far away
+  mutate(carrier = ifelse(carrier %in% c("DL", "AA"), carrier, "--")) %>%
+  left_join(carrier_names, by = "carrier") %>%
+  select(name, distance, arr_delay, dest) %>%
+  na.omit() %>%
+  mutate(
+    name = factor(name, levels = c("American", "Delta", "other"))
+  )
+
+delay <- flights_clean %>%
+  group_by(name, dest) %>%
+  summarize(
+    count = n(),
+    distance = mean(distance, na.rm = TRUE),
+    arr_delay = mean(arr_delay, na.rm = TRUE)
+)
+
+p_delay_distance <- ggplot(delay) +
+  aes(x = distance, y = arr_delay, color = name, fill = name) +
+  geom_point(aes(size = count), alpha = .5, pch = 21) +
+  geom_smooth(
+    data = flights_clean,
+    aes(x = distance, y = arr_delay, color = name),
+    se = FALSE, inherit.aes = FALSE, size = 0.75,
+    method = 'gam',
+    formula = y ~ s(x, bs = "cs", k = 3),
+    show.legend = FALSE
+  ) +
+  scale_x_continuous(
+    limits = c(0, 3050),
+    expand = c(0, 0),
+    name = "distance (miles)"
+  ) +
+  scale_y_continuous(name = "mean arrival delay (min.)") +
+  scale_size(
+    breaks = c(4000, 8000, 12000),
+    name = "# of flights",
+    range = c(2, 8)
+  ) +
+  scale_color_manual(
+    name = "airline",
+    values = darken(c("#56B4E9", "#CC79A7", "#E69F00"))
+  ) +
+  scale_fill_manual(
+    name = "airline",
+    values = c("#56B4E9", "#CC79A7", "#E69F00")
+  ) +
+  guides(
+    color = guide_legend(order = 1),
+    fill = guide_legend(
+      override.aes = list(size = 4, alpha = .7),
+      order = 1
+    ),
+    size = guide_legend(
+      override.aes = list(fill = "gray70"),
+      order = 2
+    )
+  ) +
+  theme_minimal_grid() +
+  theme(plot.margin = margin(3.5, 14, 3.5, 1.5))
+
+stamp_bad(p_delay_distance) 
+```
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Prepare figures that make a clear point
+
+.center[
+```{r mean-arrival-delay-nyc, cache = params$cache, echo = FALSE, message = FALSE, fig.width = 7.5, fig.asp = 0.618, dev = "svg"}
+flights_grouped <- flights %>% 
+  mutate(
+  carrier = ifelse(
+    carrier %in% c("OO", "HA", "YV", "F9", "AS", "FL", "VX"), 
+    "--", carrier)
+  ) %>%
+  left_join(carrier_names, by = "carrier") %>%
+  group_by(name)
+
+flights_grouped %>%
+  summarize(mean_delay = mean(arr_delay, na.rm = TRUE)) %>%
+  na.omit() %>%
+  mutate(
+    name = fct_reorder(name, desc(mean_delay)),
+    highlight = ifelse(name %in% c("Delta", "American"), "yes", "no")
+  ) %>%
+  ggplot() +
+  aes(x = mean_delay, y = name, fill = highlight) + 
+  geom_col() +
+  scale_x_continuous(
+    name = "mean arrival delay (min.)",
+    expand = c(0, 0)
+  ) +
+  scale_y_discrete(name = NULL) +
+  scale_fill_manual(values = c("#B0B0B0D0", "#BD3828D0"), guide = "none") +
+  coord_cartesian(clip = "off") +
+  theme_minimal_vgrid(rel_small = 1) +
+  theme(
+    axis.line.y = element_blank(),
+    axis.ticks.y = element_blank()
+  )
+```
+]
+
+<div style = "position: absolute; top: 24%; left: 45%; background: white;">
+American and Delta<br>have the shortest delays
+</div>
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Make your figures memorable
+
+
+
+---
+
+background-image: url("https://clauswilke.com/dataviz/telling_a_story_files/figure-html/petownership-bar-1.png")
+background-position: left 50% top 60%
+background-size: 65%
+
+## Make your figures memorable
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+
+background-image: url("https://clauswilke.com/dataviz/telling_a_story_files/figure-html/petownership-isotype-1.png")
+background-position: left 50% top 60%
+background-size: 65%
+
+## Make your figures memorable
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+
+
+## Further reading
+
+- Fundamentals of Data Visualization: [Chapter 29: Telling a story and making a point](https://clauswilke.com/dataviz/telling-a-story.html)
+
+- Joshua Schimel (2011) Writing Science: How to Write Papers That Get Cited and Proposals That Get Funded

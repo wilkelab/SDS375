@@ -1,0 +1,650 @@
+---
+title: "Getting to know your data 2"
+author: "Claus O. Wilke"
+date: "last updated: `r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: [default, "Wilke-slides-theme.css"]
+    lib_dir: libs
+    nature:
+      ratio: '16:9'
+      highlightStyle: github
+      highlightLines: true
+      slideNumberFormat: ''
+      titleSlideClass: [center, middle]
+---
+
+```{r setup, include=FALSE, echo=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(comment = "")
+
+library(tidyverse)
+library(here)
+library(cowplot)
+library(naniar)
+
+NCbirths <- read_csv(here("datasets", "NCbirths.csv"), na = c("", "NA", "#N/A")) %>%
+  mutate(
+    Weeks = if_else(Weeks < 0, NA_real_, Weeks)
+  )
+
+# increase number of characters per line
+options(width = 74)
+
+# ggplot2 settings so plots scale well for slide size 
+theme_set(theme_gray(16)) # 16 for full width, 18 for half width 
+update_geom_defaults("point", list(size = 2)) # 2 for full width, 2.5 for half width
+```
+
+## Recall from previous lecture: Data dictionary
+
+**Data Dictionary**<br>
+A "centralized repository of information about data such as meaning, relationships to other data, origin, usage, and format" ([Wikipedia](https://en.wikipedia.org/wiki/Data_dictionary))
+
+---
+
+## Recall from previous lecture: Data dictionary
+
+### Dataset: Births in NC
+
+.pull-left.small-font.width-45.move-up-1em[
+**Details and Source**<br>
+This dataset contains data on a sample of 1450 birth records from 2001 that statistician John Holcomb at Cleveland State University selected from the North Carolina State Center for Health and Environmental Statistics.
+
+The dataset has 1450 observations on 15 variables.
+]
+
+
+.pull-right.xtiny-font.move-up-4em.width-50[
+Variable       | Description
+----------:    | :-----------
+`ID`           | Patient ID code
+`Plural`       | `1`=single birth, `2`=twins, `3`=triplets
+`Sex`          | Sex of the baby: `1`=male `2`=female
+`MomAge`	     | Mother's age (in years)
+`Weeks`        | Completed weeks of gestation
+`Marital`      | Marital status: `1`=married or `2`=not married
+`RaceMom`	     | Mother's race: `1`=white, `2`=black, `3`=American Indian, `4`=Chinese, `5`=Japanese, `6`=Hawaiian, `7`=Filipino, or `8`=Other Asian or Pacific Islander
+`HispMom`	     | Hispanic origin of mother: `C`=Cuban, `M`=Mexican, `N`=not Hispanic, `O`=Other Hispanic, `P`=Puerto Rico, `S`=Central/South America
+`Gained`       | Weight gained during pregnancy (in pounds)
+`Smoke`        | Smoker mom? `1`=yes or `0`=no
+`BirthWeightOz` |	Birth weight in ounces
+`BirthWeightGm` | Birth weight in grams
+`Low`           |	Indicator for low birth weight: `1`=2500 grams or less
+`Premie`       |	Indicator for premature birth: `1`=36 weeks or sooner
+`MomRace`      |	Mother's race: `black`, `hispanic`, `other`, or `white`
+]
+
+---
+
+## A complete record of data providence requires more info
+
+--
+
+.absolute-bottom-right.tiny-font[
+Gebru et al., "Datasheets for Datasets", [arXiv:1803.09010](https://arxiv.org/abs/1803.09010)
+]
+
+1. Motivation
+
+--
+
+2. Composition
+
+--
+
+3. Collection Process
+
+--
+
+4. Preprocessing/cleaning/labeling
+
+--
+
+5. Uses
+
+--
+
+6. Distribution
+
+--
+
+7. Maintenance
+
+---
+
+## Data providence: Motivation
+
+.absolute-bottom-right.tiny-font[
+Gebru et al., "Datasheets for Datasets", [arXiv:1803.09010](https://arxiv.org/abs/1803.09010)
+]
+
+--
+
+- For what purpose was the dataset created?
+
+--
+
+- Who created the dataset?
+
+--
+
+- Who funded the creation of the dataset?
+
+---
+
+## Data providence: Composition
+
+.absolute-bottom-right.tiny-font[
+Gebru et al., "Datasheets for Datasets", [arXiv:1803.09010](https://arxiv.org/abs/1803.09010)
+]
+
+--
+
+- What do the instances that comprise the dataset represent?
+
+--
+
+- How many instances are there in total?
+
+--
+
+- Does the dataset contain all possible instances or is it a sample
+(not necessarily random) of instances from a larger set?
+
+--
+
+- Is any information missing from individual instances?
+
+--
+
+- ... 
+
+See Gebru et al. for complete set of questions
+
+---
+
+## Data providence: Collection Process
+
+.absolute-bottom-right.tiny-font[
+Gebru et al., "Datasheets for Datasets", [arXiv:1803.09010](https://arxiv.org/abs/1803.09010)
+]
+
+--
+
+- How was the data associated with each instance acquired?
+
+--
+
+- If the dataset is a sample from a larger set, what was the sampling
+strategy?
+
+--
+
+- Were any ethical review processes conducted?
+
+--
+
+- If the dataset relates to people, did the individuals in question consent to the collection and use of their data?
+
+--
+
+- If consent was obtained, were the consenting individuals provided with a mechanism to revoke their consent in the future or
+for certain uses?
+
+--
+
+- ... 
+
+See Gebru et al. for complete set of questions
+
+---
+
+## Data providence: Preprocessing/cleaning/labeling
+
+.absolute-bottom-right.tiny-font[
+Gebru et al., "Datasheets for Datasets", [arXiv:1803.09010](https://arxiv.org/abs/1803.09010)
+]
+
+--
+
+- Was any preprocessing/cleaning/labeling of the data done?
+
+--
+
+- Was the raw data saved in addition to the preprocessed/cleaned/labeled
+data?
+
+--
+
+- Is the software used to preprocess/clean/label the instances available?
+
+---
+
+## Data providence: Uses
+
+.absolute-bottom-right.tiny-font[
+Gebru et al., "Datasheets for Datasets", [arXiv:1803.09010](https://arxiv.org/abs/1803.09010)
+]
+
+--
+
+- Has the dataset been used for any tasks already?
+
+--
+
+- Is there a repository that links to any or all papers or systems that
+use the dataset?
+
+--
+
+- What (other) tasks could the dataset be used for?
+
+--
+
+- Is there anything about the composition of the dataset or the way
+it was collected and preprocessed/cleaned/labeled that might impact future uses?
+
+--
+
+- Are there tasks for which the dataset should not be used?
+
+---
+
+## Data providence: Distribution
+
+.absolute-bottom-right.tiny-font[
+Gebru et al., "Datasheets for Datasets", [arXiv:1803.09010](https://arxiv.org/abs/1803.09010)
+]
+
+--
+
+- Will the dataset be distributed to third parties outside of the entity (e.g., company, institution, organization) on behalf of which
+the dataset was created?
+
+--
+
+- How will the dataset will be distributed (e.g., tarball on website,
+API, GitHub)? Does the dataset have a digital object identifier (DOI)?
+
+--
+
+- When will the dataset be distributed?
+
+--
+
+- Will the dataset be distributed under a copyright or other intellectual property (IP) license, and/or under applicable terms of use
+(ToU)?
+
+--
+
+- Have any third parties imposed IP-based or other restrictions on
+the data associated with the instances?
+
+--
+
+- Do any export controls or other regulatory restrictions apply to
+the dataset or to individual instances?
+
+---
+
+## Data providence: Maintenance
+
+.absolute-bottom-right.tiny-font[
+Gebru et al., "Datasheets for Datasets", [arXiv:1803.09010](https://arxiv.org/abs/1803.09010)
+]
+
+--
+
+- Who is supporting/hosting/maintaining the dataset?
+
+--
+
+- How can the owner/curator/manager of the dataset be contacted
+(e.g., email address)?
+
+--
+
+- Will the dataset be updated (e.g., to correct labeling errors, add
+new instances, delete instances)? If so, please describe how often, by
+whom, and how updates will be communicated to users (e.g., mailing list,
+GitHub)?
+
+--
+
+- If the dataset relates to people, are there applicable limits on the
+retention of the data associated with the instances?
+
+--
+
+- Will older versions of the dataset continue to be supported/hosted/maintained?
+
+--
+
+- If others want to extend/augment/build on/contribute to the
+dataset, is there a mechanism for them to do so?
+
+---
+
+## Providence at a glance: Data Nutritional Labels
+
+--
+
+<img src="know-your-data-2_files/datanutrition.png" width = 80%>
+
+.absolute-bottom-right.tiny-font[
+The Data Nutrition Project<br>https://datanutrition.org/
+]
+
+[//]: # "segment ends here"
+
+---
+class: center middle
+
+## Some real-world examples
+
+---
+
+## Some real-world examples
+
+Let's review three datasets on Kaggle:
+
+- [Pima Indians Diabetes Database](https://www.kaggle.com/uciml/pima-indians-diabetes-database)
+
+- [Pokemon](https://www.kaggle.com/abcsds/pokemon)
+
+- [Women's E-Commerce Clothing Reviews](https://www.kaggle.com/nicapotato/womens-ecommerce-clothing-reviews)
+
+[//]: # "segment ends here"
+
+---
+class: center middle
+
+## Working with missing values in R
+
+---
+
+## R propagates missingness
+
+```{r}
+x <- c(1, 2, NA, 4)
+
+sum(x)
+```
+
+--
+
+```{r}
+mean(x)
+```
+
+--
+
+```{r}
+x == 2
+```
+
+
+---
+
+## Many functions allow explicit exclusion of `NA` values
+
+```{r}
+x <- c(1, 2, NA, 4)
+
+sum(x, na.rm = TRUE)
+```
+
+--
+
+```{r}
+mean(x, na.rm = TRUE)
+```
+
+--
+
+But is this the right thing to do?
+
+---
+
+## There is no general right or wrong approach
+
+```{r}
+x <- c(2, 1, 1, 2, 1, 1, 1, 2, NA, 1, 2, 1, 1, 2, 1, 1, 1, 2)
+mean(x, na.rm = TRUE)
+```
+
+--
+
+```{r}
+x <- c(NA, NA, NA, 2, NA, NA, NA, NA, NA, 1, NA, NA, NA, NA)
+mean(x, na.rm = TRUE)
+```
+
+--
+
+R's default is conservative: If there's at least one `NA`, the result is `NA`
+
+---
+
+## We need to use `is.na()` to check for missing values
+
+.small-font[
+```{r}
+c(1, 2, NA, 4) == NA   # does not work
+is.na(c(1, 2, NA, 4))  # works
+```
+]
+
+---
+
+## There are several missing values of different types
+
+- `NA`: logical constant indicating missing value
+
+- `NA_integer_`: missing integer
+
+- `NA_real_`: missing real
+
+- `NA_complex_`: missing complex value
+
+- `NA_character_`: missing string
+
+
+---
+
+## Sometimes the type matters
+
+```{r}
+c(1, 2, NA)
+c(1, 2, NA_real_)
+c(1, 2, NA_character_)
+```
+
+---
+
+## Sometimes the type matters
+
+.small-font[
+This does not work, type mismatch:
+```{r}
+#if_else(TRUE, "result if true", NA)
+```
+
+This works:
+```{r}
+if_else(TRUE, "result if true", NA_character_)
+```
+]
+
+--
+
+.small-font[
+Similarly:
+```{r}
+#if_else(TRUE, 1234, NA)      # does not work
+if_else(TRUE, 1234, NA_real_) # works
+```
+]
+
+---
+
+## Replacing `NA` values
+
+Remember from class on data wrangling:
+
+.small-font[
+```{r, message = FALSE}
+band_data <- full_join(band_members, band_instruments)
+band_data
+```
+]
+
+---
+
+## Replacing `NA` values
+
+Replace `NA`s with empty strings in `plays` column:
+
+.small-font[
+```{r}
+band_data %>%
+  mutate(plays = replace_na(plays, ""))
+```
+]
+
+
+---
+
+## Replacing `NA` values
+
+Replace `NA`s with empty strings in all columns:
+
+.small-font[
+```{r}
+band_data %>%
+  mutate(across(everything(), ~replace_na(.x, "")))
+```
+]
+
+---
+
+## Replacing `NA` values
+
+Replace empty strings with `NA` in `plays` column (requires **naniar** package):
+
+.small-font[
+```{r}
+band_data %>%
+  mutate(across(everything(), ~replace_na(.x, ""))) %>%
+  replace_with_na_at("plays", ~.x == "")
+```
+]
+
+---
+
+## Replacing `NA` values
+
+Replace empty strings with `NA` in all columns (requires **naniar** package):
+
+.small-font[
+```{r}
+band_data %>%
+  mutate(across(everything(), ~replace_na(.x, ""))) %>%
+  replace_with_na_all(~.x == "")
+```
+]
+
+---
+
+## Removing rows with `NA` values
+
+Remove all rows with any `NA`s with `na.omit()`:
+
+.small-font[
+```{r}
+band_data %>%
+  na.omit()
+```
+]
+
+---
+
+## Removing rows with `NA` values
+
+Remove all rows where specific columns contain `NA`s:
+
+.small-font[
+```{r}
+band_data %>%
+  filter(!is.na(plays))
+```
+]
+
+---
+
+## Removing rows with `NA` values
+
+Conversely:
+
+.small-font[
+```{r}
+band_data %>%
+  filter(is.na(plays))
+```
+]
+
+---
+
+## Visualizing `NA`s
+
+.small-font.pull-left.width-40[
+```{r NCbirths-plot-missing, eval = FALSE}
+ggplot(NCbirths) +
+  aes(Weeks, Gained) +
+  geom_point()
+```
+
+By default, missing points are not shown
+]
+
+.pull-right.xtiny-font.width-55[
+```{r NCbirths-plot-missing-out, ref.label = "NCbirths-plot-missing", echo = FALSE, fig.width = (.618*6/.75), fig.height = 0.618*6, dev = "svg"}
+```
+]
+
+
+---
+
+## Visualizing `NA`s
+
+.small-font.pull-left.width-40[
+```{r NCbirths-plot-missing2, eval = FALSE}
+library(naniar)
+
+ggplot(NCbirths) +
+  aes(Weeks, Gained) +
+  geom_miss_point()
+```
+
+Can show them with the **naniar** package
+]
+
+.pull-right.xtiny-font.width-55[
+```{r NCbirths-plot-missing2-out, ref.label = "NCbirths-plot-missing2", echo = FALSE, fig.width = 6, fig.height = 0.618*6, dev = "svg"}
+```
+]
+
+[//]: # "segment ends here"
+
+
+---
+
+## Further reading
+
+- Gebru et al., "Datasheets for Datasets", [arXiv:1803.09010](https://arxiv.org/abs/1803.09010)
+- Data Nutrition Project, https://datanutrition.org/
+- **dplyr** reference documentation: [across()](https://dplyr.tidyverse.org/reference/across.html)
+- **naniar** documentation: [geom_miss_point()](http://naniar.njtierney.com/reference/geom_miss_point.html)
+- **naniar** reference documentation: [replace_with_na_at()](http://naniar.njtierney.com/reference/replace_with_na_at.html)
+

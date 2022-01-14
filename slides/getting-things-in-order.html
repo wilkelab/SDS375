@@ -14,7 +14,7 @@ class: center, middle, title-slide
 
 # Getting things into the right order
 ### Claus O. Wilke
-### last updated: 2021-03-04
+### last updated: 2021-09-23
 
 ---
 
@@ -97,6 +97,50 @@ Levels: Chinstrap Gentoo Adelie
 
 .small-font[
 - For factors, ggplot generally places visual elements in the order defined by the levels
+]
+
+---
+
+## We order things in ggplot with factors
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  mutate(species = fct_relevel(species, "Chinstrap", "Gentoo", "Adelie")) %&gt;%
+  slice(1:30) %&gt;%   # get first 30 rows
+  pull(species)     # pull out just the `species` column
+```
+
+```
+ [1] Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie
+[11] Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie
+[21] Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie Adelie
+Levels: Chinstrap Gentoo Adelie
+```
+
+```r
+# the order of factor levels is independent of the order of values in the table
+penguins %&gt;% 
+  mutate(species = fct_relevel(species, "Chinstrap", "Gentoo", "Adelie"))
+```
+
+```
+# A tibble: 344 × 8
+   species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
+   &lt;fct&gt;   &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt;
+ 1 Adelie  Torgersen           39.1          18.7               181        3750
+ 2 Adelie  Torgersen           39.5          17.4               186        3800
+ 3 Adelie  Torgersen           40.3          18                 195        3250
+ 4 Adelie  Torgersen           NA            NA                  NA          NA
+ 5 Adelie  Torgersen           36.7          19.3               193        3450
+ 6 Adelie  Torgersen           39.3          20.6               190        3650
+ 7 Adelie  Torgersen           38.9          17.8               181        3625
+ 8 Adelie  Torgersen           39.2          19.6               195        4675
+ 9 Adelie  Torgersen           34.1          18.1               193        3475
+10 Adelie  Torgersen           42            20.2               190        4250
+# … with 334 more rows, and 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;
+```
 ]
 
 
@@ -328,7 +372,7 @@ penguins %&gt;%
 
 
 ```
-# A tibble: 3 x 2
+# A tibble: 3 × 2
   species       n
   &lt;fct&gt;     &lt;int&gt;
 1 Adelie      152
@@ -395,7 +439,7 @@ penguins %&gt;%
 
 
 ```
-# A tibble: 3 x 2
+# A tibble: 3 × 2
   species       n
   &lt;fct&gt;     &lt;int&gt;
 1 Adelie      152
@@ -416,19 +460,19 @@ penguins %&gt;%
 ```
 
 ```
-# A tibble: 344 x 8
-   species island bill_length_mm bill_depth_mm flipper_length_… body_mass_g
-   &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;            &lt;int&gt;       &lt;int&gt;
- 1 Adelie  Torge…           39.1          18.7              181        3750
- 2 Adelie  Torge…           39.5          17.4              186        3800
- 3 Adelie  Torge…           40.3          18                195        3250
- 4 Adelie  Torge…           NA            NA                 NA          NA
- 5 Adelie  Torge…           36.7          19.3              193        3450
- 6 Adelie  Torge…           39.3          20.6              190        3650
- 7 Adelie  Torge…           38.9          17.8              181        3625
- 8 Adelie  Torge…           39.2          19.6              195        4675
- 9 Adelie  Torge…           34.1          18.1              193        3475
-10 Adelie  Torge…           42            20.2              190        4250
+# A tibble: 344 × 8
+   species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
+   &lt;fct&gt;   &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt;
+ 1 Adelie  Torgersen           39.1          18.7               181        3750
+ 2 Adelie  Torgersen           39.5          17.4               186        3800
+ 3 Adelie  Torgersen           40.3          18                 195        3250
+ 4 Adelie  Torgersen           NA            NA                  NA          NA
+ 5 Adelie  Torgersen           36.7          19.3               193        3450
+ 6 Adelie  Torgersen           39.3          20.6               190        3650
+ 7 Adelie  Torgersen           38.9          17.8               181        3625
+ 8 Adelie  Torgersen           39.2          19.6               195        4675
+ 9 Adelie  Torgersen           34.1          18.1               193        3475
+10 Adelie  Torgersen           42            20.2               190        4250
 # … with 334 more rows, and 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;
 ```
 ]
@@ -492,11 +536,13 @@ penguins %&gt;%
 ![](getting-things-in-order_files/figure-html/penguins-geom-bar2-1.svg)&lt;!-- --&gt;
 ]
 
+[//]: # "segment ends here"
+
 ---
 
 class: middle, center
 
-# We can do more than just order bars
+# Ordering other plot elements
 
 ---
 
@@ -511,7 +557,7 @@ gapminder
 ```
 
 ```
-# A tibble: 1,704 x 6
+# A tibble: 1,704 × 6
    country     continent  year lifeExp      pop gdpPercap
    &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
  1 Afghanistan Asia       1952    28.8  8425333      779.
@@ -842,7 +888,7 @@ flight_data
 ```
 
 ```
-# A tibble: 336,776 x 8
+# A tibble: 336,776 × 8
    name                     carrier flight  year month   day origin dest 
    &lt;chr&gt;                    &lt;chr&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;
  1 United Air Lines Inc.    UA        1545  2013     1     1 EWR    IAH  
@@ -1142,6 +1188,8 @@ Function           | Use case        | Documentation
 ]
 
 For more options, check out the [reference documentation](https://forcats.tidyverse.org/reference/index.html) of the **forcats** package
+
+[//]: # "segment ends here"
 
 ---
 

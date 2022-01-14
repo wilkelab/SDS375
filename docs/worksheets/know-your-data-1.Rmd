@@ -1,0 +1,307 @@
+---
+#############################################################
+#                                                           #
+# Click on "Run Document" in RStudio to run this worksheet. #
+#                                                           #
+#############################################################
+title: "Getting to know your data 1"
+author: "Claus O. Wilke"
+output:
+  learnr::tutorial:
+    df_print: default
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(tidyverse)
+knitr::opts_chunk$set(echo = FALSE, comment = "")
+
+NCbirths <- read_csv(
+  "https://wilkelab.org/DSC385/datasets/NCbirths.csv",
+  na = c("", "NA", "#N/A")
+) %>% naniar::replace_with_na_at("Weeks", ~.x < 0) # only change column "Weeks" to be safe
+```
+
+## Introduction
+
+In this worksheet, we will discuss how to perform basic inspection of a dataset and simple data-cleaning tasks.
+
+We will be using the R package **tidyverse** for basic data manipulation and plotting.
+
+```{r library-calls, echo = TRUE, eval = FALSE}
+# load required library
+library(tidyverse)
+```
+
+We will be working with the dataset `NCbirths`, which contains data about 1450 births in the state of North Carolina in 2001.
+```{r echo = TRUE}
+NCbirths
+```
+
+
+## Basic inspection of the data
+
+When first working with a new dataset, you should always start by just looking at the data. The simplest way to do this is to just enter the name of the dataset in the R command line and run, which causes the data to be printed. You can also use `head(...)` to only see the first six rows or `glimpse(...)` to get a list of all columns with their type and first few values.
+
+Try this yourself. Write code that displays the entire `NCbirths` dataset, the first six rows, or a list of all columns.
+
+```{r glimpse, exercise=TRUE}
+
+```
+
+```{r glimpse-hint-1}
+NCbirths
+```
+
+```{r glimpse-hint-2}
+NCbirths
+head(NCbirths)
+```
+
+```{r glimpse-solution}
+NCbirths
+head(NCbirths)
+glimpse(NCbirths)
+```
+
+It is often useful to get a list of all names of the columns in a data frame. You can obtain this with `names(...)`. Try this yourself.
+
+```{r names, exercise=TRUE}
+
+```
+
+```{r names-solution}
+names(NCbirths)
+```
+
+To inspect individual columns, you can extract them either with `pull()` like so: `data %>% pull(column)` or with the `$` operator like so: `data$column`. The second option is shorter but the first option integrates better into longer analysis pipelines. Try both options on the `NCbirths` dataset, for example for the `Smoke` column.
+
+```{r pull, exercise=TRUE}
+
+```
+
+```{r pull-hint}
+# option using pull()
+NCbirths %>%
+  pull(Smoke)
+```
+
+```{r pull-solution}
+# option using pull()
+NCbirths %>%
+  pull(Smoke)
+
+# option using $ operator
+NCbirths$Smoke
+```
+
+Finally, to see all distinct values in a column, you can apply the function `unique()` to it. Try this with the `Smoke` column.
+
+```{r unique, exercise=TRUE}
+
+```
+
+```{r unique-hint}
+NCbirths %>%
+  pull(Smoke) %>%
+  ___
+```
+
+```{r unique-solution}
+NCbirths %>%
+  pull(Smoke) %>%
+  unique()
+```
+
+
+## Recoding of data values
+
+We frequently want to recode data values such that they are more humanly readable. For example, we might want to write smoker/non-smoker instead of 1/0. We can do this with `if_else()`, which takes three arguments: a logical condition, the data value if the logical condition is true, and the data value if the logical condition is false. Try this out on the `Smoke` column, creating a new column `Smoke_recoded` that is human-readable.
+
+```{r ifelse, exercise=TRUE}
+NCbirths %>%
+  mutate(
+    Smoke_recoded = ___ # recode the `Smoke` variable here
+  ) %>%
+  select(Smoke, Smoke_recoded) %>%
+  unique()
+```
+
+```{r ifelse-hint-1}
+NCbirths %>%
+  mutate(
+    Smoke_recoded = if_else(___, ___, ___) 
+  ) %>%
+  select(Smoke, Smoke_recoded) %>%
+  unique()
+```
+
+```{r ifelse-hint-2}
+NCbirths %>%
+  mutate(
+    Smoke_recoded = if_else(Smoke == 0, ___, ___) 
+  ) %>%
+  select(Smoke, Smoke_recoded) %>%
+  unique()
+```
+
+```{r ifelse-hint-3}
+NCbirths %>%
+  mutate(
+    Smoke_recoded = if_else(Smoke == 0, "non-smoker", ___) 
+  ) %>%
+  select(Smoke, Smoke_recoded) %>%
+  unique()
+```
+
+
+```{r ifelse-solution}
+NCbirths %>%
+  mutate(
+    Smoke_recoded = if_else(Smoke == 0, "non-smoker", "smoker") 
+  ) %>%
+  select(Smoke, Smoke_recoded) %>%
+  unique()
+```
+
+When you want to recode a variable with more than two categories, you could nest `if_else()` commands, but usually it is simpler to use `case_when()`. With `case_when()`, you provide a list of conditions and corresponding data values as formulas of the form `condition ~ data value`. For example, the recoding exercise for the `Smoke` column could be written with `case_when()` as follows:
+
+```{r case_when-demo, echo = TRUE}
+NCbirths %>%
+  mutate(
+    Smoke_recoded = case_when(
+      Smoke == 0 ~ "non-smoker",
+      Smoke == 1 ~ "smoker",
+      TRUE ~ NA_character_ # fallback if no other condition matches
+    ) 
+  ) %>%
+  select(Smoke, Smoke_recoded) %>%
+  unique()
+```
+
+When using `case_when()`, it is usually a good idea to provide an explicit fallback that is used when none of the earlier conditions match. The logical conditions are evaluated in order, so you want to list the most specific conditions first and the least specific conditions last. The fallback condition is simply `TRUE`. It applies always if no previous condition applied.
+
+Now use `case_when()` to recode the `Plural` column into singlet/twins/triplets.
+
+```{r case_when, exercise=TRUE}
+NCbirths %>%
+  mutate(
+    Plural_recoded = ___
+  ) %>%
+  select(Plural, Plural_recoded) %>%
+  unique()
+```
+
+
+```{r case_when-hint-1}
+NCbirths %>%
+  mutate(
+    Plural_recoded = case_when(
+      ___
+    ) 
+  ) %>%
+  select(Plural, Plural_recoded) %>%
+  unique()
+```
+
+```{r case_when-hint-2}
+NCbirths %>%
+  mutate(
+    Plural_recoded = case_when(
+      Plural == 1 ~ "singlet",
+      ___,
+      ___,
+      ___
+    ) 
+  ) %>%
+  select(Plural, Plural_recoded) %>%
+  unique()
+```
+
+
+```{r case_when-solution}
+NCbirths %>%
+  mutate(
+    Plural_recoded = case_when(
+      Plural == 1 ~ "singlet",
+      Plural == 2 ~ "twins",
+      Plural == 3 ~ "triplets",
+      TRUE ~ NA_character_
+    ) 
+  ) %>%
+  select(Plural, Plural_recoded) %>%
+  unique()
+```
+
+## Summaries of data columns
+
+When exploring a new dataset, it is usually a good idea to look at summaries of the data values in each column, to get a quick sense of the range of data values, to see whether there are any unexpected outliers, etc. There are two useful functions for this purpose, `summary()` for numerical data and `table()` for categorical data.
+
+First try this for numerical data. Perform summaries for the data columns `MomAge`, `Weeks`, and `BirthWeightGm`.
+
+```{r summary, exercise=TRUE}
+
+```
+
+```{r summary-hint-1}
+summary(NCbirths$MomAge)
+```
+
+```{r summary-hint-2}
+summary(NCbirths$MomAge)
+summary(NCbirths$Weeks)
+```
+
+```{r summary-solution}
+summary(NCbirths$MomAge)
+summary(NCbirths$Weeks)
+summary(NCbirths$BirthWeightGm)
+```
+
+
+Now try this for categorical data. Perform summaries for the data columns `Plural`, `Smoke`, and `RaceMom`.
+
+```{r table, exercise = TRUE}
+
+```
+
+```{r table-hint-1}
+table(NCbirths$Plural)
+```
+
+```{r table-hint-2}
+table(NCbirths$Plural)
+table(NCbirths$Smoke)
+```
+
+```{r table-solution}
+table(NCbirths$Plural)
+table(NCbirths$Smoke)
+table(NCbirths$RaceMom)
+```
+
+Do you understand what the output means? If not, look it up in the R documentation for the `table()` function.
+
+One quirk of the `table()` function is that by default it omits any `NA` values. However, it is important to know whether there are any `NA` values in a data column or not. We can get `table()` to tabulate `NA`s as well by providing it with the argument `useNA = "ifany"`. Repeat the previous exercise with this modification and see which of the three columns `Plural`, `Smoke`, or `RaceMom` contain any `NA`s.
+
+
+```{r table_NAs, exercise = TRUE}
+
+```
+
+```{r table_NAs-hint-1}
+table(NCbirths$Plural, useNA = "ifany")
+```
+
+```{r table_NAs-hint-2}
+table(NCbirths$Plural, useNA = "ifany")
+table(NCbirths$Smoke, useNA = "ifany")
+```
+
+```{r table_NAs-solution}
+table(NCbirths$Plural, useNA = "ifany")
+table(NCbirths$Smoke, useNA = "ifany")
+table(NCbirths$RaceMom, useNA = "ifany")
+```
+

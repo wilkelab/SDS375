@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Handling overlapping points</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Claus O. Wilke" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="Wilke-slides-theme.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, title-slide
+
+# Handling overlapping points
+### Claus O. Wilke
+### last updated: 2021-04-21
+
+---
+
+
+
+
+## Be aware of points plotted exactly on top of one another
+
+.center[
+![](overplotting_files/figure-html/mpg-cty-displ-solid-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Partial transparency helps highlight overlapping points
+
+.center[
+![](overplotting_files/figure-html/mpg-cty-displ-transp-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## A little jitter shows overlaps even more clearly
+
+.center[
+![](overplotting_files/figure-html/mpg-cty-displ-jitter-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## But don't jitter too much
+
+.center[
+![](overplotting_files/figure-html/mpg-cty-displ-jitter-extreme-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+class: center middle
+
+## 2D density plots: Contour lines and contour bands
+
+---
+
+## Contour lines are the 2D version of density plots
+
+.center[
+![](overplotting_files/figure-html/blue-jays-contour-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+
+## We can vary shading for added effect
+
+.center[
+![](overplotting_files/figure-html/blue-jays-contour-filled-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## What do we do when there are multiple groups?
+
+.center[
+![](overplotting_files/figure-html/blue-jays-no-contour-by-sex-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Colored contour lines can work for 2 to 3 groups
+
+.center[
+![](overplotting_files/figure-html/blue-jays-contour-by-sex-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## What if there are multiple groups intermingled?
+
+.center[
+![](overplotting_files/figure-html/diamonds-points-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Don't make plots that look like spaghetti
+
+.center[
+![](overplotting_files/figure-html/diamonds-contours-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Contour lines work well with small multiples (facets)
+
+.center[
+![](overplotting_files/figure-html/diamonds-contour-facets-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+class: center middle
+
+## 2D histograms: Rectangular and hex bins
+
+---
+
+## 2D histograms: rectangular bins
+
+.center[
+![](overplotting_files/figure-html/diamonds-bin2d-facets-1.svg)&lt;!-- --&gt;
+]
+
+--
+
+.absolute-bottom-left[
+We need to choose a bin size as in regular histograms
+]
+
+
+---
+
+## 2D histograms: rectangular bins
+
+.center[
+![](overplotting_files/figure-html/diamonds-bin2d-facets2-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+We need to choose a bin size as in regular histograms
+]
+
+---
+
+## 2D histograms: hex bins
+
+.center[
+![](overplotting_files/figure-html/diamonds-hexbin-facets-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## 2D histograms: hex bins
+
+.center[
+![](overplotting_files/figure-html/diamonds-hexbin2-facets-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Choosing the right color scale
+
+.center[
+![](overplotting_files/figure-html/diamonds-hexbin2-facets-1.svg)
+]
+
+.absolute-bottom-left[
+palette: SunsetDark
+]
+
+---
+
+## Choosing the right color scale
+
+.center[
+![](overplotting_files/figure-html/diamonds-hexbin3-facets-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+palette: Batlow
+]
+
+---
+
+## Choosing the right color scale
+
+.center[
+![](overplotting_files/figure-html/diamonds-hexbin4-facets-1.svg)&lt;!-- --&gt;
+]
+
+
+.absolute-bottom-left[
+palette: YlOrRd
+]
+
+---
+
+## Choosing the right color scale
+
+.center[
+![](overplotting_files/figure-html/diamonds-hexbin5-facets-1.svg)&lt;!-- --&gt;
+]
+
+
+.absolute-bottom-left[
+palette: BluYl
+]
+
+---
+
+## Choosing the right color scale
+
+.center[
+![](overplotting_files/figure-html/diamonds-hexbin6-facets-1.svg)&lt;!-- --&gt;
+]
+
+.absolute-bottom-left[
+palette: Heat
+]
+
+---
+
+## Choosing the right color scale
+
+.center[
+![](overplotting_files/figure-html/diamonds-hexbin7-facets-1.svg)&lt;!-- --&gt;
+]
+
+
+.absolute-bottom-left[
+palette: ag_GrnYl
+]
+
+---
+
+## Choosing the right color scale
+
+.center[
+![](overplotting_files/figure-html/diamonds-hexbin2-facets-1.svg)
+]
+
+.absolute-bottom-left[
+palette: SunsetDark
+]
+
+---
+class: center middle
+
+## Creating 2D density plots and histograms in R
+
+
+---
+
+## Contour lines
+
+.tiny-font.pull-left[
+
+```r
+blue_jays %&gt;%
+  ggplot(aes(body_mass_g, head_length_mm)) +
+  geom_point() +
+  theme_bw(14)
+```
+]
+
+.pull-right[
+![](overplotting_files/figure-html/scatter-demo-out-1.svg)&lt;!-- --&gt;
+]
+
+
+
+---
+
+## Contour lines
+
+.tiny-font.pull-left[
+
+```r
+blue_jays %&gt;%
+  ggplot(aes(body_mass_g, head_length_mm)) +
+* geom_density_2d() +
+  geom_point() +
+  theme_bw(14)
+```
+]
+
+.pull-right[
+![](overplotting_files/figure-html/contour-lines-demo-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Contour lines
+
+.tiny-font.pull-left[
+
+```r
+blue_jays %&gt;%
+  ggplot(aes(body_mass_g, head_length_mm)) +
+* geom_density_2d(bins = 5) +
+  geom_point() +
+  theme_bw(14)
+```
+]
+
+.pull-right[
+![](overplotting_files/figure-html/contour-lines-demo2-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Contour bands
+
+.tiny-font.width-70.move-up-1em[
+
+```r
+ggplot(blue_jays, aes(body_mass_g, head_length_mm)) +
+* geom_density_2d_filled(bins = 5) +
+  #
+  geom_point() +
+  theme_bw(14)
+```
+]
+
+.center[
+![](overplotting_files/figure-html/contour-bands-demo-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Contour bands
+
+.tiny-font.width-70.move-up-1em[
+
+```r
+ggplot(blue_jays, aes(body_mass_g, head_length_mm)) +
+* geom_density_2d_filled(bins = 5, alpha = 0.5) +
+  #
+  geom_point() +
+  theme_bw(14)
+```
+]
+
+.center[
+![](overplotting_files/figure-html/contour-bands-demo2-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Contour bands
+
+.tiny-font.width-70.move-up-1em[
+
+```r
+ggplot(blue_jays, aes(body_mass_g, head_length_mm)) +
+  geom_density_2d_filled(bins = 5, alpha = 0.5) +
+* geom_density_2d(bins = 5, color = "black", size = 0.2) +
+  geom_point() +
+  theme_bw(14)
+```
+]
+
+.center[
+![](overplotting_files/figure-html/contour-bands-demo3-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## 2D histograms
+
+.tiny-font.width-70.move-up-1em[
+
+```r
+ggplot(blue_jays, aes(body_mass_g, head_length_mm)) +
+* geom_bin2d() +
+  theme_bw(14)
+```
+]
+
+.center[
+![](overplotting_files/figure-html/bins2d-demo-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## 2D histograms
+
+.tiny-font.width-70.move-up-1em[
+
+```r
+ggplot(blue_jays, aes(body_mass_g, head_length_mm)) +
+* geom_bin2d(binwidth = c(3, 3)) +
+  theme_bw(14)
+```
+]
+
+.center[
+![](overplotting_files/figure-html/bins2d-demo2-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## 2D histograms
+
+.tiny-font.width-70.move-up-1em[
+
+```r
+ggplot(blue_jays, aes(body_mass_g, head_length_mm)) +
+* geom_bin2d(binwidth = c(1, 5)) +
+  theme_bw(14)
+```
+]
+
+.center[
+![](overplotting_files/figure-html/bins2d-demo3-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## 2D histograms
+
+.tiny-font.width-70.move-up-1em[
+
+```r
+ggplot(blue_jays, aes(body_mass_g, head_length_mm)) +
+* geom_bin2d(binwidth = c(5, 1)) +
+  theme_bw(14)
+```
+]
+
+.center[
+![](overplotting_files/figure-html/bins2d-demo4-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Hex bins
+
+.tiny-font.width-70.move-up-1em[
+
+```r
+ggplot(blue_jays, aes(body_mass_g, head_length_mm)) +
+* geom_hex() +
+  theme_bw(14)
+```
+]
+
+.center[
+![](overplotting_files/figure-html/hex-demo-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Hex bins
+
+.tiny-font.width-70.move-up-1em[
+
+```r
+ggplot(blue_jays, aes(body_mass_g, head_length_mm)) +
+* geom_hex(bins = 15) +
+  theme_bw(14)
+```
+]
+
+.center[
+![](overplotting_files/figure-html/hex-demo2-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Hex bins
+
+.tiny-font.width-70.move-up-1em[
+
+```r
+ggplot(blue_jays, aes(body_mass_g, head_length_mm)) +
+* geom_hex(bins = 10) +
+  theme_bw(14)
+```
+]
+
+.center[
+![](overplotting_files/figure-html/hex-demo3-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Further reading
+
+- Fundamentals of Data Visualization: [Chapter 18: Handling overlapping points](https://clauswilke.com/dataviz/overlapping-points.html)
+- **ggplot2** reference documentation: [`geom_density_2d()`](https://ggplot2.tidyverse.org/reference/geom_density_2d.html)
+- **ggplot2** reference documentation: [`geom_bin2d()`](https://ggplot2.tidyverse.org/reference/geom_bin2d.html)
+- **ggplot2** reference documentation: [`geom_hex()`](https://ggplot2.tidyverse.org/reference/geom_hex.html)
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"slideNumberFormat": ""
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

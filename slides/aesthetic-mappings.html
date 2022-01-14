@@ -14,17 +14,20 @@ class: center, middle, title-slide
 
 # Aesthetic mappings
 ### Claus O. Wilke
-### last updated: 2021-02-03
+### last updated: 2021-09-23
 
 ---
 
 
 
 
+class: center middle
 
 ## Plots map data onto graphical elements
 
-Dataset: Daily average temperatures for various locations
+---
+
+## Dataset:&lt;br&gt;Daily average temperatures for various locations
 
 .small-font[.center[
 &lt;table&gt;
@@ -133,9 +136,7 @@ Dataset: Daily average temperatures for various locations
 
 ---
 
-## Plots map data onto graphical elements
-
-Temperatures mapped onto y position:
+## Temperatures mapped onto y position
 
 .center[
 ![](aesthetic-mappings_files/figure-html/temp-normals-vs-time-1.svg)&lt;!-- --&gt;
@@ -147,9 +148,9 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 
 ---
 
-## Plots map data onto graphical elements
+## Temperatures mapped onto color
 
-Temperatures mapped onto color:
+&lt;br&gt;
 
 .center[
 ![](aesthetic-mappings_files/figure-html/four-locations-temps-by-month-1.svg)&lt;!-- --&gt;
@@ -186,7 +187,29 @@ Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.
 
 ---
 
-## In ggplot, we define the mapping with `aes()`
+## We can use many different aesthetics at once
+
+&lt;br&gt;
+
+.center.move-up-1em[
+![](aesthetic-mappings_files/figure-html/mtcars-five-scale-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+[//]: # "segment ends here"
+
+---
+class: center middle
+
+
+## Creating aesthetic mappings in ggplot
+
+---
+
+## We define the mapping with `aes()`
 
 
 
@@ -207,7 +230,7 @@ ggplot(
 
 ---
 
-## In ggplot, we define the mapping with `aes()`
+## We define the mapping with `aes()`
 
 .small-font[
 
@@ -320,9 +343,17 @@ ggplot(temperatures, aes(month, temperature, fill = location)) +
 ![](aesthetic-mappings_files/figure-html/ggplot-temps-example8-out-1.svg)&lt;!-- --&gt;
 ]
 
+[//]: # "segment ends here"
+
+---
+class: center middle
+
+
+## Important: `color` and `fill` apply to different elements
+
 ---
 
-## Important: `color` and `fill` apply to different things
+## `color` and `fill` apply to different elements
 
 `color`&lt;br&gt;
 Applies color to points, lines, text, borders
@@ -417,6 +448,8 @@ ggplot(temperatures, aes(month, temperature, color = location)) +
 .center[
 ![](aesthetic-mappings_files/figure-html/ggplot-color-fill-params2-out-1.svg)&lt;!-- --&gt;
 ]
+
+[//]: # "segment ends here"
 
 ---
 

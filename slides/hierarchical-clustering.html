@@ -1,0 +1,1684 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Hierarchical clustering</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Claus O. Wilke" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <script src="libs/kePrint/kePrint.js"></script>
+    <link href="libs/lightable/lightable.css" rel="stylesheet" />
+    <link rel="stylesheet" href="Wilke-slides-theme.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, title-slide
+
+# Hierarchical clustering
+### Claus O. Wilke
+### last updated: 2021-09-23
+
+---
+
+
+
+
+## Example data: State level statistics for US
+
+.tiny-font[
+
+```r
+US_state_stats
+```
+
+```
+# A tibble: 50 × 20
+   state       homeownership multiunit income med_income poverty fed_spend smoke
+   &lt;chr&gt;               &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;      &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;
+ 1 Alabama              71.1      15.5  22984      42081    17.1     11.7   24.8
+ 2 Alaska               64.7      24.6  30726      66521     9.5     16.8   25  
+ 3 Arizona              67.4      20.7  25680      50448    15.3      9.85  20.4
+ 4 Arkansas             67.7      15.2  21274      39267    18        9.61  23.5
+ 5 California           57.4      30.7  29188      60883    13.7      8.89  15.2
+ 6 Colorado             67.6      25.6  30151      56456    12.2      9.15  19.9
+ 7 Connecticut          69.2      34.6  36775      67740     9.2     14.8   16.5
+ 8 Delaware             73.6      17.7  29007      57599    11        8.89  20.7
+ 9 Florida              69.7      30    26551      47661    13.8      9.62  21.6
+10 Georgia              67.2      20.5  25134      49347    15.7      8.88  22.2
+# … with 40 more rows, and 12 more variables: murder &lt;dbl&gt;, robbery &lt;dbl&gt;,
+#   agg_assault &lt;dbl&gt;, larceny &lt;dbl&gt;, motor_theft &lt;dbl&gt;, soc_sec &lt;dbl&gt;,
+#   nuclear &lt;dbl&gt;, coal &lt;dbl&gt;, tr_deaths &lt;dbl&gt;, tr_deaths_no_alc &lt;dbl&gt;,
+#   unempl &lt;dbl&gt;, popdens2010 &lt;dbl&gt;
+```
+]
+
+
+---
+
+## PCA reveals broad trends
+
+.center[
+![](hierarchical-clustering_files/figure-html/US_states_pca-1.svg)&lt;!-- --&gt;
+]
+
+---
+class: middle, center
+
+## Can we get a more detailed picture?
+
+---
+
+
+## Hierarchical clustering
+
+
+.center[
+![](hierarchical-clustering_files/figure-html/US_states_dendro-1.svg)&lt;!-- --&gt;
+]
+
+--
+
+This visualization is called a dendrogram
+
+---
+
+## Cut the dendrogram to obtain defined clusters
+
+![](hierarchical-clustering_files/figure-html/US_states_dendro_cut-1.svg)&lt;!-- --&gt;
+
+---
+
+## Cut the dendrogram to obtain defined clusters
+
+![](hierarchical-clustering_files/figure-html/US_states_dendro_cut2-1.svg)&lt;!-- --&gt;
+
+---
+
+## Cut the dendrogram to obtain defined clusters
+
+![](hierarchical-clustering_files/figure-html/US_states_dendro_cut3-1.svg)&lt;!-- --&gt;
+
+---
+
+## Cut the dendrogram to obtain defined clusters
+
+![](hierarchical-clustering_files/figure-html/US_states_dendro_cut4-1.svg)&lt;!-- --&gt;
+
+---
+
+## Cut the dendrogram to obtain defined clusters
+
+![](hierarchical-clustering_files/figure-html/US_states_dendro_cut5-1.svg)&lt;!-- --&gt;
+
+---
+
+## Display clusters in PCA space
+
+.center[
+![](hierarchical-clustering_files/figure-html/US_states_pca_cluster-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Hierarchical clustering can be useful with heatmaps
+
+.pull-left[
+Arbitrary ordering:
+![](hierarchical-clustering_files/figure-html/forensic-correlations1-1.svg)&lt;!-- --&gt;
+]
+
+--
+
+.pull-right[
+Ordering by clustering similarity:
+![](hierarchical-clustering_files/figure-html/forensic-correlations2-1.svg)&lt;!-- --&gt;
+]
+
+
+
+
+
+[//]: # "segment ends here"
+
+---
+class: center middle
+
+
+## Hierarchical clustering via UPGMA
+
+
+---
+
+## Hierarchical clustering methods require two ingredients
+
+--
+
+1\. Distance metric
+
+Examples: Euclidean distance, maximum distance
+
+&lt;br&gt;
+--
+
+2\. Linkage criteria
+
+Examples:
+- Unweighted average linkage clustering  
+   (unweighted pair group method with arithmetic mean, UPGMA)
+- Complete linkage clustering
+- Minimum energy clustering
+
+(See: https://en.wikipedia.org/wiki/Hierarchical_clustering)
+ 
+
+---
+
+## Hierarchical clustering via UPGMA
+
+.pull-left.move-up-1em[
+![](hierarchical-clustering_files/figure-html/UPGMA-step1-1.svg)&lt;!-- --&gt;
+]
+
+--
+
+.pull-right[
+Distance matrix:
+
+&lt;table class=" lightable-paper" style="font-family: sans-serif; width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: black !important;background-color: white !important;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: black !important;background-color: white !important;"&gt; A &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: black !important;background-color: white !important;"&gt; B &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: black !important;background-color: white !important;"&gt; C &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: black !important;background-color: white !important;"&gt; D &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: black !important;background-color: white !important;"&gt; E &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: black !important;background-color: white !important;"&gt; A &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 2.79 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.840 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.56 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.610 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: black !important;background-color: white !important;"&gt; B &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 2.79 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 4.020 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 1.34 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.330 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: black !important;background-color: white !important;"&gt; C &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.84 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 4.02 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.57 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 0.791 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: black !important;background-color: white !important;"&gt; D &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.56 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 1.34 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.570 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 2.820 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: black !important;background-color: white !important;"&gt; E &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.61 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.33 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 0.791 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 2.82 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 0.000 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+
+---
+
+## Hierarchical clustering via UPGMA
+
+.pull-left.move-up-1em[
+![](hierarchical-clustering_files/figure-html/UPGMA-step2-1.svg)&lt;!-- --&gt;
+]
+
+.pull-right[
+Distance matrix:
+
+&lt;table class=" lightable-paper" style="font-family: sans-serif; width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: black !important;background-color: white !important;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: black !important;background-color: white !important;"&gt; A &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: black !important;background-color: white !important;"&gt; B &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: black !important;background-color: white !important;"&gt; C &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: black !important;background-color: white !important;"&gt; D &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: black !important;background-color: white !important;"&gt; E &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: black !important;background-color: white !important;"&gt; A &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 2.79 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.840 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.56 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.610 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: black !important;background-color: white !important;"&gt; B &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 2.79 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 4.020 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 1.34 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.330 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: black !important;background-color: white !important;"&gt; C &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.84 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 4.02 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.57 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: yellow !important;"&gt; 0.791 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: black !important;background-color: white !important;"&gt; D &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.56 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 1.34 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.570 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 2.820 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: black !important;background-color: white !important;"&gt; E &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.61 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.33 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: yellow !important;"&gt; 0.791 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 2.82 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 0.000 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+Join points with minimum distance
+]
+
+---
+
+## Hierarchical clustering via UPGMA
+
+.pull-left.move-up-1em[
+![](hierarchical-clustering_files/figure-html/UPGMA-step3-1.svg)&lt;!-- --&gt;
+]
+
+.pull-right[
+Update distances by averaging:
+`$$d_{A:(C, E)} = (d_{A:C} + d_{A:E})/2,$$`
+
+similarly for points B and D
+]
+---
+
+## Hierarchical clustering via UPGMA
+
+.pull-left.move-up-1em[
+![](hierarchical-clustering_files/figure-html/UPGMA-step3-1.svg)
+]
+
+.pull-right[
+Updated distance matrix:
+
+&lt;table class=" lightable-paper" style="font-family: sans-serif; width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: black !important;background-color: white !important;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: black !important;background-color: white !important;"&gt; A &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: black !important;background-color: white !important;"&gt; B &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: black !important;background-color: white !important;"&gt; D &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: black !important;background-color: white !important;"&gt; (C, E) &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: black !important;background-color: white !important;"&gt; A &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 2.79 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.56 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.73 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: black !important;background-color: white !important;"&gt; B &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 2.79 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 1.34 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.68 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: black !important;background-color: white !important;"&gt; D &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.56 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 1.34 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.20 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: black !important;background-color: white !important;"&gt; (C, E) &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.73 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.68 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.20 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 0.00 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+
+---
+
+## Hierarchical clustering via UPGMA
+
+.pull-left.move-up-1em[
+![](hierarchical-clustering_files/figure-html/UPGMA-step4-1.svg)&lt;!-- --&gt;
+]
+
+.pull-right[
+Updated distance matrix:
+
+&lt;table class=" lightable-paper" style="font-family: sans-serif; width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: black !important;background-color: white !important;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: black !important;background-color: white !important;"&gt; A &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: black !important;background-color: white !important;"&gt; B &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: black !important;background-color: white !important;"&gt; D &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: black !important;background-color: white !important;"&gt; (C, E) &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: black !important;background-color: white !important;"&gt; A &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 2.79 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.56 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.73 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: black !important;background-color: white !important;"&gt; B &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 2.79 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: yellow !important;"&gt; 1.34 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.68 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: black !important;background-color: white !important;"&gt; D &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.56 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: yellow !important;"&gt; 1.34 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.20 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: black !important;background-color: white !important;"&gt; (C, E) &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.73 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.68 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.20 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 0.00 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+Continue joining points with minimum distance
+]
+
+---
+
+## Hierarchical clustering via UPGMA
+
+.pull-left.move-up-1em[
+![](hierarchical-clustering_files/figure-html/UPGMA-step5-1.svg)&lt;!-- --&gt;
+]
+
+.pull-right[
+Updated distance matrix:
+
+&lt;table class=" lightable-paper" style="font-family: sans-serif; width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: black !important;background-color: white !important;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: black !important;background-color: white !important;"&gt; A &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: black !important;background-color: white !important;"&gt; (C, E) &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: black !important;background-color: white !important;"&gt; (B, D) &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: black !important;background-color: white !important;"&gt; A &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.73 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.17 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: black !important;background-color: white !important;"&gt; (C, E) &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.73 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.44 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: black !important;background-color: white !important;"&gt; (B, D) &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.17 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.44 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 0.00 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+
+---
+
+## Hierarchical clustering via UPGMA
+
+.pull-left.move-up-1em[
+![](hierarchical-clustering_files/figure-html/UPGMA-step6-1.svg)&lt;!-- --&gt;
+]
+
+.pull-right[
+Updated distance matrix:
+
+&lt;table class=" lightable-paper" style="font-family: sans-serif; width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: black !important;background-color: white !important;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: black !important;background-color: white !important;"&gt; A &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: black !important;background-color: white !important;"&gt; (C, E) &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: black !important;background-color: white !important;"&gt; (B, D) &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: black !important;background-color: white !important;"&gt; A &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.73 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: yellow !important;"&gt; 3.17 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: black !important;background-color: white !important;"&gt; (C, E) &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.73 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.44 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: black !important;background-color: white !important;"&gt; (B, D) &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: yellow !important;"&gt; 3.17 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.44 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 0.00 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+
+---
+
+## Hierarchical clustering via UPGMA
+
+.pull-left.move-up-1em[
+![](hierarchical-clustering_files/figure-html/UPGMA-step6-1.svg)
+]
+
+.pull-right[
+In general, distances are weighted by # of data points added to the new cluster:
+`$$\begin{eqnarray}
+  d_{(C, E): (A, (B, D))} &amp;=&amp; \\
+   \qquad\qquad(d_{(C, E): A} &amp;+&amp; 2 d_{(C, E): (B, D)})/(1+2)
+  \end{eqnarray}$$`
+]
+
+---
+
+## Hierarchical clustering via UPGMA
+
+.pull-left.move-up-1em[
+![](hierarchical-clustering_files/figure-html/UPGMA-step7-1.svg)&lt;!-- --&gt;
+]
+
+
+.pull-right[
+Distance matrix:
+
+&lt;table class=" lightable-paper" style="font-family: sans-serif; width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: black !important;background-color: white !important;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: black !important;background-color: white !important;"&gt; (C, E) &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: black !important;background-color: white !important;"&gt; (A, (B, D)) &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: black !important;background-color: white !important;"&gt; (C, E) &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.53 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: black !important;background-color: white !important;"&gt; (A, (B, D)) &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 3.53 &lt;/td&gt;
+   &lt;td style="text-align:right;color: black !important;background-color: white !important;"&gt; 0.00 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+
+
+---
+
+## Hierarchical clustering via UPGMA
+
+.pull-left.move-up-1em[
+![](hierarchical-clustering_files/figure-html/UPGMA-step8-1.svg)&lt;!-- --&gt;
+]
+
+.pull-right[
+Final clustering: &lt;br&gt;&lt;br&gt;
+((A, (B, D)), (C, E))
+]
+
+
+---
+
+## Hierarchical clustering via UPGMA
+
+.pull-left.move-up-1em[
+![](hierarchical-clustering_files/figure-html/UPGMA-step8-1.svg)
+]
+
+.pull-right.move-up-1em[
+Final clustering:
+
+![](hierarchical-clustering_files/figure-html/UPGMA-dendro-1.svg)&lt;!-- --&gt;
+
+]
+
+[//]: # "segment ends here"
+
+---
+class: center middle
+
+## Doing hierarchical clustering in R
+
+---
+
+## Doing hierarchical clustering in R
+
+We'll cluster the US state stats dataset
+
+.tiny-font[
+
+```r
+US_state_stats 
+```
+
+```
+# A tibble: 50 × 20
+   state       homeownership multiunit income med_income poverty fed_spend smoke
+   &lt;chr&gt;               &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;      &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;
+ 1 Alabama              71.1      15.5  22984      42081    17.1     11.7   24.8
+ 2 Alaska               64.7      24.6  30726      66521     9.5     16.8   25  
+ 3 Arizona              67.4      20.7  25680      50448    15.3      9.85  20.4
+ 4 Arkansas             67.7      15.2  21274      39267    18        9.61  23.5
+ 5 California           57.4      30.7  29188      60883    13.7      8.89  15.2
+ 6 Colorado             67.6      25.6  30151      56456    12.2      9.15  19.9
+ 7 Connecticut          69.2      34.6  36775      67740     9.2     14.8   16.5
+ 8 Delaware             73.6      17.7  29007      57599    11        8.89  20.7
+ 9 Florida              69.7      30    26551      47661    13.8      9.62  21.6
+10 Georgia              67.2      20.5  25134      49347    15.7      8.88  22.2
+# … with 40 more rows, and 12 more variables: murder &lt;dbl&gt;, robbery &lt;dbl&gt;,
+#   agg_assault &lt;dbl&gt;, larceny &lt;dbl&gt;, motor_theft &lt;dbl&gt;, soc_sec &lt;dbl&gt;,
+#   nuclear &lt;dbl&gt;, coal &lt;dbl&gt;, tr_deaths &lt;dbl&gt;, tr_deaths_no_alc &lt;dbl&gt;,
+#   unempl &lt;dbl&gt;, popdens2010 &lt;dbl&gt;
+```
+]
+
+---
+## Step 1: Calculate the distance matrix
+
+.tiny-font[
+
+
+
+```r
+US_state_stats %&gt;%
+  column_to_rownames(var = "state") %&gt;%
+  scale() %&gt;%
+  dist(method = "euclidean")
+```
+
+```
+                 Alabama    Alaska   Arizona  Arkansas California  Colorado Connecticut  Delaware   Florida   Georgia    Hawaii     Idaho  Illinois   Indiana      Iowa    Kansas  Kentucky Louisiana
+Alaska         10.598996                                                                                                                                                                             
+Arizona         3.330008  9.367964                                                                                                                                                                   
+Arkansas        2.101623 10.258034  3.460202                                                                                                                                                         
+California      7.387598 10.417133  4.574415  7.213409                                                                                                                                               
+Colorado        5.853785  8.784506  3.584944  5.667544   4.905273                                                                                                                                    
+Connecticut     8.163739  9.632134  6.647566  8.581965   6.413761  6.054845                                                                                                                          
+Delaware        6.852026  6.873437  6.099149  6.443272   8.224788  5.836395    7.471686                                                                                                              
+Florida         3.817288 10.483883  3.058667  4.111477   5.074512  4.373974    6.059186  6.305386                                                                                                    
+Georgia         3.718662  9.954441  1.731379  3.841420   4.757818  3.278357    7.153667  6.451118  3.147390                                                                                          
+Hawaii          8.937729  6.700074  7.068674  8.508732   7.035466  6.118096    6.293809  6.878239  7.514385  7.792204                                                                                
+Idaho           5.597221  9.004979  4.419521  4.548114   6.607359  4.469112    7.676599  5.801041  5.045858  4.799015  6.969588                                                                      
+Illinois        5.254690 10.316944  3.192744  5.609923   4.396773  3.944139    5.238648  6.674979  3.160311  3.311714  7.447009  6.015498                                                            
+Indiana         3.604745 10.172037  3.853444  3.882761   7.044651  4.062005    7.864817  6.213848  3.787589  3.140930  8.375538  5.298522  4.811957                                                  
+Iowa            5.007138  9.958779  4.840562  4.587101   7.634487  4.002106    6.966781  5.674885  4.667862  4.859556  7.354684  3.935105  5.395395  3.885737                                        
+Kansas          4.408601  7.409098  3.060602  4.442553   6.598661  3.512435    7.294319  3.735978  4.258347  3.615391  6.183604  3.905887  4.316269  4.282286  2.020848                              
+Kentucky        2.896963  8.930716  5.257548  3.631240   9.364228  6.754618   10.274920  6.475033  5.154735  4.953492  9.129675  6.531273  7.275413  3.384898  5.400969  5.740308                    
+Louisiana       2.187868  9.890864  2.803839  2.411572   6.355365  5.410132    7.975901  6.748584  3.939756  3.518586  8.236106  4.961559  5.256562  4.220968  5.384255  4.020284  3.898974          
+Maine           5.449459  9.500632  5.356080  4.816331   7.595522  5.251686    6.878787  5.995987  4.764959  5.823169  6.944840  3.188682  6.143050  5.141585  3.249026  4.222520  5.968985  5.401479
+Maryland        7.611163  9.273961  6.327444  8.668010   6.722458  6.408493    4.868335  7.423132  6.638708  6.740797  7.515811  8.851332  5.771450  7.475384  8.018422  6.383880  9.115635  7.319302
+Massachusetts   7.963086  9.781969  6.354021  8.072120   5.455518  5.195148    3.060985  7.225595  5.278116  6.487500  5.717072  7.309502  5.055135  7.032772  6.492189  6.865981  9.469819  7.491380
+Michigan        3.219770 10.438840  2.876205  3.585488   6.172830  4.156116    6.718661  6.002538  2.794426  2.920050  8.228620  4.716282  3.390219  2.702043  3.778241  3.360651  4.829221  3.688944
+Minnesota       5.699186  9.792369  4.346035  5.729161   6.486491  2.933653    5.706504  5.782694  4.478219  4.323841  7.140860  4.643832  3.857913  4.315508  2.716098  2.943799  7.133466  5.836457
+Mississippi     2.883395 11.407078  4.665463  2.644596   8.218904  7.060859    9.761691  7.962489  5.091162  4.947830  9.825048  5.547383  7.061814  5.136325  6.216101  6.501396  3.987288  3.266231
+Missouri        2.193270  9.917924  2.932619  2.820666   6.655760  4.228391    7.353772  5.963989  3.232413  2.995409  7.834503  5.026190  4.551890  2.291596  3.673264  2.990748  3.026295  2.921983
+Montana         3.778946  8.061485  3.997077  3.462787   7.773931  5.249206    9.107011  4.420878  4.673883  4.419328  7.284882  3.631654  6.333142  4.746282  3.332278  3.110260  4.808803  3.374796
+Nebraska        5.010139  8.818975  4.374697  4.393229   7.323869  4.062795    6.927510  5.277823  5.158065  4.691573  6.423243  4.068942  5.195917  4.537399  2.470144  2.287313  6.083651  5.127234
+Nevada          6.867679  8.696989  4.599803  6.614218   5.019683  5.218190    8.358046  6.695426  5.604532  4.833401  6.778081  6.817587  5.516908  6.030305  7.702788  6.141385  7.205939  6.315798
+New Hampshire   7.032307  9.342326  5.896818  6.871723   7.463344  5.057318    5.090292  6.242540  5.863305  6.372527  6.696511  5.337879  5.194277  6.441029  4.299915  4.980274  8.770819  7.124445
+New Jersey      8.480882 10.991190  6.720639  8.755648   5.736034  6.305088    3.633544  7.650389  5.777136  6.795657  7.618642  8.219887  4.804280  7.707355  7.699712  8.015335 10.731633  8.247333
+New Mexico      3.680324  8.522460  4.141634  3.438805   7.732973  5.405001    8.705953  5.658454  5.487654  4.472108  7.876981  5.083431  6.601013  4.562994  5.203417  4.088725  3.360258  3.383514
+New York        7.740170 10.726266  5.889495  7.622262   4.069967  5.830359    5.910359  8.683771  5.156224  5.945851  6.716974  7.941413  4.649067  7.279079  7.735557  7.558194  9.310169  7.104194
+North Carolina  2.964659 10.446575  2.011604  3.162292   5.346357  4.219042    7.172742  6.558336  2.854521  1.673388  8.316637  4.971980  3.299835  3.014498  4.783395  3.728261  4.552803  3.294185
+North Dakota    6.830398  8.494124  6.726308  6.215588   9.102334  5.825150    8.078210  6.274746  7.143179  7.022232  6.067419  5.591146  7.800522  6.406683  4.333533  4.269167  6.384704  6.832059
+Ohio            3.756038 10.503530  3.207573  3.964614   5.829037  3.634401    6.763715  6.086862  2.761796  2.645838  7.765809  5.294823  3.414807  2.337553  3.693684  2.922134  4.539927  4.122743
+Oklahoma        2.746771  9.590296  3.485447  2.160842   7.093379  4.597272    8.206370  6.013341  4.026087  3.514846  7.809859  4.144994  5.635490  2.949381  3.685416  3.896042  3.236769  2.712148
+Oregon          5.548912  9.264492  3.668999  4.628232   4.605672  3.465647    6.494161  6.242370  3.774078  4.028477  5.799009  3.010644  4.661539  4.918500  4.211692  3.995912  6.544470  4.859990
+Pennsylvania    3.278011 10.332521  3.342653  4.088292   6.229582  4.611578    5.783043  6.249101  2.736122  3.577485  7.875235  5.678008  3.172094  3.276966  4.092980  3.516435  4.990771  4.012989
+Rhode Island    8.299825  8.727605  6.894639  7.765106   6.657274  6.679551    6.042031  6.508415  6.088086  7.287467  5.160020  6.871825  6.752070  7.613243  7.566176  7.738592  8.938709  7.772664
+South Carolina  2.215120 10.099229  2.490228  2.549883   6.425645  5.464897    7.510363  6.526626  3.601202  3.138396  8.511209  5.060045  4.305294  4.303923  5.276383  4.459678  4.725989  2.765308
+South Dakota    5.342727  8.707087  5.423795  4.524657   8.151475  5.319894    7.848930  5.668781  5.828860  5.846903  6.674934  3.605722  6.993915  5.527714  3.431093  3.665688  5.645236  5.154360
+Tennessee       1.592758 10.217475  2.929816  2.455450   6.825626  5.211316    7.910098  6.451256  3.357974  2.869454  8.663065  5.604460  4.496692  2.836403  4.945482  4.346147  2.903620  2.663005
+Texas           4.732795 10.096352  2.507271  4.552391   4.110426  3.320189    7.219854  7.019202  3.748023  2.073875  7.473824  4.796109  3.747254  4.304938  5.192502  3.882935  6.240198  3.758654
+Utah            7.816158  9.971541  5.886282  7.294373   7.035596  4.025850    7.845243  6.827859  6.908662  5.766022  7.201289  4.877627  6.305243  6.466673  4.757319  4.528537  9.209289  7.334168
+Vermont         7.853224  9.342110  7.331872  7.357606   9.369040  7.662961    7.198676  7.277386  7.861043  8.097009  7.691579  6.377467  7.270864  8.433320  6.365156  6.540232  9.630963  7.996153
+Virginia        5.753364  8.798401  4.670117  6.490933   6.171084  4.301018    4.253637  6.930069  5.205486  5.131602  6.528350  6.267057  4.758796  5.509324  5.179441  4.622325  7.411418  5.481934
+Washington      6.100880  8.812749  3.607467  5.795693   3.680065  2.581905    4.948654  6.302339  3.986082  4.020214  5.250266  4.144214  3.791803  5.258658  4.655437  4.116854  7.604610  5.325361
+West Virginia   3.873600 10.991010  5.946337  3.513818   9.654607  6.783430    9.605647  6.816279  5.733335  5.935861  9.565350  5.812334  7.473856  4.004706  4.372867  5.827139  3.110384  4.962556
+Wisconsin       4.364111  9.825504  3.273309  4.235680   5.727754  2.696602    5.899727  5.849888  3.071053  3.246268  6.758584  4.164685  3.394139  3.129319  2.282848  2.033971  5.447424  4.520653
+Wyoming         8.354493  7.492609  8.226198  7.759220  10.664883  7.652842    9.921622  5.697209  8.976007  8.516690  7.911546  6.819268  9.534238  8.124581  6.861121  5.593932  7.161100  8.439725
+                   Maine  Maryland Massachusetts  Michigan Minnesota Mississippi  Missouri   Montana  Nebraska    Nevada New Hampshire New Jersey New Mexico  New York North Carolina North Dakota
+Alaska                                                                                                                                                                                            
+Arizona                                                                                                                                                                                           
+Arkansas                                                                                                                                                                                          
+California                                                                                                                                                                                        
+Colorado                                                                                                                                                                                          
+Connecticut                                                                                                                                                                                       
+Delaware                                                                                                                                                                                          
+Florida                                                                                                                                                                                           
+Georgia                                                                                                                                                                                           
+Hawaii                                                                                                                                                                                            
+Idaho                                                                                                                                                                                             
+Illinois                                                                                                                                                                                          
+Indiana                                                                                                                                                                                           
+Iowa                                                                                                                                                                                              
+Kansas                                                                                                                                                                                            
+Kentucky                                                                                                                                                                                          
+Louisiana                                                                                                                                                                                         
+Maine                                                                                                                                                                                             
+Maryland        8.589605                                                                                                                                                                          
+Massachusetts   6.619401  5.444320                                                                                                                                                                
+Michigan        4.510982  6.891263      6.464100                                                                                                                                                  
+Minnesota       4.485471  6.695074      5.548868  3.581946                                                                                                                                        
+Mississippi     6.008202  9.723329      9.418208  4.948954  7.356641                                                                                                                              
+Missouri        4.892887  6.787230      6.796929  2.684878  4.399936    4.127669                                                                                                                  
+Montana         4.160841  8.207678      8.403983  4.667686  5.307321    4.753047  3.053530                                                                                                        
+Nebraska        4.054463  7.708930      6.601193  4.418092  3.198633    6.438225  4.032172  3.688675                                                                                              
+Nevada          7.824494  7.645061      7.495758  6.191369  7.070806    7.638030  6.029728  6.659527  7.046413                                                                                    
+New Hampshire   4.561159  7.429595      5.714043  5.619372  3.356284    8.495515  6.212605  6.589170  3.879067  8.137473                                                                          
+New Jersey      7.951568  5.737290      3.395446  6.730956  6.213064   10.001374  7.660068  9.696761  7.648360  7.682244      6.126948                                                            
+New Mexico      5.873785  7.862505      8.285417  4.873973  6.239279    4.073579  3.355320  2.922670  4.978582  6.621719      7.716956   9.420024                                                 
+New York        7.723006  7.091664      4.143738  6.772569  6.857682    9.003420  6.987451  8.708403  7.313364  6.295759      7.330703   5.408281   8.515242                                      
+North Carolina  5.487191  7.071247      6.794340  2.102464  4.565711    4.446084  2.746438  4.567294  4.785123  5.333058      6.327946   6.862369   4.664005  6.268931                            
+North Dakota    5.008931  8.852050      7.533362  6.931520  5.893309    7.612123  5.711863  3.859775  3.748656  8.534916      5.974491   9.465422   5.503519  8.669587       7.282022             
+Ohio            5.087764  6.627267      5.791114  2.109893  3.650569    5.593289  2.440079  4.327799  4.194522  5.893166      5.992299   6.502035   4.923876  5.875571       2.489281     6.361795
+Oklahoma        4.358549  8.039996      7.394851  3.590942  4.839118    3.673270  2.266944  2.940617  3.679251  6.424026      6.381849   8.500283   3.190292  7.414962       3.526575     5.343542
+Oregon          3.656905  7.934215      5.557330  4.272458  4.331402    6.002440  4.659856  4.650299  4.258624  5.426520      5.288891   6.817479   5.634277  5.463209       4.215200     5.934161
+Pennsylvania    4.838128  5.912135      5.665029  2.080653  3.777518    5.651725  2.761281  5.021885  4.355587  6.503932      5.146335   6.006059   5.459081  6.083498       2.754122     6.788586
+Rhode Island    6.528749  8.114487      5.008645  7.227053  7.547637    8.840137  7.557499  8.276331  7.313252  6.409380      7.182960   5.772403   8.093078  5.986392       7.275119     7.663675
+South Carolina  5.630992  7.487290      7.603678  3.235657  5.423490    3.523234  3.158677  4.523471  4.874313  6.177323      6.430322   7.649252   4.164027  7.175516       2.329532     7.236684
+South Dakota    3.438765  8.644534      7.405576  5.657342  5.175878    5.748209  4.624357  1.983415  3.157721  7.953556      5.346449   8.968003   4.399006  8.359152       5.988650     2.701569
+Tennessee       5.609207  7.334145      7.474428  2.804910  5.237431    3.764199  2.195797  4.277971  4.776192  6.037960      6.787385   7.877657   4.008972  6.990206       2.214183     6.978381
+Texas           5.934945  6.905895      6.151740  3.844443  4.498445    5.802564  4.034896  4.834120  4.890119  5.384088      6.552911   6.946721   5.132624  5.322347       3.176829     7.118197
+Utah            6.366016  8.354401      7.296731  6.164955  4.413720    8.625013  6.365106  6.177063  4.851634  7.792762      6.146926   8.237101   6.680453  8.446089       6.541281     6.005682
+Vermont         5.750459  9.430157      8.260979  7.389970  6.408482    8.907407  7.833774  7.430777  5.091342  9.671883      4.209895   8.633394   8.253892  9.087153       7.741963     6.307128
+Virginia        5.805975  4.003073      4.769055  5.014803  4.261891    7.689765  4.790444  6.459736  5.068947  7.419712      4.989951   6.063187   6.111441  6.426794       5.365508     6.397805
+Washington      4.621560  6.256025      4.237212  4.434985  3.653237    7.171936  4.981488  5.769384  4.569590  5.395136      4.714175   5.548317   6.173554  4.770796       4.514208     6.387711
+West Virginia   4.895459  9.802177      9.108152  4.655579  6.370725    4.226412  3.790895  4.718712  5.231977  8.486123      7.616860  10.111724   4.390298  9.593673       5.287663     5.860449
+Wisconsin       3.920615  6.744556      5.216107  2.734616  2.202186    5.931485  2.848045  3.955807  2.896716  6.147798      4.157304   6.216018   5.146218  5.846711       3.303504     5.291888
+Wyoming         7.126880 10.105004      9.906165  8.743662  7.897871    8.711600  7.551584  4.333896  6.103995  9.153755      7.491362  10.901153   6.510596 11.108905       8.808637     4.795353
+                    Ohio  Oklahoma    Oregon Pennsylvania Rhode Island South Carolina South Dakota Tennessee     Texas      Utah   Vermont  Virginia Washington West Virginia Wisconsin
+Alaska                                                                                                                                                                                 
+Arizona                                                                                                                                                                                
+Arkansas                                                                                                                                                                               
+California                                                                                                                                                                             
+Colorado                                                                                                                                                                               
+Connecticut                                                                                                                                                                            
+Delaware                                                                                                                                                                               
+Florida                                                                                                                                                                                
+Georgia                                                                                                                                                                                
+Hawaii                                                                                                                                                                                 
+Idaho                                                                                                                                                                                  
+Illinois                                                                                                                                                                               
+Indiana                                                                                                                                                                                
+Iowa                                                                                                                                                                                   
+Kansas                                                                                                                                                                                 
+Kentucky                                                                                                                                                                               
+Louisiana                                                                                                                                                                              
+Maine                                                                                                                                                                                  
+Maryland                                                                                                                                                                               
+Massachusetts                                                                                                                                                                          
+Michigan                                                                                                                                                                               
+Minnesota                                                                                                                                                                              
+Mississippi                                                                                                                                                                            
+Missouri                                                                                                                                                                               
+Montana                                                                                                                                                                                
+Nebraska                                                                                                                                                                               
+Nevada                                                                                                                                                                                 
+New Hampshire                                                                                                                                                                          
+New Jersey                                                                                                                                                                             
+New Mexico                                                                                                                                                                             
+New York                                                                                                                                                                               
+North Carolina                                                                                                                                                                         
+North Dakota                                                                                                                                                                           
+Ohio                                                                                                                                                                                   
+Oklahoma        3.450637                                                                                                                                                               
+Oregon          4.221053  4.206247                                                                                                                                                     
+Pennsylvania    2.405404  3.980486  4.781168                                                                                                                                           
+Rhode Island    6.996460  7.656694  5.560826     7.069158                                                                                                                              
+South Carolina  4.078721  3.618968  5.026658     3.454359     7.704205                                                                                                                 
+South Dakota    5.575686  3.772286  4.674182     5.793156     7.443807       5.658435                                                                                                  
+Tennessee       3.006111  2.665695  5.200718     2.852044     7.860988       2.250386     5.683295                                                                                     
+Texas           3.311304  3.957736  3.692048     4.403557     7.459784       4.340904     5.933274  4.070610                                                                           
+Utah            5.820170  6.516477  5.388702     6.975968     8.438162       7.360012     5.741575  7.592907  5.444679                                                                 
+Vermont         7.981582  7.654685  6.981145     7.030258     8.167112       7.041482     5.854341  7.898382  8.341997  7.926106                                                       
+Virginia        4.993860  5.631299  5.561860     4.104011     7.531600       5.724971     5.947832  5.660883  5.197778  6.452475  7.215077                                             
+Washington      4.321383  5.108779  2.237714     4.559541     5.678181       5.464591     5.505772  5.650595  3.492007  5.017698  7.085641  4.083678                                   
+West Virginia   4.933222  3.494353  6.332121     5.195085     8.738638       5.204569     4.787221  4.310947  6.850242  8.065666  8.282668  7.472877   7.462814                        
+Wisconsin       2.327254  3.507086  3.276736     2.778869     6.699085       4.264763     4.428909  3.954716  3.628860  4.813705  6.653113  4.176491   3.228251      5.200544          
+Wyoming         8.644524  7.238965  8.071010     8.835251     9.108380       8.328574     4.973078  8.477997  9.144074  7.732709  7.294573  8.519401   8.512051      7.556514  7.685097
+```
+]
+
+---
+## Step 1: Calculate the distance matrix
+
+.tiny-font[
+
+```r
+US_state_stats %&gt;%
+  column_to_rownames(var = "state") %&gt;%
+  scale() %&gt;%
+  dist(method = "manhattan")
+```
+
+```
+                 Alabama    Alaska   Arizona  Arkansas California  Colorado Connecticut  Delaware   Florida   Georgia    Hawaii     Idaho  Illinois   Indiana      Iowa    Kansas  Kentucky Louisiana
+Alaska         39.364617                                                                                                                                                                             
+Arizona        11.457393 34.256754                                                                                                                                                                   
+Arkansas        7.563727 36.979698 12.282109                                                                                                                                                         
+California     27.092569 35.778165 17.267495 27.473571                                                                                                                                               
+Colorado       20.486385 26.830814 12.303813 18.723663  16.577681                                                                                                                                    
+Connecticut    27.881993 32.490872 23.810292 29.803273  23.519703 20.333207                                                                                                                          
+Delaware       25.565431 24.114268 22.085864 24.654841  28.860191 18.919099   28.283941                                                                                                              
+Florida        14.757703 37.487025 10.813581 15.947303  14.771631 15.949390   21.862262 21.536576                                                                                                    
+Georgia        12.722919 35.663923  6.033199 13.493929  15.433219 12.168010   26.520525 22.328604  9.602667                                                                                          
+Hawaii         34.819691 19.783897 27.766370 32.305331  24.016901 21.547728   20.223625 23.485511 28.690091 30.706527                                                                                
+Idaho          19.745449 32.227050 15.412817 15.999750  23.900019 15.496762   26.810291 20.777305 18.505853 17.569117 23.408972                                                                      
+Illinois       19.534776 36.554042 11.861539 21.097936  12.472733 12.717012   17.823019 22.194732  9.976896 11.117761 25.943819 22.116396                                                            
+Indiana        12.753238 35.519382 12.812347 14.848398  22.206667 13.352968   26.441818 20.677876 12.183197 10.113156 30.437677 16.207176 15.523156                                                  
+Iowa           16.887848 36.070057 15.710044 15.935214  26.912765 12.974164   25.517710 18.651812 15.708193 15.867194 25.775804 13.555946 19.622490 12.111341                                        
+Kansas         16.132276 28.312776 10.999284 15.758134  24.228312 12.783725   26.664013 13.944676 15.248182 12.667386 22.191425 12.943138 16.005273 12.645178  6.528961                              
+Kentucky        8.879573 33.818930 18.687634 11.872833  35.856603 23.981172   37.865451 24.475962 18.640994 17.745640 34.148013 20.581355 27.759876 10.986555 18.385613 19.250124                    
+Louisiana       7.341806 35.810798 10.924207  8.575925  24.205810 18.792486   26.200688 24.897868 14.158552 12.542016 29.682396 17.218745 20.217441 13.946551 17.005256 13.780842 11.500321          
+Maine          18.893906 31.188934 18.303720 17.954955  26.770330 16.574771   25.198845 19.631394 17.253112 20.260276 23.406068  9.825994 22.515036 16.250223  9.054923 13.491801 20.787123 17.698318
+Maryland       25.805656 31.675335 20.806442 29.704523  24.095626 19.793805   15.526273 27.350394 23.930061 22.707238 26.258090 31.258360 19.061221 26.788525 27.085683 21.811227 34.558648 24.019984
+Massachusetts  27.610370 32.348280 22.706743 28.991138  20.095868 17.844923    9.836393 25.796140 19.106424 23.719136 17.807773 26.258625 18.528311 23.938428 22.671947 24.176227 35.593178 23.416700
+Michigan       10.892408 37.731162  9.333866 12.990808  18.845509 14.659201   23.999365 19.623196  9.285337  6.945999 30.860859 17.966644 11.158765  8.069259 11.947356 12.242973 17.086716 13.017955
+Minnesota      19.445605 32.475859 14.420244 20.003122  20.599158  9.133611   19.435055 18.127856 17.212266 14.384316 22.538527 17.623839 12.072838 14.771491  9.745534 11.476417 27.329071 19.707720
+Mississippi     9.663576 41.516351 15.960822  8.415174  29.470958 23.447245   32.729832 30.242143 17.246017 17.527327 36.513600 19.940493 24.719654 17.346186 19.728993 22.334799 14.005749 11.439921
+Missouri        7.610217 35.417698  9.961130 10.138051  22.859271 14.467240   25.367467 21.763993 10.972625  9.934061 30.042068 17.101701 17.060413  7.803763 11.519870 10.530092 10.061856  8.091016
+Montana        13.043659 29.681100 14.858367 13.219795  30.821872 18.277643   34.740921 15.034760 17.402251 16.386288 26.661423 11.731440 23.457669 15.508538 12.219795 10.143727 15.291925 11.828956
+Nebraska       18.737310 32.137251 13.935147 15.665617  27.906480 13.838232   25.181656 17.958883 18.467426 15.358309 23.227217 12.914711 18.901255 15.574059  8.283421  7.150246 22.523107 17.457847
+Nevada         25.071960 30.052598 16.832981 23.195984  17.162031 17.188030   32.418899 22.901218 19.861440 17.464555 23.546802 23.620484 18.225749 22.043616 24.762569 20.244312 27.873980 22.828637
+New Hampshire  25.637810 30.952351 21.461364 24.533148  25.554741 16.771438   17.519240 20.889699 21.502428 23.563682 21.808457 17.975251 17.969381 22.780764 13.282445 19.341475 34.108060 24.302570
+New Jersey     29.229522 37.110486 20.867874 30.068037  18.720608 20.180116   10.704776 27.749816 17.831686 20.929297 25.755317 28.711458 13.270208 24.967964 27.643298 27.550045 41.034094 27.931479
+New Mexico     12.685293 31.647812 15.669371 11.617146  31.227012 19.638299   31.876644 21.272159 21.565973 17.598827 28.172359 15.988255 25.428154 16.280465 18.731333 14.175000  9.304608 11.454328
+New York       26.114656 37.852758 18.181192 26.783061  12.968452 19.077331   20.286075 27.630758 14.139010 18.674509 24.293757 27.347706 12.921183 22.303422 26.024397 24.813468 34.887015 24.230301
+North Carolina 10.319309 38.802747  7.446743 11.907696  17.557676 15.648799   25.558962 22.449534  9.897016  4.868379 32.148962 18.056033 10.884715  9.480474 16.099142 12.500428 16.711862 11.406332
+North Dakota   26.061847 29.624019 22.675114 24.010357  34.721456 19.589040   31.217967 21.930020 24.312128 24.777472 22.020599 18.003735 28.687232 22.217109 14.389066 14.677949 20.608835 23.732389
+Ohio           13.826927 36.220795 11.794776 15.322582  17.309009 12.460479   23.316813 19.716962  7.436731  8.085043 29.193779 18.706337 11.021343  7.764234 12.622645 11.068050 16.217131 13.993672
+Oklahoma        8.929367 33.166327 12.491627  7.080033  26.986146 15.193265   28.506319 21.671704 15.195802 13.047307 28.282550 14.175486 20.920568 10.631406 13.021217 12.579024 10.516689  8.034751
+Oregon         20.609313 30.077416 11.721054 17.447993  16.885635 10.594128   21.472858 22.143437 14.021381 14.083179 19.588485  9.833415 16.409481 14.170722 12.942133 12.391392 21.916091 16.839859
+Pennsylvania   10.622794 35.821054 11.706567 14.798249  19.463068 15.562500   21.086788 20.360240  9.355917 10.615641 29.680309 21.651206 10.029327 10.968759 14.606625 12.341548 18.968970 15.124029
+Rhode Island   32.574009 29.404593 26.342309 28.871952  23.870786 21.575907   22.988741 21.949430 22.771182 28.842765 16.554458 22.700590 24.092097 28.247248 25.561136 26.981077 33.852692 29.478300
+South Carolina  7.534312 38.926594  9.025351  9.182206  23.984869 19.746607   25.090109 24.506851 13.059331 10.801379 32.799809 17.540498 15.024322 13.249993 18.192465 15.527733 13.546455  7.710250
+South Dakota   18.426645 31.431828 18.285225 16.001491  31.778541 18.799516   29.442488 20.436812 20.137226 21.171254 24.509916 10.754237 25.537500 18.932092 12.213913 13.109386 17.378240 16.386444
+Tennessee       5.779919 38.584488  9.344479  9.345081  23.533637 18.465746   26.990937 23.338196 12.108336  9.307380 33.710207 19.067733 15.956930  9.262523 16.440284 13.619979  9.678722  8.508175
+Texas          16.139287 32.808115  9.153110 16.353664  13.120956 11.597821   26.650051 23.620983 11.708841  6.976128 27.715606 18.155539 12.106739 13.872454 16.821420 14.259404 22.383038 13.597655
+Utah           26.260382 32.311477 21.223510 24.655275  25.258503 12.561220   27.417314 23.393697 25.550868 20.756311 24.448452 14.706314 22.678405 18.392145 13.307426 15.572565 28.263004 25.332988
+Vermont        28.777699 31.700599 24.958772 27.095827  33.149379 24.024744   27.053885 23.658541 26.765388 29.616863 24.792779 18.914221 25.568846 28.418282 17.566895 19.346604 33.946720 27.623194
+Virginia       19.980949 27.270728 14.400683 21.668542  19.218570 13.698095   15.551851 23.509069 17.543482 15.395190 21.843737 23.801562 12.962813 17.677008 17.885015 16.284319 28.253853 18.770132
+Washington     22.185323 26.463377 12.501963 20.806337  13.112197  7.064249   16.019791 22.210963 14.974729 14.868716 17.297056 14.635503 12.965558 16.412173 16.550914 14.672008 27.581817 18.355271
+West Virginia  13.819041 38.774625 21.780926 11.528138  36.257929 22.314531   35.763154 24.985774 22.396856 21.603417 34.105318 17.104790 29.709254 14.629234 15.803289 21.185233 10.987548 16.239855
+Wisconsin      15.455751 32.496025 11.453120 15.346039  19.430383  7.884163   19.637135 17.978207 10.239927 10.439779 23.813409 16.070823 11.643856  9.960649  8.265174  7.044122 19.823646 14.339788
+Wyoming        29.906309 27.173530 28.517161 28.801932  40.629967 24.873327   37.049912 19.816190 31.764923 30.393671 27.741781 22.234256 33.339692 27.328553 21.455659 16.974509 23.731847 29.182222
+                   Maine  Maryland Massachusetts  Michigan Minnesota Mississippi  Missouri   Montana  Nebraska    Nevada New Hampshire New Jersey New Mexico  New York North Carolina North Dakota
+Alaska                                                                                                                                                                                            
+Arizona                                                                                                                                                                                           
+Arkansas                                                                                                                                                                                          
+California                                                                                                                                                                                        
+Colorado                                                                                                                                                                                          
+Connecticut                                                                                                                                                                                       
+Delaware                                                                                                                                                                                          
+Florida                                                                                                                                                                                           
+Georgia                                                                                                                                                                                           
+Hawaii                                                                                                                                                                                            
+Idaho                                                                                                                                                                                             
+Illinois                                                                                                                                                                                          
+Indiana                                                                                                                                                                                           
+Iowa                                                                                                                                                                                              
+Kansas                                                                                                                                                                                            
+Kentucky                                                                                                                                                                                          
+Louisiana                                                                                                                                                                                         
+Maine                                                                                                                                                                                             
+Maryland       30.761983                                                                                                                                                                          
+Massachusetts  23.673133 18.172812                                                                                                                                                                
+Michigan       15.372217 23.593521     22.387806                                                                                                                                                  
+Minnesota      15.867013 19.750511     17.626432 11.557404                                                                                                                                        
+Mississippi    20.157039 33.626080     31.821963 16.215734 24.547154                                                                                                                              
+Missouri       15.135665 23.887302     22.766769  8.863121 15.870148   12.623194                                                                                                                  
+Montana        13.097015 29.363592     30.401189 16.045604 19.392116   17.669828 10.707897                                                                                                        
+Nebraska       12.969741 26.692684     24.738214 14.884091 12.135819   22.638419 14.889073 12.634011                                                                                              
+Nevada         27.260706 26.608474     28.298399 22.327457 23.193390   27.304145 21.705181 24.553351 22.629561                                                                                    
+New Hampshire  13.491797 23.730018     20.213063 19.890094 12.076524   28.743098 23.038951 23.515789 14.249492 28.861021                                                                          
+New Jersey     29.334700 18.139708     11.151831 20.932440 19.801818   33.821907 26.755159 35.999363 26.767042 28.573222     20.112728                                                            
+New Mexico     19.865650 28.943640     30.601543 18.907161 23.012443   15.115886 11.884397  9.623528 16.850745 24.134972     29.028684  35.749268                                                 
+New York       26.117693 24.806937     15.036843 18.240629 20.031358   30.670356 23.188818 30.670798 26.066276 23.642492     24.274177  16.069327  32.126386                                      
+North Carolina 20.007664 24.188508     24.404811  6.196769 15.385799   15.667506  9.426212 15.332328 14.644977 19.506845     22.866755  20.392445  17.183687 19.163133                            
+North Dakota   15.670782 32.391528     28.148771 25.368076 22.295672   28.822664 19.326822 13.637233 13.003647 27.942718     21.223498  36.068846  18.968782 33.570273      25.987557             
+Ohio           16.858559 22.435097     20.133078  6.549243 13.748388   19.599339  7.675325 14.546511 15.082362 21.733593     21.307301  20.127389  18.065514 16.510663       8.205989    21.902712
+Oklahoma       16.148164 27.825917     25.634278 13.205045 17.165680   12.114288  8.812459  8.048941 13.561660 22.310308     22.878414  29.549027  11.049805 25.847849      12.043752    19.444345
+Oregon         11.547196 27.348602     18.282478 14.015917 14.019834   20.424974 15.707416 16.046703 12.922771 18.650262     17.055011  21.491776  20.289379 18.359011      15.201312    18.783142
+Pennsylvania   15.790440 20.929248     20.607652  7.511174 13.816418   18.161597  9.604403 18.815490 16.035231 22.514320     19.591486  19.571947  21.482173 17.812933       9.400328    25.309376
+Rhode Island   20.023439 32.257531     17.739055 27.134583 26.205180   31.655257 28.125811 27.794018 23.864827 21.130403     25.102546  22.101111  30.014082 21.496894      28.779428    24.377074
+South Carolina 19.983025 26.618771     27.081046 10.496299 19.884757   11.387501  9.407850 13.529259 17.005252 22.188035     22.116064  25.021297  13.283755 23.666508       8.224572    26.588417
+South Dakota   11.338985 31.209689     26.741990 19.973828 19.381215   20.485043 14.796577  6.452830 10.406530 27.268253     18.940603  33.924858  15.114362 30.753969      20.933066     9.063993
+Tennessee      19.996080 24.459514     26.681235  9.295897 18.274519   13.412056  7.191153 12.720936 16.484459 22.621774     24.497506  26.197992  14.591292 22.555724       7.536444    25.273351
+Texas          19.401428 23.217318     20.545190 11.496219 15.212010   20.639393 13.346891 17.611304 18.099673 18.387170     23.076380  21.673437  19.417936 17.217764      10.607533    25.243526
+Utah           17.847726 28.262351     25.874627 21.554323 12.975953   28.642052 20.604086 20.643193 14.897366 25.459721     19.026230  29.940862  22.102110 30.982791      23.901114    20.562986
+Vermont        15.174179 33.390229     29.301329 25.321936 20.217056   31.553956 26.101607 22.970440 16.182841 33.251526     14.279325  31.772850  29.596370 32.123540      28.867406    17.051873
+Virginia       21.417589 12.309755     15.702151 15.089570 10.392017   25.490009 16.915196 23.814041 17.765089 25.070717     16.138210  18.442732  22.272700 19.651659      15.921588    25.146148
+Washington     16.160035 20.368978     13.191440 15.954762 10.824922   23.867231 16.921238 21.710647 17.286058 19.080272     16.709648  16.702402  23.386570 14.796973      17.306217    22.708232
+West Virginia  15.695032 36.503979     33.703987 18.633802 23.585395   14.556596 13.858266 16.615720 19.101353 30.742534     26.926197  38.404246  14.460035 34.453129      20.818540    21.703957
+Wisconsin      13.658604 21.062285     16.898714  9.542290  7.794500   19.606658 10.214511 14.078979  9.638931 20.772246     14.426283  19.631344  18.809586 18.189315      11.128356    18.298274
+Wyoming        23.358541 37.018216     34.966270 31.018062 24.654408   30.299377 24.946730 14.636990 19.824625 32.127388     26.132282  40.851635  19.980524 39.945219      31.444499    16.295284
+                    Ohio  Oklahoma    Oregon Pennsylvania Rhode Island South Carolina South Dakota Tennessee     Texas      Utah   Vermont  Virginia Washington West Virginia Wisconsin
+Alaska                                                                                                                                                                                 
+Arizona                                                                                                                                                                                
+Arkansas                                                                                                                                                                               
+California                                                                                                                                                                             
+Colorado                                                                                                                                                                               
+Connecticut                                                                                                                                                                            
+Delaware                                                                                                                                                                               
+Florida                                                                                                                                                                                
+Georgia                                                                                                                                                                                
+Hawaii                                                                                                                                                                                 
+Idaho                                                                                                                                                                                  
+Illinois                                                                                                                                                                               
+Indiana                                                                                                                                                                                
+Iowa                                                                                                                                                                                   
+Kansas                                                                                                                                                                                 
+Kentucky                                                                                                                                                                               
+Louisiana                                                                                                                                                                              
+Maine                                                                                                                                                                                  
+Maryland                                                                                                                                                                               
+Massachusetts                                                                                                                                                                          
+Michigan                                                                                                                                                                               
+Minnesota                                                                                                                                                                              
+Mississippi                                                                                                                                                                            
+Missouri                                                                                                                                                                               
+Montana                                                                                                                                                                                
+Nebraska                                                                                                                                                                               
+Nevada                                                                                                                                                                                 
+New Hampshire                                                                                                                                                                          
+New Jersey                                                                                                                                                                             
+New Mexico                                                                                                                                                                             
+New York                                                                                                                                                                               
+North Carolina                                                                                                                                                                         
+North Dakota                                                                                                                                                                           
+Ohio                                                                                                                                                                                   
+Oklahoma       13.192733                                                                                                                                                               
+Oregon         13.804684 14.460831                                                                                                                                                     
+Pennsylvania    7.703123 15.367328 17.442336                                                                                                                                           
+Rhode Island   26.637750 27.820854 17.992930    26.225444                                                                                                                              
+South Carolina 14.102342  9.890319 17.500843    13.029383    29.416749                                                                                                                 
+South Dakota   19.629029 12.427434 15.363569    21.531977    23.655525      17.862611                                                                                                  
+Tennessee      10.562274  8.320692 18.777025    10.487609    31.254816       6.561510    18.955424                                                                                     
+Texas           9.617867 14.888464 12.572941    12.845620    28.050352      15.391440    21.492927 14.036198                                                                           
+Utah           19.457312 19.992631 16.236775    23.546790    29.039621      26.397215    18.648339 25.608327 19.685801                                                                 
+Vermont        26.663653 26.033323 20.144664    23.134844    24.666394      25.446111    16.016361 28.546519 28.645105 23.935294                                                       
+Virginia       15.422349 19.279284 19.893824    12.800078    28.712510      19.784178    22.391629 19.051815 15.704802 21.262725 25.094335                                             
+Washington     15.130598 17.846874  8.440218    16.310862    18.038310      19.784162    20.709173 19.883098 12.571810 16.828013 22.159450 13.641454                                   
+West Virginia  19.313608 11.168484 21.990419    20.567401    31.415898      18.177472    17.246612 14.878690 23.865663 22.410871 29.028447 28.749971  26.168082                        
+Wisconsin       7.971613 12.889222 11.039865     9.867973    23.284892      15.468640    16.634515 13.320727 11.235804 15.952210 20.450072 12.313105  10.541120     19.852494          
+Wyoming        29.363848 24.440022 27.382921    30.496770    31.239854      29.665212    16.379129 30.899715 32.785761 24.033473 21.141481 28.721895  28.481907     26.311153 24.315956
+```
+]
+
+---
+
+## Step 1: Calculate the distance matrix
+
+.tiny-font[
+
+```r
+US_state_stats %&gt;%
+  column_to_rownames(var = "state") %&gt;%
+  scale() %&gt;%
+  dist(method = "maximum")
+```
+
+```
+                 Alabama    Alaska   Arizona  Arkansas California  Colorado Connecticut  Delaware   Florida   Georgia    Hawaii     Idaho  Illinois   Indiana      Iowa    Kansas  Kentucky Louisiana
+Alaska         5.0230030                                                                                                                                                                             
+Arizona        1.8008087 5.0313330                                                                                                                                                                   
+Arkansas       0.9729239 4.3482712 1.8791047                                                                                                                                                         
+California     3.3092126 5.3811939 2.4154837 2.7012130                                                                                                                                               
+Colorado       2.7795090 5.0146730 1.5829457 2.8578051  2.4637933                                                                                                                                    
+Connecticut    3.6364712 5.1312933 2.9255781 4.0873715  2.8502707 2.6410745                                                                                                                          
+Delaware       3.5402592 3.6328111 3.5485892 2.8655274  3.9130835 3.5319291   3.6485494                                                                                                              
+Florida        1.7813269 5.2395836 1.6050686 1.8181819  2.9710449 2.5837690   2.6959090 3.7568397                                                                                                    
+Georgia        2.4271769 5.2312535 0.8018184 2.5054729  2.3671740 1.3229045   3.0695498 3.7485097 2.2314368                                                                                          
+Hawaii         3.6822218 4.5481918 3.0120101 3.4456765  4.0055004 3.2800948   3.5008704 3.4541417 3.9739610 3.7531854                                                                                
+Idaho          2.4160750 4.4149114 2.1887403 1.8399567  3.2850578 2.3458157   3.7593481 2.9321676 2.6237046 2.3696855 3.1381676                                                                      
+Illinois       2.2162604 5.2395836 1.5110566 2.1867323  2.8502707 2.5343795   2.9061736 3.7568397 1.8440448 1.5356266 3.9660762 2.8377070                                                            
+Indiana        1.5564577 5.2229235 2.1840278 1.5241176  3.8299617 2.3422906   3.4184782 3.7401797 2.1801508 1.6142814 3.7374157 3.0913080 2.5343795                                                  
+Iowa           2.8742961 4.8480725 2.5827009 2.2494491  3.8164642 2.5446210   3.0165492 3.3653287 2.2705136 2.1922888 3.6743370 2.5413004 2.4845160 2.1840278                                        
+Kansas         2.2156803 2.9542017 1.4290311 1.8877119  2.8985804 1.6833646   2.8657218 1.6313258 1.8137702 1.6488820 2.6781328 2.4617812 1.9164620 3.0069948 0.9178838                              
+Kentucky       1.5414323 3.6016173 2.6271638 1.6459340  4.2730978 2.7854267   3.8616143 2.5322061 2.2473329 2.2705848 3.6716989 3.4184782 2.7854267 1.6165849 2.6271638 3.4501308                    
+Louisiana      1.0503158 4.6564820 0.9997552 1.3330069  2.6087224 2.5827009   3.6074659 3.1737382 2.0411668 1.5659206 3.6033734 3.1242349 1.8673220 2.2961162 3.5824560 1.9214210 2.1934040          
+Maine          2.8326397 5.0729831 2.5410444 2.2077927  3.7923094 3.3275812   3.0033650 3.5902393 2.5227929 2.9752491 3.5481795 2.3097329 2.7367953 3.0648016 2.5147940 2.4352748 2.9620893 3.5407996
+Maryland       3.4064270 4.8564026 3.1247996 3.7419898  3.5670360 3.4444384   2.9159526 3.5653120 3.2288227 3.5686674 3.3325172 4.1425999 3.7366825 3.3075913 3.7894089 2.8867025 3.4666471 3.2437733
+Massachusetts  3.2186734 5.0646531 2.9995576 3.3466821  2.2991351 3.0292250   1.9575245 3.5819093 2.0301622 2.6044228 3.8004944 3.2923835 2.3299369 2.9120370 3.0061926 3.0814208 3.3551731 2.9992655
+Michigan       2.0809162 5.1479533 1.6425289 1.8271459  4.0580126 2.3488809   3.0692861 3.6652095 1.4742016 1.9965487 3.7768399 1.9695183 1.8427520 1.6459340 1.9995103 1.4839938 2.0890700 1.6410477
+Minnesota      2.4993879 5.2062635 2.2077927 2.4944764  4.0580126 1.5942192   2.9786360 3.7235196 2.0336212 1.8687330 3.7453005 2.0277390 1.8687330 2.3106381 1.2918845 1.1594322 2.7537741 3.2075478
+Mississippi    1.3820748 5.0396630 2.1993423 1.5564577  3.3497676 3.2820955   4.4293701 3.5569192 2.4944764 2.3880289 3.9102604 2.5618947 3.5189477 2.8591450 3.2360775 2.9664044 1.7958081 1.7425559
+Missouri       1.0449834 4.9480328 1.5141777 1.3483656  3.0435094 2.3880289   3.1776604 3.4652890 1.8852672 2.0356968 3.5718340 2.7964244 1.9858944 1.2344505 2.3327621 1.7725443 1.6775865 2.0012326
+Montana        1.7725443 3.0926932 1.6575024 1.3610608  2.8019611 2.2670144   3.4118121 1.7763919 1.8942885 1.7616607 2.8132680 2.0840651 2.5343795 2.5638587 1.7933099 1.7594739 3.0069948 1.4996450
+Nebraska       2.3744185 4.5815119 2.5832485 2.0899667  3.7924287 2.0885839   3.0444998 3.0987680 2.9679877 2.8030995 2.7912345 2.1985094 2.8030995 2.4183603 1.1726234 1.1542174 2.5832485 3.0825784
+Nevada         2.7833497 4.3399412 2.1131380 2.5832485  3.1066282 2.4733230   3.4354174 3.2609030 3.0750889 2.8543133 3.2428013 3.0638885 3.0672040 2.8385436 3.8473914 3.4076895 2.5749199 2.9130249
+New Hampshire  3.1349501 4.9980129 2.5410444 3.4383324  3.6715352 2.6667725   2.7090692 3.5152691 2.4705972 2.6630221 3.5402946 2.6667725 2.6845996 2.6667725 2.1750272 1.9217134 3.3372050 3.5407996
+New Jersey     4.2173266 5.2812337 4.3632746 4.3641692  3.6628521 4.3929420   2.6596375 3.7984898 3.2359428 3.9336543 3.8714580 4.5061457 3.6936539 3.8856315 4.3699096 4.4451378 4.1578889 4.1769078
+New Mexico     1.7576345 3.2653684 1.7659646 1.7156437  2.9468901 2.0899667   3.6412175 2.4944764 1.9742151 2.0509729 2.9664044 2.7931111 2.5343795 1.9575551 2.5410444 2.0225485 2.2789855 1.9979193
+New York       4.3120396 5.3562039 3.6732189 4.3488946  2.4447176 3.0712533   3.3816771 4.4444900 3.5024513 3.6977889 4.0764640 4.3857497 3.3816771 3.9372384 4.3478706 4.0786243 4.0417693 4.0294843
+North Carolina 1.2857694 5.2062635 0.8752176 1.2918845  2.5845675 1.7211085   3.1721230 3.7235196 1.6093367 1.2135885 3.8872277 2.2078787 1.9778871 1.7211085 2.5282858 2.0885839 1.8991546 1.5939193
+North Dakota   2.9576090 4.6481520 3.0779131 2.4733230  4.2870933 2.6046466   2.8931450 3.1654082 3.4626523 3.2977641 2.6705190 3.1111878 3.2977641 2.9130249 2.1310745 2.1705389 3.0779131 3.6657690
+Ohio           2.0639982 5.3562039 1.5771303 1.8102279  2.8527505 2.1531408   3.0750872 3.8734600 1.9482198 1.8008087 3.9108823 2.8593771 1.9480678 1.5826288 2.1609026 1.4243659 2.0257649 2.0641853
+Oklahoma       1.5414323 4.6314920 1.4876711 1.2293632  3.1336051 2.0356968   3.6074659 3.1487481 1.8687330 1.7038448 3.3352887 2.2789855 2.5343795 1.3650792 1.6662586 2.3106381 1.4839938 1.9161974
+Oregon         2.4993879 5.0646531 2.2077927 1.8745409  1.9578539 2.1437045   2.7961091 3.5819093 1.7624753 1.8819539 3.0672040 1.7391482 2.5343795 2.8891968 2.3391891 2.2596699 3.2285628 3.2075478
+Pennsylvania   1.8609820 5.2978937 1.9574007 1.8877119  3.2850578 2.9361011   2.5645942 3.8151499 1.2482765 2.5837690 4.0055004 2.3662058 1.6442166 1.9386112 2.0130147 1.8675020 1.9386112 1.9214210
+Rhode Island   3.5380808 4.2982911 3.6840288 3.6849234  2.9836063 3.7136962   2.4208998 2.8155473 2.8779678 3.2544085 3.0883497 3.8268999 3.0144081 3.2063857 3.6906638 3.7658920 3.4786431 3.4976620
+South Carolina 1.1726234 4.4149114 1.2388198 1.4846925  3.0193546 2.7140557   3.5154401 2.9321676 2.0237210 1.6643686 3.5008704 2.7140557 2.1993423 2.7140557 2.5410444 1.7116518 2.7140557 1.9669811
+South Dakota   2.4577315 4.3482712 2.4183603 1.8942885  3.6275405 2.2889319   3.3395626 2.8655274 2.8030995 2.6382113 3.1066282 2.0336212 2.8377070 2.3739432 1.8153598 1.8548241 2.8170793 3.1658914
+Tennessee      0.6444247 4.7481123 2.0257649 1.3257712  3.6716989 2.1840278   3.4418721 3.2653684 1.6459340 1.8008087 3.6349127 2.8170793 2.1840278 1.5508890 2.4577315 2.8487319 1.5508890 1.3294082
+Texas          2.7795090 5.3478738 1.0213171 2.8578051  2.0885839 1.5506205   3.1391625 3.8651300 2.5837690 1.0992547 4.0291549 2.4010029 2.0804608 2.3106381 2.5446210 1.6833646 2.7537741 1.9182527
+Utah           4.2097927 5.0230030 2.8170793 3.7983092  3.3333675 2.6588164   3.5956001 3.5402592 3.3275812 3.3868257 3.1775918 3.0913080 2.6588164 5.0011071 3.2884332 2.4271769 5.4442431 3.5134360
+Vermont        3.2755405 4.7756032 3.4333978 3.5462400  4.1136384 4.7756032   3.1571474 4.7756032 4.0852685 3.7259162 4.7756032 4.7756032 3.6307196 4.7756032 4.2838579 3.7731994 4.7756032 4.0285286
+Virginia       2.4156125 5.2978937 2.8179051 2.9264437  3.2601415 3.1375439   2.0509251 3.8151499 2.9219282 3.2617730 3.9503065 3.2883654 3.4297881 3.0006969 2.9763605 2.5798081 2.5638587 2.6293130
+Washington     2.3854405 5.1979334 1.7495715 2.2305061  1.7874579 2.0343656   2.4393689 3.7151896 1.7225126 1.7726150 3.2327857 1.9024828 2.1466573 3.0702999 2.2298503 2.1503311 3.5134360 2.7493267
+West Virginia  1.6841817 5.1283899 3.1709892 1.6666837  4.1546319 4.1496896   4.0984462 3.0487879 2.2928029 3.7973574 3.6956900 3.2039602 2.8578051 2.3488809 1.9624597 2.7854267 1.5267726 2.4087684
+Wisconsin      1.9578539 5.2562436 1.6662586 2.1573850  2.9227352 1.9965487   2.6766601 3.7734998 1.5171555 1.6442166 3.8399187 2.2033439 1.7311579 2.0574175 0.9164422 0.9950861 2.5005535 2.6660138
+Wyoming        4.1475733 3.4005216 4.2422668 3.7519651  4.6768045 4.1580948   4.1938679 2.5884568 4.5821110 4.4316537 3.3666856 3.4342159 4.5526509 4.3390645 4.0244718 3.4333978 3.7096482 4.1517819
+                   Maine  Maryland Massachusetts  Michigan Minnesota Mississippi  Missouri   Montana  Nebraska    Nevada New Hampshire New Jersey New Mexico  New York North Carolina North Dakota
+Alaska                                                                                                                                                                                            
+Arizona                                                                                                                                                                                           
+Arkansas                                                                                                                                                                                          
+California                                                                                                                                                                                        
+Colorado                                                                                                                                                                                          
+Connecticut                                                                                                                                                                                       
+Delaware                                                                                                                                                                                          
+Florida                                                                                                                                                                                           
+Georgia                                                                                                                                                                                           
+Hawaii                                                                                                                                                                                            
+Idaho                                                                                                                                                                                             
+Illinois                                                                                                                                                                                          
+Indiana                                                                                                                                                                                           
+Iowa                                                                                                                                                                                              
+Kansas                                                                                                                                                                                            
+Kentucky                                                                                                                                                                                          
+Louisiana                                                                                                                                                                                         
+Maine                                                                                                                                                                                             
+Maryland       4.0416882                                                                                                                                                                          
+Massachusetts  3.0501224 2.9992655                                                                                                                                                                
+Michigan       1.9578539 3.4044967     2.9115481                                                                                                                                                  
+Minnesota      2.0748448 3.8091449     2.9599580 1.7038448                                                                                                                                        
+Mississippi    3.1636694 4.2473518     4.1618324 3.3836036 3.5731689                                                                                                                              
+Missouri       2.7699180 2.9078528     2.8813937 1.6241297 1.9578539   2.4270582                                                                                                                  
+Montana        2.1485883 3.1928546     3.1890410 2.3685225 2.5207847   2.2585124 1.6180381                                                                                                        
+Nebraska       2.1370779 3.4379578     3.1240256 2.6382113 1.3526709   3.1686593 1.8687330 1.7425559                                                                                              
+Nevada         3.1401288 4.2659263     3.1208605 3.4058320 3.6275405   3.1349501 2.6931740 3.3527268 4.5619070                                                                                    
+New Hampshire  2.6667725 3.9894925     2.6518749 2.3596399 1.4876713   4.5170249 2.2911056 2.6667725 1.6617153 3.9023541                                                                          
+New Jersey     4.4138394 3.4901464     1.6832819 3.9092571 4.3236750   4.3365924 4.2451107 4.5527580 4.4877426 4.4845775     4.0155919                                                            
+New Mexico     2.7666047 3.3034958     3.2678135 2.0809162 2.6293130   1.7742946 1.6826644 1.3234250 2.2248033 2.8030995     3.5731689  4.5137749                                                 
+New York       4.3237158 3.3333675     2.1256256 4.5894190 4.5894190   4.5700249 3.8083540 4.2137595 3.8452091 3.1775918     4.2029416  3.0038970  4.3611796                                      
+North Carolina 2.2077927 3.5133130     3.0466832 1.4734450 2.3084348   2.5884568 1.3740684 2.0336212 3.2428013 2.9883556     2.5956039  3.8276012  1.9956185 4.1400494                            
+North Dakota   3.0846814 4.3374639     3.1777438 3.1328759 2.6046466   3.5176150 2.6835753 1.7038448 1.8867862 5.0565716     2.6667725  4.5414608  2.6243573 3.0499696      3.7374659             
+Ohio           2.8328707 3.4608698     2.3343978 1.2077418 1.2370384   3.3666856 1.6072117 2.3516045 1.9786584 3.0120101     2.3609862  3.4974257  2.0908354 3.3906636      1.2641429    2.8808970
+Oklahoma       1.6997224 3.2993427     3.2432434 1.6918018 1.8877119   1.9236957 1.0701956 1.8675020 1.6643686 3.4626523     2.8315678  4.3693346  1.4474456 4.3366096      2.1435466    2.4073249
+Oregon         2.2463998 3.6201592     3.0622123 2.5121030 2.5121030   3.1636694 2.5943132 2.1485883 2.6382113 2.6243573     2.6667725  4.4259293  2.5909999 3.3538086      1.8745409    3.1328759
+Pennsylvania   2.2652940 2.5888574     2.5798527 0.8156393 1.6833646   3.1636694 1.4041955 2.1485883 1.9786584 3.1066282     2.2130983  3.4914475  2.0325253 3.8164642      1.3701805    2.8808970
+Rhode Island   3.7345936 3.2117763     2.7045012 3.2300113 3.6444292   3.9080622 3.5658649 3.8735122 3.8473914 3.8053317     3.3363461  2.7754648  3.8345290 2.9804707      3.1483554    4.3420560
+South Carolina 2.7140557 3.1848650     2.9852582 2.0639982 2.2162604   2.0048077 2.1655706 2.7140557 2.8030995 2.7140557     2.8989861  3.9894733  2.7140557 4.0786243      1.2688514    3.2977641
+South Dakota   1.7087198 4.1425999     3.1739443 2.5257179 2.2889319   2.8580622 2.3678606 1.0442920 1.6643686 4.3970188     2.6667725  4.5376613  2.1244797 3.9434892      3.0779131    1.6168899
+Tennessee      2.4862559 3.2593947     2.8992631 1.4876711 2.1523752   1.9286541 1.0761876 2.4055958 2.1985094 2.7360406     2.9326953  3.9893437  1.6775865 3.9926292      1.2977556    2.7820316
+Texas          3.3275812 3.6961715     2.8464051 2.3488809 2.2705547   2.9606532 2.3880289 2.1139928 1.7616607 3.1302828     3.0338227  4.2101221  2.1784770 3.2555285      1.5659206    2.9992901
+Utah           4.0713935 3.9366101     3.0862485 3.3551731 2.6904690   3.8616143 3.7666566 2.8578051 3.1019525 3.6716989     2.8487319  4.4499655  3.1652576 3.8647739      3.5450886    2.9752491
+Vermont        4.7756032 4.2626501     4.3122278 3.5517909 3.5084134   4.0663552 4.2271181 4.7756032 3.1112346 4.7756032     2.1088307  4.3187628  4.7756032 3.9130835      3.5123265    4.7756032
+Virginia       2.3488809 2.7402750     2.4938576 3.0976022 3.5022505   3.6742964 2.1727685 2.5342250 3.1184066 3.9590319     3.2326836  3.8027927  2.7304404 3.5872238      3.2064185    2.7625040
+Washington     2.4663249 2.9357244     2.8275194 2.2705547 2.2705547   3.6881279 2.4849743 2.6730468 2.3084348 2.3339136     2.2790502  4.1912365  2.4816610 3.0343982      1.6632761    2.8030995
+West Virginia  3.1774538 3.8477624     3.6363639 1.8008087 2.8969531   2.0111725 1.7616607 2.3422906 2.3880289 3.6799134     3.2360775  4.2835532  2.8186571 4.7297300      2.5837690    2.2534721
+Wisconsin      2.1768375 3.4033435     2.8128920 1.1352773 1.1352773   3.2360775 1.4163198 1.8779000 1.5939193 2.9679877     1.7400218  4.1766090  2.2922216 3.4541417      1.6488820    2.6835753
+Wyoming        3.2784978 4.3127608     4.4853133 4.5263471 4.2885613   3.9918552 4.2475275 2.3283962 3.2469333 3.8908488     3.6299157  4.5565611  3.3816085 4.6452400      4.4495402    2.3831186
+                    Ohio  Oklahoma    Oregon Pennsylvania Rhode Island South Carolina South Dakota Tennessee     Texas      Utah   Vermont  Virginia Washington West Virginia Wisconsin
+Alaska                                                                                                                                                                                 
+Arizona                                                                                                                                                                                
+Arkansas                                                                                                                                                                               
+California                                                                                                                                                                             
+Colorado                                                                                                                                                                               
+Connecticut                                                                                                                                                                            
+Delaware                                                                                                                                                                               
+Florida                                                                                                                                                                                
+Georgia                                                                                                                                                                                
+Hawaii                                                                                                                                                                                 
+Idaho                                                                                                                                                                                  
+Illinois                                                                                                                                                                               
+Indiana                                                                                                                                                                                
+Iowa                                                                                                                                                                                   
+Kansas                                                                                                                                                                                 
+Kentucky                                                                                                                                                                               
+Louisiana                                                                                                                                                                              
+Maine                                                                                                                                                                                  
+Maryland                                                                                                                                                                               
+Massachusetts                                                                                                                                                                          
+Michigan                                                                                                                                                                               
+Minnesota                                                                                                                                                                              
+Mississippi                                                                                                                                                                            
+Missouri                                                                                                                                                                               
+Montana                                                                                                                                                                                
+Nebraska                                                                                                                                                                               
+Nevada                                                                                                                                                                                 
+New Hampshire                                                                                                                                                                          
+New Jersey                                                                                                                                                                             
+New Mexico                                                                                                                                                                             
+New York                                                                                                                                                                               
+North Carolina                                                                                                                                                                         
+North Dakota                                                                                                                                                                           
+Ohio                                                                                                                                                                                   
+Oklahoma       1.6748838                                                                                                                                                               
+Oregon         2.6572658 2.0890700                                                                                                                                                     
+Pennsylvania   1.3522995 1.9386112 1.9386112                                                                                                                                           
+Rhode Island   2.8891968 3.6900888 3.7466835    2.9095072                                                                                                                              
+South Carolina 2.1277440 2.7140557 2.7140557    1.8440640    3.3102274                                                                                                                 
+South Dakota   2.5651823 2.0916102 2.4733230    2.5651823    3.8584155      2.7140557                                                                                                  
+Tennessee      1.4380315 1.5508890 2.6271638    1.3820748    3.3100979      1.3294082    2.5871676                                                                                     
+Texas          2.1531408 2.0356968 1.7616607    2.9361011    3.5308763      2.2601370    2.6835753 2.1531408                                                                           
+Utah           3.4184782 4.3047504 2.8891968    3.8616143    3.7707197      3.5134360    3.0143971 4.8428442 2.6904690                                                                 
+Vermont        4.1892915 4.7756032 4.7756032    3.5912552    4.7756032      3.3150048    4.7756032 3.3939335 4.3216845 4.7756032                                                       
+Virginia       3.1539754 2.6582456 3.3132648    2.2819629    3.1235469      2.5409257    2.4467893 2.5979446 3.3892770 3.6297157 3.4728622                                             
+Washington     2.5479270 2.3739432 0.9520729    2.0748448    3.5119906      2.3685225    2.4467893 2.9120370 1.5843296 2.7798579 4.3878810 2.6288299                                   
+West Virginia  2.0617307 2.1139928 3.0018489    1.9386112    3.6043074      2.7140557    2.1523752 2.1348047 4.1496896 4.8935018 4.7756032 3.1709892  3.2884332                        
+Wisconsin      1.4075445 1.5506205 2.0012326    1.2596566    3.4973632      1.7873050    2.3678606 1.8991546 1.9965487 2.9436896 3.8488525 3.0964490  1.8918938     2.1531408          
+Wyoming        4.5084606 3.9886987 3.8761187    4.5873718    3.8773153      4.0581406    2.9944175 4.2612054 4.6063105 3.6193943 4.7756032 4.4632181  4.2380582     3.7119834 4.3622118
+```
+]
+
+---
+## Step 1: Calculate the distance matrix
+
+.tiny-font[
+
+```r
+US_state_stats %&gt;%
+  column_to_rownames(var = "state") %&gt;%
+  scale() %&gt;%
+  dist(method = "euclidean")
+```
+
+```
+                 Alabama    Alaska   Arizona  Arkansas California  Colorado Connecticut  Delaware   Florida   Georgia    Hawaii     Idaho  Illinois   Indiana      Iowa    Kansas  Kentucky Louisiana
+Alaska         10.598996                                                                                                                                                                             
+Arizona         3.330008  9.367964                                                                                                                                                                   
+Arkansas        2.101623 10.258034  3.460202                                                                                                                                                         
+California      7.387598 10.417133  4.574415  7.213409                                                                                                                                               
+Colorado        5.853785  8.784506  3.584944  5.667544   4.905273                                                                                                                                    
+Connecticut     8.163739  9.632134  6.647566  8.581965   6.413761  6.054845                                                                                                                          
+Delaware        6.852026  6.873437  6.099149  6.443272   8.224788  5.836395    7.471686                                                                                                              
+Florida         3.817288 10.483883  3.058667  4.111477   5.074512  4.373974    6.059186  6.305386                                                                                                    
+Georgia         3.718662  9.954441  1.731379  3.841420   4.757818  3.278357    7.153667  6.451118  3.147390                                                                                          
+Hawaii          8.937729  6.700074  7.068674  8.508732   7.035466  6.118096    6.293809  6.878239  7.514385  7.792204                                                                                
+Idaho           5.597221  9.004979  4.419521  4.548114   6.607359  4.469112    7.676599  5.801041  5.045858  4.799015  6.969588                                                                      
+Illinois        5.254690 10.316944  3.192744  5.609923   4.396773  3.944139    5.238648  6.674979  3.160311  3.311714  7.447009  6.015498                                                            
+Indiana         3.604745 10.172037  3.853444  3.882761   7.044651  4.062005    7.864817  6.213848  3.787589  3.140930  8.375538  5.298522  4.811957                                                  
+Iowa            5.007138  9.958779  4.840562  4.587101   7.634487  4.002106    6.966781  5.674885  4.667862  4.859556  7.354684  3.935105  5.395395  3.885737                                        
+Kansas          4.408601  7.409098  3.060602  4.442553   6.598661  3.512435    7.294319  3.735978  4.258347  3.615391  6.183604  3.905887  4.316269  4.282286  2.020848                              
+Kentucky        2.896963  8.930716  5.257548  3.631240   9.364228  6.754618   10.274920  6.475033  5.154735  4.953492  9.129675  6.531273  7.275413  3.384898  5.400969  5.740308                    
+Louisiana       2.187868  9.890864  2.803839  2.411572   6.355365  5.410132    7.975901  6.748584  3.939756  3.518586  8.236106  4.961559  5.256562  4.220968  5.384255  4.020284  3.898974          
+Maine           5.449459  9.500632  5.356080  4.816331   7.595522  5.251686    6.878787  5.995987  4.764959  5.823169  6.944840  3.188682  6.143050  5.141585  3.249026  4.222520  5.968985  5.401479
+Maryland        7.611163  9.273961  6.327444  8.668010   6.722458  6.408493    4.868335  7.423132  6.638708  6.740797  7.515811  8.851332  5.771450  7.475384  8.018422  6.383880  9.115635  7.319302
+Massachusetts   7.963086  9.781969  6.354021  8.072120   5.455518  5.195148    3.060985  7.225595  5.278116  6.487500  5.717072  7.309502  5.055135  7.032772  6.492189  6.865981  9.469819  7.491380
+Michigan        3.219770 10.438840  2.876205  3.585488   6.172830  4.156116    6.718661  6.002538  2.794426  2.920050  8.228620  4.716282  3.390219  2.702043  3.778241  3.360651  4.829221  3.688944
+Minnesota       5.699186  9.792369  4.346035  5.729161   6.486491  2.933653    5.706504  5.782694  4.478219  4.323841  7.140860  4.643832  3.857913  4.315508  2.716098  2.943799  7.133466  5.836457
+Mississippi     2.883395 11.407078  4.665463  2.644596   8.218904  7.060859    9.761691  7.962489  5.091162  4.947830  9.825048  5.547383  7.061814  5.136325  6.216101  6.501396  3.987288  3.266231
+Missouri        2.193270  9.917924  2.932619  2.820666   6.655760  4.228391    7.353772  5.963989  3.232413  2.995409  7.834503  5.026190  4.551890  2.291596  3.673264  2.990748  3.026295  2.921983
+Montana         3.778946  8.061485  3.997077  3.462787   7.773931  5.249206    9.107011  4.420878  4.673883  4.419328  7.284882  3.631654  6.333142  4.746282  3.332278  3.110260  4.808803  3.374796
+Nebraska        5.010139  8.818975  4.374697  4.393229   7.323869  4.062795    6.927510  5.277823  5.158065  4.691573  6.423243  4.068942  5.195917  4.537399  2.470144  2.287313  6.083651  5.127234
+Nevada          6.867679  8.696989  4.599803  6.614218   5.019683  5.218190    8.358046  6.695426  5.604532  4.833401  6.778081  6.817587  5.516908  6.030305  7.702788  6.141385  7.205939  6.315798
+New Hampshire   7.032307  9.342326  5.896818  6.871723   7.463344  5.057318    5.090292  6.242540  5.863305  6.372527  6.696511  5.337879  5.194277  6.441029  4.299915  4.980274  8.770819  7.124445
+New Jersey      8.480882 10.991190  6.720639  8.755648   5.736034  6.305088    3.633544  7.650389  5.777136  6.795657  7.618642  8.219887  4.804280  7.707355  7.699712  8.015335 10.731633  8.247333
+New Mexico      3.680324  8.522460  4.141634  3.438805   7.732973  5.405001    8.705953  5.658454  5.487654  4.472108  7.876981  5.083431  6.601013  4.562994  5.203417  4.088725  3.360258  3.383514
+New York        7.740170 10.726266  5.889495  7.622262   4.069967  5.830359    5.910359  8.683771  5.156224  5.945851  6.716974  7.941413  4.649067  7.279079  7.735557  7.558194  9.310169  7.104194
+North Carolina  2.964659 10.446575  2.011604  3.162292   5.346357  4.219042    7.172742  6.558336  2.854521  1.673388  8.316637  4.971980  3.299835  3.014498  4.783395  3.728261  4.552803  3.294185
+North Dakota    6.830398  8.494124  6.726308  6.215588   9.102334  5.825150    8.078210  6.274746  7.143179  7.022232  6.067419  5.591146  7.800522  6.406683  4.333533  4.269167  6.384704  6.832059
+Ohio            3.756038 10.503530  3.207573  3.964614   5.829037  3.634401    6.763715  6.086862  2.761796  2.645838  7.765809  5.294823  3.414807  2.337553  3.693684  2.922134  4.539927  4.122743
+Oklahoma        2.746771  9.590296  3.485447  2.160842   7.093379  4.597272    8.206370  6.013341  4.026087  3.514846  7.809859  4.144994  5.635490  2.949381  3.685416  3.896042  3.236769  2.712148
+Oregon          5.548912  9.264492  3.668999  4.628232   4.605672  3.465647    6.494161  6.242370  3.774078  4.028477  5.799009  3.010644  4.661539  4.918500  4.211692  3.995912  6.544470  4.859990
+Pennsylvania    3.278011 10.332521  3.342653  4.088292   6.229582  4.611578    5.783043  6.249101  2.736122  3.577485  7.875235  5.678008  3.172094  3.276966  4.092980  3.516435  4.990771  4.012989
+Rhode Island    8.299825  8.727605  6.894639  7.765106   6.657274  6.679551    6.042031  6.508415  6.088086  7.287467  5.160020  6.871825  6.752070  7.613243  7.566176  7.738592  8.938709  7.772664
+South Carolina  2.215120 10.099229  2.490228  2.549883   6.425645  5.464897    7.510363  6.526626  3.601202  3.138396  8.511209  5.060045  4.305294  4.303923  5.276383  4.459678  4.725989  2.765308
+South Dakota    5.342727  8.707087  5.423795  4.524657   8.151475  5.319894    7.848930  5.668781  5.828860  5.846903  6.674934  3.605722  6.993915  5.527714  3.431093  3.665688  5.645236  5.154360
+Tennessee       1.592758 10.217475  2.929816  2.455450   6.825626  5.211316    7.910098  6.451256  3.357974  2.869454  8.663065  5.604460  4.496692  2.836403  4.945482  4.346147  2.903620  2.663005
+Texas           4.732795 10.096352  2.507271  4.552391   4.110426  3.320189    7.219854  7.019202  3.748023  2.073875  7.473824  4.796109  3.747254  4.304938  5.192502  3.882935  6.240198  3.758654
+Utah            7.816158  9.971541  5.886282  7.294373   7.035596  4.025850    7.845243  6.827859  6.908662  5.766022  7.201289  4.877627  6.305243  6.466673  4.757319  4.528537  9.209289  7.334168
+Vermont         7.853224  9.342110  7.331872  7.357606   9.369040  7.662961    7.198676  7.277386  7.861043  8.097009  7.691579  6.377467  7.270864  8.433320  6.365156  6.540232  9.630963  7.996153
+Virginia        5.753364  8.798401  4.670117  6.490933   6.171084  4.301018    4.253637  6.930069  5.205486  5.131602  6.528350  6.267057  4.758796  5.509324  5.179441  4.622325  7.411418  5.481934
+Washington      6.100880  8.812749  3.607467  5.795693   3.680065  2.581905    4.948654  6.302339  3.986082  4.020214  5.250266  4.144214  3.791803  5.258658  4.655437  4.116854  7.604610  5.325361
+West Virginia   3.873600 10.991010  5.946337  3.513818   9.654607  6.783430    9.605647  6.816279  5.733335  5.935861  9.565350  5.812334  7.473856  4.004706  4.372867  5.827139  3.110384  4.962556
+Wisconsin       4.364111  9.825504  3.273309  4.235680   5.727754  2.696602    5.899727  5.849888  3.071053  3.246268  6.758584  4.164685  3.394139  3.129319  2.282848  2.033971  5.447424  4.520653
+Wyoming         8.354493  7.492609  8.226198  7.759220  10.664883  7.652842    9.921622  5.697209  8.976007  8.516690  7.911546  6.819268  9.534238  8.124581  6.861121  5.593932  7.161100  8.439725
+                   Maine  Maryland Massachusetts  Michigan Minnesota Mississippi  Missouri   Montana  Nebraska    Nevada New Hampshire New Jersey New Mexico  New York North Carolina North Dakota
+Alaska                                                                                                                                                                                            
+Arizona                                                                                                                                                                                           
+Arkansas                                                                                                                                                                                          
+California                                                                                                                                                                                        
+Colorado                                                                                                                                                                                          
+Connecticut                                                                                                                                                                                       
+Delaware                                                                                                                                                                                          
+Florida                                                                                                                                                                                           
+Georgia                                                                                                                                                                                           
+Hawaii                                                                                                                                                                                            
+Idaho                                                                                                                                                                                             
+Illinois                                                                                                                                                                                          
+Indiana                                                                                                                                                                                           
+Iowa                                                                                                                                                                                              
+Kansas                                                                                                                                                                                            
+Kentucky                                                                                                                                                                                          
+Louisiana                                                                                                                                                                                         
+Maine                                                                                                                                                                                             
+Maryland        8.589605                                                                                                                                                                          
+Massachusetts   6.619401  5.444320                                                                                                                                                                
+Michigan        4.510982  6.891263      6.464100                                                                                                                                                  
+Minnesota       4.485471  6.695074      5.548868  3.581946                                                                                                                                        
+Mississippi     6.008202  9.723329      9.418208  4.948954  7.356641                                                                                                                              
+Missouri        4.892887  6.787230      6.796929  2.684878  4.399936    4.127669                                                                                                                  
+Montana         4.160841  8.207678      8.403983  4.667686  5.307321    4.753047  3.053530                                                                                                        
+Nebraska        4.054463  7.708930      6.601193  4.418092  3.198633    6.438225  4.032172  3.688675                                                                                              
+Nevada          7.824494  7.645061      7.495758  6.191369  7.070806    7.638030  6.029728  6.659527  7.046413                                                                                    
+New Hampshire   4.561159  7.429595      5.714043  5.619372  3.356284    8.495515  6.212605  6.589170  3.879067  8.137473                                                                          
+New Jersey      7.951568  5.737290      3.395446  6.730956  6.213064   10.001374  7.660068  9.696761  7.648360  7.682244      6.126948                                                            
+New Mexico      5.873785  7.862505      8.285417  4.873973  6.239279    4.073579  3.355320  2.922670  4.978582  6.621719      7.716956   9.420024                                                 
+New York        7.723006  7.091664      4.143738  6.772569  6.857682    9.003420  6.987451  8.708403  7.313364  6.295759      7.330703   5.408281   8.515242                                      
+North Carolina  5.487191  7.071247      6.794340  2.102464  4.565711    4.446084  2.746438  4.567294  4.785123  5.333058      6.327946   6.862369   4.664005  6.268931                            
+North Dakota    5.008931  8.852050      7.533362  6.931520  5.893309    7.612123  5.711863  3.859775  3.748656  8.534916      5.974491   9.465422   5.503519  8.669587       7.282022             
+Ohio            5.087764  6.627267      5.791114  2.109893  3.650569    5.593289  2.440079  4.327799  4.194522  5.893166      5.992299   6.502035   4.923876  5.875571       2.489281     6.361795
+Oklahoma        4.358549  8.039996      7.394851  3.590942  4.839118    3.673270  2.266944  2.940617  3.679251  6.424026      6.381849   8.500283   3.190292  7.414962       3.526575     5.343542
+Oregon          3.656905  7.934215      5.557330  4.272458  4.331402    6.002440  4.659856  4.650299  4.258624  5.426520      5.288891   6.817479   5.634277  5.463209       4.215200     5.934161
+Pennsylvania    4.838128  5.912135      5.665029  2.080653  3.777518    5.651725  2.761281  5.021885  4.355587  6.503932      5.146335   6.006059   5.459081  6.083498       2.754122     6.788586
+Rhode Island    6.528749  8.114487      5.008645  7.227053  7.547637    8.840137  7.557499  8.276331  7.313252  6.409380      7.182960   5.772403   8.093078  5.986392       7.275119     7.663675
+South Carolina  5.630992  7.487290      7.603678  3.235657  5.423490    3.523234  3.158677  4.523471  4.874313  6.177323      6.430322   7.649252   4.164027  7.175516       2.329532     7.236684
+South Dakota    3.438765  8.644534      7.405576  5.657342  5.175878    5.748209  4.624357  1.983415  3.157721  7.953556      5.346449   8.968003   4.399006  8.359152       5.988650     2.701569
+Tennessee       5.609207  7.334145      7.474428  2.804910  5.237431    3.764199  2.195797  4.277971  4.776192  6.037960      6.787385   7.877657   4.008972  6.990206       2.214183     6.978381
+Texas           5.934945  6.905895      6.151740  3.844443  4.498445    5.802564  4.034896  4.834120  4.890119  5.384088      6.552911   6.946721   5.132624  5.322347       3.176829     7.118197
+Utah            6.366016  8.354401      7.296731  6.164955  4.413720    8.625013  6.365106  6.177063  4.851634  7.792762      6.146926   8.237101   6.680453  8.446089       6.541281     6.005682
+Vermont         5.750459  9.430157      8.260979  7.389970  6.408482    8.907407  7.833774  7.430777  5.091342  9.671883      4.209895   8.633394   8.253892  9.087153       7.741963     6.307128
+Virginia        5.805975  4.003073      4.769055  5.014803  4.261891    7.689765  4.790444  6.459736  5.068947  7.419712      4.989951   6.063187   6.111441  6.426794       5.365508     6.397805
+Washington      4.621560  6.256025      4.237212  4.434985  3.653237    7.171936  4.981488  5.769384  4.569590  5.395136      4.714175   5.548317   6.173554  4.770796       4.514208     6.387711
+West Virginia   4.895459  9.802177      9.108152  4.655579  6.370725    4.226412  3.790895  4.718712  5.231977  8.486123      7.616860  10.111724   4.390298  9.593673       5.287663     5.860449
+Wisconsin       3.920615  6.744556      5.216107  2.734616  2.202186    5.931485  2.848045  3.955807  2.896716  6.147798      4.157304   6.216018   5.146218  5.846711       3.303504     5.291888
+Wyoming         7.126880 10.105004      9.906165  8.743662  7.897871    8.711600  7.551584  4.333896  6.103995  9.153755      7.491362  10.901153   6.510596 11.108905       8.808637     4.795353
+                    Ohio  Oklahoma    Oregon Pennsylvania Rhode Island South Carolina South Dakota Tennessee     Texas      Utah   Vermont  Virginia Washington West Virginia Wisconsin
+Alaska                                                                                                                                                                                 
+Arizona                                                                                                                                                                                
+Arkansas                                                                                                                                                                               
+California                                                                                                                                                                             
+Colorado                                                                                                                                                                               
+Connecticut                                                                                                                                                                            
+Delaware                                                                                                                                                                               
+Florida                                                                                                                                                                                
+Georgia                                                                                                                                                                                
+Hawaii                                                                                                                                                                                 
+Idaho                                                                                                                                                                                  
+Illinois                                                                                                                                                                               
+Indiana                                                                                                                                                                                
+Iowa                                                                                                                                                                                   
+Kansas                                                                                                                                                                                 
+Kentucky                                                                                                                                                                               
+Louisiana                                                                                                                                                                              
+Maine                                                                                                                                                                                  
+Maryland                                                                                                                                                                               
+Massachusetts                                                                                                                                                                          
+Michigan                                                                                                                                                                               
+Minnesota                                                                                                                                                                              
+Mississippi                                                                                                                                                                            
+Missouri                                                                                                                                                                               
+Montana                                                                                                                                                                                
+Nebraska                                                                                                                                                                               
+Nevada                                                                                                                                                                                 
+New Hampshire                                                                                                                                                                          
+New Jersey                                                                                                                                                                             
+New Mexico                                                                                                                                                                             
+New York                                                                                                                                                                               
+North Carolina                                                                                                                                                                         
+North Dakota                                                                                                                                                                           
+Ohio                                                                                                                                                                                   
+Oklahoma        3.450637                                                                                                                                                               
+Oregon          4.221053  4.206247                                                                                                                                                     
+Pennsylvania    2.405404  3.980486  4.781168                                                                                                                                           
+Rhode Island    6.996460  7.656694  5.560826     7.069158                                                                                                                              
+South Carolina  4.078721  3.618968  5.026658     3.454359     7.704205                                                                                                                 
+South Dakota    5.575686  3.772286  4.674182     5.793156     7.443807       5.658435                                                                                                  
+Tennessee       3.006111  2.665695  5.200718     2.852044     7.860988       2.250386     5.683295                                                                                     
+Texas           3.311304  3.957736  3.692048     4.403557     7.459784       4.340904     5.933274  4.070610                                                                           
+Utah            5.820170  6.516477  5.388702     6.975968     8.438162       7.360012     5.741575  7.592907  5.444679                                                                 
+Vermont         7.981582  7.654685  6.981145     7.030258     8.167112       7.041482     5.854341  7.898382  8.341997  7.926106                                                       
+Virginia        4.993860  5.631299  5.561860     4.104011     7.531600       5.724971     5.947832  5.660883  5.197778  6.452475  7.215077                                             
+Washington      4.321383  5.108779  2.237714     4.559541     5.678181       5.464591     5.505772  5.650595  3.492007  5.017698  7.085641  4.083678                                   
+West Virginia   4.933222  3.494353  6.332121     5.195085     8.738638       5.204569     4.787221  4.310947  6.850242  8.065666  8.282668  7.472877   7.462814                        
+Wisconsin       2.327254  3.507086  3.276736     2.778869     6.699085       4.264763     4.428909  3.954716  3.628860  4.813705  6.653113  4.176491   3.228251      5.200544          
+Wyoming         8.644524  7.238965  8.071010     8.835251     9.108380       8.328574     4.973078  8.477997  9.144074  7.732709  7.294573  8.519401   8.512051      7.556514  7.685097
+```
+]
+
+---
+## Step 2: Cluster and plot
+
+.tiny-font.pull-left[
+
+```r
+dist_out &lt;- US_state_stats %&gt;%
+  column_to_rownames(var = "state") %&gt;%
+  scale() %&gt;%
+  dist(method = "euclidean")
+
+hc_out &lt;- hclust(
+  dist_out, method = "average"
+)
+
+library(ggdendro)
+ggdendrogram(hc_out, rotate = TRUE)
+```
+
+`method = "average"`: UPGMA
+]
+
+.pull-right.width-40.move-up-6em[
+![](hierarchical-clustering_files/figure-html/US_states_simple_dendro-out-1.svg)&lt;!-- --&gt;
+]
+---
+## Step 2: Cluster and plot
+
+.tiny-font.pull-left[
+
+```r
+dist_out &lt;- US_state_stats %&gt;%
+  column_to_rownames(var = "state") %&gt;%
+  scale() %&gt;%
+  dist(method = "euclidean")
+
+hc_out &lt;- hclust(
+  dist_out, method = "ward.D2"
+)
+
+library(ggdendro)
+ggdendrogram(hc_out, rotate = TRUE)
+```
+`method = "ward.D2"`: Ward's minimum variance method 
+
+]
+
+.pull-right.width-40.move-up-6em[
+![](hierarchical-clustering_files/figure-html/US_states_simple_dendro2-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+## Step 2: Cluster and plot
+
+.tiny-font.pull-left[
+
+```r
+dist_out &lt;- US_state_stats %&gt;%
+  column_to_rownames(var = "state") %&gt;%
+  scale() %&gt;%
+  dist(method = "euclidean")
+
+hc_out &lt;- hclust(
+  dist_out, method = "complete"
+)
+
+library(ggdendro)
+ggdendrogram(hc_out, rotate = TRUE)
+```
+
+`method = "complete"`: complete linkage method 
+
+]
+
+.pull-right.width-40.move-up-6em[
+![](hierarchical-clustering_files/figure-html/US_states_simple_dendro3-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+## We can also plot manually
+
+.tiny-font.pull-left[
+
+```r
+ddata &lt;- dendro_data(
+  hc_out,
+  type = "rectangle"
+)
+segments &lt;- segment(ddata)
+labels &lt;- label(ddata)
+
+ggplot() + 
+  geom_segment(
+    data = segments,
+    aes(x, y, xend = xend, yend = yend)
+  ) + 
+  geom_text(
+    data = labels,
+    aes(x, y - .5, label = label),
+    hjust = 1,
+    size = 8/.pt
+  ) +
+  coord_flip(ylim = c(-5, 12))
+```
+]
+
+.pull-right.width-45.move-up-3em[
+![](hierarchical-clustering_files/figure-html/US_states_dendro_manual-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+## Assign clusters by cutting the dendrogram
+
+.tiny-font[
+
+
+
+```r
+# cut dendrogram at height 5
+cutree(hc_out, h = 5) 
+```
+
+```
+       Alabama         Alaska        Arizona       Arkansas     California       Colorado 
+             1              2              1              1              3              4 
+   Connecticut       Delaware        Florida        Georgia         Hawaii          Idaho 
+             5              6              4              1              7              8 
+      Illinois        Indiana           Iowa         Kansas       Kentucky      Louisiana 
+             4              1              8              8              9              1 
+         Maine       Maryland  Massachusetts       Michigan      Minnesota    Mississippi 
+             8             10              5              4              4              9 
+      Missouri        Montana       Nebraska         Nevada  New Hampshire     New Jersey 
+             1              8              8             11             12              5 
+    New Mexico       New York North Carolina   North Dakota           Ohio       Oklahoma 
+             9              3              1             13              1              1 
+        Oregon   Pennsylvania   Rhode Island South Carolina   South Dakota      Tennessee 
+             4              4             14              1              8              1 
+         Texas           Utah        Vermont       Virginia     Washington  West Virginia 
+             4             15             12             10              4              9 
+     Wisconsin        Wyoming 
+             4             13 
+```
+]
+
+---
+## Assign clusters by cutting the dendrogram
+
+.tiny-font[
+
+```r
+# cut dendrogram at height 8
+cutree(hc_out, h = 8) 
+```
+
+```
+       Alabama         Alaska        Arizona       Arkansas     California       Colorado 
+             1              2              1              1              3              4 
+   Connecticut       Delaware        Florida        Georgia         Hawaii          Idaho 
+             5              4              4              1              3              4 
+      Illinois        Indiana           Iowa         Kansas       Kentucky      Louisiana 
+             4              1              4              4              1              1 
+         Maine       Maryland  Massachusetts       Michigan      Minnesota    Mississippi 
+             4              5              5              4              4              1 
+      Missouri        Montana       Nebraska         Nevada  New Hampshire     New Jersey 
+             1              4              4              3              6              5 
+    New Mexico       New York North Carolina   North Dakota           Ohio       Oklahoma 
+             1              3              1              6              1              1 
+        Oregon   Pennsylvania   Rhode Island South Carolina   South Dakota      Tennessee 
+             4              4              3              1              4              1 
+         Texas           Utah        Vermont       Virginia     Washington  West Virginia 
+             4              4              6              5              4              1 
+     Wisconsin        Wyoming 
+             4              6 
+```
+]
+
+---
+## Assign clusters by cutting the dendrogram
+
+.tiny-font[
+
+```r
+# cut dendrogram so there are 4 clusters
+cutree(hc_out, k = 4) 
+```
+
+```
+       Alabama         Alaska        Arizona       Arkansas     California       Colorado 
+             1              2              1              1              3              1 
+   Connecticut       Delaware        Florida        Georgia         Hawaii          Idaho 
+             3              1              1              1              3              1 
+      Illinois        Indiana           Iowa         Kansas       Kentucky      Louisiana 
+             1              1              1              1              1              1 
+         Maine       Maryland  Massachusetts       Michigan      Minnesota    Mississippi 
+             1              3              3              1              1              1 
+      Missouri        Montana       Nebraska         Nevada  New Hampshire     New Jersey 
+             1              1              1              3              4              3 
+    New Mexico       New York North Carolina   North Dakota           Ohio       Oklahoma 
+             1              3              1              4              1              1 
+        Oregon   Pennsylvania   Rhode Island South Carolina   South Dakota      Tennessee 
+             1              1              3              1              1              1 
+         Texas           Utah        Vermont       Virginia     Washington  West Virginia 
+             1              1              4              3              1              1 
+     Wisconsin        Wyoming 
+             1              4 
+```
+]
+
+---
+
+## Add cluster info into scatterplot
+
+.pull-left.tiny-font[
+
+```r
+# cut dendrogram so there are 4 clusters
+cluster &lt;- cutree(hc_out, k = 4)
+
+US_state_stats %&gt;%
+  left_join(
+    tibble(
+      state = names(cluster),
+      cluster = factor(cluster)
+    )
+  ) %&gt;%
+  ggplot(aes(income, tr_deaths)) +
+  geom_point(aes(color = cluster))
+```
+]
+
+
+.pull-right[
+![](hierarchical-clustering_files/figure-html/US_states_cluster_scatter-out-1.svg)&lt;!-- --&gt;
+]
+
+[//]: # "segment ends here"
+
+---
+
+## Further reading
+
+- Wikipedia: [Hierarchical clustering](https://en.wikipedia.org/wiki/Hierarchical_clustering)
+
+- **ggdendro** documentation: [Introduction to ggdendro](https://cran.r-project.org/web/packages/ggdendro/vignettes/ggdendro.html)
+
+- **ggdendro** documentation: [reference documentation (pdf)](https://cran.r-project.org/web/packages/ggdendro/ggdendro.pdf)
+
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"slideNumberFormat": ""
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

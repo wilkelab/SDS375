@@ -623,6 +623,15 @@ bj_kpca_data %>%
 
 Use only when linear methods clearly aren't working
 
+[//]: # "segment ends here"
+
+
+---
+class: middle center
+
+## Doing nonlinear dimension reduction in R
+
+
 ---
 
 ## Doing nonlinear dimension reduction in R
@@ -683,6 +692,8 @@ umap_fit$layout %>%
 ```{r umap-ggplot-demo-out, ref.label="umap-ggplot-demo", fig.width=5., fig.asp = 0.618, echo=FALSE, dev = "svg"}
 ```
 ]
+
+[//]: # "segment ends here"
 
 ---
 

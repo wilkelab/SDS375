@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Visualizing distributions 2</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Claus O. Wilke" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="Wilke-slides-theme.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, title-slide
+
+# Visualizing distributions 2
+### Claus O. Wilke
+### last updated: 2021-01-18
+
+---
+
+
+
+
+## Reminder: Density estimates visualize distributions
+
+.pull-left.small-font[
+Mean temperatures in Lincoln, NE, in January 2016:
+
+.center[
+
+|date       | mean temp|
+|:----------|---------:|
+|2016-01-01 |        24|
+|2016-01-02 |        23|
+|2016-01-03 |        23|
+|2016-01-04 |        17|
+|2016-01-05 |        29|
+|2016-01-06 |        33|
+|2016-01-07 |        30|
+|2016-01-08 |        25|
+|2016-01-09 |         9|
+|2016-01-10 |        11|
+|2016-01-11 |        28|
+|2016-01-12 |        24|
+|2016-01-13 |        33|
+|2016-01-14 |        40|
+|2016-01-15 |        29|
+|2016-01-16 |        19|
+|2016-01-17 |         5|
+|2016-01-18 |        11|
+|2016-01-19 |        22|
+|2016-01-20 |        28|
+|2016-01-21 |        25|
+|2016-01-22 |        22|
+|2016-01-23 |        28|
+|2016-01-24 |        30|
+|2016-01-25 |        26|
+|2016-01-26 |        29|
+|2016-01-27 |        33|
+|2016-01-28 |        41|
+|2016-01-29 |        41|
+|2016-01-30 |        39|
+|2016-01-31 |        35|
+]]
+
+--
+
+.pull-right[
+![](visualizing-distributions-2_files/figure-html/temps_densities_january-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+
+## Reminder: Density estimates visualize distributions
+
+.pull-left.small-font[
+Mean temperatures in Lincoln, NE, in January 2016:
+
+.center[
+
+|date       | mean temp|
+|:----------|---------:|
+|2016-01-01 |        24|
+|2016-01-02 |        23|
+|2016-01-03 |        23|
+|2016-01-04 |        17|
+|2016-01-05 |        29|
+|2016-01-06 |        33|
+|2016-01-07 |        30|
+|2016-01-08 |        25|
+|2016-01-09 |         9|
+|2016-01-10 |        11|
+|2016-01-11 |        28|
+|2016-01-12 |        24|
+|2016-01-13 |        33|
+|2016-01-14 |        40|
+|2016-01-15 |        29|
+|2016-01-16 |        19|
+|2016-01-17 |         5|
+|2016-01-18 |        11|
+|2016-01-19 |        22|
+|2016-01-20 |        28|
+|2016-01-21 |        25|
+|2016-01-22 |        22|
+|2016-01-23 |        28|
+|2016-01-24 |        30|
+|2016-01-25 |        26|
+|2016-01-26 |        29|
+|2016-01-27 |        33|
+|2016-01-28 |        41|
+|2016-01-29 |        41|
+|2016-01-30 |        39|
+|2016-01-31 |        35|
+]]
+
+.pull-right[
+![](visualizing-distributions-2_files/figure-html/temps_densities_january2-1.svg)&lt;!-- --&gt;
+
+How can we compare distributions across months?
+]
+
+
+---
+
+## A bad idea: Many overlapping density plots
+
+.center[
+![](visualizing-distributions-2_files/figure-html/temps_densities_overlapping-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Another bad idea: Stacked density plots
+
+.center[
+![](visualizing-distributions-2_files/figure-html/temps_densities_stacked-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Somewhat better: Small multiples
+
+.center[
+![](visualizing-distributions-2_files/figure-html/temps_densities-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Instead: Show values along y, conditions along x
+   
+.center[
+![](visualizing-distributions-2_files/figure-html/temps_boxplots-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+--
+
+A boxplot is a crude way of visualizing a distribution.
+
+---
+
+## How to read a boxplot
+
+.center[
+![](visualizing-distributions-2_files/figure-html/boxplot-schematic-1.svg)&lt;!-- --&gt;
+]
+
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## If you like density plots, consider violins
+   
+.center[
+![](visualizing-distributions-2_files/figure-html/temps_violins-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+--
+
+A violin plot is a density plot rotated 90 degrees and then mirrored.
+
+---
+
+## How to read a violin plot
+
+.center[
+![](visualizing-distributions-2_files/figure-html/violin-schematic-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## For small datasets, you can also use a strip chart
+
+Advantage: Can see raw data points instead of abstract representation.
+
+.center[
+![](visualizing-distributions-2_files/figure-html/temps_stripchart-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+--
+
+Horizontal jittering may be necessary to avoid overlapping points.
+
+---
+
+## For small datasets, you can also use a strip chart
+
+Advantage: Can see raw data points instead of abstract representation.
+
+.center[
+![](visualizing-distributions-2_files/figure-html/temps_stripchart2-1.svg)&lt;!-- --&gt;
+]
+
+Horizontal jittering may be necessary to avoid overlapping points.
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## For small datasets, you can also use a strip chart
+
+Advantage: Can see raw data points instead of abstract representation.
+
+.center[
+![](visualizing-distributions-2_files/figure-html/temps_stripchart3-1.svg)&lt;!-- --&gt;
+]
+
+Horizontal jittering may be necessary to avoid overlapping points.
+
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## We can also jitter points into violins
+   
+.center[
+![](visualizing-distributions-2_files/figure-html/temps_sina-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+--
+
+Such plots are called sina plots, to honor [Sina Hadi Sohi.](https://clauswilke.com/dataviz/boxplots-violins.html#fig:lincoln-temp-sina)
+
+
+---
+
+## But maybe there's hope for overlapping density plots?
+
+.center[
+![](visualizing-distributions-2_files/figure-html/temps_densities_overlapping2-1.svg)&lt;!-- --&gt;
+]
+
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+--
+
+How about we stagger the densities vertically?
+
+---
+
+## Vertically staggered density plots are called ridgelines
+
+.center[
+![](visualizing-distributions-2_files/figure-html/lincoln-ridgeline-polished-1.svg)&lt;!-- --&gt;
+]
+
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+--
+
+Notice the single fill color. More colors would be distracting. 
+
+---
+
+## Making these plots in ggplot
+
+.small-font.center[
+
+Plot type    | Geom                    | Notes
+:----------- | :-----------------      | :-------------------------
+boxplot      | `geom_boxplot()`        |
+violin plot  | `geom_violin()`         |
+strip chart  | `geom_point()`          | Jittering requires `position_jitter()`
+sina plot    | `geom_sina()`           | From package **ggforce**
+ridgeline    | `geom_density_ridges()` | From package **ggridges**
+
+]
+
+---
+
+## Examples: Boxplot
+
+.tiny-font[
+
+```r
+ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
+  geom_boxplot(fill = "skyblue") 
+```
+]
+
+.center[
+![](visualizing-distributions-2_files/figure-html/temps-examples-boxplot-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Examples: Violins
+
+.tiny-font[
+
+```r
+ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
+  geom_violin(fill = "skyblue") 
+```
+]
+
+.center[
+![](visualizing-distributions-2_files/figure-html/temps-examples-violin-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Examples: Strip chart (no jitter)
+
+.tiny-font[
+
+```r
+ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
+  geom_point(size = 0.75)  # reduce point size to minimize overplotting 
+```
+]
+
+.center[
+![](visualizing-distributions-2_files/figure-html/temps-examples-stripchart-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Examples: Strip chart (w/ jitter)
+
+.tiny-font[
+
+```r
+ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
+  geom_point(size = 0.75,  # reduce point size to minimize overplotting 
+    position = position_jitter(
+      width = 0.15,  # amount of jitter in horizontal direction
+      height = 0     # amount of jitter in vertical direction (0 = none)
+    )
+  )
+```
+]
+
+.center[
+![](visualizing-distributions-2_files/figure-html/temps-examples-stripchart-jitter-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Examples: Sina plot
+
+.tiny-font[
+
+```r
+library(ggforce) # for geom_sina()
+
+ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
+  geom_violin(fill = "skyblue", color = NA) + # violins in background
+  geom_sina(size = 0.75) # sina jittered points in foreground
+```
+]
+
+.center[
+![](visualizing-distributions-2_files/figure-html/temps-examples-sina-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Examples: Ridgeline plot
+
+.tiny-font[
+
+```r
+library(ggridges) # for geom_density_ridges
+
+ggplot(lincoln_temps, aes(x = mean_temp, y = month_long)) +
+  geom_density_ridges()
+```
+]
+
+.center[
+![](visualizing-distributions-2_files/figure-html/temps-examples-ridgeline-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Further reading
+
+- Fundamentals of Data Visualization: [Chapter 7: Visualizing many distributions at once](https://clauswilke.com/dataviz/boxplots-violins.html)
+- **ggplot2** reference documentation: [`geom_boxplot()`](https://ggplot2.tidyverse.org/reference/geom_histogram), [`geom_violin()`](https://ggplot2.tidyverse.org/reference/geom_violin), [`position_jitter()`](https://ggplot2.tidyverse.org/reference/position_jitter.html)
+- **ggforce** reference documentation: [`geom_sina()`](https://ggforce.data-imaginist.com/reference/geom_sina.html)
+- **ggridges** reference documentation: [`geom_density_ridges()`](https://wilkelab.org/ggridges/reference/geom_density_ridges.html)
+
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"slideNumberFormat": ""
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

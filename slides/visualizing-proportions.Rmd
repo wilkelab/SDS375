@@ -508,10 +508,88 @@ Works well for time series and similar | ✖ | ✔ | ✖
 
 No one visualization fits all scenarios!
 
+[//]: # "segment ends here"
+
+---
+class: center middle
+
+## Nested proportions: proportions of proportions
+
+---
+## Mosaic plots subdivide data along two dimensions
+
+.center[
+<img src = "https://clauswilke.com/dataviz/nested_proportions_files/figure-html/bridges-mosaic-1.png", width = 75%></img>
+]
+
+.absolute-bottom-right.tiny-font[
+Dataset: Bridges in Pittsburgh by construction material and era of construction
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+## Closely related to mosaic plot: Treemap
+
+.center[
+<img src = "https://clauswilke.com/dataviz/nested_proportions_files/figure-html/bridges-treemap-1.png", width = 65%></img>
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+## Treemaps work well for more complex cases
+
+.center.move-up-1em[
+<img src = "https://clauswilke.com/dataviz/nested_proportions_files/figure-html/US-states-treemap-1.png", width = 80%></img>
+]
+
+.absolute-bottom-right.tiny-font[
+Dataset: Land surface area of US states
+]
+
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+## We can nest pie charts with clever coloring
+
+.center.move-up-1em[
+<img src = "https://clauswilke.com/dataviz/nested_proportions_files/figure-html/bridges-nested-pie2-1.png", width = 70%></img>
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+## Parallel sets can show many subdivisions at once
+
+.center[
+<img src = "https://clauswilke.com/dataviz/nested_proportions_files/figure-html/bridges-parallel-sets1-1.png", width = 75%></img>
+]
+
+???
+
+Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+[//]: # "segment ends here"
+
+---
+class: center middle
+
+## Making pie charts with **ggplot2**
+
 
 ---
 
-## Making pie charts with ggplot
+## Making pie charts with **ggplot2**
 
 We have three options:
 
@@ -535,7 +613,7 @@ We have three options:
 
 ---
 
-## Making pie charts with ggplot: polar coords
+## Making pie charts with **ggplot2**: polar coords
 
 .pull-left.tiny-font[
 ```{r}
@@ -551,7 +629,7 @@ bundestag
 
 ---
 
-## Making pie charts with ggplot: polar coords
+## Making pie charts with **ggplot2**: polar coords
 
 .pull-left.tiny-font[
 ```{r bundestag-coord-polar1, eval = FALSE}
@@ -576,7 +654,7 @@ ggplot(bundestag) +
 
 ---
 
-## Making pie charts with ggplot: polar coords
+## Making pie charts with **ggplot2**: polar coords
 
 .pull-left.tiny-font[
 ```{r bundestag-coord-polar2, eval = FALSE}
@@ -602,7 +680,7 @@ ggplot(bundestag) +
 
 ---
 
-## Making pie charts with ggplot: polar coords
+## Making pie charts with **ggplot2**: polar coords
 
 .pull-left.tiny-font[
 ```{r bundestag-coord-polar3, eval = FALSE}
@@ -636,7 +714,7 @@ ggplot(bundestag) +
 
 ---
 
-## Making pie charts with ggplot: **ggforce** stat pie
+## Making pie charts with **ggplot2**: **ggforce** stat pie
 
 .pull-left.tiny-font[
 ```{r bundestag-stat-pie1, eval = FALSE}
@@ -661,7 +739,7 @@ ggplot(bundestag) +
 
 ---
 
-## Making pie charts with ggplot: **ggforce** stat pie
+## Making pie charts with **ggplot2**: **ggforce** stat pie
 
 .pull-left.tiny-font[
 ```{r bundestag-stat-pie2, eval = FALSE}
@@ -687,7 +765,7 @@ ggplot(bundestag) +
 
 ---
 
-## Making pie charts with ggplot: **ggforce** stat pie
+## Making pie charts with **ggplot2**: **ggforce** stat pie
 
 .pull-left.tiny-font[
 ```{r bundestag-stat-pie3, eval = FALSE}
@@ -715,7 +793,7 @@ ggplot(bundestag) +
 
 ---
 
-## Making pie charts with ggplot: **ggforce** stat pie
+## Making pie charts with **ggplot2**: **ggforce** stat pie
 
 .pull-left.tiny-font[
 ```{r bundestag-stat-pie4, eval = FALSE}
@@ -742,7 +820,7 @@ ggplot(bundestag) +
 
 ---
 
-## Making pie charts with ggplot: **ggforce** stat pie
+## Making pie charts with **ggplot2**: **ggforce** stat pie
 
 .pull-left.tiny-font[
 ```{r bundestag-stat-pie5, eval = FALSE}
@@ -769,7 +847,7 @@ ggplot(bundestag) +
 
 ---
 
-## Making pie charts with ggplot: **ggforce** manual comp.
+## Making pie charts with **ggplot2**: **ggforce** manual comp.
 
 .tiny-font[
 ```{r}
@@ -784,7 +862,7 @@ pie_data
 
 ---
 
-## Making pie charts with ggplot: **ggforce** manual comp.
+## Making pie charts with **ggplot2**: **ggforce** manual comp.
 
 .tiny-font[
 ```{r}
@@ -802,7 +880,7 @@ pie_data
 
 ---
 
-## Making pie charts with ggplot: **ggforce** manual comp.
+## Making pie charts with **ggplot2**: **ggforce** manual comp.
 
 .tiny-font[
 ```{r}
@@ -820,7 +898,7 @@ pie_data
 
 ---
 
-## Making pie charts with ggplot: **ggforce** manual comp.
+## Making pie charts with **ggplot2**: **ggforce** manual comp.
 
 .tiny-font[
 ```{r}
@@ -839,7 +917,7 @@ pie_data
 
 ---
 
-## Making pie charts with ggplot: **ggforce** manual comp.
+## Making pie charts with **ggplot2**: **ggforce** manual comp.
 
 .tiny-font[
 ```{r}
@@ -861,7 +939,7 @@ pie_data
 
 ---
 
-## Making pie charts with ggplot: **ggforce** manual comp.
+## Making pie charts with **ggplot2**: **ggforce** manual comp.
 
 .pull-left.tiny-font[
 ```{r bundestag-arc-bar1, eval = FALSE}
@@ -883,7 +961,7 @@ ggplot(pie_data) +
 
 ---
 
-## Making pie charts with ggplot: **ggforce** manual comp.
+## Making pie charts with **ggplot2**: **ggforce** manual comp.
 
 .pull-left.tiny-font[
 ```{r bundestag-arc-bar2, eval = FALSE}
@@ -912,7 +990,7 @@ ggplot(pie_data) +
 
 ---
 
-## Making pie charts with ggplot: **ggforce** manual comp.
+## Making pie charts with **ggplot2**: **ggforce** manual comp.
 
 .pull-left.tiny-font[
 ```{r bundestag-arc-bar3, eval = FALSE}
@@ -941,7 +1019,7 @@ ggplot(pie_data) +
 
 ---
 
-## Making pie charts with ggplot: **ggforce** manual comp.
+## Making pie charts with **ggplot2**: **ggforce** manual comp.
 
 .pull-left.tiny-font[
 ```{r bundestag-arc-bar4, eval = FALSE}
@@ -970,7 +1048,7 @@ ggplot(pie_data) +
 
 ---
 
-## Making pie charts with ggplot: **ggforce** manual comp.
+## Making pie charts with **ggplot2**: **ggforce** manual comp.
 
 .pull-left.tiny-font[
 ```{r bundestag-arc-bar5, eval = FALSE}
@@ -999,7 +1077,7 @@ ggplot(pie_data) +
 
 ---
 
-## Making pie charts with ggplot: **ggforce** manual comp.
+## Making pie charts with **ggplot2**: **ggforce** manual comp.
 
 .pull-left.xtiny-font[
 ```{r bundestag-arc-bar6, eval = FALSE}
@@ -1036,7 +1114,7 @@ ggplot(pie_data) +
 
 ---
 
-## Making pie charts with ggplot: **ggforce** manual comp.
+## Making pie charts with **ggplot2**: **ggforce** manual comp.
 
 .pull-left.xtiny-font[
 ```{r bundestag-arc-bar7, eval = FALSE}
@@ -1073,7 +1151,7 @@ ggplot(pie_data) +
 
 ---
 
-## Making pie charts with ggplot: **ggforce** manual comp.
+## Making pie charts with **ggplot2**: **ggforce** manual comp.
 
 .pull-left.xtiny-font[
 ```{r bundestag-arc-bar8, eval = FALSE}
@@ -1108,6 +1186,7 @@ ggplot(pie_data) +
 ```
 ]
 
+[//]: # "segment ends here"
 
 ---
 

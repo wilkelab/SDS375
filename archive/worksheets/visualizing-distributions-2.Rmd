@@ -1,0 +1,237 @@
+---
+#############################################################
+#                                                           #
+# Click on "Run Document" in RStudio to run this worksheet. #
+#                                                           #
+#############################################################
+title: "Visualizing distributions 2"
+author: "Claus O. Wilke"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(tidyverse)
+library(ggforce)
+library(ggridges)
+
+knitr::opts_chunk$set(echo = FALSE, comment = "")
+
+# data prep
+lincoln_temps <- readRDS(url("https://wilkelab.org/SDS375/datasets/lincoln_temps.rds"))
+```
+
+## Introduction
+
+In this worksheet, we will discuss how to display many distributions at once, using boxplots, violin plots, strip charts, sina plots, and ridgeline plots.
+
+We will be using the R package **tidyverse**, which includes `ggplot()` and related functions. We will also use the packages **ggforce** and **ggridges** to make sina and ridgeline plots, respectively.
+
+```{r library-calls, echo = TRUE, eval = FALSE}
+# load required library
+library(tidyverse)
+library(ggforce)
+library(ggridges)
+```
+
+The dataset we will be working with contains information about the mean temperature for every day of the year 2016 in Lincoln, NE:
+```{r titanic, echo = TRUE}
+lincoln_temps
+```
+
+## Boxplots and violins
+
+We start by drawing the distributions of mean temperatures for each month of the year (columns `month` and `mean_temp` in the dataset `lincoln_temps`), using boxplots. We can do this in ggplot with the geom `geom_boxplot()`. Try this for yourself.
+
+```{r lincoln-box, exercise=TRUE}
+ggplot(lincoln_temps, aes(___)) +
+  ___
+```
+
+```{r lincoln-box-hint}
+ggplot(lincoln_temps, aes(x = ___, y = ___)) +
+  geom_boxplot()
+```
+
+```{r lincoln-box-solution}
+ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
+  geom_boxplot()
+```
+
+Next, do the same but now using violins (`geom_violin()`) instead of boxplots.
+
+```{r lincoln-violin, exercise = TRUE}
+
+```
+
+```{r lincoln-violin-solution}
+ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
+  geom_violin()
+```
+
+Customize the violins by trying some of the following:
+
+- Change the fill or outline color.
+- Swap the x and y mappings.
+- Change the bandwidth (parameter `bw`) or kernel (parameter `kernel`). These parameters work just like in `geom_density()` as discussed in the previous worksheet.
+- Set `trim = FALSE`. What does this do?
+
+
+## Strip charts and jittering
+
+Both boxplots and violin plots have the disadvantage that they don't show the individual data points. We can show individual data points by using `geom_point()`. Such a plot is called a *strip chart*.
+
+Make a strip chart for the Lincoln temperature data set. Hint: Use `size = 0.75` to reduce the size of the individual points.
+
+```{r lincoln-strip, exercise = TRUE}
+ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
+  ___
+```
+
+```{r lincoln-strip-hint}
+ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
+  geom_point(___)
+```
+
+```{r lincoln-strip-solution}
+ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
+  geom_point(size = 0.75)
+```
+
+Frequently when we make strip charts we want to apply some jitter to separate points away from each other. We can do so by setting the argument `position = position_jitter()` in `geom_point()`.
+
+When using `position_jitter()` we will normally have to specify how much jittering we want in the horizontal and vertical direction, by setting the `width` and `height` arguments: `position_jitter(width = 0.15, height = 0)`. Both `width` and `height` are specified in units representing the resolution of the data points, and indicate jittering in either direction. So, if data points are 1 unit apart, then `width = 0.15` means the jittering covers 0.3 units or 30% of the spacing of the data points.
+
+Try this for yourself, by making a strip chart with jittering.
+
+```{r lincoln-strip-jitter, exercise = TRUE}
+ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
+  geom_point(
+    size = 0.75,
+    ___
+  )
+```
+
+```{r lincoln-strip-jitter-hint}
+ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
+  geom_point(
+    size = 0.75,
+    position = position_jitter(___)
+  )
+```
+
+```{r lincoln-strip-jitter-solution}
+ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
+  geom_point(
+    size = 0.75,
+    position = position_jitter(width = 0.15, height = 0)
+  )
+```
+
+The function `position_jitter()` applies random jittering to the data points, which means the plot looks different each time you make it. (Verify this.) We can force a specific, fixed arrangement of jittering by setting the `seed` parameter. This parameter takes an arbitrary integer value, e.g. `seed = 1234`. Try this out.
+
+```{r lincoln-strip-jitter2, exercise = TRUE}
+
+
+```
+
+```{r lincoln-strip-jitter2-hint}
+ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
+  geom_point(
+    size = 0.75,
+    position = position_jitter(width = 0.15, height = 0, seed = ___)
+  )
+```
+
+```{r lincoln-strip-jitter2-solution}
+ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
+  geom_point(
+    size = 0.75,
+    position = position_jitter(width = 0.15, height = 0, seed = 1234)
+  )
+```
+
+Finally, try to figure out what the parameter `height` does, by setting it to a value other than 0, or by removing it entirely. Then answer the following question.
+
+```{r position-jitter-height-q, echo=FALSE}
+question("What happens if you set `height` to a value other than 0, or if you don't set it at all? (Select all that apply.)",
+  answer("Points are getting jittered both horizontally and vertically.", correct = TRUE),
+  answer("If `height` is not set at all then points are only jittered horizontally."),
+  answer("Nothing happens."),
+  answer("Because there are many points close to each other vertically, the amount of vertical jittering is very small.", correct = TRUE),
+  answer("Not setting `height` is the same as `height = 0.4`.", correct = TRUE),
+  answer("Changing `height` is the same as changing `seed`.")
+)
+```
+
+## Sina plots
+
+We can create a combination of strip charts and violin plots by making sina plots, which jitter points into the shape of a violin. We can do this with `geom_sina()` from the **ggforce** package. Try this out.
+
+```{r lincoln-sina, exercise = TRUE}
+
+```
+
+```{r lincoln-sina-solution}
+ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
+  geom_sina(size = 0.75)
+```
+
+It often makes sense to draw a sina plot on top of a violin plot. Try this out.
+
+```{r lincoln-sina2, exercise = TRUE}
+
+```
+
+```{r lincoln-sina2-solution}
+ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
+  geom_violin() +
+  geom_sina(size = 0.75)
+```
+
+Finally, customize the violins by removing the outline and changing the fill color.
+
+```{r lincoln-sina3, exercise = TRUE}
+
+```
+
+```{r lincoln-sina3-solution}
+ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
+  geom_violin(color = NA, fill = "cornsilk") +  # `NA` means no color
+  geom_sina(size = 0.75)
+```
+
+
+## Ridgeline plots
+
+As the last alternative for visualizing multiple distributions at once, we will make ridgeline plots. These are multiple density plots staggered vertically. In ridgeline plots, we normally map the grouping variable (e.g. here, the month) to the y axis and the dependent variable (e.g. here, the mean temperature) to the x axis.
+
+We can create ridgeline plots using `geom_density_ridges()` from the **ggridges** package. Try this out. Use the column `month_long` instead of `month` for the name of the month to get a slightly nicer plot. Hint: If you get an error about a missing y aesthetic you need to swap your x and y mappings.
+
+```{r lincoln-ridges, exercise = TRUE}
+
+```
+
+```{r lincoln-ridges-solution}
+ggplot(lincoln_temps, aes(x = mean_temp, y = month_long)) +
+  geom_density_ridges()
+```
+What happens when you use `month` instead of `month_long`? Can you explain why?
+
+It is often a good idea to prune the ridgelines once they are close to zero. You can do this with the parameter `rel_min_height`, which takes a numeric value relative to the maximum height of any ridgeline anywhere in the plot. So, `rel_min_height = 0.01` would prune all lines that are less than 1% of the maximum height in the plot.
+
+```{r lincoln-ridges2, exercise = TRUE}
+ggplot(lincoln_temps, aes(x = mean_temp, y = month_long)) +
+  geom_density_ridges(___)
+```
+
+```{r lincoln-ridges2-hint}
+ggplot(lincoln_temps, aes(x = mean_temp, y = month_long)) +
+  geom_density_ridges(rel_min_height = ___)
+```
+
+```{r lincoln-ridges2-solution}
+ggplot(lincoln_temps, aes(x = mean_temp, y = month_long)) +
+  geom_density_ridges(rel_min_height = 0.01)
+```

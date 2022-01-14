@@ -1,0 +1,879 @@
+---
+title: "Getting to know your data 1"
+author: "Claus O. Wilke"
+date: "last updated: `r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: [default, "Wilke-slides-theme.css"]
+    lib_dir: libs
+    nature:
+      ratio: '16:9'
+      highlightStyle: github
+      highlightLines: true
+      slideNumberFormat: ''
+      titleSlideClass: [center, middle]
+---
+
+```{r setup, include=FALSE, echo=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(comment = "")
+
+library(tidyverse)
+library(here)
+library(cowplot)
+
+#NCbirths <- read_csv(here("datasets", "NCbirths.csv"), na = c("", "NA", "#N/A")) %>%
+#  mutate(
+#    Weeks = if_else(Weeks < 0, NA_real_, Weeks)
+#  )
+
+# increase number of characters per line
+options(width = 74)
+
+# ggplot2 settings so plots scale well for slide size 
+theme_set(theme_gray(16)) # 16 for full width, 18 for half width 
+update_geom_defaults("point", list(size = 2)) # 2 for full width, 2.5 for half width
+```
+
+## Any data analysis should start with basic quality control
+
+1. Assess data relevance<br>
+  (Can the data answer your question in principle?)
+
+--
+
+2. Assess data providence<br>
+  (Where does the data come from? Is it reliable?)
+
+--
+
+3. Clean data if required<br>
+  (In practice, this is 70-80% of data analysis work)
+  
+--
+
+4. Perform descriptive analysis and sanity checks<br>
+  (Inspect summary statistics, distributions, scatter plots, etc.)
+
+---
+
+## Components of data quality
+
+.pull-left.width-35[
+- Accuracy
+
+- Precision
+
+- Usability
+
+- Completeness
+
+- Consistency
+
+- Accessibility
+
+- Relevance
+]
+
+---
+
+## Components of data quality
+
+.pull-left.width-35[
+- **Accuracy**
+
+- Precision
+
+- Usability
+
+- Completeness
+
+- Consistency
+
+- Accessibility
+
+- Relevance
+]
+
+.pull-right.width-65[
+Does the data contain any systematic errors or biases?
+]
+
+---
+
+## Components of data quality
+
+.pull-left.width-35[
+- Accuracy
+
+- **Precision**
+
+- Usability
+
+- Completeness
+
+- Consistency
+
+- Accessibility
+
+- Relevance
+]
+
+.pull-right.width-65[
+Does the data contain any systematic errors or biases?
+
+How affected are observations by random errors/noise?
+]
+
+---
+
+## Accuracy means low bias, precision means low noise
+
+<img src = "know-your-data-1_files/accuracy-precision.svg", width = 52%, style = "position: absolute;  top: 21%; left: 21%;"></img>
+
+
+---
+
+## Components of data quality
+
+.pull-left.width-35[
+- Accuracy
+
+- Precision
+
+- **Usability**
+
+- Completeness
+
+- Consistency
+
+- Accessibility
+
+- Relevance
+]
+
+.pull-right.width-65[
+Does the data contain any systematic errors or biases?
+
+How affected are observations by random errors/noise?
+
+Is the data documented? Is it machine-readable?
+]
+
+---
+
+## Usability requires a data dictionary
+
+**Data Dictionary**<br>
+A "centralized repository of information about data such as meaning, relationships to other data, origin, usage, and format" ([Wikipedia](https://en.wikipedia.org/wiki/Data_dictionary))
+
+<br>
+Example: [Palmer penguins reference page](https://allisonhorst.github.io/palmerpenguins/reference/penguins.html)
+
+---
+
+## Components of data quality
+
+.pull-left.width-35[
+- Accuracy
+
+- Precision
+
+- Usability
+
+- **Completeness**
+
+- Consistency
+
+- Accessibility
+
+- Relevance
+]
+
+.pull-right.width-65[
+Does the data contain any systematic errors or biases?
+
+How affected are observations by random errors/noise?
+
+Is the data documented? Is it machine-readable?
+
+Are entire records missing? Are observations missing?
+]
+
+---
+
+## Components of data quality
+
+.pull-left.width-35[
+- Accuracy
+
+- Precision
+
+- Usability
+
+- Completeness
+
+- **Consistency**
+
+- Accessibility
+
+- Relevance
+]
+
+.pull-right.width-65[
+Does the data contain any systematic errors or biases?
+
+How affected are observations by random errors/noise?
+
+Is the data documented? Is it machine-readable?
+
+Are entire records missing? Are observations missing?
+
+Does data vary among sources or over time?
+]
+
+---
+
+## Components of data quality
+
+.pull-left.width-35[
+- Accuracy
+
+- Precision
+
+- Usability
+
+- Completeness
+
+- Consistency
+
+- **Accessibility**
+
+- Relevance
+]
+
+.pull-right.width-65[
+Does the data contain any systematic errors or biases?
+
+How affected are observations by random errors/noise?
+
+Is the data documented? Is it machine-readable?
+
+Are entire records missing? Are observations missing?
+
+Does data vary among sources or over time?
+
+Do you have access to the data? Can you obtain it?
+]
+
+---
+
+## Components of data quality
+
+.pull-left.width-35[
+- Accuracy
+
+- Precision
+
+- Usability
+
+- Completeness
+
+- Consistency
+
+- Accessibility
+
+- **Relevance**
+]
+
+.pull-right.width-65[
+Does the data contain any systematic errors or biases?
+
+How affected are observations by random errors/noise?
+
+Is the data documented? Is it machine-readable?
+
+Are entire records missing? Are observations missing?
+
+Does data vary among sources or over time?
+
+Do you have access to the data? Can you obtain it?
+
+Can you use the data to address your question?
+]
+
+[//]: # "segment ends here"
+
+
+---
+class: center middle
+
+## Inspecting and cleaning a dataset in R
+
+---
+
+```{css echo = FALSE}
+.move-up-8em {
+  margin-top: -8em;
+}
+```
+
+## The dataset: Births in NC
+
+--
+
+.pull-left.small-font.width-45.move-up-1em[
+**Details and Source**<br>
+This dataset contains data on a sample of 1450 birth records from 2001 that statistician John Holcomb at Cleveland State University selected from the North Carolina State Center for Health and Environmental Statistics.
+
+The dataset has 1450 observations on 15 variables.
+]
+
+--
+
+.pull-right.xtiny-font.move-up-8em.width-50[
+Variable       | Description
+----------:    | :-----------
+`ID`           | Patient ID code
+`Plural`       | `1`=single birth, `2`=twins, `3`=triplets
+`Sex`          | Sex of the baby: `1`=male `2`=female
+`MomAge`	     | Mother's age (in years)
+`Weeks`        | Completed weeks of gestation
+`Marital`      | Marital status: `1`=married or `2`=not married
+`RaceMom`	     | Mother's race: `1`=white, `2`=black, `3`=American Indian, `4`=Chinese, `5`=Japanese, `6`=Hawaiian, `7`=Filipino, or `8`=Other Asian or Pacific Islander
+`HispMom`	     | Hispanic origin of mother: `C`=Cuban, `M`=Mexican, `N`=not Hispanic, `O`=Other Hispanic, `P`=Puerto Rico, `S`=Central/South America
+`Gained`       | Weight gained during pregnancy (in pounds)
+`Smoke`        | Smoker mom? `1`=yes or `0`=no
+`BirthWeightOz` |	Birth weight in ounces
+`BirthWeightGm` | Birth weight in grams
+`Low`           |	Indicator for low birth weight: `1`=2500 grams or less
+`Premie`       |	Indicator for premature birth: `1`=36 weeks or sooner
+`MomRace`      |	Mother's race: `black`, `hispanic`, `other`, or `white`
+]
+
+---
+
+## Start with a cursory inspection
+
+```{r echo = FALSE}
+options(width = 95)
+```
+
+.tiny-font[
+```{r message = FALSE}
+NCbirths <- read_csv("https://wilkelab.org/DSC385/datasets/NCbirths.csv")
+```
+]
+
+--
+
+.tiny-font[
+```{r}
+NCbirths
+```
+]
+
+```{r echo = FALSE}
+options(width = 74)
+```
+
+---
+
+## Start with a cursory inspection
+
+What's going on with the `Gained` column?
+
+```{r echo = FALSE}
+options(width = 95)
+```
+
+.tiny-font[
+```{r message = FALSE}
+NCbirths %>%
+  pull(Gained)
+```
+]
+
+```{r echo = FALSE}
+options(width = 74)
+```
+
+---
+
+## Use the `na` argument to specify allowed `NA` values
+
+```{r echo = FALSE}
+options(width = 95)
+```
+
+.tiny-font[
+```{r message = FALSE}
+NCbirths <- read_csv(
+  "https://wilkelab.org/DSC385/datasets/NCbirths.csv",
+  na = c("", "NA", "#N/A")
+)
+```
+]
+
+--
+
+.tiny-font[
+```{r}
+NCbirths  # check entire data frame
+```
+]
+
+```{r echo = FALSE}
+options(width = 74)
+```
+
+---
+
+## Use the `na` argument to specify allowed `NA` values
+
+```{r echo = FALSE}
+options(width = 95)
+```
+
+.tiny-font[
+```{r eval = FALSE}
+NCbirths <- read_csv(
+  "https://wilkelab.org/DSC385/datasets/NCbirths.csv",
+  na = c("", "NA", "#N/A")
+)
+```
+]
+
+.tiny-font[
+```{r message = FALSE}
+NCbirths %>%   # check just the column `Gained`
+  pull(Gained)
+```
+]
+
+
+```{r echo = FALSE}
+options(width = 74)
+```
+
+
+---
+
+## Detailed quality checks: Look at all column names
+
+.small-font[
+```{r}
+names(NCbirths)
+```
+]
+
+--
+
+What's the difference between `RaceMom` and `MomRace`?
+
+---
+
+## Detailed quality checks: Look at all column names
+
+From the data dictionary:
+
+- `RaceMom`<br>Mother's race: `1`=white, `2`=black, `3`=American Indian, `4`=Chinese,
+`5`=Japanese, `6`=Hawaiian, `7`=Filipino, or `8`=Other Asian or Pacific Islander
+
+- `MomRace`<br>Mother's race: `black`, `hispanic`, `other`, or `white`
+
+--
+
+These are similar but not the same. Important not to confuse them!
+
+---
+
+## Detailed quality checks: Look at every data column
+
+.tiny-font.pull-left.width-50[
+```{r}
+summary(NCbirths$ID) # five number summary
+```
+]
+---
+
+## Detailed quality checks: Look at every data column
+
+.tiny-font.pull-left.width-50[
+```{r}
+summary(NCbirths$ID) # five number summary
+```
+
+```{r echo = FALSE}
+options(width = 50)
+```
+
+```{r}
+unique(NCbirths$ID)  # all unique values
+```
+
+```{r echo = FALSE}
+options(width = 74)
+```
+]
+
+--
+
+.xtiny-font.pull-right[
+```{r ID-histogram, fig.width=6., fig.asp = 0.618, dev = "svg"}
+ggplot(NCbirths, aes(ID)) +
+  geom_histogram() # histogram
+```
+]
+
+---
+
+## Detailed quality checks: Look at every data column
+
+.tiny-font.pull-left.width-50[
+```{r}
+summary(NCbirths$Plural) # five number summary
+```
+]
+
+---
+
+## Detailed quality checks: Look at every data column
+
+.tiny-font.pull-left.width-50[
+```{r}
+summary(NCbirths$Plural) # five number summary
+```
+
+```{r}
+unique(NCbirths$Plural)  # all unique values
+```
+]
+
+--
+
+.xtiny-font.pull-right[
+```{r plural-births-histogram, fig.width=6., fig.asp = 0.618, dev = "svg"}
+ggplot(NCbirths, aes(Plural)) +
+  geom_histogram() # histogram
+```
+]
+
+
+---
+
+## Detailed quality checks: Look at every data column
+
+```{r echo = FALSE}
+options(width = 50)
+```
+
+.tiny-font.pull-left.width-50[
+```{r}
+summary(NCbirths$Weeks) # five number summary
+```
+]
+
+---
+
+## Detailed quality checks: Look at every data column
+
+.tiny-font.pull-left.width-50[
+```{r}
+summary(NCbirths$Weeks) # five number summary
+```
+
+```{r}
+unique(NCbirths$Weeks)  # all unique values
+```
+
+```{r echo = FALSE}
+options(width = 74)
+```
+]
+
+--
+
+.xtiny-font.pull-right[
+```{r weeks-histogram, fig.width=6., fig.asp = 0.618, dev = "svg"}
+ggplot(NCbirths, aes(Weeks)) +
+  geom_histogram() # histogram
+```
+]
+
+--
+
+What is the meaning of -999 weeks?
+
+---
+
+## In some cases, nonsensical values indicate missingness
+
+--
+
+We need to make sure to catch those cases:
+
+.tiny-font[
+```{r message = FALSE}
+library(naniar) # library for handling missing values
+
+NCbirths <- read_csv(
+  "https://wilkelab.org/DSC385/datasets/NCbirths.csv",
+  na = c("", "NA", "#N/A")
+) %>% replace_with_na_at("Weeks", ~.x < 0) # only change column "Weeks" to be safe
+```
+]
+
+
+--
+
+.tiny-font[
+```{r}
+summary(NCbirths$Weeks)
+```
+]
+
+--
+
+.tiny-font[
+```{r}
+unique(NCbirths$Weeks)
+```
+]
+
+
+
+---
+
+## In some cases, nonsensical values indicate missingness
+
+.pull-left[
+Before recoding -999 to `NA`:
+.xtiny-font[
+```{r eval = FALSE}
+ggplot(NCbirths, aes(Weeks)) +
+  geom_histogram()
+```
+
+```{r weeks-histo-flawed, echo = FALSE, message = FALSE, warning = FALSE, fig.width=6., fig.asp = 0.618, dev = "svg"}
+read_csv("https://wilkelab.org/DSC385/datasets/NCbirths.csv") %>%
+  ggplot(aes(Weeks)) +
+  geom_histogram()
+```
+]]
+
+.pull-right[
+After recoding -999 to `NA`:
+.xtiny-font[
+```{r weeks-histo-fixed, message = FALSE, warning = FALSE, fig.width=6., fig.asp = 0.618, dev = "svg"}
+ggplot(NCbirths, aes(Weeks)) +
+  geom_histogram()
+```
+]]
+
+
+---
+
+## Consider recoding categorical variables
+
+Sex of the baby is encoded as 1/2:
+
+.small-font[
+```{r}
+NCbirths %>%
+  pull(Sex)
+```
+]
+
+---
+
+## Consider recoding categorical variables
+
+Recode as `"male"`/`"female"`:
+
+.small-font[
+```{r}
+NCbirths %>%
+  mutate(
+    Sex = if_else(Sex == 1, "male", "female")
+  ) %>%
+  pull(Sex)
+```
+]
+
+---
+
+## Recode multiple categories with `case_when()`
+
+The mother's race is encoded as integers from 1 through 8:
+
+.small-font[
+```{r}
+NCbirths %>%
+  pull(RaceMom)
+```
+]
+
+---
+
+## Recode multiple categories with `case_when()`
+
+The mother's race is encoded as integers from 1 through 8:
+
+.small-font[
+```{r}
+NCbirths %>%
+  pull(RaceMom) %>%
+  unique() # list all the unique values (ordered by first occurrence)
+```
+]
+
+---
+
+## Recode multiple categories with `case_when()`
+
+```{r echo = FALSE}
+options(width = 60)
+```
+
+We use `case_when()` to recode multiple values all at once:
+
+.xtiny-font.pull-left[
+```{r eval = FALSE}
+NCbirths %>%
+  mutate(
+    RaceMom = case_when(
+      RaceMom == 1 ~ "white",
+      RaceMom == 2 ~ "black",
+      RaceMom == 3 ~ "American Indian",
+      RaceMom == 4 ~ "Chinese",
+      RaceMom == 5 ~ "Japanese",
+      RaceMom == 6 ~ "Hawaiian",
+      RaceMom == 7 ~ "Filipino",
+      RaceMom == 8 ~ 
+        "Other Asian or Pacific Islander",
+      TRUE ~ NA_character_ # should never reach
+    )
+  )
+```
+]
+
+```{r echo = FALSE}
+options(width = 74)
+```
+
+
+---
+
+## Recode multiple categories with `case_when()`
+
+
+We use `case_when()` to recode multiple values all at once:
+
+.xtiny-font.pull-left[
+```{r case-when-example, eval = FALSE}
+NCbirths %>%
+  mutate(
+    RaceMom = case_when(
+      RaceMom == 1 ~ "white",
+      RaceMom == 2 ~ "black",
+      RaceMom == 3 ~ "American Indian",
+      RaceMom == 4 ~ "Chinese",
+      RaceMom == 5 ~ "Japanese",
+      RaceMom == 6 ~ "Hawaiian",
+      RaceMom == 7 ~ "Filipino",
+      RaceMom == 8 ~ 
+        "Other Asian or Pacific Islander",
+      TRUE ~ NA_character_ # should never reach
+    )
+  ) %>%
+  pull(RaceMom)
+```
+]
+
+.xtiny-font.pull-right.width-50[
+```{r echo=FALSE}
+options(width = 60)
+
+NCbirths %>%
+  mutate(
+    RaceMom = case_when(
+      RaceMom == 1 ~ "white",
+      RaceMom == 2 ~ "black",
+      RaceMom == 3 ~ "American I",
+      RaceMom == 4 ~ "Chinese",
+      RaceMom == 5 ~ "Japanese",
+      RaceMom == 6 ~ "Hawaiian",
+      RaceMom == 7 ~ "Filipino",
+      RaceMom == 8 ~ "Other A/PI",
+      TRUE ~ NA_character_ # should never reach
+    )
+  ) %>%
+  pull(RaceMom)
+```
+]
+
+```{r echo = FALSE}
+options(width = 74)
+```
+
+---
+
+## Make pairwise scatter plots
+
+--
+
+```{r echo = FALSE}
+NCbirths <- NCbirths %>%
+  mutate(
+    Sex = if_else(Sex == 1, "male", "female")
+  )
+```
+
+.tiny-font[
+```{r NCbirths-pairs, eval = FALSE}
+ggplot(NCbirths, aes(Plural, Sex, color = Sex)) + geom_point(position = "jitter", size = .5)
+ggplot(NCbirths, aes(Plural, MomAge, color = Sex)) + geom_point(position = "jitter", size = .5)
+```
+]
+
+.center[
+```{r NCbirths-pairs-out, ref.label='NCbirths-pairs', echo = FALSE, warning = FALSE, fig.width=4.8, fig.asp = .618, dev = "svg"}
+```
+]
+
+---
+
+## Make pairwise scatter plots
+
+.tiny-font[
+```{r NCbirths-pairs2, eval = FALSE}
+ggplot(NCbirths, aes(Weeks, Plural, color = Sex)) + geom_point(position = "jitter", size = .5)
+ggplot(NCbirths, aes(Weeks, Gained, color = Sex)) + geom_point(position = "jitter", size = .5)
+```
+]
+
+.center[
+```{r NCbirths-pairs2-out, ref.label='NCbirths-pairs2', echo = FALSE, warning = FALSE, fig.width=4.8, fig.asp = .618, dev = "svg"}
+```
+]
+
+--
+
+If possible, make scatter plots of every variable against every other variable
+
+
+[//]: # "segment ends here"
+
+
+---
+
+## Further reading
+
+- Wikipedia: [Data dictionary](https://en.wikipedia.org/wiki/Data_dictionary)
+- **dplyr** reference documentation: [if_else()](https://dplyr.tidyverse.org/reference/if_else.html)
+- **dplyr** reference documentation: [case_when()](https://dplyr.tidyverse.org/reference/case_when.html)
+- **naniar** documentation: [Getting started with naniar](http://naniar.njtierney.com/articles/getting-started-w-naniar.html)
+- **naniar** reference documentation: [replace_with_na_at()](http://naniar.njtierney.com/reference/replace_with_na_at.html)
+
+

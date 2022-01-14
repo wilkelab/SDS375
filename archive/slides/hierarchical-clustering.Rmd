@@ -1,0 +1,79 @@
+---
+title: "Hierarchical clustering"
+author: "Claus O. Wilke"
+date: "last updated: `r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: [default, "Wilke-slides-theme.css"]
+    lib_dir: libs
+    nature:
+      ratio: '16:9'
+      highlightStyle: github
+      highlightLines: true
+      slideNumberFormat: ''
+      titleSlideClass: [center, middle]
+---
+
+```{r setup, include=FALSE, echo=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(comment = "")
+
+library(tidyverse)
+library(here)
+library(ggdendro)
+library(cowplot)
+# ggplot2 settings so plots scale well for slide size 
+theme_set(theme_gray(16)) # 16 for full width, 18 for half width 
+update_geom_defaults("point", list(size = 2)) # 2 for full width, 2.5 for half width
+```
+
+```{r}
+library(tidyverse)
+library(usdata)
+library(ggdendro)
+
+state_data <- state_stats %>%
+  mutate(
+    popdens2010 = pop2010/land_area
+  ) %>%
+  select(-abbr, -fips, -pop2000, -pop2010, -land_area)
+
+state_data_named <- state_data %>%
+  select(-state) %>%
+  as.data.frame()
+row.names(state_data_named) <- state_data$state
+
+dd <- dist(scale(state_data_named), method = "euclidean")
+hc <- hclust(dd, method = "ward.D2")
+
+ggdendrogram(hc, rotate = TRUE)
+
+
+dhc <- as.dendrogram(hc)
+# Rectangular lines
+ddata <- dendro_data(dhc, type = "rectangle")
+segments <- segment(ddata)
+labels <- label(ddata) %>%
+  left_join(dviz.supp::US_regions, by = c("label" = "state"))
+
+ggplot() + 
+  geom_segment(data = segments, aes(y, x, xend = yend, yend = xend)) + 
+  geom_text(data = labels, aes(y, x, label = label, color = region), hjust = 1) +
+  scale_x_continuous(limits = c(-10, 25)) +
+  theme_void()
+
+head(segment(ddata))
+head(label(ddata))
+
+
+```
+
+---
+
+## Further reading
+
+- **ggdendro2** reference documentation: 
+
+
+
+

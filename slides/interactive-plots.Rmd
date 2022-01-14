@@ -381,6 +381,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 
 ## Also consider linking to further info
 
+.center[
 ```{r US_states_clickthrough, echo = FALSE}
 US_map <- US_states %>%
   mutate(
@@ -407,6 +408,7 @@ girafe(
 )
 
 ```
+]
 
 .absolute-bottom-right.small-font[
 click on one of the states
@@ -416,6 +418,7 @@ click on one of the states
 
 ## Highlight across two plots for added context
 
+.center[
 ```{r tx_income_combined, echo = FALSE}
 texas_scatter <- tx_counties %>%
   ggplot(aes(pop2010, median_income)) +
@@ -461,14 +464,17 @@ texas_county_map <- tx_counties %>%
 
 girafe(
   ggobj = plot_grid(texas_scatter, texas_county_map, rel_widths = c(1.2, 1)),
-  width_svg = 10,
-  height_svg = 5,
+  width_svg = 8,
+  height_svg = 4,
   options = list(
     opts_tooltip(css = tooltip_css, delay_mouseover = 0, delay_mouseout = 0),
     opts_hover(css = "fill: #E69F00; fill-opacity: 1.0; stroke: #E69F00;")
   )
 )
 ```
+]
+
+[//]: # "segment ends here"
 
 ---
 
@@ -580,18 +586,6 @@ hovering displays species names
 ]
 
 ]
-
----
-
-## Interlude: A brief intro to CSS
-
---
-
-CSS is the language used to style web pages
-
---
-
-Many online tutorials, e.g.: https://www.w3schools.com/css/default.asp
 
 ---
 
@@ -760,6 +754,28 @@ girafe(
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Click to open a state's wikipedia page
 ]
 ]
+
+[//]: # "segment ends here"
+
+---
+class: center middle
+
+## A (very) brief intro to CSS
+
+---
+
+## A (very) brief intro to CSS
+
+--
+
+CSS is the language used to style web pages
+
+--
+
+Many online tutorials, e.g.: https://www.w3schools.com/css/default.asp
+
+
+[//]: # "segment ends here"
 
 ---
 

@@ -1,0 +1,736 @@
+---
+title: "Visualizing distributions 1"
+author: "Claus O. Wilke"
+date: "last updated: `r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: [default, "Wilke-slides-theme.css"]
+    lib_dir: libs
+    nature:
+      ratio: '16:9'
+      highlightStyle: github
+      highlightLines: true
+      slideNumberFormat: ''
+      titleSlideClass: [center, middle]
+---
+
+```{r setup, include=FALSE, echo=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(comment = "")
+
+library(tidyverse)
+library(cowplot)
+library(colorspace)
+library(here)
+# ggplot2 settings so plots scale well for slide size 
+theme_set(theme_gray(16)) # 16 for full width, 18 for half width 
+update_geom_defaults("point", list(size = 2)) # 2 for full width, 2.5 for half width
+
+titanic <- read_csv(here("datasets", "titanic.csv")) %>%
+  select(age, sex, class, survived) %>%
+  arrange(age, sex, class)
+```
+
+
+
+## Passengers on the Titanic
+
+.center.small-font[
+```{r echo = FALSE}
+knitr::kable(titanic[1:10,], "html")
+```
+&nbsp;&nbsp;&nbsp;&nbsp;
+```{r echo = FALSE}
+knitr::kable(titanic[11:20,], "html")
+```
+&nbsp;&nbsp;&nbsp;&nbsp;
+```{r echo = FALSE}
+knitr::kable(titanic[21:30,], "html")
+```
+]
+
+---
+
+## Histogram: Define bins and count cases
+
+```{r echo = FALSE}
+age_counts <- hist(titanic$age, breaks = (0:15) * 5 + .01, plot = FALSE)$counts
+age_hist <- tibble(
+  `age range` = c("0–5", "6–10", "11–15", "16–20", "21–25", "26–30", "31–35", "36–40", "41–45", "46–50", "51–55", "56–60", "61–65", "66–70", "71–75", "76–80"),
+  count = c(age_counts, 0)
+)
+```
+
+.pull-left.small-font[
+```{r echo = FALSE}
+knitr::kable(age_hist[1:8,], "html")
+```
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+```{r echo = FALSE}
+knitr::kable(age_hist[9:16,], "html")
+```
+]
+
+--
+
+.pull-right[
+```{r titanic-age-hist, echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+age_hist5 <- age_hist %>%
+  mutate(age = (1:16) * 5 - 2.5) %>%
+  filter(count > 0)
+
+h1 <- ggplot(age_hist5, aes(x = age, y = count)) + 
+  geom_col(width = 4.7, fill = "#56B4E9", na.rm = TRUE)  + 
+  scale_y_continuous(expand = c(0, 0), breaks = 25 * (0:5)) +
+  scale_x_continuous(name = "age (years)", limits = c(0, 75), expand = c(0, 0)) +
+  coord_cartesian(clip = "off") +
+  theme_minimal_hgrid(18) +
+  theme(
+    axis.line.x = element_blank()
+  )
+
+h1
+```
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+
+# Histograms depend on the chosen bin width
+
+.center[
+```{r titanic-age-hist-binwidth, echo = FALSE, fig.width = 8, fig.asp = 0.618, dev = "svg"}
+age_hist_1 <- tibble(
+  age = (1:75) - 0.5, 
+  count = hist(titanic$age, breaks = (0:75) + .01, plot = FALSE)$counts
+)
+age_hist_3 <- tibble(
+  age = (1:25) * 3 - 1.5, 
+  count = hist(titanic$age, breaks = (0:25) * 3 + .01, plot = FALSE)$counts
+)
+age_hist_15 <- tibble(
+  age = (1:5) * 15 - 7.5, 
+  count = hist(titanic$age, breaks = (0:5) * 15 + .01, plot = FALSE)$counts
+)
+
+
+h2 <- ggplot(age_hist_1, aes(x = age, y = count)) + 
+  geom_col(width = .85, fill = "#56B4E9")  + 
+  scale_y_continuous(expand = c(0, 0), breaks = 10 * (0:5)) +
+  scale_x_continuous(name = "age (years)", limits = c(0, 75), expand = c(0, 0)) +
+  coord_cartesian(clip = "off") +
+  theme_minimal_hgrid(14) +
+  theme(
+    axis.line.x = element_blank()
+  )
+
+h3 <- ggplot(age_hist_3, aes(x = age, y = count)) + 
+  geom_col(width = 2.75, fill = "#56B4E9")  + 
+  scale_y_continuous(expand = c(0, 0), breaks = 25 * (0:5)) +
+  scale_x_continuous(name = "age (years)", limits = c(0, 75), expand = c(0, 0)) +
+  coord_cartesian(clip = "off") +
+  theme_minimal_hgrid(14) +
+  theme(
+    axis.line.x = element_blank()
+  )
+
+h4 <- ggplot(age_hist_15, aes(x = age, y = count)) + 
+  geom_col(width = 14.5, fill = "#56B4E9")  + 
+  scale_y_continuous(expand = c(0, 0), breaks = 100 * (0:4)) +
+  scale_x_continuous(name = "age (years)", limits = c(0, 75), expand = c(0, 0)) +
+  coord_cartesian(clip = "off") +
+  theme_minimal_hgrid(14) +
+  theme(
+    axis.line.x = element_blank()
+  )
+
+h1 <- h1 + theme_minimal_hgrid(16) +
+  theme(
+    axis.line.x = element_blank()
+  )
+
+plot_grid(
+  h2, NULL, h3,
+  NULL, NULL, NULL,
+  h1, NULL, h4,
+  align = 'hv',
+  rel_widths = c(1, .04, 1),
+  rel_heights = c(1, .04, 1)
+)
+```
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+
+
+## Alternative to histogram: Kernel density estimate (KDE)
+
+.pull-left[
+```{r titanic-age-hist2, echo = FALSE, fig.width = 7, fig.asp = 0.618, dev = "svg"}
+h1 + ggtitle("Histogram") + theme(plot.title.position = "plot")
+```
+]
+
+--
+
+.pull-right[
+```{r titanic-age-kde, echo = FALSE, fig.width = 7, fig.asp = 0.618, dev = "svg"}
+ggplot(titanic, aes(x = age)) + 
+  geom_density(fill = "#56B4E9", color = darken("#56B4E9", 0.5), bw = 2, kernel = "gaussian") + 
+  scale_y_continuous(limits = c(0, 0.046), expand = c(0, 0), name = "density") +
+  scale_x_continuous(name = "age (years)", limits = c(0, 75), expand = c(0, 0)) +
+  coord_cartesian(clip = "off") +
+  ggtitle("Kernel density estimate") +
+  theme_minimal_hgrid(18) +
+  theme(
+    axis.line.x = element_blank(),
+    plot.title.position = "plot"
+  )
+```
+]
+
+--
+
+Histograms show raw counts, KDEs show proportions. (Total area = 1)
+
+???
+
+Figures redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+
+## KDEs also depend on parameter settings
+
+.center[
+```{r titanic-age-kde-grid, echo = FALSE, fig.width = 8, fig.asp = 0.618, dev = "svg"}
+pdens1 <- ggplot(titanic, aes(x = age)) + 
+  geom_density(fill = "#56B4E9", color = darken("#56B4E9", 0.5), bw = .5, kernel = "gaussian") + 
+  scale_y_continuous(limits = c(0, 0.046), expand = c(0, 0), name = "density") +
+  scale_x_continuous(name = "age (years)", limits = c(0, 75), expand = c(0, 0)) +
+  coord_cartesian(clip = "off") +
+  theme_minimal_hgrid(14) +
+  theme(axis.line.x = element_blank())
+
+pdens2 <- ggplot(titanic, aes(x = age)) + 
+  geom_density(fill = "#56B4E9", color = darken("#56B4E9", 0.5), bw = 2, kernel = "gaussian") + 
+  scale_y_continuous(limits = c(0, 0.046), expand = c(0, 0), name = "density") +
+  scale_x_continuous(name = "age (years)", limits = c(0, 75), expand = c(0, 0)) +
+  coord_cartesian(clip = "off") +
+  theme_minimal_hgrid(14) +
+  theme(axis.line.x = element_blank())
+
+pdens3 <- ggplot(titanic, aes(x = age)) + 
+  geom_density(fill = "#56B4E9", color = darken("#56B4E9", 0.5), bw = 5, kernel = "gaussian") + 
+  scale_y_continuous(limits = c(0, 0.046), expand = c(0, 0), name = "density") +
+  scale_x_continuous(name = "age (years)", limits = c(0, 75), expand = c(0, 0)) +
+  coord_cartesian(clip = "off") +
+  theme_minimal_hgrid(14) +
+  theme(axis.line.x = element_blank())
+
+pdens4 <- ggplot(titanic, aes(x = age)) + 
+  geom_density(fill = "#56B4E9", color = darken("#56B4E9", 0.5), bw = 2, kernel = "rectangular") + 
+  scale_y_continuous(limits = c(0, 0.046), expand = c(0, 0), name = "density") +
+  scale_x_continuous(name = "age (years)", limits = c(0, 75), expand = c(0, 0)) +
+  coord_cartesian(clip = "off") +
+  theme_minimal_hgrid(14) +
+  theme(axis.line.x = element_blank())
+
+plot_grid(
+  pdens1, NULL, pdens2, 
+  NULL, NULL, NULL,
+  pdens3, NULL, pdens4,
+  align = 'hv',
+  rel_widths = c(1, .04, 1),
+  rel_heights = c(1, .04, 1)
+)
+```
+]
+
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+
+## Careful: KDEs can show non-sensical data
+
+.center[
+```{r titanic-age-kde-wrong, echo = FALSE, fig.width = 7, fig.asp = 0.618, dev = "svg"}
+pdens_neg <- ggplot(titanic, aes(x = age)) + 
+  geom_density(fill = "#56B4E9", color = darken("#56B4E9", 0.5)) + 
+  scale_y_continuous(limits = c(0, 0.046), expand = c(0, 0), name = "density") +
+  scale_x_continuous(name = "age (years)", limits = c(-10, 79), expand = c(0, 0)) +
+  coord_cartesian(clip = "off") +
+  theme_minimal_hgrid(16) +
+  theme(
+    axis.line.x = element_blank()
+  )
+stamp_wrong(pdens_neg)
+```
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Careful: Are bars stacked or overlapping?
+
+.pull-left[
+```{r titanic-age-hist-stacked, echo = FALSE, fig.width = 7, fig.asp = 0.618, dev = "svg"}
+gender_counts <- tibble(
+  age = (1:25)*3 - 1.5, 
+  male = hist(filter(titanic, sex == "male")$age, breaks = (0:25)*3 + .01, plot = FALSE)$counts,
+  female = hist(filter(titanic, sex == "female")$age, breaks = (0:25)*3 + .01, plot = FALSE)$counts
+) %>%
+  pivot_longer(-age, names_to = "gender", values_to = "count")
+
+gender_counts$gender <- factor(gender_counts$gender, levels = c("female", "male"))
+
+ggplot(gender_counts, aes(x = age, y = count, fill = gender)) + 
+  geom_col(position = "stack") +
+  scale_x_continuous(name = "age (years)", limits = c(0, 75), expand = c(0, 0)) +
+  scale_y_continuous(limits = c(0, 89), expand = c(0, 0), name = "count") +
+  scale_fill_manual(values = c("#D55E00", "#0072B2")) +
+  coord_cartesian(clip = "off") +
+  theme_minimal_hgrid(18) +
+  theme(
+    axis.line.x = element_blank(),
+    legend.position = c(.9, .87),
+    legend.justification = c("right", "top"),
+    legend.box.background = element_rect(fill = "white", color = "white")
+  )
+```
+]
+
+--
+
+.pull-right[
+```{r titanic-age-hist-overlap, echo = FALSE, fig.width = 7, fig.asp = 0.618, dev = "svg"}
+ggplot(gender_counts, aes(x = age, y = count, fill = gender)) + 
+  geom_col(position = "identity", alpha = 0.7) +
+  scale_x_continuous(name = "age (years)", limits = c(0, 75), expand = c(0, 0)) +
+  scale_y_continuous(limits = c(0, 56), expand = c(0, 0), name = "count") +
+  scale_fill_manual(
+    values = c("#D55E00", "#0072B2"),
+    guide = guide_legend(reverse = TRUE)
+  ) +
+  coord_cartesian(clip = "off") +
+  theme_minimal_hgrid(18) +
+  theme(
+    axis.line.x = element_blank(),
+    legend.position = c(.9, .87),
+    legend.justification = c("right", "top"),
+    legend.box.background = element_rect(fill = "white", color = "white")
+  )
+```
+]
+
+--
+
+Stacked or overlapping histograms are rarely a good choice.
+
+???
+
+Figures redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Alternatively: Age pyramid
+
+.center[
+```{r titanic-age-pyramid, echo = FALSE, fig.width = 7, fig.asp = 0.618, dev = "svg"}
+ggplot(gender_counts, aes(x = age, y = ifelse(gender == "male", -1, 1)*count, fill = gender)) + 
+  geom_col() +
+  scale_x_continuous(name = "age (years)", limits = c(0, 75), expand = c(0, 0)) +
+  scale_y_continuous(name = "count", breaks = 20*(-2:1), labels = c("40", "20", "0", "20")) +
+  scale_fill_manual(values = c("#D55E00", "#0072B2"), guide = "none") +
+  draw_text(x = 70, y = -39, "male", hjust = 0) +
+  draw_text(x = 70, y = 21, "female", hjust = 0) +
+  coord_flip() +
+  theme_minimal_grid(16) +
+  theme(axis.title.x = element_text(hjust = 0.61))
+```
+]
+
+
+???
+
+Figures redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Alternatively: KDEs showing proportions of total
+
+.center[
+```{r titanic-age-props, echo = FALSE, fig.width = 10, fig.asp = 0.45, dev = "svg"}
+titanic %>%
+  mutate(sex = factor(sex, levels = c("male", "female"))) %>%
+  ggplot(aes(x = age, y = after_stat(count))) +
+  geom_density(
+    data = select(titanic, -sex), aes(fill = "all passengers"),
+    color = "transparent"
+  ) + 
+  geom_density(aes(fill = sex), bw = 2, color = "transparent") +
+  scale_x_continuous(limits = c(0, 75), name = "passenger age (years)", expand = c(0, 0)) +
+  scale_y_continuous(limits = c(0, 26), name = "scaled density", expand = c(0, 0)) +
+  scale_fill_manual(
+    values = c("#b3b3b3a0", "#0072B2", "#D55E00"), 
+    breaks = c("all passengers", "male", "female"),
+    labels = c("all passengers  ", "males  ", "females"),
+    name = NULL,
+    guide = guide_legend(direction = "horizontal")
+  ) +
+  coord_cartesian(clip = "off") +
+  facet_wrap(vars(sex), labeller = labeller(sex = function(sex) paste(sex, "passengers"))) +
+  theme_minimal_hgrid(16) +
+  theme(
+    axis.line.x = element_blank(),
+    strip.text = element_text(size = 14, margin = margin(0, 0, 0.2, 0, "cm")),
+    legend.position = "bottom",
+    legend.justification = "right",
+    legend.margin = margin(4.5, 0, 1.5, 0, "pt"),
+    legend.spacing.x = grid::unit(4.5, "pt"),
+    legend.spacing.y = grid::unit(0, "pt"),
+    legend.box.spacing = grid::unit(0, "cm")
+  )
+```
+]
+
+???
+
+Figures redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Making histograms with ggplot: `geom_histogram()`
+
+.small-font[
+```{r titanic-hist-ggplot-demo, eval = FALSE}
+ggplot(titanic, aes(age)) +
+  geom_histogram()
+```
+]
+
+--
+
+.center.small-font[
+```{r titanic-hist-ggplot-demo-out, ref.label = "titanic-hist-ggplot-demo", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+## Setting the bin width
+
+.small-font[
+```{r titanic-hist-ggplot-demo2, eval = FALSE}
+ggplot(titanic, aes(age)) +
+  geom_histogram(binwidth = 5)
+```
+]
+
+
+.center[
+```{r titanic-hist-ggplot-demo2-out, ref.label = "titanic-hist-ggplot-demo2", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+--
+
+Do you like the bin placement?
+
+---
+
+## Always set the center as well
+
+.small-font[
+```{r titanic-hist-ggplot-demo3, eval = FALSE}
+ggplot(titanic, aes(age)) +
+  geom_histogram(
+    binwidth = 5,  # width of the bins
+    center = 2.5   # center of the bin containing that value
+  )
+```
+]
+
+
+.center[
+```{r titanic-hist-ggplot-demo3-out, ref.label = "titanic-hist-ggplot-demo3", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+## Always set the center as well
+
+.small-font[
+```{r titanic-hist-ggplot-demo4, eval = FALSE}
+ggplot(titanic, aes(age)) +
+  geom_histogram(
+    binwidth = 5,  # width of the bins
+    center = 12.5  # center of the bin containing that value
+  )
+```
+]
+
+
+.center[
+```{r titanic-hist-ggplot-demo4-out, ref.label = "titanic-hist-ggplot-demo4", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+## Making density plots with ggplot: `geom_density()`
+
+.small-font[
+```{r titanic-dens-ggplot-demo, eval = FALSE}
+ggplot(titanic, aes(age)) +
+  geom_density(fill = "skyblue")
+```
+]
+
+--
+
+.center[
+```{r titanic-dens-ggplot-demo-out, ref.label = "titanic-dens-ggplot-demo", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+## Making density plots with ggplot: `geom_density()`
+
+.small-font[
+```{r titanic-dens-ggplot-demo2, eval = FALSE}
+ggplot(titanic, aes(age)) +
+  geom_density() # without fill
+```
+]
+
+.center[
+```{r titanic-dens-ggplot-demo2-out, ref.label = "titanic-dens-ggplot-demo2", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+
+## Modifying bandwidth (`bw`) and kernel parameters
+
+.tiny-font[
+```{r titanic-dens-ggplot-demo3, eval = FALSE}
+ggplot(titanic, aes(age)) +
+  geom_density(
+    fill = "skyblue",
+    bw = 0.5,               # a small bandwidth
+    kernel = "gaussian"     # Gaussian kernel (the default)
+  )
+
+```
+]
+
+.center[
+```{r titanic-dens-ggplot-demo3-out, ref.label = "titanic-dens-ggplot-demo3", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+## Modifying bandwidth (`bw`) and kernel parameters
+
+.tiny-font[
+```{r titanic-dens-ggplot-demo4, eval = FALSE}
+ggplot(titanic, aes(age)) +
+  geom_density(
+    fill = "skyblue",
+    bw = 2,                 # a moderate bandwidth
+    kernel = "rectangular"  # rectangular kernel
+  )
+
+```
+]
+
+.center[
+```{r titanic-dens-ggplot-demo4-out, ref.label = "titanic-dens-ggplot-demo4", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+## Statistical transformations (stats) can be set explicitly
+
+.tiny-font[
+```{r titanic-stat-demo1, eval = FALSE}
+ggplot(titanic, aes(age)) +
+  geom_density(
+    stat = "density",    # the default for geom_density()
+    fill = "skyblue"
+  )
+```
+]
+
+.center[
+```{r titanic-stat-demo1-out, ref.label = "titanic-stat-demo1", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+
+---
+
+## Statistical transformations (stats) can be set explicitly
+
+.tiny-font[
+```{r titanic-stat-demo2, eval = FALSE}
+ggplot(titanic, aes(age)) +
+  geom_area(  # geom_area() does not normally use stat = "density"
+    stat = "density",
+    fill = "skyblue"
+  )
+```
+]
+
+.center[
+```{r titanic-stat-demo2-out, ref.label = "titanic-stat-demo2", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+## Statistical transformations (stats) can be set explicitly
+
+.tiny-font[
+```{r titanic-stat-demo3, eval = FALSE}
+ggplot(titanic, aes(age)) +
+  geom_line(  # neither does geom_line()
+    stat = "density"
+  )
+```
+]
+
+.center[
+```{r titanic-stat-demo3-out, ref.label = "titanic-stat-demo3", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+## Statistical transformations (stats) can be set explicitly
+
+.tiny-font[
+```{r titanic-stat-demo4, eval = FALSE}
+ggplot(titanic, aes(age)) +
+  # we can use multiple geoms on top of each other
+  geom_area(stat = "density", fill = "skyblue") +
+  geom_line(stat = "density")
+```
+]
+
+.center[
+```{r titanic-stat-demo4-out, ref.label = "titanic-stat-demo4", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+## Parameters are handed through to the stat
+
+.pull-left.tiny-font[
+```{r titanic-stat-demo5, eval = FALSE}
+ggplot(titanic, aes(age)) +
+  geom_line(stat = "density", bw = 3)
+```
+
+.center[
+```{r titanic-stat-demo5-out, ref.label = "titanic-stat-demo5", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```
+]]
+
+.pull-right.tiny-font[
+```{r titanic-stat-demo6, eval = FALSE}
+ggplot(titanic, aes(age)) +
+  geom_line(stat = "density", bw = 0.3)
+```
+
+.center[
+```{r titanic-stat-demo6-out, ref.label = "titanic-stat-demo6", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```
+]]
+
+--
+
+Here, `bw` is a parameter of `stat_density()`, not of `geom_line()`.
+
+---
+
+## We can explicitly map results from stat computations
+
+.tiny-font[
+```{r titanic-stat-demo7, eval = FALSE}
+ggplot(titanic, aes(age)) +
+  geom_tile( # geom_tile() draws rectangular colored areas
+    aes(
+      y = 1, # draw all tiles at the same y location
+      fill = after_stat(density)  # use computed density for fill
+    ),
+    stat = "density",
+    n = 20    # number of points calculated by stat_density() 
+  ) 
+```
+]
+
+.center[
+```{r titanic-stat-demo7-out, ref.label = "titanic-stat-demo7", echo = FALSE, fig.width = 10, fig.asp = 0.3, dev = "svg"}
+```
+]
+
+
+---
+
+## We can explicitly map results from stat computations
+
+.tiny-font[
+```{r titanic-stat-demo8, eval = FALSE}
+ggplot(titanic, aes(age)) +
+  geom_tile( # geom_tile() draws rectangular colored areas
+    aes(
+      y = 1, # draw all tiles at the same y location
+      fill = after_stat(density)  # use computed density for fill
+    ),
+    stat = "density",
+    n = 200   # number of points calculated by stat_density() 
+  ) 
+```
+]
+
+.center[
+```{r titanic-stat-demo8-out, ref.label = "titanic-stat-demo8", echo = FALSE, fig.width = 10, fig.asp = 0.3, dev = "svg"}
+```
+]
+
+---
+
+## Further reading
+
+- Fundamentals of Data Visualization: [Chapter 7: Visualizing distributions](https://clauswilke.com/dataviz/histograms-density-plots.html)
+- Data Visualization—A Practical Introduction: [4.6 Histograms and density plots](https://socviz.co/groupfacettx.html#histograms)
+- **ggplot2** reference documentation: [`geom_histogram()`](https://ggplot2.tidyverse.org/reference/geom_histogram)
+- **ggplot2** reference documentation: [`geom_density()`](https://ggplot2.tidyverse.org/reference/geom_density)
+
+
+
+

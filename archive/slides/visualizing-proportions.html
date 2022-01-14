@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Visualizing proportions</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Claus O. Wilke" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="Wilke-slides-theme.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, title-slide
+
+# Visualizing proportions
+### Claus O. Wilke
+### last updated: 2021-03-09
+
+---
+
+
+
+
+
+## The archetypal visualization of proportions: pie chart
+
+
+
+.small-font.center[
+![](visualizing-proportions_files/figure-html/bundestag-pie-1.svg)&lt;!-- --&gt;
+
+Party composition of the 8th German Bundestag, 1976–1980
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Pie chart vs stacked bars vs side-by-side bars
+
+&lt;br&gt;
+
+
+
+.center[
+![](visualizing-proportions_files/figure-html/bundestag-various-1.svg)&lt;!-- --&gt;
+]
+
+???
+
+Figures redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+
+## Example where side-by-side bars are preferred
+
+.center[
+![](visualizing-proportions_files/figure-html/marketshare-side-by-side-1.svg)&lt;!-- --&gt;
+]
+
+.xtiny-font.right[
+Inspired by: https://en.wikipedia.org/wiki/File:Piecharts.svg
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Example where side-by-side bars are preferred
+
+.center[
+![](visualizing-proportions_files/figure-html/marketshare-stacked-1.svg)&lt;!-- --&gt;
+]
+
+.xtiny-font.right[
+Inspired by: https://en.wikipedia.org/wiki/File:Piecharts.svg
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Example where side-by-side bars are preferred
+
+.center[
+![](visualizing-proportions_files/figure-html/marketshare-pies-1.svg)&lt;!-- --&gt;
+]
+
+.xtiny-font.right[
+Inspired by: https://en.wikipedia.org/wiki/File:Piecharts.svg
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Example where side-by-side bars are preferred
+
+.center[
+![](visualizing-proportions_files/figure-html/marketshare-side-by-side2-1.svg)&lt;!-- --&gt;
+]
+
+.xtiny-font.right[
+Inspired by: https://en.wikipedia.org/wiki/File:Piecharts.svg
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+
+---
+
+## Example where stacked bars are preferred
+
+.small-font.center[
+![](visualizing-proportions_files/figure-html/women-parliament-1.svg)&lt;!-- --&gt;
+
+Change in the gender composition of the Rwandan parliament from 1997 to 2016
+
+]
+
+???
+
+Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.](https://clauswilke.com/dataviz)
+
+---
+
+## Pros and cons of different approaches
+
+.small-font.center[
+               | &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Pie chart &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; | &amp;nbsp;&amp;nbsp;&amp;nbsp; Stacked bars &amp;nbsp;&amp;nbsp;&amp;nbsp; | Side-by-side bars
+:----------    | :-------: | :----------: | :---------------:
+Allows easy comparison of relative proportions   | ✖ | ✖ | ✔ 
+]
+
+---
+
+## Pros and cons of different approaches
+
+.small-font.center[
+               | &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Pie chart &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; | &amp;nbsp;&amp;nbsp;&amp;nbsp; Stacked bars &amp;nbsp;&amp;nbsp;&amp;nbsp; | Side-by-side bars
+:----------    | :-------: | :----------: | :---------------:
+Allows easy comparison of relative proportions   | ✖ | ✖ | ✔ 
+Shows data as proportions of a whole             | ✔ | ✔ | ✖
+]
+
+---
+
+## Pros and cons of different approaches
+
+.small-font.center[
+               | &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Pie chart &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; | &amp;nbsp;&amp;nbsp;&amp;nbsp; Stacked bars &amp;nbsp;&amp;nbsp;&amp;nbsp; | Side-by-side bars
+:----------    | :-------: | :----------: | :---------------:
+Allows easy comparison of relative proportions   | ✖ | ✖ | ✔ 
+Shows data as proportions of a whole             | ✔ | ✔ | ✖
+Emphasizes simple fractions (1/2, 1/3, ...) | ✔ | ✖ | ✖
+]
+
+---
+
+## Pros and cons of different approaches
+
+.small-font.center[
+               | &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Pie chart &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; | &amp;nbsp;&amp;nbsp;&amp;nbsp; Stacked bars &amp;nbsp;&amp;nbsp;&amp;nbsp; | Side-by-side bars
+:----------    | :-------: | :----------: | :---------------:
+Allows easy comparison of relative proportions   | ✖ | ✖ | ✔ 
+Shows data as proportions of a whole             | ✔ | ✔ | ✖
+Emphasizes simple fractions (1/2, 1/3, ...) | ✔ | ✖ | ✖
+Visually appealing for small datasets | ✔ | ✖ | ✔
+]
+
+
+---
+
+## Pros and cons of different approaches
+
+.small-font.center[
+               | &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Pie chart &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; | &amp;nbsp;&amp;nbsp;&amp;nbsp; Stacked bars &amp;nbsp;&amp;nbsp;&amp;nbsp; | Side-by-side bars
+:----------    | :-------: | :----------: | :---------------:
+Allows easy comparison of relative proportions   | ✖ | ✖ | ✔ 
+Shows data as proportions of a whole             | ✔ | ✔ | ✖
+Emphasizes simple fractions (1/2, 1/3, ...) | ✔ | ✖ | ✖
+Visually appealing for small datasets | ✔ | ✖ | ✔
+Works well for a large number of subsets | ✖ | ✖ | ✔ 
+]
+
+---
+
+## Pros and cons of different approaches
+
+.small-font.center[
+               | &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Pie chart &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; | &amp;nbsp;&amp;nbsp;&amp;nbsp; Stacked bars &amp;nbsp;&amp;nbsp;&amp;nbsp; | Side-by-side bars
+:----------    | :-------: | :----------: | :---------------:
+Allows easy comparison of relative proportions   | ✖ | ✖ | ✔ 
+Shows data as proportions of a whole             | ✔ | ✔ | ✖
+Emphasizes simple fractions (1/2, 1/3, ...) | ✔ | ✖ | ✖
+Visually appealing for small datasets | ✔ | ✖ | ✔
+Works well for a large number of subsets | ✖ | ✖ | ✔ 
+Works well for time series and similar | ✖ | ✔ | ✖
+]
+
+--
+
+No one visualization fits all scenarios!
+
+
+---
+
+## Making pie charts with ggplot
+
+We have three options:
+
+- `geom_bar()`/`geom_col()` with poolar coordinates  
+  Pros: simple  
+  Cons: hard to customize
+  
+--
+
+- `geom_arc_bar()` with `stat_pie()`  
+  Pros: relatively simple, some customization  
+  Cons: requires **ggforce** &amp; some more complex code
+  
+--
+
+
+- `geom_arc_bar()` with manual computation  
+  Pros: maximum flexibility for customization  
+  Cons: requires **ggforce** &amp; much more complex code
+  
+
+---
+
+## Making pie charts with ggplot: polar coords
+
+.pull-left.tiny-font[
+
+```r
+# the data
+bundestag &lt;- tibble(
+  party = c("CDU/CSU", "SPD", "FDP"),
+  seats = c(243, 214, 39)
+)
+
+bundestag
+```
+
+```
+# A tibble: 3 x 2
+  party   seats
+  &lt;chr&gt;   &lt;dbl&gt;
+1 CDU/CSU   243
+2 SPD       214
+3 FDP        39
+```
+]
+
+---
+
+## Making pie charts with ggplot: polar coords
+
+.pull-left.tiny-font[
+
+```r
+# the data
+bundestag &lt;- tibble(
+  party = c("CDU/CSU", "SPD", "FDP"),
+  seats = c(243, 214, 39)
+)
+
+# make bar chart
+ggplot(bundestag) +
+  aes(seats, "YY", fill = party) + 
+  geom_col()
+```
+]
+
+.pull-right[
+![](visualizing-proportions_files/figure-html/bundestag-coord-polar1-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Making pie charts with ggplot: polar coords
+
+.pull-left.tiny-font[
+
+```r
+# the data
+bundestag &lt;- tibble(
+  party = c("CDU/CSU", "SPD", "FDP"),
+  seats = c(243, 214, 39)
+)
+
+# make bar chart in polar coords
+ggplot(bundestag) +
+  aes(seats, "YY", fill = party) + 
+  geom_col() +
+  coord_polar()
+```
+]
+
+.pull-right[
+![](visualizing-proportions_files/figure-html/bundestag-coord-polar2-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Making pie charts with ggplot: polar coords
+
+.pull-left.tiny-font[
+
+```r
+# the data
+bundestag &lt;- tibble(
+  party = c("CDU/CSU", "SPD", "FDP"),
+  seats = c(243, 214, 39)
+)
+
+# make bar chart in polar coords
+ggplot(bundestag) +
+  aes(seats, "YY", fill = party) + 
+  geom_col() +
+  coord_polar() +
+  scale_x_continuous(
+    name = NULL, breaks = NULL
+  ) +
+  scale_y_discrete(
+    name = NULL, breaks = NULL
+  ) +
+  ggtitle("German Bundestag 1976-1980")
+```
+]
+
+.pull-right[
+![](visualizing-proportions_files/figure-html/bundestag-coord-polar3-out-1.svg)&lt;!-- --&gt;
+]
+
+
+
+---
+
+## Making pie charts with ggplot: **ggforce** stat pie
+
+.pull-left.tiny-font[
+
+```r
+library(ggforce)
+
+ggplot(bundestag) +
+  aes(
+    x0 = 0, y0 = 0, # position of pie center
+    r0 = 0, r = 1,  # inner and outer radius
+    amount = seats, # size of pie slices
+    fill = party
+  ) + 
+  geom_arc_bar(stat = "pie")
+```
+]
+
+.pull-right[
+![](visualizing-proportions_files/figure-html/bundestag-stat-pie1-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Making pie charts with ggplot: **ggforce** stat pie
+
+.pull-left.tiny-font[
+
+```r
+library(ggforce)
+
+ggplot(bundestag) +
+  aes(
+    x0 = 0, y0 = 0, # position of pie center
+    r0 = 0, r = 1,  # inner and outer radius
+    amount = seats, # size of pie slices
+    fill = party
+  ) + 
+  geom_arc_bar(stat = "pie") +
+  coord_fixed()
+```
+]
+
+.pull-right[
+![](visualizing-proportions_files/figure-html/bundestag-stat-pie2-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Making pie charts with ggplot: **ggforce** stat pie
+
+.pull-left.tiny-font[
+
+```r
+library(ggforce)
+
+ggplot(bundestag) +
+  aes(
+    x0 = 0, y0 = 0, # position of pie center
+    r0 = 0, r = 1,  # inner and outer radius
+    amount = seats, # size of pie slices
+    fill = party
+  ) + 
+  geom_arc_bar(stat = "pie") +
+  coord_fixed(
+    xlim = c(-1, 3), ylim = c(-1, 3)
+  )
+```
+]
+
+.pull-right[
+![](visualizing-proportions_files/figure-html/bundestag-stat-pie3-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Making pie charts with ggplot: **ggforce** stat pie
+
+.pull-left.tiny-font[
+
+```r
+library(ggforce)
+
+ggplot(bundestag) +
+  aes(
+    x0 = 1, y0 = 1, # position of pie center
+    r0 = 0, r = 1,  # inner and outer radius
+    amount = seats, # size of pie slices
+    fill = party
+  ) + 
+  geom_arc_bar(stat = "pie") +
+  coord_fixed(
+    xlim = c(-1, 3), ylim = c(-1, 3)
+  )
+```
+]
+
+.pull-right[
+![](visualizing-proportions_files/figure-html/bundestag-stat-pie4-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Making pie charts with ggplot: **ggforce** stat pie
+
+.pull-left.tiny-font[
+
+```r
+library(ggforce)
+
+ggplot(bundestag) +
+  aes(
+    x0 = 1, y0 = 1, # position of pie center
+    r0 = 1, r = 2,  # inner and outer radius
+    amount = seats, # size of pie slices
+    fill = party
+  ) + 
+  geom_arc_bar(stat = "pie") +
+  coord_fixed(
+    xlim = c(-1, 3), ylim = c(-1, 3)
+  )
+```
+]
+
+.pull-right[
+![](visualizing-proportions_files/figure-html/bundestag-stat-pie5-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Making pie charts with ggplot: **ggforce** manual comp.
+
+.tiny-font[
+
+```r
+# prepare pie data
+pie_data &lt;- bundestag %&gt;%
+  arrange(seats) # sort so pie slices end up sorted
+
+pie_data
+```
+
+```
+# A tibble: 3 x 2
+  party   seats
+  &lt;chr&gt;   &lt;dbl&gt;
+1 FDP        39
+2 SPD       214
+3 CDU/CSU   243
+```
+]
+
+
+---
+
+## Making pie charts with ggplot: **ggforce** manual comp.
+
+.tiny-font[
+
+```r
+# prepare pie data
+pie_data &lt;- bundestag %&gt;%
+  arrange(seats) %&gt;% # sort so pie slices end up sorted
+  mutate(
+    end_angle = 2*pi*cumsum(seats)/sum(seats)    # ending angle for each pie slice
+  )
+
+pie_data
+```
+
+```
+# A tibble: 3 x 3
+  party   seats end_angle
+  &lt;chr&gt;   &lt;dbl&gt;     &lt;dbl&gt;
+1 FDP        39     0.494
+2 SPD       214     3.20 
+3 CDU/CSU   243     6.28 
+```
+]
+
+
+---
+
+## Making pie charts with ggplot: **ggforce** manual comp.
+
+.tiny-font[
+
+```r
+# prepare pie data
+pie_data &lt;- bundestag %&gt;%
+  arrange(seats) %&gt;% # sort so pie slices end up sorted
+  mutate(
+    end_angle = 2*pi*cumsum(seats)/sum(seats),   # ending angle for each pie slice
+    start_angle = lag(end_angle, default = 0)    # starting angle for each pie slice
+  )
+
+pie_data
+```
+
+```
+# A tibble: 3 x 4
+  party   seats end_angle start_angle
+  &lt;chr&gt;   &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;
+1 FDP        39     0.494       0    
+2 SPD       214     3.20        0.494
+3 CDU/CSU   243     6.28        3.20 
+```
+]
+
+---
+
+## Making pie charts with ggplot: **ggforce** manual comp.
+
+.tiny-font[
+
+```r
+# prepare pie data
+pie_data &lt;- bundestag %&gt;%
+  arrange(seats) %&gt;% # sort so pie slices end up sorted
+  mutate(
+    end_angle = 2*pi*cumsum(seats)/sum(seats),   # ending angle for each pie slice
+    start_angle = lag(end_angle, default = 0),   # starting angle for each pie slice
+    mid_angle = 0.5*(start_angle + end_angle),   # middle of each pie slice, for text labels
+  )
+
+pie_data
+```
+
+```
+# A tibble: 3 x 5
+  party   seats end_angle start_angle mid_angle
+  &lt;chr&gt;   &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;     &lt;dbl&gt;
+1 FDP        39     0.494       0         0.247
+2 SPD       214     3.20        0.494     1.85 
+3 CDU/CSU   243     6.28        3.20      4.74 
+```
+]
+
+---
+
+## Making pie charts with ggplot: **ggforce** manual comp.
+
+.tiny-font[
+
+```r
+# prepare pie data
+pie_data &lt;- bundestag %&gt;%
+  arrange(seats) %&gt;% # sort so pie slices end up sorted
+  mutate(
+    end_angle = 2*pi*cumsum(seats)/sum(seats),   # ending angle for each pie slice
+    start_angle = lag(end_angle, default = 0),   # starting angle for each pie slice
+    mid_angle = 0.5*(start_angle + end_angle),   # middle of each pie slice, for text labels
+    # horizontal and vertical justifications for outer labels
+    hjust = ifelse(mid_angle &gt; pi, 1, 0),
+    vjust = ifelse(mid_angle &lt; pi/2 | mid_angle &gt; 3*pi/2, 0, 1)
+  )
+
+pie_data
+```
+
+```
+# A tibble: 3 x 7
+  party   seats end_angle start_angle mid_angle hjust vjust
+  &lt;chr&gt;   &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1 FDP        39     0.494       0         0.247     0     0
+2 SPD       214     3.20        0.494     1.85      0     1
+3 CDU/CSU   243     6.28        3.20      4.74      1     0
+```
+]
+
+---
+
+## Making pie charts with ggplot: **ggforce** manual comp.
+
+.pull-left.tiny-font[
+
+```r
+ggplot(pie_data) +
+  aes(
+    x0 = 0, y0 = 0, r0 = 0, r = 1,
+    start = start_angle, end = end_angle,
+    fill = party
+  ) +
+  geom_arc_bar() +
+  coord_fixed()
+```
+]
+
+.pull-right[
+![](visualizing-proportions_files/figure-html/bundestag-arc-bar1-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Making pie charts with ggplot: **ggforce** manual comp.
+
+.pull-left.tiny-font[
+
+```r
+ggplot(pie_data) +
+  aes(
+    x0 = 0, y0 = 0, r0 = 0, r = 1,
+    start = start_angle, end = end_angle,
+    fill = party
+  ) +
+  geom_arc_bar() +
+  geom_text( # place amounts inside the pie
+    aes(
+      x = 0.6 * sin(mid_angle),
+      y = 0.6 * cos(mid_angle),
+      label = seats
+    )
+  ) +
+  coord_fixed()
+```
+]
+
+.pull-right[
+![](visualizing-proportions_files/figure-html/bundestag-arc-bar2-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Making pie charts with ggplot: **ggforce** manual comp.
+
+.pull-left.tiny-font[
+
+```r
+ggplot(pie_data) +
+  aes(
+    x0 = 0, y0 = 0, r0 = 0, r = 1,
+    start = start_angle, end = end_angle,
+    fill = party
+  ) +
+  geom_arc_bar() +
+  geom_text( # place amounts inside the pie
+    aes(
+      x = 0.2 * sin(mid_angle),
+      y = 0.2 * cos(mid_angle),
+      label = seats
+    )
+  ) +
+  coord_fixed()
+```
+]
+
+.pull-right[
+![](visualizing-proportions_files/figure-html/bundestag-arc-bar3-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Making pie charts with ggplot: **ggforce** manual comp.
+
+.pull-left.tiny-font[
+
+```r
+ggplot(pie_data) +
+  aes(
+    x0 = 0, y0 = 0, r0 = 0, r = 1,
+    start = start_angle, end = end_angle,
+    fill = party
+  ) +
+  geom_arc_bar() +
+  geom_text( # place amounts inside the pie
+    aes(
+      x = 0.8 * sin(mid_angle),
+      y = 0.8 * cos(mid_angle),
+      label = seats
+    )
+  ) +
+  coord_fixed()
+```
+]
+
+.pull-right[
+![](visualizing-proportions_files/figure-html/bundestag-arc-bar4-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Making pie charts with ggplot: **ggforce** manual comp.
+
+.pull-left.tiny-font[
+
+```r
+ggplot(pie_data) +
+  aes(
+    x0 = 0, y0 = 0, r0 = 0, r = 1,
+    start = start_angle, end = end_angle,
+    fill = party
+  ) +
+  geom_arc_bar() +
+  geom_text( # place amounts inside the pie
+    aes(
+      x = 0.6 * sin(mid_angle),
+      y = 0.6 * cos(mid_angle),
+      label = seats
+    )
+  ) +
+  coord_fixed()
+```
+]
+
+.pull-right[
+![](visualizing-proportions_files/figure-html/bundestag-arc-bar5-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Making pie charts with ggplot: **ggforce** manual comp.
+
+.pull-left.xtiny-font[
+
+```r
+ggplot(pie_data) +
+  aes(
+    x0 = 0, y0 = 0, r0 = 0, r = 1,
+    start = start_angle, end = end_angle,
+    fill = party
+  ) +
+  geom_arc_bar() +
+  geom_text( # place amounts inside the pie
+    aes(
+      x = 0.6 * sin(mid_angle),
+      y = 0.6 * cos(mid_angle),
+      label = seats
+    )
+  ) +
+  geom_text( # place party name outside the pie
+    aes(
+      x = 1.05 * sin(mid_angle),
+      y = 1.05 * cos(mid_angle),
+      label = party,
+      hjust = hjust, vjust = vjust
+    )
+  ) +
+  coord_fixed()
+```
+]
+
+.pull-right[
+![](visualizing-proportions_files/figure-html/bundestag-arc-bar6-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Making pie charts with ggplot: **ggforce** manual comp.
+
+.pull-left.xtiny-font[
+
+```r
+ggplot(pie_data) +
+  aes(
+    x0 = 0, y0 = 0, r0 = 0, r = 1,
+    start = start_angle, end = end_angle,
+    fill = party
+  ) +
+  geom_arc_bar() +
+  geom_text( # place amounts inside the pie
+    aes(
+      x = 0.6 * sin(mid_angle),
+      y = 0.6 * cos(mid_angle),
+      label = seats
+    )
+  ) +
+  geom_text( # place party name outside the pie
+    aes(
+      x = 1.05 * sin(mid_angle),
+      y = 1.05 * cos(mid_angle),
+      label = party,
+      hjust = hjust, vjust = vjust
+    )
+  ) +
+  coord_fixed(xlim = c(-1.8, 1.3))
+```
+]
+
+.pull-right[
+![](visualizing-proportions_files/figure-html/bundestag-arc-bar7-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Making pie charts with ggplot: **ggforce** manual comp.
+
+.pull-left.xtiny-font[
+
+```r
+ggplot(pie_data) +
+  aes(
+    x0 = 0, y0 = 0, r0 = 0.4, r = 1,
+    start = start_angle, end = end_angle,
+    fill = party
+  ) +
+  geom_arc_bar() +
+  geom_text( # place amounts inside the pie
+    aes(
+      x = 0.7 * sin(mid_angle),
+      y = 0.7 * cos(mid_angle),
+      label = seats
+    )
+  ) +
+  geom_text( # place party name outside the pie
+    aes(
+      x = 1.05 * sin(mid_angle),
+      y = 1.05 * cos(mid_angle),
+      label = party,
+      hjust = hjust, vjust = vjust
+    )
+  ) +
+  coord_fixed(xlim = c(-1.8, 1.3))
+```
+]
+
+.pull-right[
+![](visualizing-proportions_files/figure-html/bundestag-arc-bar8-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Further reading
+
+- Fundamentals of Data Visualization: [Chapter 10: Visualizing proportions](https://clauswilke.com/dataviz/visualizing-proportions.html)
+- Fundamentals of Data Visualization: [Chapter 11: Visualizing nested proportions](https://clauswilke.com/dataviz/nested-proportions.html)
+- **ggplot2** reference documentation: [`position_stack()`, `position_fill()`](https://ggplot2.tidyverse.org/reference/position_stack.html)
+- **ggplot2** reference documentation: [`position_dodge()`](https://ggplot2.tidyverse.org/reference/position_dodge.html)
+- **ggforce** reference documentation: [`geom_arc_bar()`](https://ggforce.data-imaginist.com/reference/geom_arc_bar.html)
+
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"slideNumberFormat": ""
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

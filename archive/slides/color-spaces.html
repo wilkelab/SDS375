@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Color spaces and color-vision deficiency</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Claus O. Wilke" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="Wilke-slides-theme.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, title-slide
+
+# Color spaces and color-vision deficiency
+### Claus O. Wilke
+### last updated: 2021-04-12
+
+---
+
+
+
+
+class: center middle
+
+## How does a computer represent color?
+
+---
+
+## The RGB color space
+
+.pull-left.width-50[
+- red R (0-255): amount of red light
+
+- green G (0-255): amount of green light
+
+- blue B (0-255): amount of blue light
+]
+
+--
+
+.pull-right.move-down-1em[
+
+R | G | B | hex code | &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;color&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+---| --- | --- | --- | ---
+0  | 0 | 0 | #000000 | &lt;div style = "background-color: #000000;"&gt;&amp;nbsp;&lt;/div&gt;
+255  | 0 | 0 | #FF0000 | &lt;div style = "background-color: #FF0000;"&gt;&amp;nbsp;&lt;/div&gt;
+0  | 255 | 255 | #00FFFF | &lt;div style = "background-color: #00FFFF;"&gt;&amp;nbsp;&lt;/div&gt;
+128  | 128 | 128 | #808080 | &lt;div style = "background-color: #808080;"&gt;&amp;nbsp;&lt;/div&gt;
+0 | 158 | 115 | #009E73 | &lt;div style = "background-color: #009E73;"&gt;&amp;nbsp;&lt;/div&gt;
+255 | 255 | 255 | #FFFFFF | &lt;div style = "background-color: #FFFFFF;"&gt;&amp;nbsp;&lt;/div&gt;
+]
+
+---
+
+## The RGB color space
+
+.center[
+![](color-spaces_files/figure-html/rgb-viz-1.svg)&lt;!-- --&gt;
+]
+
+---
+class: center middle
+
+## Humans cannot reason well about the RGB color space
+
+---
+
+## The HSV color space
+
+.pull-left[
+
+- hue H (0-360):  
+  hue of the color
+
+- saturation S (0-1):  
+  colorfulness relative to the brightness of the color
+
+- value V (0-1):  
+  subjective perception of amount of light emitted
+]
+
+.pull-right.move-up-1em[
+![](color-spaces_files/figure-html/hsv-viz-single-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## The HSV color space
+
+.center[
+![](color-spaces_files/figure-html/hsv-viz-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## The HLS color space
+
+.pull-left[
+- hue H (0-360):  
+  hue of the color
+
+- lightness L (0-1):  
+  brightness relative to the brightness of a similarly illuminated white
+
+- saturation S (0-1):  
+  colorfulness relative to the brightness of the color
+]
+
+.pull-right.move-up-1em[
+![](color-spaces_files/figure-html/hls-viz-single-1.svg)&lt;!-- --&gt;
+
+]
+
+---
+
+## The HLS color space
+
+.center[
+![](color-spaces_files/figure-html/hls-viz-1.svg)&lt;!-- --&gt;
+]
+
+---
+class: center middle
+
+## Humans cannot reason well about HSV or HLS either
+
+---
+
+## The Luv color space
+
+.pull-left.width-50[
+
+- luminance L (0-100):  
+  amount of light emitted
+
+- green/red axis u (approx. -100 to 100):  
+  amount of green vs. red
+
+- blue/yellow axis v (approx. -100 to 100):  
+  amount of blue vs. yellow
+]
+
+.pull-right.move-up-2em[
+![](color-spaces_files/figure-html/luv-viz-single-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## The Luv color space
+
+.center[
+![](color-spaces_files/figure-html/luv-viz-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## The HCL color space: polar Luv
+
+.center.move-up-1em[
+![](color-spaces_files/figure-html/hcl-viz-single-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## The HCL color space: polar Luv
+
+.move-up-1em.center[
+![](color-spaces_files/figure-html/cl-planes-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## We can explore HCL colors in R
+
+
+```r
+colorspace::choose_color()
+```
+
+--
+
+&lt;img src = "color-spaces_files/choose_color1.png", width = 35%, style = "position:absolute; top: 20%; left: 52.5%; box-shadow: 3px 5px 3px 1px #00000080;"&gt;&lt;/img&gt;
+
+--
+
+&lt;img src = "color-spaces_files/choose_color2.png", width = 35%, style = "position:absolute; top: 35%; left: 12.5%; box-shadow: 3px 5px 3px 1px #00000080;"&gt;&lt;/img&gt;
+
+--
+
+&lt;img src = "color-spaces_files/choose_color3.png", width = 35%, style = "position:absolute; top: 50%; left: 42.5%; box-shadow: 3px 5px 3px 1px #00000080;"&gt;&lt;/img&gt;
+
+---
+
+## One important point to remember: Avoid high chroma
+
+--
+
+.pull-left.width-45[
+High chroma: Toys
+
+&lt;img src = "color-spaces_files/toys-image.jpg", width = 100%, style = "box-shadow: 3px 5px 3px 1px #00000080;"&gt;&lt;/img&gt;
+]
+
+???
+
+[Photo by Pixabay from Pexels](https://www.pexels.com/photo/super-mario-and-yoshi-plastic-figure-163077/)
+
+--
+
+.pull-right.width-45[
+Low chroma: Elegance
+
+&lt;img src = "color-spaces_files/home-interior.jpg", width = 95%, style = "box-shadow: 3px 5px 3px 1px #00000080;"&gt;&lt;/img&gt;
+]
+
+???
+
+[Photo by Saviesa Home from Pexels](https://www.pexels.com/photo/kitchen-island-2089698/)
+
+---
+
+## Always be aware of color-vision deficiency
+
+5%–8% of men are color blind!
+
+--
+
+&lt;img src = "https://clauswilke.com/dataviz/pitfalls_of_color_use_files/figure-html/red-green-cvd-sim-1.png", width = 100%&gt;&lt;/img&gt;
+
+Red-green color-vision deficiency is the most common
+
+---
+
+## Always be aware of color-vision deficiency
+
+5%–8% of men are color blind!
+
+&lt;img src = "https://clauswilke.com/dataviz/pitfalls_of_color_use_files/figure-html/blue-green-cvd-sim-1.png", width = 100%&gt;&lt;/img&gt;
+
+Blue-green color-vision deficiency is rare but does occur
+
+---
+
+## Always be aware of color-vision deficiency
+
+Choose colors that can be distinguished with CVD
+
+&lt;img src = "https://clauswilke.com/dataviz/pitfalls_of_color_use_files/figure-html/PiYG-cvd-sim-1.png", width = 100%&gt;&lt;/img&gt;
+
+---
+
+## CVD is worse for thin lines and tiny dots
+
+.move-up-1em.center[
+&lt;img src = "https://clauswilke.com/dataviz/pitfalls_of_color_use_files/figure-html/colors-thin-lines-1.png", width = 65%&gt;&lt;/img&gt;
+]
+
+---
+
+## Further reading
+
+- Fundamentals of Data Visualization: [Chapter 19: Common pitfalls of color use](https://clauswilke.com/dataviz/color-pitfalls.html)
+- Wikipedia: [HSL and HSV](https://en.wikipedia.org/wiki/HSL_and_HSV)
+- **colorspace** package documentation: [Color Spaces](https://colorspace.r-forge.r-project.org/articles/color_spaces.html)
+- **colorspace** package documentation: [Apps for Choosing Colors and Palettes Interactively](https://colorspace.r-forge.r-project.org/articles/hclwizard.html)
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"slideNumberFormat": ""
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

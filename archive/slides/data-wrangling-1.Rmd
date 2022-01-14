@@ -1,0 +1,341 @@
+---
+title: "Data wrangling 1"
+author: "Claus O. Wilke"
+date: "last updated: `r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: [default, "Wilke-slides-theme.css"]
+    lib_dir: libs
+    nature:
+      ratio: '16:9'
+      highlightStyle: github
+      highlightLines: true
+      slideNumberFormat: ''
+      titleSlideClass: [center, middle]
+---
+
+```{r setup, include=FALSE, echo=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(comment = "")
+
+library(tidyverse)
+library(palmerpenguins)
+# ggplot2 settings so plots scale well for slide size 
+theme_set(theme_gray(16))
+update_geom_defaults("point", list(size = 2))
+```
+
+
+## Elementary data manipulations
+
+--
+
+- Pick rows: `filter()`
+
+--
+
+- Pick columns: `select()`
+
+--
+
+- Sort rows: `arrange()`
+
+--
+
+- Count things: `count()`
+
+--
+
+- Make new columns: `mutate()`
+
+---
+class: center, middle
+
+# But first: the pipe operator `%>%`
+
+---
+class: center, middle
+
+# `%>%` is pronounced "and then"
+
+---
+
+## The pipe `%>%` feeds data into functions
+
+.tiny-font[
+```{r}
+head(penguins)
+```
+]
+
+---
+
+## The pipe `%>%` feeds data into functions
+
+.tiny-font[
+```{r}
+# head(penguins)
+
+penguins %>%
+  head()
+```
+]
+
+
+---
+
+## The pipe `%>%` feeds data into functions
+
+.tiny-font[
+```{r penguins-scatter, eval = FALSE}
+ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = species)) + geom_point()
+```
+]
+
+.center[
+```{r penguins-scatter-out, ref.label = "penguins-scatter", echo = FALSE, warning=FALSE, fig.width=6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+
+---
+
+## The pipe `%>%` feeds data into functions
+
+.tiny-font[
+```{r penguins-scatter2, eval = FALSE}
+# ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = species)) + geom_point()
+
+penguins %>%
+  ggplot(aes(bill_length_mm, bill_depth_mm, color = species)) + geom_point()
+```
+]
+
+.center[
+```{r penguins-scatter2-out, ref.label = "penguins-scatter2", echo = FALSE, warning=FALSE, fig.width=6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+## Pick rows from a table: `filter()`
+
+<br>
+
+.center[
+<img src = "data-wrangling-1_files/filter.svg", width = 75%></img>
+]
+
+
+---
+
+## Filter out penguins of species Gentoo
+
+.tiny-font[
+```{r}
+penguins %>%
+  filter(species == "Gentoo")
+```
+]
+
+---
+
+## Filter out penguins with bill length > 50 mm
+
+.tiny-font[
+```{r}
+penguins %>%
+  filter(bill_length_mm > 50)
+```
+]
+
+---
+
+## Pick columns from a table: `select()`
+
+<br>
+
+.center[
+<img src = "data-wrangling-1_files/select.svg", width = 75%></img>
+]
+
+
+---
+
+## Pick columns `species`, `island`, and `sex`
+
+.tiny-font[
+```{r}
+penguins %>%
+  select(species, island, sex)
+```
+]
+
+---
+
+## Sort the rows in a table: `arrange()`
+
+<br>
+
+.center[
+<img src = "data-wrangling-1_files/arrange.svg", width = 75%></img>
+]
+
+---
+
+## Sort penguins by bill length, ascending
+
+.tiny-font[
+```{r}
+penguins %>%
+  arrange(bill_length_mm)
+```
+]
+
+---
+
+## Sort penguins by bill length, descending
+
+.tiny-font[
+```{r}
+penguins %>%
+  arrange(desc(bill_length_mm))
+```
+]
+
+
+---
+
+## Count things
+
+.tiny-font[
+```{r}
+penguins
+```
+]
+
+---
+
+## Count things
+
+.tiny-font[
+```{r eval = FALSE}
+penguins %>%
+  count(species)
+```
+
+```{r echo = FALSE}
+# for some reason this data frame has row names, which are indicated with
+# an asterisk, which shows up as a highlighted row
+x <- penguins %>%
+  count(species)
+
+row.names(x) <- NULL
+x
+```
+]
+
+---
+
+## Count things
+
+.tiny-font[
+```{r}
+penguins %>%
+  count(species, island)
+```
+]
+
+---
+
+## Use the pipe to build analysis pipelines
+
+.tiny-font[
+```{r}
+penguins %>%
+  filter(species == "Adelie")
+```
+]
+
+---
+
+## Use the pipe to build analysis pipelines
+
+.tiny-font[
+```{r}
+penguins %>%
+  filter(species == "Adelie") %>%
+  select(island, sex)
+```
+]
+
+
+---
+
+## Use the pipe to build analysis pipelines
+
+.tiny-font[
+```{r}
+penguins %>%
+  filter(species == "Adelie") %>%
+  select(island, sex) %>%
+  count(island, sex)
+```
+]
+
+---
+## Make a new table column: `mutate()`
+
+<br>
+
+.center[
+<img src = "data-wrangling-1_files/mutate.svg", width = 75%></img>
+]
+
+---
+
+## Example: flipper length in cm
+
+.tiny-font[
+```{r}
+penguins %>%
+  select(species, island, flipper_length_mm)
+```
+]
+
+---
+
+## Example: flipper length in cm
+
+.tiny-font[
+```{r}
+penguins %>%
+  select(species, island, flipper_length_mm) %>%
+  mutate(flipper_length_cm = flipper_length_mm / 10)
+```
+]
+
+---
+
+## Make multiple columns at once
+
+.tiny-font[
+```{r}
+penguins %>%
+  select(species, island, flipper_length_mm) %>%
+  mutate(
+    flipper_length_cm = flipper_length_mm / 10,  # <- notice the comma
+    flipper_length_in = flipper_length_mm / 25.4
+  )
+```
+]
+
+
+---
+
+## Further reading
+
+- R for Data Science: [Chapter 5: Data transformation](https://r4ds.had.co.nz/transform.html)
+- R for Data Science: [Chapter 18: Pipes](https://r4ds.had.co.nz/pipes.html)
+- **dplyr** documentation: [Introduction to dplyr](https://dplyr.tidyverse.org/articles/dplyr.html)
+- **dplyr** reference documentation: [One table verbs](https://dplyr.tidyverse.org/reference/index.html#section-one-table-verbs)

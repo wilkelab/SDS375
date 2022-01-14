@@ -121,7 +121,7 @@ How can we make our life simpler and avoid massive code duplication?
 
 .tiny-font.pull-left.width-50[
 ```{r penguins-plot-Adelie2, eval = FALSE}
-species = "Adelie" #<<
+species <- "Adelie" #<<
 
 penguins %>%
   filter(.data$species == .env$species) %>% #<<
@@ -185,7 +185,7 @@ penguins %>%
 
 .tiny-font.pull-left.width-50[
 ```{r penguins-plot-Adelie2a, eval = FALSE}
-species = "Adelie" #<<
+species <- "Adelie" #<<
 
 penguins %>%
   filter(.data$species == .env$species) %>%
@@ -211,7 +211,7 @@ penguins %>%
 
 .tiny-font.pull-left.width-50[
 ```{r penguins-plot-Chinstrap2, eval = FALSE}
-species = "Chinstrap" #<<
+species <- "Chinstrap" #<<
 
 penguins %>%
   filter(.data$species == .env$species) %>%
@@ -238,7 +238,7 @@ penguins %>%
 
 .tiny-font.pull-left.width-50[
 ```{r penguins-plot-Gentoo2, eval = FALSE}
-species = "Gentoo" #<<
+species <- "Gentoo" #<<
 
 penguins %>%
   filter(.data$species == .env$species) %>%
@@ -355,7 +355,7 @@ make_plot("Gentoo")
 ## Step 3: Automate calling the function
 
 .small-font[
-```{r eval = FALSE}
+```{r}
 species <- c("Adelie", "Chinstrap", "Gentoo")
 plots <- map(species, make_plot)
 ```
@@ -629,6 +629,8 @@ Note: This pipeline automatically processes all species in the dataset, whatever
 
 - Most modern programming languages are moving away from `for` loops<br>
   (examples: Python, Rust, JavaScript)
+
+[//]: # "segment ends here"
 
 ---
 

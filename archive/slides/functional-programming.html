@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Functions and functional programming</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Claus O. Wilke" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="Wilke-slides-theme.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, title-slide
+
+# Functions and functional programming
+### Claus O. Wilke
+### last updated: 2021-05-05
+
+---
+
+
+
+
+## We often have to run similar code multiple times
+
+--
+
+.tiny-font.pull-left.width-50[
+
+```r
+penguins %&gt;%
+  filter(species == "Adelie") %&gt;%
+  ggplot() +
+  aes(bill_length_mm, body_mass_g) +
+  geom_point() +
+  ggtitle("Species: Adelie") +
+  xlab("bill length (mm)") +
+  ylab("body mass (g)") +
+  theme_minimal_grid() +
+  theme(plot.title.position = "plot")
+```
+]
+
+--
+
+.pull-right.width-45.move-up-1em[
+![](functional-programming_files/figure-html/penguins-plot-Adelie-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## We often have to run similar code multiple times
+
+
+.tiny-font.pull-left.width-50[
+
+```r
+penguins %&gt;%
+  filter(species == "Chinstrap") %&gt;%
+  ggplot() +
+  aes(bill_length_mm, body_mass_g) +
+  geom_point() +
+  ggtitle("Species: Chinstrap") +
+  xlab("bill length (mm)") +
+  ylab("body mass (g)") +
+  theme_minimal_grid() +
+  theme(plot.title.position = "plot")
+```
+]
+
+.pull-right.width-45.move-up-1em[
+![](functional-programming_files/figure-html/penguins-plot-Chinstrap-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## We often have to run similar code multiple times
+
+
+.tiny-font.pull-left.width-50[
+
+```r
+penguins %&gt;%
+  filter(species == "Gentoo") %&gt;%
+  ggplot() +
+  aes(bill_length_mm, body_mass_g) +
+  geom_point() +
+  ggtitle("Species: Gentoo") +
+  xlab("bill length (mm)") +
+  ylab("body mass (g)") +
+  theme_minimal_grid() +
+  theme(plot.title.position = "plot")
+```
+]
+
+.pull-right.width-45.move-up-1em[
+![](functional-programming_files/figure-html/penguins-plot-Gentoo-out-1.svg)&lt;!-- --&gt;
+]
+
+--
+
+How can we make our life simpler and avoid massive code duplication?
+
+---
+
+## Step 1: Avoid hard-coding specific values
+
+--
+
+.tiny-font.pull-left.width-50[
+
+```r
+*species = "Adelie"
+
+penguins %&gt;%
+* filter(.data$species == .env$species) %&gt;%
+  ggplot() +
+  aes(bill_length_mm, body_mass_g) +
+  geom_point() +
+* ggtitle(glue("Species: {species}")) +
+  xlab("bill length (mm)") +
+  ylab("body mass (g)") +
+  theme_minimal_grid() +
+  theme(plot.title.position = "plot")
+```
+]
+
+.pull-right.width-45.move-up-1em[
+![](functional-programming_files/figure-html/penguins-plot-Adelie2-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## A quick aside: the pronouns `.data` and `.env`
+
+We can use pronouns to distinguish data columns from variables:
+```r
+species &lt;- "Adelie"
+
+penguins %&gt;%
+  filter(.data$species == .env$species)
+```
+
+--
+
+`.data$species` is a column in the data frame
+
+--
+
+`.env$species` is a variable in the local environment
+
+
+
+---
+
+## A quick aside: the pronouns `.data` and `.env`
+
+Alternatively we would have to make sure the names don't clash:
+
+```r
+species_choice &lt;- "Adelie"
+
+penguins %&gt;%
+  filter(species == species_choice)
+```
+
+
+---
+
+## Step 1: Avoid hard-coding specific values
+
+.tiny-font.pull-left.width-50[
+
+```r
+*species = "Adelie"
+
+penguins %&gt;%
+  filter(.data$species == .env$species) %&gt;%
+  ggplot() +
+  aes(bill_length_mm, body_mass_g) +
+  geom_point() +
+  ggtitle(glue("Species: {species}")) +
+  xlab("bill length (mm)") +
+  ylab("body mass (g)") +
+  theme_minimal_grid() +
+  theme(plot.title.position = "plot")
+```
+]
+
+.pull-right.width-45.move-up-1em[
+![](functional-programming_files/figure-html/penguins-plot-Adelie2-out-1.svg)
+]
+
+
+---
+
+## Step 1: Avoid hard-coding specific values
+
+.tiny-font.pull-left.width-50[
+
+```r
+*species = "Chinstrap"
+
+penguins %&gt;%
+  filter(.data$species == .env$species) %&gt;%
+  ggplot() +
+  aes(bill_length_mm, body_mass_g) +
+  geom_point() +
+  ggtitle(glue("Species: {species}")) +
+  xlab("bill length (mm)") +
+  ylab("body mass (g)") +
+  theme_minimal_grid() +
+  theme(plot.title.position = "plot")
+```
+]
+
+.pull-right.width-45.move-up-1em[
+![](functional-programming_files/figure-html/penguins-plot-Chinstrap2-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Step 1: Avoid hard-coding specific values
+
+.tiny-font.pull-left.width-50[
+
+```r
+*species = "Gentoo"
+
+penguins %&gt;%
+  filter(.data$species == .env$species) %&gt;%
+  ggplot() +
+  aes(bill_length_mm, body_mass_g) +
+  geom_point() +
+  ggtitle(glue("Species: {species}")) +
+  xlab("bill length (mm)") +
+  ylab("body mass (g)") +
+  theme_minimal_grid() +
+  theme(plot.title.position = "plot")
+```
+]
+
+.pull-right.width-45.move-up-1em[
+![](functional-programming_files/figure-html/penguins-plot-Gentoo2-out-1.svg)&lt;!-- --&gt;
+]
+
+--
+
+This concept is also called: .highlight[Avoiding magic numbers]
+
+
+---
+
+## Step 2: Define a function
+
+.tiny-font.pull-left.width-50[
+
+```r
+*make_plot &lt;- function(species) {
+  penguins %&gt;%
+    filter(.data$species == .env$species) %&gt;%
+    ggplot() +
+    aes(bill_length_mm, body_mass_g) +
+    geom_point() +
+    ggtitle(glue("Species: {species}")) +
+    xlab("bill length (mm)") +
+    ylab("body mass (g)") +
+    theme_minimal_grid() +
+    theme(plot.title.position = "plot")
+}
+```
+]
+---
+
+## Step 2: Define a function
+
+.tiny-font.pull-left.width-50[
+
+```r
+make_plot &lt;- function(species) {
+  penguins %&gt;%
+    filter(.data$species == .env$species) %&gt;%
+    ggplot() +
+    aes(bill_length_mm, body_mass_g) +
+    geom_point() +
+    ggtitle(glue("Species: {species}")) +
+    xlab("bill length (mm)") +
+    ylab("body mass (g)") +
+    theme_minimal_grid() +
+    theme(plot.title.position = "plot")
+}
+
+*make_plot("Adelie")
+```
+]
+
+.pull-right.width-45.move-up-1em[
+![](functional-programming_files/figure-html/penguins-plot-Adelie3-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Step 2: Define a function
+
+.small-font[
+
+```r
+make_plot("Adelie")
+make_plot("Chinstrap")
+make_plot("Gentoo")
+```
+]
+
+&lt;img src="functional-programming_files/figure-html/penguins-plot-all-out-1.svg" width="32%" /&gt;&lt;img src="functional-programming_files/figure-html/penguins-plot-all-out-2.svg" width="32%" /&gt;&lt;img src="functional-programming_files/figure-html/penguins-plot-all-out-3.svg" width="32%" /&gt;
+
+---
+
+## Rules of thumb about functions
+
+--
+
+- You can never write too many functions
+
+--
+
+- When you find yourself writing the same code 2-3 times, put it into a function
+
+--
+
+- A function should be no longer than 20-40 lines
+
+--
+
+- If a function is getting too long, break it into smaller functions
+
+
+---
+
+## Step 3: Automate calling the function
+
+.small-font[
+
+```r
+species &lt;- c("Adelie", "Chinstrap", "Gentoo")
+plots &lt;- map(species, make_plot)
+```
+]
+
+--
+
+`map` takes each element of the vector `species` and uses it as input for `make_plot()`
+
+--
+
+It returns a list of created plots:
+
+.small-font[
+
+```r
+plots[[1]]
+```
+
+&lt;img src="functional-programming_files/figure-html/penguins-plot-map-return-1.svg" width="32%" /&gt;
+]
+
+---
+
+## Step 3: Automate calling the function
+
+.small-font[
+
+```r
+species &lt;- c("Adelie", "Chinstrap", "Gentoo")
+plots &lt;- map(species, make_plot)
+```
+]
+
+`map` takes each element of the vector `species` and uses it as input for `make_plot()`
+
+It returns a list of created plots:
+
+.small-font[
+
+```r
+plots[[2]]
+```
+
+&lt;img src="functional-programming_files/figure-html/penguins-plot-map-return2-1.svg" width="32%" /&gt;
+]
+
+---
+
+## Step 3: Automate calling the function
+
+.small-font[
+
+```r
+species &lt;- c("Adelie", "Chinstrap", "Gentoo")
+plots &lt;- map(species, make_plot)
+```
+]
+
+`map` takes each element of the vector `species` and uses it as input for `make_plot()`
+
+It returns a list of created plots:
+
+.small-font[
+
+```r
+plots[[3]]
+```
+
+&lt;img src="functional-programming_files/figure-html/penguins-plot-map-return3-1.svg" width="32%" /&gt;
+]
+
+
+---
+
+## Step 3: Automate calling the function
+
+.small-font[
+
+```r
+species &lt;- c("Adelie", "Chinstrap", "Gentoo")
+plots &lt;- map(species, make_plot)
+
+plots[[1]]
+plots[[2]]
+plots[[3]]
+```
+]
+
+&lt;img src="functional-programming_files/figure-html/penguins-plot-map-out-1.svg" width="32%" /&gt;&lt;img src="functional-programming_files/figure-html/penguins-plot-map-out-2.svg" width="32%" /&gt;&lt;img src="functional-programming_files/figure-html/penguins-plot-map-out-3.svg" width="32%" /&gt;
+
+---
+
+## Step 3: Automate calling the function
+
+.small-font[
+
+```r
+species &lt;- c("Adelie", "Chinstrap", "Gentoo")
+plots &lt;- map(species, make_plot)
+
+# `walk()` is like `map()` but doesn't return a value
+# we use it only for side effects (such as printing)
+walk(plots, print)
+```
+]
+
+&lt;img src="functional-programming_files/figure-html/penguins-plot-walk-out-1.svg" width="32%" /&gt;&lt;img src="functional-programming_files/figure-html/penguins-plot-walk-out-2.svg" width="32%" /&gt;&lt;img src="functional-programming_files/figure-html/penguins-plot-walk-out-3.svg" width="32%" /&gt;
+
+---
+
+## Step 4: Write a more general function
+
+--
+
+.tiny-font.pull-left.width-50[
+
+```r
+make_plot &lt;- function(species) {
+* penguins %&gt;% # hard-coded dataset!
+    filter(.data$species == .env$species) %&gt;%
+    ggplot() +
+    aes(bill_length_mm, body_mass_g) +
+    geom_point() +
+    ggtitle(glue("Species: {species}")) +
+    xlab("bill length (mm)") +
+    ylab("body mass (g)") +
+    theme_minimal_grid() +
+    theme(plot.title.position = "plot")
+}
+```
+]
+
+---
+
+## Step 4: Write a more general function
+
+.tiny-font.pull-left.width-50[
+
+```r
+*make_plot2 &lt;- function(data, species) {
+* data %&gt;%
+    # filter no longer needed
+    ggplot() +
+    aes(bill_length_mm, body_mass_g) +
+    geom_point() +
+    ggtitle(glue("Species: {species}")) +
+    xlab("bill length (mm)") +
+    ylab("body mass (g)") +
+    theme_minimal_grid() +
+    theme(plot.title.position = "plot")
+}
+```
+]
+
+---
+
+## Step 4: Write a more general function
+
+.tiny-font.pull-left.width-50[
+
+```r
+make_plot2 &lt;- function(data, species) {
+  data %&gt;%
+    # filter no longer needed
+    ggplot() +
+    aes(bill_length_mm, body_mass_g) +
+    geom_point() +
+    ggtitle(glue("Species: {species}")) +
+    xlab("bill length (mm)") +
+    ylab("body mass (g)") +
+    theme_minimal_grid() +
+    theme(plot.title.position = "plot")
+}
+
+data_adelie &lt;- penguins %&gt;%
+  filter(species == "Adelie")
+
+make_plot2(data_adelie, species = "Adelie")
+```
+]
+
+.pull-right.width-45[
+![](functional-programming_files/figure-html/penguins-plot-generic-out-1.svg)&lt;!-- --&gt;
+]
+
+
+---
+
+## Step 5: Use these concepts in a tidy pipeline
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  nest(data = -species) %&gt;%
+  mutate(plots = map(species, make_plot))
+```
+
+```
+# A tibble: 3 x 3
+  species   data               plots 
+  &lt;fct&gt;     &lt;list&gt;             &lt;list&gt;
+1 Adelie    &lt;tibble [152 × 7]&gt; &lt;gg&gt;  
+2 Gentoo    &lt;tibble [124 × 7]&gt; &lt;gg&gt;  
+3 Chinstrap &lt;tibble [68 × 7]&gt;  &lt;gg&gt;  
+```
+]
+
+
+---
+
+## Step 5: Use these concepts in a tidy pipeline
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  nest(data = -species) %&gt;%
+  mutate(plots = map(species, make_plot)) %&gt;%
+  pull(plots) %&gt;%
+  walk(print)
+```
+]
+
+&lt;img src="functional-programming_files/figure-html/penguins-plot-walk-tidy-out-1.svg" width="32%" /&gt;&lt;img src="functional-programming_files/figure-html/penguins-plot-walk-tidy-out-2.svg" width="32%" /&gt;&lt;img src="functional-programming_files/figure-html/penguins-plot-walk-tidy-out-3.svg" width="32%" /&gt;
+
+---
+
+## Step 5: Use these concepts in a tidy pipeline
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  nest(data = -species) %&gt;%
+  mutate(plots = map2(data, species, make_plot2)) %&gt;%
+  pull(plots) %&gt;%
+  walk(print)
+```
+]
+
+&lt;img src="functional-programming_files/figure-html/penguins-plot-walk-tidy2-out-1.svg" width="32%" /&gt;&lt;img src="functional-programming_files/figure-html/penguins-plot-walk-tidy2-out-2.svg" width="32%" /&gt;&lt;img src="functional-programming_files/figure-html/penguins-plot-walk-tidy2-out-3.svg" width="32%" /&gt;
+
+--
+
+.small-font[
+`map2()` is like `map()` but for functions with 2 arguments
+]
+
+---
+
+## Step 5: Use these concepts in a tidy pipeline
+
+.tiny-font[
+
+```r
+penguins %&gt;%
+  nest(data = -species) %&gt;%
+  mutate(plots = map2(data, species, make_plot2)) %&gt;%
+  pull(plots) %&gt;%
+  walk(print)
+```
+]
+
+&lt;img src="functional-programming_files/figure-html/penguins-plot-walk-tidy3-out-1.svg" width="32%" /&gt;&lt;img src="functional-programming_files/figure-html/penguins-plot-walk-tidy3-out-2.svg" width="32%" /&gt;&lt;img src="functional-programming_files/figure-html/penguins-plot-walk-tidy3-out-3.svg" width="32%" /&gt;
+
+.small-font[
+Note: This pipeline automatically processes all species in the dataset, whatever they are called
+]
+
+---
+
+## Why no `for` loops?
+
+--
+
+- They often require us to think about data logistics (indexing)
+
+--
+
+- They encourage writing long, monolithic blocks of code
+
+--
+
+- They encourage iterative thinking over conceptual thinking
+
+--
+
+- They cannot easily be parallelized or otherwise optimized
+
+--
+
+- Most modern programming languages are moving away from `for` loops&lt;br&gt;
+  (examples: Python, Rust, JavaScript)
+
+---
+
+## Further reading
+
+- R for Data Science: [Chapter 19: Functions](https://r4ds.had.co.nz/functions.html)
+- R for Data Science: [Chapter 21.5: The map functions](https://r4ds.had.co.nz/iteration.html#the-map-functions)
+- **purrr** reference documentation: [Apply a function to each element of a list or atomic vector](https://purrr.tidyverse.org/reference/map.html)
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"slideNumberFormat": ""
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
