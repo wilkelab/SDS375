@@ -20,17 +20,17 @@ knitr::opts_chunk$set(echo = FALSE)
 
 **Instructor:** Claus	O.	Wilke<br>
 **Email:** wilke@austin.utexas.edu<br>
-**Office Hours:** By appointment <br>
+**Office Hours:** Mon. 9am - 9:45am (open Zoom), Thurs. 10am - 11am (open Zoom), or by appointment <br>
 **GitHub:** [clauswilke](https://github.com/clauswilke) <br>
 
 **Teaching Assistant:** Anastasiya Kulikova<br>
 **Email:** akulikova82@yahoo.com<br>
-**Office Hours:** Fri. 3:00pm - 4:00pm (open Zoom), or by appointment <br>
+**Office Hours:** Mon. 10am - 11am (open Zoom), Fri. 3:00pm - 4:00pm (open Zoom), or by appointment <br>
 **GitHub:** [akulikova64](https://github.com/akulikova64)
 
 **Teaching Assistant:** Fuheng Cui<br>
 **Email:** cuifuheng@utexas.edu<br>
-**Office Hours:** By appointment <br>
+**Office Hours:** By appointment only<br>
 **GitHub:** 
 
 ## Purpose and contents of the class
@@ -237,6 +237,8 @@ Specifically, we will not discuss technical issues related to assignments over e
 
 ## Special accommodations
 
+**In-person attendance is not required.** While the class is set up as an in-person class, there is no strict requirement for attendance. No grade component depends on any in-person activity, and every effort will be made to provide students with online access to course materials.
+
 **Students with disabilities.** Students with disabilities may request appropriate accommodations from the Division of Diversity and Community Engagement, Services for Students with Disabilities, 512-471-6259, https://diversity.utexas.edu/disability/
 
 **Religious holy days.** Students who must miss a class or an assignment to observe a religious holy day will be given an opportunity to complete the missed work within a reasonable time after the absence. According to UT Austin policy, such students must notify me of the pending absence at least fourteen days prior to the date of observance of a religious holy day. 
@@ -254,7 +256,7 @@ Any materials posted on the public class website (https://wilkelab.org/SDS375/) 
 
 ## Class Recordings
 
-Class recordings are reserved only for students in this class for educational purposes and are protected under FERPA. The recordings should not be shared outside the class in any form. Violation of this restriction by a student could lead to Student Misconduct proceedings.
+Any class recordings provided are reserved only for students in this class for educational purposes and are protected under FERPA. The recordings should not be shared outside the class in any form. Violation of this restriction by a student could lead to Student Misconduct proceedings.
 
 
 ## Reuse {.appendix}

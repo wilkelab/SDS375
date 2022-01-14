@@ -1,5 +1,5 @@
 ---
-title: "Introduction"
+title: "SDS 375—Data Visualization in R"
 author: "Claus O. Wilke"
 date: "last updated: `r Sys.Date()`"
 output:
@@ -117,13 +117,15 @@ https://clauswilke.com/dataviz
 [//]: # "segment ends here"
 
 ---
-class: center middle
+class: middle
 
-## The first core concept: Markdown
+## Class website/syllabus: https://wilkelab.org/SDS375
 
 ---
 
 ## The first core concept: Markdown
+
+--
 
 **Input:**
 
@@ -214,9 +216,49 @@ rnorm(5) # create 5 normal variates
 [//]: # "segment ends here"
 
 ---
-class: center middle
+class: middle
 
-## Using R Markdown in RStudio
+## Running R: R, RStudio, and edupod
+
+---
+
+## Edupod login: https://edupod.cns.utexas.edu
+
+.center[
+<img src = "introduction_files/edupod-landing.png", width = 60%, style = "position:relative; top:-42px;"></img>
+]
+
+---
+
+## Edupod login: https://edupod.cns.utexas.edu
+
+.center[
+<img src = "introduction_files/edupod-landing-edited.png", width = 60%, style = "position:relative; top:-42px;"></img>
+]
+
+---
+
+## Edupod login: https://edupod.cns.utexas.edu
+
+.center[
+<img src = "introduction_files/edupod-login.png", width = 60%, style = "position:relative; top:-42px;"></img>
+]
+
+---
+
+## Using RStudio
+
+.center[
+<img src = "introduction_files/RStudio-clean.png", width = 80%, style = "position:relative; top:-52px;"></img>
+]
+
+---
+
+## Using RStudio
+
+.center[
+<img src = "introduction_files/RStudio-clean-edited.png", width = 80%, style = "position:relative; top:-52px;"></img>
+]
 
 ---
 
@@ -243,7 +285,37 @@ class: center middle
 <img src = "introduction_files/markdown-knitted.png", width = 80%, style = "position:relative; top:-52px;"></img>
 ]
 
-[//]: # "segment ends here"
+---
+
+## Knitting to pdf
+
+.center[
+<img src = "introduction_files/RStudio-markdown-edited2.png", width = 80%, style = "position:relative; top:-52px;"></img>
+]
+
+---
+
+## Knitting to pdf
+
+.center[
+<img src = "introduction_files/markdown-knit-pdf-edited.png", width = 80%, style = "position:relative; top:-52px;"></img>
+]
+
+---
+
+## Knitting to pdf
+
+.center[
+<img src = "introduction_files/markdown-knitted-pdf.png", width = 80%, style = "position:relative; top:-52px;"></img>
+]
+
+---
+
+## Knitting to pdf
+
+.center[
+<img src = "introduction_files/markdown-knitted-pdf-edited.png", width = 80%, style = "position:relative; top:-52px;"></img>
+]
 
 ---
 

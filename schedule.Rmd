@@ -13,200 +13,24 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## Lectures
 
-### 1. Jan 19, 2021—Introduction
+### 1. Jan 18, 2022—Introduction
 
 <p class="nospace">Materials:</p>
 
 - [Slides](slides/introduction.html)  
 - [Worksheet](worksheets/intro-rmarkdown.Rmd) (Solutions are [available here](worksheets/intro-rmarkdown-solutions.Rmd))
 
-### 2. Jan 21, 2021—Aesthetic mappings
+### 2. Jan 20, 2022—Aesthetic mappings
 
 <p class="nospace">Materials:</p>
 
 - [Slides](slides/aesthetic-mappings.html)  
 - [Worksheet](worksheets/aesthetic-mappings.Rmd)
 
-### 3. Jan 26, 2021—Visualizing amounts
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/visualizing-amounts.html)  
-- [Worksheet](worksheets/visualizing-amounts.Rmd)
-
-### 4. Jan 28, 2021—Visualizing distributions 1
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/visualizing-distributions-1.html)  
-- [Worksheet](worksheets/visualizing-distributions-1.Rmd)
-
-### 5. Feb 2, 2021—Visualizing distributions 2
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/visualizing-distributions-2.html)  
-- [Worksheet](worksheets/visualizing-distributions-2.Rmd)
-
-### 6. Feb 4, 2021—Coordinate systems and axes
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/coordinate-systems-axes.html)  
-- [Worksheet](worksheets/coordinate-systems-axes.Rmd)
-
-### 7. Feb 9, 2021—Color scales
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/color-scales.html)  
-- [Worksheet](worksheets/color-scales.Rmd)
-
-### 8. Feb 11, 2021—Figure design
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/figure-design.html)  
-- [Worksheet](worksheets/figure-design.Rmd)
-
-### 9. Feb 25, 2021—Data wrangling 1
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/data-wrangling-1.html)  
-- [Worksheet](worksheets/data-wrangling-1.Rmd)
-
-### 10. Mar 2, 2021—Data wrangling 2
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/data-wrangling-2.html)  
-- [Worksheet](worksheets/data-wrangling-2.Rmd)
-
-### 11. Mar 4, 2021—Getting things into the right order
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/getting-things-in-order.html)  
-- [Worksheet](worksheets/getting-things-in-order.Rmd)
-
-### 12. Mar 9, 2021—Visualizing proportions
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/visualizing-proportions.html)  
-- [Worksheet](worksheets/visualizing-proportions.Rmd)
-
-### 13. Mar 11, 2021—Visualizing trends
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/visualizing-trends.html)  
-- [Worksheet](worksheets/visualizing-trends.Rmd)
-
-### 14. Mar 23, 2021—Working with models
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/working-with-models.html)
-- [Worksheet](worksheets/working-with-models.Rmd)
-
-### 15. Mar 25, 2021—Visualizing uncertainty
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/visualizing-uncertainty.html)
-- [Worksheet](worksheets/visualizing-uncertainty.Rmd)
-
-### 16. Mar 30, 2021—Dimension reduction 1
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/dimension-reduction-1.html)
-- [Worksheet](worksheets/dimension-reduction-1.Rmd)
-
-### 17. Apr 1, 2021—Dimension reduction 2
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/dimension-reduction-2.html)
-- [Worksheet](worksheets/dimension-reduction-2.Rmd)
-
-### 18. Apr 6, 2021—Clustering
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/clustering.html)
-- [Worksheet](worksheets/clustering.Rmd)
-
-### 19. Apr 8, 2021—Visualizing geospatial data
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/geospatial-data.html)
-- [Worksheet](worksheets/geospatial-data.Rmd)
-
-### 20. Apr 13, 2021—Color spaces and color-vision deficiency
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/color-spaces.html)
-- [Worksheet](worksheets/color-spaces.R)
-
-### 21. Apr 15, 2021—Redundant coding, text annotations
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/redundant-coding.html)
-- [Worksheet](worksheets/redundant-coding.Rmd)
-
-### 22. Apr 20, 2021—Interactive plots
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/interactive-plots.html)
-- [Worksheet](worksheets/interactive-plots.Rmd)
-
-### 23. Apr 22, 2021—Handling overlapping points
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/overplotting.html)
-- [Worksheet](worksheets/overplotting.Rmd)
-
-### 24. Apr 27, 2021—Compound figures
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/compound-figures.html)
-- [Worksheet](worksheets/compound-figures.Rmd)
-
-### 25. Apr 29, 2021—Telling a story
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/telling-a-story.html)
-- There is no accompanying worksheet
-
-### 26. May 4, 2021—Introduction to web design
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/web-design.html)
-- [Worksheet](slides/web-design-worksheet.html)
-
-
-### 27. May 6, 2021—Functional programming & Animations
-
-<p class="nospace">Materials:</p>
-
-- [Slides: Functional programming](slides/functional-programming.html)
-- [Slides: Animations](slides/animations.html)
-
 
 ## Homeworks
 
-All homeworks are due by 10:00am on the day they are due. Homeworks need to be submitted as pdf files on Canvas.
+All homeworks are due by 11:00am on the day they are due. Homeworks need to be submitted as pdf files on Canvas.
 
 ### Homework 1 (due Jan 24, 2022)
 
