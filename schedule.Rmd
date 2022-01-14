@@ -206,126 +206,26 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## Homeworks
 
-All homeworks are due by 11:00pm on the day they are due. Homeworks need to be submitted as pdf files on Canvas.
+All homeworks are due by 10:00am on the day they are due. Homeworks need to be submitted as pdf files on Canvas.
 
-### Homework 1 (due Jan 25, 2021)
+### Homework 1 (due Jan 24, 2022)
 
 <p class="nospace">Materials:</p>
 
 - [R Markdown template](assignments/HW1.Rmd)
 - [HTML](assignments/HW1.html)
-- [Solutions](assignments/HW1_solutions.html)
-
-### Homework 2 (due Feb 1, 2021)
-
-<p class="nospace">Materials:</p>
-
-- [R Markdown template](assignments/HW2.Rmd)
-- [HTML](assignments/HW2.html)
-- [Solutions](assignments/HW2_solutions.html)
-
-### Homework 3 (due Feb 8, 2021)
-
-<p class="nospace">Materials:</p>
-
-- [R Markdown template](assignments/HW3.Rmd)
-- [HTML](assignments/HW3.html)
-- [Solutions](assignments/HW3_solutions.html)
-
-### Homework 4 (due Mar 1, 2021)
-
-<p class="nospace">Materials:</p>
-
-- [R Markdown template](assignments/HW4.Rmd)
-- [HTML](assignments/HW4.html)
-- [Solutions](assignments/HW4_solutions.html)
-
-### Homework 5 (due Mar 22, 2021)
-
-<p class="nospace">Materials:</p>
-
-- [R Markdown template](assignments/HW5.Rmd)
-- [HTML](assignments/HW5.html)
-- [Solutions](assignments/HW5_solutions.html)
-
-### Homework 6 (due Mar 29, 2021)
-
-<p class="nospace">Materials:</p>
-
-- [R Markdown template](assignments/HW6.Rmd)
-- [HTML](assignments/HW6.html)
-- [Solutions](assignments/HW6_solutions.html)
-
-### Homework 7 (due Apr 12, 2021)
-
-<p class="nospace">Materials:</p>
-
-- [R Markdown template](assignments/HW7.Rmd)
-- [HTML](assignments/HW7.html)
-- [Solutions](assignments/HW7_solutions.html)
-
-### Homework 8 (due Apr 19, 2021)
-
-<p class="nospace">Materials:</p>
-
-- [R Markdown template](assignments/HW8.Rmd)
-- [HTML](assignments/HW8.html)
-- [Solutions](assignments/HW8_solutions.html)
-
-### Homework 9 (due Apr 26, 2021)
-
-<p class="nospace">Materials:</p>
-
-- [R Markdown template](assignments/HW9.Rmd)
-- [HTML](assignments/HW9.html)
-- [Solutions](assignments/HW9_solutions.html)
 
 ## Projects
 
-All projects are due by 11:00pm on the day they are due. Projects need to be submitted on Canvas. Please carefully read the submission instructions for each project.
+All projects are due by 10:00am on the day they are due. Projects need to be submitted on Canvas. Please carefully read the submission instructions for each project.
 
-### Project 1 (due Mar 8, 2021)
-
-<p class="nospace">Materials:</p>
-
-- [Instructions](assignments/project1_instructions.html)
-- [Project Template (Rmd)](assignments/project1.Rmd)
-- [Project Template (HTML)](assignments/project1.html)
-- [Grading rubric](assignments/project1_rubric.pdf)
-- [Example project](assignments/project1_example.html)
-
-### Project 2 (due Apr 5, 2021)
-
-<p class="nospace">Materials:</p>
-
-- [Instructions](assignments/project2_instructions.html)
-- [Project Template (Rmd)](assignments/project2.Rmd)
-- [Project Template (HTML)](assignments/project2.html)
-- [Grading rubric](assignments/project2_rubric.pdf)
-- [Example project](assignments/project2_example.html)
-
-### Project 3 (due May 3, 2021)
-
-<p class="nospace">Materials:</p>
-
-- [Instructions](assignments/project3_instructions.html)
-- [Project Template (Rmd)](assignments/project3.Rmd)
-- [Project Template (HTML)](assignments/project3.html)
-- [Grading rubric](assignments/project3_rubric.pdf)
+*Materials will be posted soon.*
 
 ## Graduate course credit
 
 This is an extra assignment for graduate students only.
 
-### First draft (due Apr 9, 2021)
-
-<p class="nospace">Materials:</p>
-
-- [R Markdown template](assignments/grad_assignment.Rmd)
-- [HTML](assignments/grad_assignment.html)
-
-### Final draft (due May 7, 2021)
-
+*Materials will be posted soon.*
 
 ## Reuse {.appendix}
 
