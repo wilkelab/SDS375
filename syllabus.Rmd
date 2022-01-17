@@ -31,7 +31,7 @@ knitr::opts_chunk$set(echo = FALSE)
 **Teaching Assistant:** Fuheng Cui<br>
 **Email:** cuifuheng@utexas.edu<br>
 **Office Hours:** By appointment only<br>
-**GitHub:** 
+**GitHub:** [cuifh](https://github.com/cuifh)
 
 ## Purpose and contents of the class
 
