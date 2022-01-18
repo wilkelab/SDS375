@@ -25,7 +25,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 **Teaching Assistant:** Anastasiya Kulikova<br>
 **Email:** akulikova82@yahoo.com<br>
-**Office Hours:** Mon. 10am - 11am (open Zoom), Fri. 3:00pm - 4:00pm (open Zoom), or by appointment <br>
+**Office Hours:** Mon. 10am - 11am (open Zoom), Fri. 2:00pm - 3:00pm (open Zoom), or by appointment <br>
 **GitHub:** [akulikova64](https://github.com/akulikova64)
 
 **Teaching Assistant:** Fuheng Cui<br>
@@ -163,7 +163,7 @@ You will be given access to this repo during the first week of class.
 
 ## Assignments and grading
 
-The graded components of this class will be homeworks, projects, and online participation. Each week either one homework or one project is due. Homeworks will be relatively short visualization problems to be solved by the student, usually involving some small amount of programming to achieve a specified goal. Projects are larger and more involved data analysis problems that involve both programming and writing. Students will have at least one week to complete each homework and two weeks to complete each project. The submission deadlines for homeworks and projects will be Mondays at 11pm.
+The graded components of this class will be homeworks, projects, and online participation. Each week either one homework or one project is due. Homeworks will be relatively short visualization problems to be solved by the student, usually involving some small amount of programming to achieve a specified goal. Projects are larger and more involved data analysis problems that involve both programming and writing. Students will have at least one week to complete each homework and two weeks to complete each project. The submission deadlines for homeworks and projects will be Mondays at 11am.
 
 There will be ten homeworks and three projects. Both homeworks and projects need to be submitted electronically on Canvas. Homeworks are worth 10 points and projects are worth 100 points. The lowest-scoring homework will be dropped, so that a maximum of 90 points can be obtained from the homeworks.
 
