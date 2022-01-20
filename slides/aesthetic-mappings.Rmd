@@ -498,4 +498,4 @@ ggplot(temperatures, aes(month, temperature, color = location)) +
 - Data Visualization—A Practical Introduction: [Chapter 3: Make a plot](https://socviz.co/makeplot.html#makeplot)
 - [**ggplot2** reference documentation](https://ggplot2.tidyverse.org/reference/index.html)
 - [**ggplot2** book](https://ggplot2-book.org/)
-- [**ggplot2** cheatsheet](https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf)
+- [**ggplot2** cheatsheet](https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-visualization.pdf)
