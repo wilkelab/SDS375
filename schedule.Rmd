@@ -27,6 +27,18 @@ knitr::opts_chunk$set(echo = FALSE)
 - [Slides](slides/aesthetic-mappings.html)  
 - [Worksheet](worksheets/aesthetic-mappings.Rmd)
 
+### 3. Jan 25, 2022—Telling a story
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/telling-a-story.html)
+
+### 4. Jan 27, 2022—Visualizing amounts
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/visualizing-amounts.html)  
+- [Worksheet](worksheets/visualizing-amounts.Rmd)
 
 ## Homeworks
 
