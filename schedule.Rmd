@@ -40,6 +40,32 @@ knitr::opts_chunk$set(echo = FALSE)
 - [Slides](slides/visualizing-amounts.html)  
 - [Worksheet](worksheets/visualizing-amounts.Rmd)
 
+### 5. Feb 1, 2022—Coordinate systems and axes
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/coordinate-systems-axes.html)  
+- [Worksheet](worksheets/coordinate-systems-axes.Rmd)
+
+### 6. Feb 3, 2022—Visualizing distributions 1
+
+<p class="nospace">Materials:</p>
+- [Slides](slides/visualizing-distributions-1.html)  
+- [Worksheet](worksheets/visualizing-distributions-1.Rmd)
+
+          
+### 7. Feb 8, 2022—Visualizing distributions 2
+
+<p class="nospace">Materials:</p>
+- [Slides](slides/visualizing-distributions-2.html)  
+- [Worksheet](worksheets/visualizing-distributions-2.Rmd)
+
+### 8. Feb 10, 2022—Color scales
+
+<p class="nospace">Materials:</p>
+- [Slides](slides/color-scales.html)  
+- [Worksheet](worksheets/color-scales.Rmd)
+
 ## Homeworks
 
 All homeworks are due by 11:00am on the day they are due. Homeworks need to be submitted as pdf files on Canvas.
@@ -60,7 +86,10 @@ All homeworks are due by 11:00am on the day they are due. Homeworks need to be s
 
 ### Homework 3 (due Feb 7, 2022)
 
-*Materials will be posted soon.*
+<p class="nospace">Materials:</p>
+
+- [R Markdown template](assignments/HW3.Rmd)
+- [HTML](assignments/HW3.html)
 
 ### Homework 4 (due Feb 14, 2022)
 
