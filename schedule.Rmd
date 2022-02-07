@@ -47,20 +47,20 @@ knitr::opts_chunk$set(echo = FALSE)
 - [Slides](slides/coordinate-systems-axes.html)  
 - [Worksheet](worksheets/coordinate-systems-axes.Rmd)
 
-### 6. Feb 3, 2022—Visualizing distributions 1
+### 6. Feb 8, 2022—Visualizing distributions 1
 
 <p class="nospace">Materials:</p>
 - [Slides](slides/visualizing-distributions-1.html)  
 - [Worksheet](worksheets/visualizing-distributions-1.Rmd)
 
           
-### 7. Feb 8, 2022—Visualizing distributions 2
+### 7. Feb 10, 2022—Visualizing distributions 2
 
 <p class="nospace">Materials:</p>
 - [Slides](slides/visualizing-distributions-2.html)  
 - [Worksheet](worksheets/visualizing-distributions-2.Rmd)
 
-### 8. Feb 10, 2022—Color scales
+### 8. Feb 15, 2022—Color scales
 
 <p class="nospace">Materials:</p>
 - [Slides](slides/color-scales.html)  

@@ -31,6 +31,9 @@ temperatures <- read_csv("https://wilkelab.org/SDS375/datasets/tempnormals.csv")
   ) %>%
   select(location, day_of_year, month, temperature)
 
+temps_wide <- temperatures %>%
+  pivot_wider(names_from = location, values_from = temperature)
+
 US_census <- read_csv("https://wilkelab.org/SDS375/datasets/US_census.csv")
 tx_counties <- US_census %>% 
   filter(state == "Texas") %>%
