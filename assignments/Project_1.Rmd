@@ -1,0 +1,84 @@
+---
+title: "Project 1"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(ggridges)
+library(colorspace)
+knitr::opts_chunk$set(echo = TRUE)
+
+olympics <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-07-27/olympics.csv')
+
+# data prep:
+olympics_top <- olympics %>%
+  mutate(team = ifelse(team == "Soviet Union", "USSR/Russia", team)) %>%
+  mutate(medal = ifelse(is.na(medal), "no medal", medal)) %>%
+  mutate(gold = ifelse(medal == "Gold", "gold medalist", "no gold")) %>%
+  mutate(medalist = ifelse(medal != "no medal", "medalist", "no medal")) %>%
+  mutate(decade = year - (year %% 10)) %>%
+  group_by(team) %>%
+  mutate(count = n()) %>%
+  filter(count > 5500) %>%
+  select(-count) %>%
+  ungroup() %>%
+  group_by(sport, season) %>%
+  mutate(count = n()) %>%
+  filter(count > 700) %>%
+  select(-count) %>%
+  ungroup() %>%
+  filter(!sport %in% c("Art Competitions", "Handball", "Short Track Speed Skating", "Modern Pentathlon", "Shooting", "Canoeing", "Athletics", "Hockey", "Water Polo"))
+```
+
+We will work with the dataset `olympics_top` that contains data for the Olympic Games from Athens 1896 to Rio 2016 and has been derived from the `olympics` dataset. More information about the dataset can be found at: https://github.com/rfordatascience/tidytuesday/blob/master/data/2021/2021-07-27/readme.md
+The dataset, `olympics_top`, contains four new columns: `decade` (the decade during which the Olympics took place), `gold` (whether or not the athlete won a gold medal), `medalist` (whether or not the athlete won any medal) and `medal` (if the athlete won "Gold", "Silver", "Bronze" or received "no medal").
+
+### **Part 1**
+
+**Question:** Which sports have the tallest or shortest athletes? And does the distribution of heights change for the various sports between medalists and non-medalists? 
+
+We recommend you use box plots for the first part of the question and use a ridgeline plot for the second part of the question. 
+
+**Hints:**
+
+- To order boxplots by the median, you may have add the following to your ordering function to remove missing values before ordering: `na.rm = TRUE`
+
+- To trim the tails in your ridgeline plot, you can set 
+`rel_min_height = 0.01` inside `geom_density_ridges()`.
+
+**Introduction:** *Your introduction here.*
+
+**Approach:** *Your approach here.*
+
+**Analysis:**
+
+```{r}
+# Your R code here
+```
+
+```{r}
+# Your R code here
+```
+
+
+**Discussion:** *Your discussion of results here.*
+
+### **Part 2**
+
+**Question:** *Your question here.*
+
+**Introduction:** *Your introduction here.*
+
+**Approach:** *Your approach here.*
+
+**Analysis:**
+```{r }
+# Your R code here
+```
+
+```{r }
+# Your R code here
+```
+
+**Discussion:** *Your discussion of results here.*

@@ -184,7 +184,7 @@ ggplot(temps_months, aes(x = month, y = location, fill = mean)) +
 
 ## Binned scales
 
-Research into human perception has shown that continuous coloring can be difficult to interpret. Therefore, it is often preferable to use a small number of discrete colors to indicate ranges of data values. You can do this in ggplot with binned scales. For example, `scale_fill_virids_b()` provides a binned version of the viridis scale. Try this out.
+Research into human perception has shown that continuous coloring can be difficult to interpret. Therefore, it is often preferable to use a small number of discrete colors to indicate ranges of data values. You can do this in ggplot with binned scales. For example, `scale_fill_viridis_b()` provides a binned version of the viridis scale. Try this out.
 
 ```{r temps-months-viridis4, exercise = TRUE, fig.height = 3}
 ggplot(temps_months, aes(x = month, y = location, fill = mean)) + 
