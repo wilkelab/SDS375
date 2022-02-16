@@ -66,6 +66,56 @@ knitr::opts_chunk$set(echo = FALSE)
 - [Slides](slides/color-scales.html)  
 - [Worksheet](worksheets/color-scales.Rmd)
 
+### 9. Feb 17, 2022—Data wrangling 1
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/data-wrangling-1.html)  
+- [Worksheet](worksheets/data-wrangling-1.Rmd)
+
+### 10. Feb 22, 2022—Data wrangling 2
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/data-wrangling-2.html)  
+- [Worksheet](worksheets/data-wrangling-2.Rmd)
+
+### 11. Feb 24, 2022—Visualizing proportions 
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/visualizing-proportions.html)  
+- [Worksheet](worksheets/visualizing-proportions.Rmd)
+
+### 12. Mar 1, 2022—Getting to know your data 1
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/know-your-data-1.html)  
+- [Worksheet](worksheets/know-your-data-1.Rmd)
+
+### 13. Mar 3, 2022—Getting to know your data 2
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/know-your-data-2.html)  
+- [Worksheet](worksheets/know-your-data-2.Rmd)
+
+### 14. Mar 8, 2022—Getting things into the right order
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/getting-things-in-order.html)  
+- [Worksheet](worksheets/getting-things-in-order.Rmd)
+
+### 15. Mar 10, 2022—Figure design
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/figure-design.html)  
+- [Worksheet](worksheets/figure-design.Rmd)
+
+
 ## Homeworks
 
 All homeworks are due by 11:00am on the day they are due. Homeworks need to be submitted as pdf files on Canvas.

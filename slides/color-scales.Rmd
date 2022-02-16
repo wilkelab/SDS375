@@ -674,8 +674,8 @@ Scale function            | Aesthetic &nbsp;&nbsp;&nbsp;   | Data type     | Pal
 `scale_fill_hue()`        | `fill `      | discrete      | qualitative
 `scale_color_gradient()`  | `color`      | continuous    | sequential
 `scale_color_gradient2()` | `color`      | continuous    | diverging
-`scale_fill_virids_c()`   | `color`      | continuous    | sequential
-`scale_fill_virids_d()`   | `fill`       | discrete      | sequential
+`scale_fill_viridis_c()`   | `color`      | continuous    | sequential
+`scale_fill_viridis_d()`   | `fill`       | discrete      | sequential
 `scale_color_brewer()`    | `color`      | discrete      | qualitative, diverging, sequential
 `scale_fill_brewer()`     | `fill`       | discrete      | qualitative, diverging, sequential
 `scale_color_distiller()` | `color`      | continuous    | qualitative, diverging, sequential
