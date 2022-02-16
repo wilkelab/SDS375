@@ -367,7 +367,7 @@ library(tidyverse)
 knitr::opts_chunk$set(echo = FALSE, comment = "")
 
 NCbirths <- read_csv(
-  "https://wilkelab.org/DSC385/datasets/NCbirths.csv",
+  "https://wilkelab.org/SDS375/datasets/NCbirths.csv",
   na = c("", "NA", "#N/A")
 ) %>% naniar::replace_with_na_at("Weeks", ~.x < 0) # only change column "Weeks" to be safe
 </script>

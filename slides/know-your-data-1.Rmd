@@ -361,7 +361,7 @@ options(width = 95)
 
 .tiny-font[
 ```{r message = FALSE}
-NCbirths <- read_csv("https://wilkelab.org/SDS385/datasets/NCbirths.csv")
+NCbirths <- read_csv("https://wilkelab.org/SDS375/datasets/NCbirths.csv")
 ```
 ]
 
