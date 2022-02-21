@@ -150,7 +150,10 @@ All homeworks are due by 11:00am on the day they are due. Homeworks need to be s
 
 ### Homework 5 (due Feb 28, 2022)
 
-*Materials will be posted soon.*
+<p class="nospace">Materials:</p>
+
+- [R Markdown template](assignments/HW5.Rmd)
+- [HTML](assignments/HW5.html)
 
 ### Homework 6 (due Mar 7, 2022)
 
