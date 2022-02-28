@@ -1,0 +1,71 @@
+---
+title: "Homework 6"
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+---
+
+```{r global_options, include=FALSE}
+library(knitr)
+library(tidyverse)
+library(colorspace)
+library(ggforce)
+opts_chunk$set(fig.align="center", fig.height=4, fig.width=5.5)
+
+# data prep:
+olympics <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-07-27/olympics.csv')
+olympics_2002 <- olympics %>%
+  filter(year == 2002, season == "Winter") %>%
+  select(sex) %>%
+  count(sex) %>%
+  pivot_wider(names_from = sex, values_from = n)
+
+```
+
+*Enter your name and EID here*
+
+**This homework is due on Mar. 7, 2022 at 11:00am. Please submit as a pdf file on Canvas.**
+
+**Problem 1:  (6 pts)** We will work with the dataset `olympics_2002` that contains the count of each sex for the 2002 Winter Olympics in Salt Lake City and has been derived from the `olympics` dataset. More information about the dataset can be found at https://github.com/rfordatascience/tidytuesday/blob/master/data/2021/2021-07-27/readme.md
+
+```{r}
+olympics_2002
+```
+Follow these steps and display the modified dataframe after each step:
+
+1. Rearrange the dataframe into long form. The resulting dataframe will have two columns, which you should call `sex` and `count`. There will be two rows of data, one for female and one for male athletes.
+2. Create a new column with the percent for each `sex`
+3. Rename the values in `sex` to "Female" and "Male". 
+
+```{r}
+# your code here
+```
+```{r}
+# your code here
+```
+```{r}
+# your code here
+```
+
+
+**Problem 2: (4 pts)** 
+
+Now make a pie chart of the dataset you generated in Problem 1. Use `theme_void()` to remove all distracting elements. 
+
+```{r}
+# your code here
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
