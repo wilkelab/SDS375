@@ -1,0 +1,32 @@
+```{r global_options, include=FALSE}
+library(knitr)
+opts_chunk$set(fig.align = "center", fig.height = 5, fig.width = 6)
+library(tidyverse)
+theme_set(theme_bw(base_size = 12))
+library(ggthemes)
+```
+
+## SDS 395 Report
+*Enter your name and EID here*
+
+### Instructions
+
+Write a brief (approximately 2--4 pages total, maximum is 5 pages) report on a data analysis topic of your choice. You should state a clear question, explain briefly the dataset you are using, and then provide an analysis to answer your question. All code required to perform the analysis must be included in the R Markdown document. Please do not include more than 3 figures in your analysis.
+
+The knitted R Markdown document (as a PDF) *and* the raw R Markdown file (as .Rmd) as well as any required data files should be submitted to Canvas by **April 8, 2022.** These two documents will be graded jointly, so they must be consistent (as in, don't change the R Markdown file without also updating the knitted document).
+
+Grading comments:
+
+1. This assignment will be graded pass/fail. See the course syllabus for details.
+
+2. If you need more than 5 pages or more than 3 figures your project is too complex! You are not being graded on complexity. The goal is clarity and succinctness.
+
+3. You are encouraged to work with data from your own research. If you would need extensive amounts of code to clean up the data and prepare for the analysis, then do this ahead of time, export the data to a clean csv file, and then work with that csv file here. Just explain in a few sentences what data the csv file contains and how it was generated.
+
+4. Please don't include any extraneous code that does not contribute to answering the question.
+
+5. The project instructions do not count towards the page limit. Feel free to delete them.
+
+### Report
+
+*Please add your report here.*

@@ -1,0 +1,76 @@
+---
+title: "Homework 5"
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+---
+
+```{r global_options, include=FALSE}
+library(knitr)
+library(tidyverse)
+library(colorspace)
+opts_chunk$set(fig.align="center", fig.height=4, fig.width=5.5)
+
+# data prep:
+ufo_sightings <- 
+  read_csv("https://wilkelab.org/classes/SDS348/data_sets/ufo_sightings_clean.csv") %>%
+  separate(datetime, into = c("month", "day", "year"), sep = "/") %>%
+  separate(year, into = c("year", "time"), sep = " ") %>%
+  separate(date_posted, into = c("month_posted", "day_posted", "year_posted"), sep = "/") %>%
+  select(-time, -month_posted, -day_posted) %>%
+  mutate(
+    year = as.numeric(year),
+    state = toupper(state)
+  ) %>%
+  filter(!is.na(country))
+```
+
+*Enter your name and EID here*
+
+**This homework is due on Feb. 28, 2022 at 11:00am. Please submit as a pdf file on Canvas.**
+
+**Problem 1:  (4 pts)** We will work with the `ufo_sightings` dataset. 
+
+Since 1990, what are the top 5 cities that have reported the most UFO sightings? Create a new dataframe to answer the question. No plots are necessary.
+
+
+```{r}
+# your code here
+```
+
+
+**Problem 2: (4 pts)** 
+
+Next, we will be looking at how the number of UFO sightings has changed for five states since 1940 for both problems 2 and 3. Please follow these steps:
+
+1. Filter the dataset to keep the following five states: TX, CA, NM, FL, NY
+2. Keep only the records from 1940 and onwards. 
+3. Find the number of records for each year and state. 
+4. Display the new table below your code block
+
+```{r}
+# your code here
+```
+
+**Problem 3: (2 pts)** 
+
+Use the new dataframe you made in Problem 2 and add an appropriate color scale from the `colorspace` package to the plot below.
+
+```{r eval = FALSE}
+new_df %>% # use the dataframe from Problem 2 here, and set eval = TRUE in the chunk header 
+ ggplot(aes(x = year, y = count, color = state)) +
+ geom_line() +
+ xlab("Year") +
+ ylab("UFO Sightings (Count)") +
+ theme_bw()
+```
+
+
+
+
+
+
+
+
+
