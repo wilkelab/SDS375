@@ -207,7 +207,10 @@ This is an extra assignment for graduate students only.
 
 ### First draft (due Apr 8, 2022)
 
-*Materials will be posted soon.*
+<p class="nospace">Materials:</p>
+
+- [Template and Instructions (Rmd)](assignments/grad_assignment.Rmd)
+- [Template and Instructions (HTML)](assignments/grad_assignment.html)
 
 ### Final draft (due May 6, 2022)
 
