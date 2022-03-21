@@ -115,6 +115,75 @@ knitr::opts_chunk$set(echo = FALSE)
 - [Slides](slides/figure-design.html)  
 - [Worksheet](worksheets/figure-design.Rmd)
 
+### 16. Mar 22, 2022—Color spaces and color-vision deficiency
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/color-spaces.html)  
+- [Worksheet](worksheets/color-spaces.R)
+
+### 17. Mar 24, 2022—Functions and functional programming
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/functional-programming.html)  
+- [Worksheet](worksheets/functional-programming.Rmd)
+
+### 18. Mar 29, 2022—Visualizing trends
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/visualizing-trends.html)  
+- [Worksheet](worksheets/visualizing-trends.Rmd)
+
+### 19. Mar 31, 2022—Working with models
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/working-with-models.html)  
+- [Worksheet](worksheets/working-with-models.Rmd)
+
+### 20. Apr 5, 2022—Visualizing uncertainty
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/visualizing-uncertainty.html)  
+- [Worksheet](worksheets/visualizing-uncertainty.Rmd)
+
+### 21. Apr 7, 2022—Dimension reduction 1
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/dimension-reduction-1.html)  
+- [Worksheet](worksheets/dimension-reduction-1.Rmd)
+
+### 22. Apr 12, 2022—Dimension reduction 2
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/dimension-reduction-2.html)  
+- [Worksheet](worksheets/dimension-reduction-2.Rmd)
+
+### 23. Apr 14, 2022—Clustering
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/clustering.html)  
+- [Worksheet](worksheets/clustering.Rmd)
+
+### 24. Apr 19, 2022—Hierarchical clustering
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/hierarchical-clustering.html)  
+- [Worksheet](worksheets/hierarchical-clustering.Rmd)
+
+### 25. Apr 21, 2022—Visualizing geospatial data
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/geospatial-data.html)  
+- [Worksheet](worksheets/geospatial-data.Rmd)
 
 ## Homeworks
 
