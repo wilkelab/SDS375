@@ -1,0 +1,71 @@
+---
+title: "Homework 7"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r global_options, include=FALSE}
+library(knitr)
+library(tidyverse)
+library(colorspace)
+library(naniar)
+opts_chunk$set(fig.align="center", fig.height=4, fig.width=5.5)
+
+#data prep:
+midwest2 <- midwest %>%
+  filter(state != "IN")
+
+#data prep for problem 3:
+oceanbuoys$year <- factor(oceanbuoys$year)
+oceanbuoys <- na.omit(oceanbuoys)
+```
+
+*Enter your name and EID here*
+
+**This homework is due on April 4, 2022 at 11:00am. Please submit as a pdf file on Canvas.**
+
+**Problem 1: (2 pts)** 
+
+Use the color picker app from the **colorspace** package (`colorspace::choose_color()`) to create a qualitative color scale containing four colors. One of the four colors should be `#4D670C`, so you need to find three additional colors that go with this one. Use the function `swatchplot()` to plot your colors. `swatchplot()` takes in a vector of colors. 
+
+```{r}
+# your code goes here
+```
+
+
+**Problem 2: (4 pts)** 
+
+For this problem, we will work with the `midwest2` dataset (derived from `midwest`). In the following plot, you may notice that the axis tick labels are smaller than the axis titles, and also in a different color (gray instead of black). 
+
+1. Use the colors you chose in Problem 1 to color the points.
+2. Make the axis tick labels the same size (`size = 12`) and give them the color black (`color = "black"`)
+3. Set the entire plot background to the color `"#FBF9F6"`. Make sure there are no white areas remaining, such as behind the plot panel or under the legend.
+
+```{r}
+ggplot(midwest2, aes(popdensity, percollege, fill = state)) +
+  geom_point(shape = 21, size = 3, color = "white", stroke = 0.2) +
+  scale_x_log10(name = "population density") +
+  scale_y_continuous(name = "percent college educated") +
+  # your color choices go here in a scale fucntion. 
+  theme_classic(12) +
+  theme(
+    # your theme customization code goes here
+  )
+```
+
+
+
+**Problem 3: (4 pts)** 
+
+For this problem, we will work with the `oceanbuoys` dataset from the `naniar` library that contains west pacific tropical atmosphere ocean data for 1993 and 1997. 
+
+Write a function that converts temperature from Celcius to Fahrenheit. Then, use this function and any other data wrangling code you learned from class to make a summary table of average sea temperature and air temperature (in Fahrenheit) for 1997 and 1993. The formula for converting Celcius to Fahrenheit is `Fahrenheit = (Celcius*1.8) + 32`. 
+```{r}
+# your code goes here
+```
+
+
+
+
+
