@@ -1,0 +1,51 @@
+---
+title: "Homework 8"
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+---
+
+```{r global_options, include=FALSE}
+library(knitr)
+library(tidyverse)
+library(broom)
+opts_chunk$set(fig.align="center", fig.height=4, fig.width=5.5)
+
+#data prep:
+BA_degrees <- read_csv("https://wilkelab.org/SDS375/datasets/BA_degrees.csv")
+BA_degrees
+```
+
+*Enter your name and EID here*
+
+**This homework is due on April 11, 2022 at 11:00am. Please submit as a pdf file on Canvas.**
+
+**Problem 1: (6 pts)** Use the dataset `BA_degrees` but focus only on the degree fields "Agriculture and natural resources", "Communication, journalism, and related programs", and "Education". 
+
+Make a single plot that satisfies these three criteria:
+
+(a) Plot a time series of the proportion of degrees (colum `perc`) in each field over time and create a separate panel per degree field. 
+(b) Add a straight line fit to each panel.
+(c) Order the panels by the difference between the maximum and the minimum proportion (i.e., the range of the data).
+
+
+```{r}
+# your code goes here
+```
+
+**Problem 2: (4 pts)** 
+Create a single pipline that fits a linear model to each of the three fields from Problem 1 and outputs results in a tidy linear model summary table. The first column of the table should be `field` and the remaining columns should contain the linear model summary statistics such as `r.squared` for each field. Display the resulting table below.
+
+```{r}
+# your code goes here
+```
+
+
+
+
+
+
+
+
+

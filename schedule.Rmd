@@ -240,7 +240,10 @@ All homeworks are due by 11:00am on the day they are due. Homeworks need to be s
 
 ### Homework 8 (due Apr 11, 2022)
 
-*Materials will be posted soon.*
+<p class="nospace">Materials:</p>
+
+- [R Markdown template](assignments/HW8.Rmd)
+- [HTML](assignments/HW8.html)
 
 ### Homework 9 (due Apr 18, 2022)
 
