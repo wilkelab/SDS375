@@ -555,7 +555,7 @@ $$\begin{eqnarray}
 & = & \text{U}\left(
 \begin{array}{cccc}
   \lambda_{1}^2 & 0 & \dots & 0  \\
-  0 & \lambda{2}^2 & \dots & 0  \\
+  0 & \lambda_{2}^2 & \dots & 0  \\
   \vdots & \vdots & \ddots & \vdots \\
   0 & 0 & \dots & \lambda_{n}^2  \\
 \end{array}
