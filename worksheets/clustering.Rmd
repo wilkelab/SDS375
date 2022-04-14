@@ -97,7 +97,7 @@ km_fit$size         # cluster sizes (number of observations in each cluster)
 ```
 
 
-Next we move on to plotting the clustering output. The k-means algorithm is a stochastic algorithm that produces slightly different output each time it is run. This is particularly apparent when you set `nstart = 1`. In this case, you will get possibly quite different results for different random seeds. You can set the random seed via `set_seed()`.
+Next we move on to plotting the clustering output. The k-means algorithm is a stochastic algorithm that produces slightly different output each time it is run. This is particularly apparent when you set `nstart = 1`. In this case, you will get possibly quite different results for different random seeds. You can set the random seed via `set.seed()`.
 
 In the example below, try various seeds, including 2356, 2357, 2358, 2359, and see what the results are.
 
