@@ -1,0 +1,56 @@
+---
+title: "Project 3"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(colorspace)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+*Enter your name and EID here*
+
+This is the dataset used in this project:
+
+```{r message = FALSE}
+# load in data
+```
+
+Link to the dataset: *Paste the web address (URL) for the dataset here.*
+
+### **Part 1**
+
+**Question:** *Your question here.*
+
+**Introduction:** *Your introduction here.*
+
+**Approach:** *Your approach here.*
+
+**Analysis:**
+
+```{r }
+
+# Your R code here
+
+```
+
+**Discussion:** *Your discussion of results here.*
+
+### **Part 2**
+
+**Question:** *Your question here.*
+
+**Introduction:** *Your introduction here.*
+
+**Approach:** *Your approach here.*
+
+**Analysis:**
+
+```{r }
+
+# Your R code here
+
+```
+
+**Discussion:** *Your discussion of results here.*
