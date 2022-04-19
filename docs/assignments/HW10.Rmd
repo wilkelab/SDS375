@@ -1,0 +1,69 @@
+---
+title: "Homework 10"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r global_options, include=FALSE}
+library(knitr)
+library(tidyverse)
+library(ggdendro)
+library(sf)
+library(colorspace)
+opts_chunk$set(fig.align="center", fig.height=4.326, fig.width=7)
+```
+
+*Enter your name and EID here*
+
+**This homework is due on April 25, 2022 at 11:00am. Please submit as a pdf file on Canvas.**
+
+**Problem 1: (3 pts)** For Problem 1, we will be using `happiness` taken from the World Happiness Report. You can read more about the dataset here: https://www.kaggle.com/datasets/unsdsn/world-happiness.
+
+```{r message = FALSE}
+# data preparation
+happiness <- read_csv("https://wilkelab.org/SDS375/datasets/happiness.csv")
+head(happiness)
+```
+
+a) Perform hierarchical clustering of the countries and calculate the distance matrix. You do not need to display the distance matrix.
+
+b) Display clustering results in a dendrogram.
+
+```{r}
+# your code here
+```
+
+
+**Problem 2: (3 pts)** Use the clustering results you found in Problem 1 for Problem 2. 
+
+a) Assign clusters by cutting the dendrogram.
+
+b) Plot a scatter plot for two numeric variables of your choice from `happy_data` and add cluster info into scatterplot.
+
+c) Interpret the plot.
+
+```{r, message=FALSE}
+# your code here
+```
+
+*your answer here*
+
+**Problem 3: (4 pts)** For Problem 3, we will work with the dataset `texas_income`.
+
+a) Bin the `median_income` column into 3 bins (20K-40K, 40K-60K, 60K-90K). Hint: use `case_when()`.
+
+b) Make a choropleth map of Texas counties colored by median income bin (3 total colors).
+
+c) Use an appropriate color scale and use a theme that shows longitude and latitude (nearly any theme other than `theme_void()` will work).
+
+```{r message = FALSE}
+# data preparation
+texas_income <- readRDS(url("https://wilkelab.org/SDS375/datasets/Texas_income.rds"))
+head(texas_income)
+```
+
+```{r}
+# your code here
+```
+
