@@ -14,7 +14,7 @@ class: center, middle, title-slide
 
 # Redundant coding, text annotations
 ### Claus O. Wilke
-### last updated: 2021-09-23
+### last updated: 2022-04-25
 
 ---
 
@@ -170,6 +170,33 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 class: center middle
 
 ## Direct labeling in R
+
+---
+
+## 1. Secondary axis trick
+
+Data preparation:
+.tiny-font[
+
+```r
+tech_stocks &lt;- read_csv("https://wilkelab.org/SDS375/datasets/tech_stocks.csv") %&gt;%
+  mutate(date = ymd(date)) %&gt;%
+  select(company, date, price_indexed)
+```
+
+```
+
+── Column specification ────────────────────────────────────────────────────────
+cols(
+  company = col_character(),
+  ticker = col_character(),
+  date = col_date(format = ""),
+  price = col_double(),
+  index_price = col_double(),
+  price_indexed = col_double()
+)
+```
+]
 
 ---
 

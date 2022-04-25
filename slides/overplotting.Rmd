@@ -813,6 +813,17 @@ class: center middle
 
 ## Creating 2D density plots and histograms in R
 
+---
+
+## Contour lines
+
+Data preparation:
+
+.tiny-font[
+```{r blue-jays-data}
+blue_jays <- read_csv("https://wilkelab.org/SDS375/datasets/blue_jays.csv")
+```
+]
 
 ---
 

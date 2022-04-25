@@ -566,6 +566,19 @@ class: center middle
 
 ## 1. Secondary axis trick
 
+Data preparation:
+.tiny-font[
+```{r}
+tech_stocks <- read_csv("https://wilkelab.org/SDS375/datasets/tech_stocks.csv") %>%
+  mutate(date = ymd(date)) %>%
+  select(company, date, price_indexed)
+```
+]
+
+---
+
+## 1. Secondary axis trick
+
 .pull-left[
 
 The raw input data:

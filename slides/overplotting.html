@@ -14,7 +14,7 @@ class: center, middle, title-slide
 
 # Dealing with issues of overplotting
 ### Claus O. Wilke
-### last updated: 2021-09-12
+### last updated: 2022-04-25
 
 ---
 
@@ -300,7 +300,6 @@ palette: SunsetDark
 ]
 
 
----
 [//]: # "segment ends here"
 
 ---
@@ -308,6 +307,33 @@ class: center middle
 
 ## Creating 2D density plots and histograms in R
 
+---
+
+## Contour lines
+
+Data preparation:
+
+.tiny-font[
+
+```r
+blue_jays &lt;- read_csv("https://wilkelab.org/SDS375/datasets/blue_jays.csv")
+```
+
+```
+
+── Column specification ────────────────────────────────────────────────────────
+cols(
+  bird_id = col_character(),
+  sex = col_character(),
+  bill_depth_mm = col_double(),
+  bill_width_mm = col_double(),
+  bill_length_mm = col_double(),
+  head_length_mm = col_double(),
+  body_mass_g = col_double(),
+  skull_size_mm = col_double()
+)
+```
+]
 
 ---
 
@@ -553,7 +579,6 @@ ggplot(blue_jays, aes(body_mass_g, head_length_mm)) +
 ![](overplotting_files/figure-html/hex-demo3-out-1.svg)&lt;!-- --&gt;
 ]
 
----
 [//]: # "segment ends here"
 
 ---

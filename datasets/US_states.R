@@ -65,6 +65,13 @@ Virgin Islands,VI,78")
 US_states_AKsmall <- dviz.supp::US_states_geoms$us_albers %>%
   left_join(state_codes)
 
+# This is the projection used. Overwriting it to make the
+# dataset less likely to cause problems with newer
+# installations of R/sf
+# ESRI:102003
+# https://epsg.io/102003
+st_crs(US_states_AKsmall) <- 102003
+
 label_coords <- US_states_AKsmall$geometry %>%
   sf::st_zm() %>%
   sf::st_point_on_surface() %>%
@@ -120,14 +127,37 @@ saveRDS(US_states_AKsmall2, here("datasets", "US_states_AKsmall.rds"))
 
 US_states <- dviz.supp::US_states_geoms$albers_revised %>%
   left_join(state_codes)
+
+# This is the projection used. Overwriting it to make the
+# dataset less likely to cause problems with newer
+# installations of R/sf
+# ESRI:102003
+# https://epsg.io/102003
+st_crs(US_states) <- 102003
+
 saveRDS(US_states, here("datasets", "US_states.rds"))
 
 US_counties_AKsmall <- dviz.supp::US_counties_geoms$us_albers %>%
   left_join(state_codes, by = c(STATEFP = "GEOID"))
+
+# This is the projection used. Overwriting it to make the
+# dataset less likely to cause problems with newer
+# installations of R/sf
+# ESRI:102003
+# https://epsg.io/102003
+st_crs(US_counties_AKsmall) <- 102003
 saveRDS(US_counties_AKsmall, here("datasets", "US_counties_AKsmall.rds"))
 
 US_counties <- dviz.supp::US_counties_geoms$albers_revised %>%
   left_join(state_codes, by = c(STATEFP = "GEOID"))
+
+# This is the projection used. Overwriting it to make the
+# dataset less likely to cause problems with newer
+# installations of R/sf
+# ESRI:102003
+# https://epsg.io/102003
+st_crs(US_counties) <- 102003
+
 saveRDS(US_counties, here("datasets", "US_counties.rds"))
 
 ggplot(US_states) + 

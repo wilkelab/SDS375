@@ -185,6 +185,37 @@ knitr::opts_chunk$set(echo = FALSE)
 - [Slides](slides/geospatial-data.html)  
 - [Worksheet](worksheets/geospatial-data.Rmd)
 
+### 26. Apr 26, 2022—Redundant coding, text annotations
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/redundant-coding.html)  
+- [Worksheet](worksheets/redundant-coding.Rmd)
+
+### 27. Apr 28, 2022—Interactive plots
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/interactive-plots.html)  
+- [Worksheet](worksheets/interactive-plots.Rmd)
+
+### 28. May 3, 2022—Overplotting
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/overplotting.html)  
+- [Worksheet](worksheets/overplotting.Rmd)
+
+### 29. May 5, 2022—Compound figures
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/compound-figures.html)  
+- [Worksheet](worksheets/compound-figures.Rmd)
+
+
+
+
 ## Homeworks
 
 All homeworks are due by 11:00am on the day they are due. Homeworks need to be submitted as pdf files on Canvas.
