@@ -75,6 +75,11 @@ navbar:
           href: slides/overplotting.html
         - text: "Class 29: Compound figures"
           href: slides/compound-figures.html
+        - text: "Bonus 1: Web design"
+          href: slides/web-design.html
+        - text: "Bonus 2: Animations"
+          href: slides/animations.html
+          
 
     - text: "Worksheets"
       menu:
@@ -136,5 +141,7 @@ navbar:
           href: worksheets/overplotting.Rmd
         - text: "Class 29: Compound figures"
           href: worksheets/compound-figures.Rmd
+        - text: "Bonus 1: Web design"
+          href: worksheets/web-design-worksheet.html
 
 output: distill::distill_article

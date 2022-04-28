@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Animations</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Claus O. Wilke" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="Wilke-slides-theme.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, title-slide
+
+# Animations
+### Claus O. Wilke
+### last updated: 2022-04-27
+
+---
+
+
+
+
+## Animations can create more engaging displays
+
+.center.move-up-1em[
+&lt;img src="animations_files/figure-html/gdp-anim-bar-race-1.gif" width="50%" /&gt;
+]
+
+.absolute-bottom-right.tiny-font[
+Data source: World Bank
+]
+
+---
+
+## Animations can create more engaging displays
+
+.center[
+&lt;img src="animations_files/figure-html/gdp-anim-lines-race-1.gif" width="66%" /&gt;
+]
+
+.absolute-bottom-right.tiny-font[
+Data source: World Bank
+]
+
+---
+
+## We make animations in R with **gganimate**
+
+.width-70[
+```r
+library(tidyverse)
+library(gganimate)
+
+# make fun animations
+...
+```
+]
+
+The **gganimate** package adds powerful animation tools to **ggplot2**
+
+&lt;img src = "https://gganimate.com/reference/figures/logo.png", width = 15%, style = "position:absolute; top: 19%; right: 13%;" /&gt;
+
+---
+class: center middle
+
+## How should we think about making an animation?
+
+---
+
+## Think of an animation as faceting by time
+
+.center.move-up-1em[
+![](animations_files/figure-html/gdp-anim-bar-facets-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## We know how to make a faceted plot
+
+.tiny-font[
+
+```r
+gdp_ranked %&gt;%
+  filter(year &gt; 1985 &amp; year %% 5 == 0) %&gt;%
+  ggplot(aes(gdp, rank)) +
+  geom_col(aes(fill = country)) +
+  facet_wrap(vars(year))
+```
+]
+
+.center[
+![](animations_files/figure-html/gdp-facet-demo-out-1.svg)&lt;!-- --&gt;
+]
+
+---
+
+## Making an animation is about as complicated
+
+.tiny-font[
+
+```r
+gdp_ranked %&gt;%
+  # gganimate uses the `group` aesthetic to track objects across frames
+  ggplot(aes(gdp, rank, group = country)) + 
+  geom_col(aes(fill = country)) +
+  transition_states(year, transition_length = 5)
+```
+]
+
+.center[
+&lt;img src="animations_files/figure-html/gdp-bar-race-demo-1.gif" width="40%" /&gt;
+]
+
+---
+
+
+## Adding country names and plot title
+
+.tiny-font.pull-left.width-50[
+
+```r
+gdp_ranked %&gt;%
+  ggplot(aes(gdp, rank, group = country)) +
+  geom_col(aes(fill = country)) +
+  geom_text(
+    aes(x = -200, label = country),
+    hjust = 1, size = 14/.pt
+  ) +
+  xlim(-7000, 23000) +
+  labs(title = "year: {closest_state}") +
+  theme_minimal_vgrid(14, rel_small = 1) +
+  theme(
+    axis.text.y = element_blank(),
+    axis.title.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    axis.line.y = element_blank()
+  ) + 
+  guides(fill = "none") +
+  transition_states(year, transition_length = 5)
+```
+]
+
+.pull-right.width-40[
+&lt;img src="animations_files/figure-html/gdp-anim-fancy-out-1.gif" width="100%" /&gt;
+]
+
+---
+
+## We make time series with `transition_reveal()`
+
+.tiny-font.pull-left.width-50[
+
+```r
+selected &lt;- c("China", "Japan",
+  "United States", "Germany", "Brazil")
+
+gdp_ranked %&gt;%
+  filter(country %in% selected) %&gt;%
+  ggplot(aes(year, gdp, color = country)) +
+  geom_line() +
+  geom_point(size = 3) +
+  scale_y_log10() +
+  transition_reveal(year)
+```
+]
+
+.pull-right.width-45[
+&lt;img src="animations_files/figure-html/gdp-line-race-demo-out-1.gif" width="100%" /&gt;
+]
+
+---
+
+## This works also with **ggrepel** for labeling
+
+.tiny-font.pull-left.width-50[
+
+```r
+gdp_ranked %&gt;%
+  filter(country %in% selected) %&gt;%
+  ggplot(aes(year, gdp, color = country)) +
+  geom_line() +
+  geom_point(size = 3) +
+  geom_text_repel(
+    aes(label = country),
+    hjust = 0,
+    nudge_x = 2,
+    direction = "y",
+    xlim = c(NA, Inf)
+  ) +
+  scale_y_log10() +
+  guides(color = "none") +
+  coord_cartesian(clip = "off") +
+  theme(plot.margin = margin(7, 100, 7, 7)) +
+  transition_reveal(year)
+```
+]
+
+.pull-right.width-45[
+&lt;img src="animations_files/figure-html/gdp-line-race-labeled-out-1.gif" width="100%" /&gt;
+]
+
+---
+
+## Further reading
+
+- **gganimate** documentation: [Getting started](https://gganimate.com/articles/gganimate.html)
+- **gganimate** reference documentation: [`transition_states()`](https://gganimate.com/reference/transition_states.html)
+- **gganimate** reference documentation: [`transition_reveal()`](https://gganimate.com/reference/transition_reveal.html)
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"slideNumberFormat": ""
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

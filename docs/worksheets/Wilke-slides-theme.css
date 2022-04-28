@@ -1,0 +1,149 @@
+@import url(https://fonts.googleapis.com/css?family=Lato:400,700,400italic);
+@import url(https://fonts.googleapis.com/css?family=Roboto+Condensed);
+@import url(https://fonts.googleapis.com/css?family=Roboto+Mono);
+
+body { 
+  font-family: 'Lato', Arial, sans-serif;
+  font-size: 26px;
+}
+h1, h2, h3, h4 {
+  font-family: 'Roboto Condensed', 'Arial Narrow OS', Arial, sans-serif;
+  font-weight: normal;
+}
+.remark-slide-content { font-size: 1em; }
+.remark-code, .remark-inline-code { 
+  font-family: 'Roboto Mono', 'Lucida Console', Monaco, Consolas, monospace; 
+  font-size: 1em;
+  color: #650C92;
+}
+
+/* Make inline code slightly smaller; prevents vertical jumps
+   from slides with to slides without inline code. */ 
+.remark-inline-code { font-size: 0.94em; line-height: 1.0; }
+
+.title-font { 
+  font-family: 'Roboto Condensed', 'Arial Narrow OS', Arial, sans-serif;
+  font-weight: normal;
+  font-size: 1.5em;
+}
+.small-font { font-size: 0.86em; }
+.tiny-font { font-size: 0.66em; }
+.xtiny-font { font-size: 0.60em; }
+
+.white { color: white; }
+
+.highlight { font-weight: bold; color: #91322F; }
+
+.nogap p {margin-top: 0; margin-bottom: 0}
+
+a, a > code {
+  color: #650C92;
+}
+
+td {
+  padding: 5px 10px;
+}
+
+table {
+  display: inline-block;
+}
+
+.width-10 {
+  width: 10%
+}
+.width-15 {
+  width: 15%
+}
+.width-20 {
+  width: 20%
+}
+.width-25 {
+  width: 25%
+}
+.width-30 {
+  width: 30%
+}
+.width-35 {
+  width: 35%
+}
+.width-40 {
+  width: 40%
+}
+.width-45 {
+  width: 45%
+}
+.width-50 {
+  width: 50%
+}
+.width-55 {
+  width: 55%
+}
+.width-60 {
+  width: 60%
+}
+.width-65 {
+  width: 65%
+}
+.width-70 {
+  width: 70%
+}
+.width-75 {
+  width: 75%
+}
+.width-80 {
+  width: 80%
+}
+.width-85 {
+  width: 85%
+}
+.width-90 {
+  width: 90%
+}
+
+.move-up-1em {
+  margin-top: -1em;
+}
+
+.move-up-2em {
+  margin-top: -2em;
+}
+
+.move-up-3em {
+  margin-top: -3em;
+}
+
+.move-up-4em {
+  margin-top: -4em;
+}
+
+.move-up-5em {
+  margin-top: -5em;
+}
+
+.move-up-6em {
+  margin-top: -6em;
+}
+
+.move-down-1em {
+  margin-top: 1em;
+}
+
+.move-down-2em {
+  margin-top: 2em;
+}
+
+.move-down-3em {
+  margin-top: 3em;
+}
+
+.absolute-bottom-left {
+  position: absolute;
+  bottom: 0; 
+  left: 4em;
+}
+
+.absolute-bottom-right {
+  position: absolute;
+  bottom: 0; 
+  right: 4em;
+}

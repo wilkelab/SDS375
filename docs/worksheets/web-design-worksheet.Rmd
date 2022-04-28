@@ -1,0 +1,386 @@
+---
+title: "Web design worksheet"
+author: "Claus O. Wilke"
+date: "last updated: `r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: [default, "Wilke-slides-theme.css"]
+    lib_dir: libs
+    self_contained: true
+    nature:
+      ratio: '16:9'
+      highlightStyle: github
+      highlightLines: true
+      slideNumberFormat: ''
+      titleSlideClass: [center, middle]
+---
+
+```{r setup, include=FALSE, echo=FALSE, message = FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(comment = "")
+```
+
+## Exercise instructions
+
+For each of the following exercises, try to reproduce the output shown in the box using the indicated HTML tags and CSS properties.
+
+--
+
+After each exercise slide the solutions are shown on the next slide, so don't jump ahead.
+
+--
+
+Do the exercises on JSFiddle: https://jsfiddle.net/
+
+
+---
+
+```{css echo = FALSE}
+.html-example {
+  padding: 1em;
+  border: solid 0.5px black;
+  margin-left: auto;
+  margin-right: auto;
+}
+```
+
+```{css echo = FALSE}
+.ex1.brown {
+  color: brown;
+}
+.ex1.italics {
+  font-style: italic;
+}
+```
+
+## Exercise 1
+
+.small-font[
+.html-example[
+The quick <span class = "ex1 brown">brown</span> fox jumps over
+the <span class = "ex1 italics">lazy dog<span>.
+]
+
+.pull-left[
+HTML tags used: `<span>`
+]
+
+.pull-right[
+CSS properties used:
+```css
+color: brown;
+font-style: italic;
+```
+]
+]
+
+---
+
+## Solution to Exercise 1
+
+.small-font.pull-left.width-55[
+HTML input:
+
+.tiny-font[
+```html
+The quick <span class = "brown">brown</span> fox
+jumps over the <span class = "italics">lazy
+dog<span>.
+```
+]]
+
+.small-font.pull-right.width-40[
+CSS input:
+
+.tiny-font[
+```css
+.brown {
+  color: brown;
+}
+
+.italics {
+  font-style: italic;
+}
+```
+]]
+
+---
+
+```{css echo = FALSE}
+div.ex2 {
+  background-color: AliceBlue;
+  margin: 1em 0;
+}
+```
+
+## Exercise 2
+
+.small-font[
+.html-example[
+<div class = "ex2">The quick brown fox</div>
+<div class = "ex2">jumps over the lazy dog.</div>
+]
+
+.pull-left[
+HTML tags used: `<div>`
+]
+
+.pull-right[
+CSS properties used:
+```css
+background-color: AliceBlue;
+margin: 1em 0;
+```
+]]
+
+---
+
+## Solution to Exercise 2
+
+.small-font.pull-left.width-55[
+HTML input:
+
+.tiny-font[
+```html
+<div>The quick brown fox</div>
+<div>jumps over the lazy dog.</div>
+```
+]]
+
+.small-font.pull-right.width-40[
+CSS input:
+
+.tiny-font[
+```css
+div {
+  background-color: AliceBlue;
+  margin: 1em 0;
+}
+```
+]]
+
+---
+
+```{css echo = FALSE}
+span.ex3 {
+  background-color: AliceBlue;
+  padding: 0.5em;
+  margin: 0 0.5em;
+}
+```
+
+## Exercise 3
+
+.small-font[
+.html-example[
+<span class = "ex3">The quick brown fox</span>
+<span class = "ex3">jumps over the lazy dog.</span>
+]
+
+.pull-left[
+HTML tags used: `<span>`
+]
+
+.pull-right[
+CSS properties used:
+```css
+background-color: AliceBlue;
+padding: 0.5em;
+margin: 1em 0;
+```
+]]
+
+---
+
+## Solution to Exercise 3
+
+.small-font.pull-left.width-55[
+HTML input:
+
+.tiny-font[
+```html
+<span>The quick brown fox</span>
+<span>jumps over the lazy dog.</span>
+```
+]]
+
+.small-font.pull-right.width-40[
+CSS input:
+
+.tiny-font[
+```css
+span {
+  background-color: AliceBlue;
+  padding: 0.5em;
+  margin: 0 0.5em;
+}
+```
+]]
+
+
+---
+
+```{css echo = FALSE}
+.ex4.heading {
+  font-family: fantasy;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.ex4.body {
+  font-family: cursive;
+}
+```
+
+## Exercise 4
+
+.small-font[
+.html-example[
+<div class = "ex4 heading">Chapter 1</div>
+
+<div class = "ex4 body">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
+]
+
+
+.pull-left[
+HTML tags used: `<div>`
+]
+
+.pull-right[
+CSS properties used:
+
+```css
+font-family: fantasy;
+font-family: cursive;
+font-size: 24px;
+font-weight: bold;
+```
+]]
+
+---
+
+## Solution to Exercise 4
+
+.small-font.pull-left.width-55[
+HTML input:
+
+.tiny-font[
+```html
+<div class = "heading">Chapter 1</div>
+
+<div class = "body">Lorem ipsum dolor sit amet,
+consectetur adipiscing elit, sed do eiusmod tempor
+incididunt ut labore et dolore magna aliqua. Ut enim
+ad minim veniam, quis nostrud exercitation ullamco
+laboris nisi ut aliquip ex ea commodo consequat.</div>
+```
+]]
+
+.small-font.pull-right.width-40[
+CSS input:
+
+.tiny-font[
+```css
+.heading {
+  font-family: fantasy;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.body {
+  font-family: cursive;
+}
+
+```
+]]
+
+---
+
+```{css echo = FALSE}
+div.ex5 {
+  color: MidnightBlue;
+}
+
+.ex5.heading {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  background-color: AliceBlue;
+  padding: 0.5em;
+}
+
+.ex5.body {
+  margin-top: 1em;
+}
+```
+
+## Exercise 5
+
+.small-font[
+.html-example[
+<div class = "ex5 heading">Chapter 1</div>
+
+<div class = "ex5 body">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
+]
+
+
+.pull-left[
+HTML tags used: `<div>`
+]
+
+.pull-right[
+CSS properties used:
+
+```css
+font-size: 24px;
+font-weight: bold;
+text-align: center;
+color: MidnightBlue;
+background-color: AliceBlue;
+padding: 0.5em;
+margin-top: 1em;
+```
+]]
+
+---
+
+## Solution to Exercise 5
+
+.small-font.pull-left.width-55[
+HTML input:
+
+.tiny-font[
+```html
+<div class = "heading">Chapter 1</div>
+
+<div class = "body">Lorem ipsum dolor sit amet,
+consectetur adipiscing elit, sed do eiusmod tempor
+incididunt ut labore et dolore magna aliqua. Ut enim
+ad minim veniam, quis nostrud exercitation ullamco
+laboris nisi ut aliquip ex ea commodo consequat.</div>
+```
+]]
+
+.small-font.pull-right.width-40[
+CSS input:
+
+.tiny-font[
+```css
+div {
+  color: MidnightBlue;
+}
+
+.heading {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  background-color: AliceBlue;
+  padding: 0.5em;
+}
+
+.body {
+  margin-top: 1em;
+}
+```
+]]
+

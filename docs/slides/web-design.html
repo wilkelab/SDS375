@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Introduction to web design</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Claus O. Wilke" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="Wilke-slides-theme.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, title-slide
+
+# Introduction to web design
+### Claus O. Wilke
+### last updated: 2022-04-27
+
+---
+
+
+
+
+## Anatomy of a web site
+
+--
+
+Web sites consist of three components:
+
+--
+
+**HTML:** Content of the site
+
+--
+
+**CSS:** Appearance of the site
+
+--
+
+**JavaScript:** Interactivity
+
+--
+
+We won't be discussing JavaScript here
+
+---
+
+&lt;style type="text/css"&gt;
+.html-example {
+  padding: 1em;
+  border: solid 0.5px black;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+&lt;/style&gt;
+
+## Block and inline elements
+
+--
+
+`&lt;div&gt;`: Contents stacked vertically
+
+--
+
+`&lt;span&gt;`: Contents placed inline
+
+---
+
+## Block and inline elements
+
+.small-font.pull-left[
+HTML input:
+
+```html
+&lt;div&gt;This&lt;/div&gt;
+&lt;div&gt;is&lt;/div&gt;
+&lt;div&gt;an&lt;/div&gt;
+&lt;div&gt;example&lt;/div&gt;
+```
+]
+
+--
+
+.small-font.pull-right[
+Rendered output:
+
+.html-example[
+&lt;div&gt;This&lt;/div&gt;
+&lt;div&gt;is&lt;/div&gt;
+&lt;div&gt;an&lt;/div&gt;
+&lt;div&gt;example&lt;/div&gt;
+]]
+
+--
+
+`&lt;div&gt;` elements are stacked vertically from top to bottom
+
+---
+
+## Block and inline elements
+
+.small-font.pull-left[
+HTML input:
+
+```html
+&lt;span&gt;This&lt;/span&gt;
+&lt;span&gt;is&lt;/span&gt;
+&lt;span&gt;an&lt;/span&gt;
+&lt;span&gt;example&lt;/span&gt;
+```
+]
+
+--
+
+.small-font.pull-right[
+Rendered output:
+
+.html-example[
+&lt;span&gt;This&lt;/span&gt;
+&lt;span&gt;is&lt;/span&gt;
+&lt;span&gt;an&lt;/span&gt;
+&lt;span&gt;example&lt;/span&gt;
+]]
+
+--
+
+`&lt;span&gt;` elements are placed inline
+
+---
+
+## Elements can be nested
+
+.small-font.pull-left[
+HTML input:
+
+```html
+&lt;div&gt;
+  &lt;span&gt;This&lt;/span&gt;
+  &lt;span&gt;is&lt;/span&gt;
+&lt;/div&gt;
+&lt;div&gt;
+  &lt;span&gt;an&lt;/span&gt;
+  &lt;span&gt;example&lt;/span&gt;
+&lt;div&gt;
+```
+]
+
+--
+
+.small-font.pull-right[
+Rendered output:
+
+.html-example[
+&lt;div&gt;
+  &lt;span&gt;This&lt;/span&gt;
+  &lt;span&gt;is&lt;/span&gt;
+&lt;/div&gt;
+&lt;div&gt;
+  &lt;span&gt;an&lt;/span&gt;
+  &lt;span&gt;example&lt;/span&gt;
+&lt;div&gt;
+]]
+
+---
+
+## Elements are styled with CSS
+
+.small-font.pull-left[
+HTML input:
+
+```html
+This is an &lt;span&gt;example&lt;/span&gt;
+```
+]
+
+---
+
+## Elements are styled with CSS
+
+.small-font.pull-left[
+HTML input:
+
+```html
+This is an &lt;span&gt;example&lt;/span&gt;
+```
+
+CSS input:
+
+```css
+span { 
+  color: #91322F;
+  font-weight: bold;
+}
+```
+]
+
+--
+
+.small-font.pull-right[
+Rendered output:
+
+.html-example[
+This is an &lt;span style = "color: #91322F; font-weight: bold;"&gt;example&lt;/span&gt;
+]]
+
+---
+
+## Elements are styled with CSS
+
+.small-font.pull-left[
+HTML input:
+
+```html
+&lt;div&gt;
+This is an &lt;span&gt;example&lt;/span&gt;
+&lt;/div&gt;
+```
+
+CSS input:
+
+```css
+span { color: #91322F; }
+div {
+  background-color: #D4E1F3;
+}
+```
+]
+
+.small-font.pull-right[
+Rendered output:
+
+.html-example[
+&lt;div style = "background-color: #D4E1F3;"&gt;
+This is an &lt;span style = "color: #91322F;"&gt;example&lt;/span&gt;
+&lt;/div&gt;
+]]
+
+
+
+---
+
+## Elements are styled with CSS
+
+.small-font.pull-left[
+HTML input:
+
+```html
+&lt;div&gt;
+This is an &lt;span&gt;example&lt;/span&gt;
+&lt;/div&gt;
+```
+
+CSS input:
+
+```css
+span { color: #91322F; }
+div {
+  background-color: #D4E1F3;
+  padding: 36px 8px 24px 8px;
+}
+```
+]
+
+.small-font.pull-right[
+Rendered output:
+
+.html-example[
+&lt;div style = "background-color: #D4E1F3; padding: 36px 8px 24px 8px;"&gt;
+This is an &lt;span style = "color: #91322F;"&gt;example&lt;/span&gt;
+&lt;/div&gt;
+]]
+
+---
+
+## Elements are styled with CSS
+
+.small-font.pull-left[
+HTML input:
+
+```html
+&lt;div&gt;
+This is an &lt;span&gt;example&lt;/span&gt;
+&lt;/div&gt;
+```
+
+CSS input:
+
+```css
+span {
+  color: #91322F;
+  background-color: #D4E1F3;
+  padding: 36px 8px 24px 8px;
+}
+```
+]
+
+.pull-right[.small-font[
+Rendered output:
+
+.html-example[
+&lt;div&gt;
+This is an &lt;span style = "color: #91322F; background-color: #D4E1F3; padding: 36px 8px 24px 8px;"&gt;example&lt;/span&gt;
+&lt;/div&gt;
+]]]
+
+
+---
+
+## Elements are styled with CSS
+
+.small-font.pull-left[
+HTML input:
+
+```html
+&lt;div&gt;
+This is an &lt;span&gt;example&lt;/span&gt;
+&lt;/div&gt;
+```
+
+CSS input:
+
+```css
+span {
+  color: #91322F;
+  background-color: #D4E1F3;
+  padding: 36px 8px 24px 8px;
+}
+```
+]
+
+.small-font.pull-right[
+Rendered output:
+
+.html-example[
+&lt;div&gt;
+This is an &lt;span style = "color: #91322F; background-color: #D4E1F3; padding: 36px 8px 24px 8px;"&gt;example&lt;/span&gt;
+&lt;/div&gt;
+]
+
+&lt;br&gt;
+Top and bottom padding don't affect the height of an inline element
+]
+
+---
+
+## Creating complex designs: CSS classes and selectors
+
+.small-font.pull-left.width-60[
+HTML input:
+
+```html
+This is &lt;span class = "red"&gt;red&lt;/span&gt;,
+&lt;span class = "green"&gt;green&lt;/span&gt;,
+and &lt;span class = "blue"&gt;blue&lt;/span&gt;
+text.
+```
+
+
+CSS input:
+
+```css
+.red { color: red; }
+.green { color: green; }
+.blue { color: blue; }
+```
+]
+
+.small-font.pull-right.width-35[
+Rendered output:
+
+.html-example[
+This is
+&lt;span style = "color: red;"&gt;red&lt;/span&gt;,
+&lt;span style = "color: green;"&gt;green&lt;/span&gt;,
+and
+&lt;span style = "color: blue"&gt;blue&lt;/span&gt;
+text.
+]]
+
+---
+
+## Creating complex designs: CSS classes and selectors
+
+.small-font.pull-left.width-60[
+HTML input:
+
+```html
+This is &lt;span class = "red"&gt;red&lt;/span&gt;,
+&lt;span class = "green"&gt;green&lt;/span&gt;,
+and &lt;span class = "blue"&gt;blue&lt;/span&gt;
+text.
+```
+
+
+CSS input:
+
+```css
+.red { color: red; }
+.green { color: green; }
+.blue { color: blue; }
+span { font-weight: bold; }
+```
+]
+
+.small-font.pull-right.width-35[
+Rendered output:
+
+.html-example[
+This is
+&lt;span style = "color: red; font-weight: bold;"&gt;red&lt;/span&gt;,
+&lt;span style = "color: green; font-weight: bold;"&gt;green&lt;/span&gt;,
+and
+&lt;span style = "color: blue; font-weight: bold;"&gt;blue&lt;/span&gt;
+text.
+]]
+
+---
+
+## Creating complex designs: CSS classes and selectors
+
+.small-font.pull-left.width-60[
+HTML input:
+
+```html
+&lt;div class = "blue"&gt;
+This is &lt;span class = "red"&gt;red&lt;/span&gt;,
+&lt;span class = "green"&gt;green&lt;/span&gt;,
+and &lt;span class = "blue"&gt;blue&lt;/span&gt;
+text.
+&lt;/div&gt;
+```
+
+
+CSS input:
+
+```css
+.red { color: red; }
+.green { color: green; }
+.blue { color: blue; }
+span.blue { color: black; }
+```
+]
+
+.small-font.pull-right.width-35[
+Rendered output:
+
+.html-example[
+&lt;div style = "color: blue;"&gt;
+This is
+&lt;span style = "color: red;"&gt;red&lt;/span&gt;,
+&lt;span style = "color: green;"&gt;green&lt;/span&gt;,
+and
+&lt;span style = "color: black;"&gt;blue&lt;/span&gt;
+text.
+&lt;/div&gt;
+]]
+
+---
+class: center middle
+
+## Try this out for yourself: https://jsfiddle.net/
+
+---
+class: center middle
+
+## A few more tags to know
+
+
+---
+
+## The `&lt;img&gt;` tag: images
+
+.small-font[
+HTML input:
+
+```html
+&lt;img src = "https://clauswilke.com/dataviz/cover.png", width = 30% /&gt;
+```
+
+Rendered output:
+
+
+.width-60.html-example[
+&lt;img src = "https://clauswilke.com/dataviz/cover.png", width = 30% /&gt;
+]]
+
+
+---
+
+## The `&lt;img&gt;` tag: images
+
+.small-font[
+HTML input:
+
+```html
+&lt;img src = "https://clauswilke.com/dataviz/cover.png", width = 100% /&gt;
+```
+
+Rendered output:
+
+
+.width-60.html-example[
+&lt;img src = "https://clauswilke.com/dataviz/cover.png", width = 100% /&gt;
+]]
+
+
+---
+
+## The `&lt;a&gt;` tag: links
+
+.small-font[
+HTML input:
+
+```html
+My book on data visualization:
+&lt;a href = "https://clauswilke.com/dataviz/"&gt;
+Fundamentals of Data Visualization&lt;/a&gt;
+```
+
+Rendered output:
+
+
+.width-60.html-example[
+My book on data visualization:
+&lt;a href = "https://clauswilke.com/dataviz/"&gt;
+Fundamentals of Data Visualization&lt;/a&gt;
+]]
+
+---
+
+## The `&lt;br&gt;` tag: line breaks
+
+.small-font[
+HTML input:
+
+```html
+My book on data visualization:&lt;br&gt;
+&lt;a href = "https://clauswilke.com/dataviz/"&gt;
+Fundamentals of Data Visualization&lt;/a&gt;
+```
+
+Rendered output:
+
+
+.width-60.html-example[
+My book on data visualization:&lt;br&gt;
+&lt;a href = "https://clauswilke.com/dataviz/"&gt;
+Fundamentals of Data Visualization&lt;/a&gt;
+]]
+
+---
+
+## The `&lt;ul&gt;` and `&lt;li&gt;` tags: unordered lists
+
+.small-font.pull-left[
+HTML input:
+
+```html
+Some fruit:
+
+&lt;ul&gt;
+  &lt;li&gt;Apples&lt;/li&gt;
+  &lt;li&gt;Oranges&lt;/li&gt;
+  &lt;li&gt;Bananas&lt;/li&gt;
+&lt;/ul&gt;
+```
+]
+
+.small-font.pull-right[
+Rendered output:
+
+.html-example[
+Some fruit:
+
+&lt;ul&gt;
+  &lt;li&gt;Apples&lt;/li&gt;
+  &lt;li&gt;Oranges&lt;/li&gt;
+  &lt;li&gt;Bananas&lt;/li&gt;
+&lt;/ul&gt;
+]]
+
+---
+
+## The `&lt;ol&gt;` and `&lt;li&gt;` tags: ordered lists
+
+.small-font.pull-left[
+HTML input:
+
+```html
+Some fruit:
+
+&lt;ol&gt;
+  &lt;li&gt;Apples&lt;/li&gt;
+  &lt;li&gt;Oranges&lt;/li&gt;
+  &lt;li&gt;Bananas&lt;/li&gt;
+&lt;/ol&gt;
+```
+]
+
+.small-font.pull-right[
+Rendered output:
+
+.html-example[
+Some fruit:
+
+&lt;ol&gt;
+  &lt;li&gt;Apples&lt;/li&gt;
+  &lt;li&gt;Oranges&lt;/li&gt;
+  &lt;li&gt;Bananas&lt;/li&gt;
+&lt;/ol&gt;
+]]
+
+
+---
+
+&lt;style type="text/css"&gt;
+.indent { padding-left: 3em;}
+&lt;/style&gt;
+
+## Making a website with R
+
+Personal website/blog/simple project:
+
+**distill:** ["Scientific and technical writing, native to the web"](https://rstudio.github.io/distill/)&lt;br&gt;
+.indent[Example: https://wilkelab.org/SDS375/]
+
+--
+
+**blogdown:** ["Creating Websites with R Markdown"](https://bookdown.org/yihui/blogdown/)&lt;br&gt;
+.indent[Example: https://clauswilke.com/]
+
+--
+
+&lt;br&gt;
+Book-format long document
+
+**bookdown:** ["Authoring Books and Technical Documents with R Markdown"](https://bookdown.org/yihui/bookdown/)&lt;br&gt;
+.indent[Example: https://clauswilke.com/dataviz]
+
+
+---
+
+## Making a website with R
+
+Interactive app:
+
+**shiny:** ["Mastering Shiny"](https://mastering-shiny.org/)&lt;br&gt;
+.indent[Examples: Interactive tutorials, color picker app]&lt;br&gt;
+
+--
+
+.move-up-1em[
+.indent[More examples: [Shiny Gallery](https://shiny.rstudio.com/gallery/)]
+]
+
+--
+
+&lt;br&gt;
+Presentation:
+
+**xaringan:** ["xaringan Presentations"](https://bookdown.org/yihui/rmarkdown/xaringan.html)&lt;br&gt;
+.indent[Example: [This presentation](https://wilkelab.org/SDS375/slides/web-design.html)]
+
+---
+class: center middle
+
+## Making a website with **distill**
+
+---
+
+background-image: url("web-design_files/distill-package-1.png")
+background-position: left 50% top 50%
+background-size: 85%
+
+---
+
+background-image: url("web-design_files/distill-package-2.png")
+background-position: left 50% top 50%
+background-size: 85%
+
+---
+
+background-image: url("web-design_files/distill-package-3.png")
+background-position: left 50% top 50%
+background-size: 85%
+
+---
+
+background-image: url("web-design_files/distill-package-4.png")
+background-position: left 50% top 50%
+background-size: 85%
+
+---
+class: center middle
+
+## Building the site
+
+---
+
+background-image: url("web-design_files/distill-build-1.png")
+background-position: left 50% top 50%
+background-size: 85%
+
+---
+
+background-image: url("web-design_files/distill-build-2.png")
+background-position: left 50% top 50%
+background-size: 85%
+
+---
+
+background-image: url("web-design_files/distill-build-3.png")
+background-position: left 50% top 50%
+background-size: 85%
+
+---
+class: center middle
+
+## Getting the site online: Netlify drop
+
+---
+
+background-image: url("web-design_files/netlify-1.png")
+background-position: left 50% top 50%
+background-size: 85%
+
+---
+
+background-image: url("web-design_files/netlify-2.png")
+background-position: left 50% top 50%
+background-size: 85%
+
+---
+
+background-image: url("web-design_files/netlify-3.png")
+background-position: left 50% top 50%
+background-size: 85%
+
+.absolute-bottom-right[
+Upload URL: https://app.netlify.com/drop
+]
+
+---
+
+background-image: url("web-design_files/netlify-4.png")
+background-position: left 50% top 50%
+background-size: 85%
+
+---
+
+## Alternatives to Netlify
+
+--
+
+- [GitHub pages](https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages)
+
+--
+
+- [Site44](https://www.site44.com/)
+
+--
+
+- Any webhosting service
+
+--
+
+For details and more options, see [here](https://rstudio.github.io/distill/publish_website.html)
+
+---
+
+
+## Further reading
+
+- MDN Web Docs: [Learn to style HTML using CSS
+](https://developer.mozilla.org/en-US/docs/Learn/CSS)
+- w3schools.com: [CSS Tutorial](https://www.w3schools.com/css/default.asp)
+- **distill** package: [Scientific and technical writing, native to the web](https://rstudio.github.io/distill/)
+- **xaringan** package: [xaringan Presentations](https://bookdown.org/yihui/rmarkdown/xaringan.html)
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"slideNumberFormat": ""
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
