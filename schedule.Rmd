@@ -218,7 +218,7 @@ knitr::opts_chunk$set(echo = FALSE)
 <p class="nospace">Materials:</p>
 
 - [Slides](slides/web-design.html)  
-- [Worksheet](worksheets/web-design-worksheet.html)
+- [Worksheet](slides/web-design-worksheet.html)
 
 ### Bonus 2—Animations
 

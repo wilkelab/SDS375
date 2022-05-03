@@ -142,6 +142,6 @@ navbar:
         - text: "Class 29: Compound figures"
           href: worksheets/compound-figures.Rmd
         - text: "Bonus 1: Web design"
-          href: worksheets/web-design-worksheet.html
+          href: slides/web-design-worksheet.html
 
 output: distill::distill_article
