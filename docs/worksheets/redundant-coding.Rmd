@@ -92,7 +92,7 @@ ggplot(iris, aes(Sepal.Length, Sepal.Width, fill = Species, shape = Species)) +
 
 We can place text labels with `geom_text()`. Oftentimes it makes sense to manually fine-tune exactly where the text labels will be located. To practice this, we will work with a simple dataset that contains three points:
 
-```{r}
+```{r echo = TRUE}
 data <- tibble(
   x = c(1, 2, 3),
   y = c(1, 3, 2),
