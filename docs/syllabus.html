@@ -50,16 +50,17 @@ pre.numberSource code > span > a:first-child::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {   }
+  { color: #00769e; background-color: #f1f3f5; }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
+code span { color: #00769e; } /* Normal */
 code span.al { color: #ad0000; } /* Alert */
 code span.an { color: #5e5e5e; } /* Annotation */
-code span.at { color: #20794d; } /* Attribute */
+code span.at { color: #657422; } /* Attribute */
 code span.bn { color: #ad0000; } /* BaseN */
 code span.bu { } /* BuiltIn */
-code span.cf { color: #007ba5; } /* ControlFlow */
+code span.cf { color: #00769e; } /* ControlFlow */
 code span.ch { color: #20794d; } /* Char */
 code span.cn { color: #8f5902; } /* Constant */
 code span.co { color: #5e5e5e; } /* Comment */
@@ -73,17 +74,18 @@ code span.fl { color: #ad0000; } /* Float */
 code span.fu { color: #4758ab; } /* Function */
 code span.im { } /* Import */
 code span.in { color: #5e5e5e; } /* Information */
-code span.kw { color: #007ba5; } /* Keyword */
+code span.kw { color: #00769e; } /* Keyword */
 code span.op { color: #5e5e5e; } /* Operator */
-code span.ot { color: #007ba5; } /* Other */
+code span.ot { color: #00769e; } /* Other */
 code span.pp { color: #ad0000; } /* Preprocessor */
-code span.sc { color: #20794d; } /* SpecialChar */
+code span.sc { color: #5e5e5e; } /* SpecialChar */
 code span.ss { color: #20794d; } /* SpecialString */
 code span.st { color: #20794d; } /* String */
 code span.va { color: #111111; } /* Variable */
 code span.vs { color: #20794d; } /* VerbatimString */
 code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </style>
+
 
   <!--radix_placeholder_meta_tags-->
   <title>SDS 375: Syllabus</title>
@@ -455,7 +457,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
   </style>
 
-  <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+  <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
   <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet"/>
   <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet"/>
   <script src="site_libs/headroom-0.9.4/headroom.min.js"></script>
@@ -786,6 +788,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   d-article table.gt_table td,
   d-article table.gt_table th {
     border-bottom: none;
+    font-size: 100%;
   }
 
   .html-widget {
@@ -1027,10 +1030,6 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     position: relative;
     margin-bottom: 2.5em;
     margin-top: 1.5em;
-  }
-
-  .figure img {
-    width: 100%;
   }
 
   .figure .caption {
@@ -1862,7 +1861,22 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
       // hoverable references
       $('span.citation[data-cites]').each(function() {
-        var refHtml = $('#ref-' + $(this).attr('data-cites')).html();
+        const citeChild = $(this).children()[0]
+        // Do not process if @xyz has been used without escaping and without bibliography activated
+        // https://github.com/rstudio/distill/issues/466
+        if (citeChild === undefined) return true
+
+        if (citeChild.nodeName == "D-FOOTNOTE") {
+          var fn = citeChild
+          $(this).html(fn.shadowRoot.querySelector("sup"))
+          $(this).id = fn.id
+          fn.remove()
+        }
+        var refs = $(this).attr('data-cites').split(" ");
+        var refHtml = refs.map(function(ref) {
+          // Could use CSS.escape too here, we insure backward compatibility in navigator
+          return "<p>" + $('div[id="ref-' + ref + '"]').html() + "</p>";
+        }).join("\n");
         window.tippy(this, {
           allowHTML: true,
           content: refHtml,
@@ -1873,6 +1887,31 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
           placement: 'bottom-start'
         });
       });
+
+      // fix footnotes in tables (#411)
+      // replacing broken distill.pub feature
+      $('table d-footnote').each(function() {
+        // we replace internal showAtNode methode which is triggered when hovering a footnote
+        this.hoverBox.showAtNode = function(node) {
+          // ported from https://github.com/distillpub/template/pull/105/files
+          calcOffset = function(elem) {
+              let x = elem.offsetLeft;
+              let y = elem.offsetTop;
+              // Traverse upwards until an `absolute` element is found or `elem`
+              // becomes null.
+              while (elem = elem.offsetParent && elem.style.position != 'absolute') {
+                  x += elem.offsetLeft;
+                  y += elem.offsetTop;
+              }
+
+              return { left: x, top: y };
+          }
+          // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetTop
+          const bbox = node.getBoundingClientRect();
+          const offset = calcOffset(node);
+          this.show([offset.left + bbox.width, offset.top + bbox.height]);
+        }
+      })
 
       // clear polling timer
       clearInterval(tid);
@@ -1972,6 +2011,8 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     // mark non-body figures created by knitr chunks as 100% width
     $('.layout-chunk').each(function(i, val) {
       var figures = $(this).find('img, .html-widget');
+      // ignore leaflet img layers (#106)
+      figures = figures.filter(':not(img[class*="leaflet"])')
       if ($(this).attr('data-layout') !== "l-body") {
         figures.css('width', '100%');
       } else {
@@ -1994,7 +2035,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     // get rid of index.html references in header
     if (window.location.protocol !== "file:") {
       $('.distill-site-header a[href]').each(function(i,val) {
-        $(this).attr('href', $(this).attr('href').replace("index.html", "./"));
+        $(this).attr('href', $(this).attr('href').replace(/^index[.]html/, "./"));
       });
     }
 
@@ -2374,7 +2415,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     color: var(--hover-color, white);
   }</style>
   <!--/radix_placeholder_distill-->
-  <script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
+  <script src="site_libs/header-attrs-2.19/header-attrs.js"></script>
   <script src="site_libs/popper-2.6.0/popper.min.js"></script>
   <link href="site_libs/tippy-6.2.7/tippy.css" rel="stylesheet" />
   <link href="site_libs/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
@@ -2531,10 +2572,16 @@ Worksheets
 </nav>
 </div>
 <h2 id="course-title-and-instructor">Course title and instructor</h2>
-<p><strong>Title:</strong> SDS 375/395 Data Visualization in R<br> <strong>Unique:</strong> 56640, 56735, TTH 3:30pm–5:00pm<br></p>
-<p><strong>Instructor:</strong> Claus O. Wilke<br> <strong>Email:</strong> <a href="mailto:wilke@austin.utexas.edu" class="email">wilke@austin.utexas.edu</a><br> <strong>Office Hours:</strong> Mon. 9am - 9:45am (open Zoom), Thurs. 10am - 11am (open Zoom), or by appointment <br> <strong>GitHub:</strong> <a href="https://github.com/clauswilke">clauswilke</a> <br></p>
-<p><strong>Teaching Assistant:</strong> Anastasiya Kulikova<br> <strong>Email:</strong> <a href="mailto:akulikova82@yahoo.com" class="email">akulikova82@yahoo.com</a><br> <strong>Office Hours:</strong> Mon. 10am - 11am (open Zoom), Fri. 2:00pm - 3:00pm (open Zoom), or by appointment <br> <strong>GitHub:</strong> <a href="https://github.com/akulikova64">akulikova64</a></p>
-<p><strong>Teaching Assistant:</strong> Fuheng Cui<br> <strong>Email:</strong> <a href="mailto:cuifuheng@utexas.edu" class="email">cuifuheng@utexas.edu</a><br> <strong>Office Hours:</strong> By appointment only<br> <strong>GitHub:</strong> <a href="https://github.com/cuifh">cuifh</a></p>
+<p><strong>Title:</strong> SDS 375/395 Data Visualization in R<br>
+<strong>Unique:</strong> 57635 and 57745, TTH 3:30pm–5:00pm, UTC 4.110<br></p>
+<p><strong>Instructor:</strong> Claus O. Wilke<br>
+<strong>Email:</strong> <a href="mailto:wilke@austin.utexas.edu" class="email">wilke@austin.utexas.edu</a><br>
+<strong>Office Hours:</strong> TBD, or by appointment <br>
+<strong>GitHub:</strong> <a href="https://github.com/clauswilke">clauswilke</a> <br></p>
+<p><strong>Teaching Assistant:</strong> <br>
+<strong>Email:</strong> <br>
+<strong>Office Hours:</strong> TBD, or by appointment <br>
+<strong>GitHub:</strong></p>
 <h2 id="purpose-and-contents-of-the-class">Purpose and contents of the class</h2>
 <p>In this class, students will learn how to visualize data sets and how to reason about and communicate with data visualizations. A substantial component of this class will be dedicated to learning how to program in R. In addition, students will learn how to compile analyses and visualizations into reports, how to make the reports reproducible, and how to post reports on a website or blog.</p>
 <h2 id="prerequisites">Prerequisites</h2>
@@ -2569,7 +2616,8 @@ Worksheets
 <tbody>
 <tr class="odd">
 <td style="text-align: right;">1.</td>
-<td style="text-align: left;">Introduction, reproducible workflows</td>
+<td style="text-align: left;">Introduction, reproducible
+workflows</td>
 <td style="text-align: left;">RStudio setup online, R Markdown</td>
 </tr>
 <tr class="even">
@@ -2585,21 +2633,26 @@ Worksheets
 <tr class="even">
 <td style="text-align: right;">4.</td>
 <td style="text-align: left;">Visualizing amounts</td>
-<td style="text-align: left;"><code>geom_col()</code>, <code>geom_point()</code>, position adjustments</td>
+<td style="text-align: left;"><code>geom_col()</code>, <code>geom_point()</code>,
+position adjustments</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">5.</td>
-<td style="text-align: left;">Coordinate systems and axes</td>
+<td style="text-align: left;">Coordinate systems and
+axes</td>
 <td style="text-align: left;">coords and position scales</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">6.</td>
-<td style="text-align: left;">Visualizing distributions 1</td>
-<td style="text-align: left;">stats, <code>geom_density()</code>, <code>geom_histogram()</code></td>
+<td style="text-align: left;">Visualizing distributions
+1</td>
+<td style="text-align: left;">stats, <code>geom_density()</code>,
+<code>geom_histogram()</code></td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">7.</td>
-<td style="text-align: left;">Visualizing distributions 2</td>
+<td style="text-align: left;">Visualizing distributions
+2</td>
 <td style="text-align: left;">violin plots, sina plots, ridgeline plots</td>
 </tr>
 <tr class="even">
@@ -2624,17 +2677,21 @@ Worksheets
 </tr>
 <tr class="even">
 <td style="text-align: right;">12.</td>
-<td style="text-align: left;">Getting to know your data 1: Data providence</td>
+<td style="text-align: left;">Getting to know your data
+1: Data providence</td>
 <td style="text-align: left;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">13.</td>
-<td style="text-align: left;">Getting to know your data 2: Data quality and relevance</td>
+<td style="text-align: left;">Getting to know your data
+2: Data quality and
+relevance</td>
 <td style="text-align: left;">handling missing data, <code>is.na()</code>, <code>case_when()</code></td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">14.</td>
-<td style="text-align: left;">Getting things into the right order</td>
+<td style="text-align: left;">Getting things into the
+right order</td>
 <td style="text-align: left;"><code>fct_reorder()</code>, <code>fct_lump()</code></td>
 </tr>
 <tr class="odd">
@@ -2644,12 +2701,14 @@ Worksheets
 </tr>
 <tr class="even">
 <td style="text-align: right;">16.</td>
-<td style="text-align: left;">Color spaces, color vision deficiency</td>
+<td style="text-align: left;">Color spaces, color vision
+deficiency</td>
 <td style="text-align: left;"><strong>colorspace</strong> package</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">17.</td>
-<td style="text-align: left;">Functions and functional programming</td>
+<td style="text-align: left;">Functions and functional
+programming</td>
 <td style="text-align: left;"><code>map()</code>, <code>nest()</code>, <strong>purrr</strong> package</td>
 </tr>
 <tr class="even">
@@ -2689,12 +2748,14 @@ Worksheets
 </tr>
 <tr class="odd">
 <td style="text-align: right;">25.</td>
-<td style="text-align: left;">Visualizing geospatial data</td>
+<td style="text-align: left;">Visualizing geospatial
+data</td>
 <td style="text-align: left;"><code>geom_sf()</code>, <code>coord_sf()</code></td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">26.</td>
-<td style="text-align: left;">Redundant coding, text annotations</td>
+<td style="text-align: left;">Redundant coding, text
+annotations</td>
 <td style="text-align: left;"><strong>ggrepel</strong> package</td>
 </tr>
 <tr class="odd">
@@ -2705,7 +2766,8 @@ Worksheets
 <tr class="even">
 <td style="text-align: right;">28.</td>
 <td style="text-align: left;">Over-plotting</td>
-<td style="text-align: left;">jittering, 2d histograms, contour plots</td>
+<td style="text-align: left;">jittering, 2d histograms,
+contour plots</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">29.</td>
@@ -2723,11 +2785,17 @@ Worksheets
 <h2 id="computing-requirements">Computing requirements</h2>
 <p>Programming needs to be learned by doing, and a significant portion of the in-class time will be dedicated to working through simple problems. All programming exercises will be available through a web-based system, so the only system requirement for student computers is a modern web browser.</p>
 <h2 id="course-site">Course site</h2>
-<p>All materials and assignments will be posted on the course webpage at: <a href="https://wilkelab.org/SDS375" class="uri">https://wilkelab.org/SDS375</a></p>
-<p>Assignments will be submitted and grades will be posted on Canvas at: <a href="https://utexas.instructure.com" class="uri">https://utexas.instructure.com</a></p>
-<p>R compute sessions are available at: <a href="https://edupod.cns.utexas.edu" class="uri">https://edupod.cns.utexas.edu</a><br />
-Note that edupods will be unavailable due to maintenance approximately two hours per month, usually on a Thursday afternoon between 4pm and 6pm. Specific maintenance times are published in advance here: <a href="https://wikis.utexas.edu/display/RCTFusers" class="uri">https://wikis.utexas.edu/display/RCTFusers</a></p>
-<p>An online discussions forum will be available at the following private GitHub repo: <a href="https://github.com/wilkelab/SDS375_spring2022" class="uri">https://github.com/wilkelab/SDS375_spring2022</a><br> You will be given access to this repo during the first week of class.</p>
+<p>All materials and assignments will be posted on the course webpage at:
+<a href="https://wilkelab.org/SDS375" class="uri">https://wilkelab.org/SDS375</a></p>
+<p>Assignments will be submitted and grades will be posted on Canvas at:
+<a href="https://utexas.instructure.com" class="uri">https://utexas.instructure.com</a></p>
+<p>R compute sessions are available at:
+<a href="https://edupod.cns.utexas.edu" class="uri">https://edupod.cns.utexas.edu</a><br />
+Note that edupods will be unavailable due to maintenance approximately two hours per month, usually on a Thursday afternoon between 4pm and 6pm. Specific maintenance times are published in advance here:
+<a href="https://wikis.utexas.edu/display/RCTFusers" class="uri">https://wikis.utexas.edu/display/RCTFusers</a></p>
+<p>An online discussions forum will be available at the following private GitHub repo:
+<a href="https://github.com/wilkelab/SDS375_spring2022" class="uri">https://github.com/wilkelab/SDS375_spring2022</a><br>
+You will be given access to this repo during the first week of class.</p>
 <h2 id="assignments-and-grading">Assignments and grading</h2>
 <p>The graded components of this class will be homeworks, projects, and online participation. Each week either one homework or one project is due. Homeworks will be relatively short visualization problems to be solved by the student, usually involving some small amount of programming to achieve a specified goal. Projects are larger and more involved data analysis problems that involve both programming and writing. Students will have at least one week to complete each homework and two weeks to complete each project. The submission deadlines for homeworks and projects will be Mondays at 11am.</p>
 <p>There will be ten homeworks and three projects. Both homeworks and projects need to be submitted electronically on Canvas. Homeworks are worth 10 points and projects are worth 100 points. The lowest-scoring homework will be dropped, so that a maximum of 90 points can be obtained from the homeworks.</p>

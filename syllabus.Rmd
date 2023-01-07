@@ -15,23 +15,18 @@ knitr::opts_chunk$set(echo = FALSE)
 ## Course title and instructor
 
 **Title:** SDS 375/395 Data Visualization in R<br>
-**Unique:** 56640, 56735, TTH 3:30pm--5:00pm<br>
+**Unique:** 57635 and 57745, TTH 3:30pm--5:00pm, UTC 4.110<br>
 
 
 **Instructor:** Claus	O.	Wilke<br>
 **Email:** wilke@austin.utexas.edu<br>
-**Office Hours:** Mon. 9am - 9:45am (open Zoom), Thurs. 10am - 11am (open Zoom), or by appointment <br>
+**Office Hours:** TBD, or by appointment <br>
 **GitHub:** [clauswilke](https://github.com/clauswilke) <br>
 
-**Teaching Assistant:** Anastasiya Kulikova<br>
-**Email:** akulikova82@yahoo.com<br>
-**Office Hours:** Mon. 10am - 11am (open Zoom), Fri. 2:00pm - 3:00pm (open Zoom), or by appointment <br>
-**GitHub:** [akulikova64](https://github.com/akulikova64)
-
-**Teaching Assistant:** Fuheng Cui<br>
-**Email:** cuifuheng@utexas.edu<br>
-**Office Hours:** By appointment only<br>
-**GitHub:** [cuifh](https://github.com/cuifh)
+**Teaching Assistant:** <br>
+**Email:** <br>
+**Office Hours:** TBD, or by appointment <br>
+**GitHub:** 
 
 ## Purpose and contents of the class
 

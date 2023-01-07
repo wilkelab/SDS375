@@ -50,16 +50,17 @@ pre.numberSource code > span > a:first-child::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {   }
+  { color: #00769e; background-color: #f1f3f5; }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
+code span { color: #00769e; } /* Normal */
 code span.al { color: #ad0000; } /* Alert */
 code span.an { color: #5e5e5e; } /* Annotation */
-code span.at { color: #20794d; } /* Attribute */
+code span.at { color: #657422; } /* Attribute */
 code span.bn { color: #ad0000; } /* BaseN */
 code span.bu { } /* BuiltIn */
-code span.cf { color: #007ba5; } /* ControlFlow */
+code span.cf { color: #00769e; } /* ControlFlow */
 code span.ch { color: #20794d; } /* Char */
 code span.cn { color: #8f5902; } /* Constant */
 code span.co { color: #5e5e5e; } /* Comment */
@@ -73,11 +74,11 @@ code span.fl { color: #ad0000; } /* Float */
 code span.fu { color: #4758ab; } /* Function */
 code span.im { } /* Import */
 code span.in { color: #5e5e5e; } /* Information */
-code span.kw { color: #007ba5; } /* Keyword */
+code span.kw { color: #00769e; } /* Keyword */
 code span.op { color: #5e5e5e; } /* Operator */
-code span.ot { color: #007ba5; } /* Other */
+code span.ot { color: #00769e; } /* Other */
 code span.pp { color: #ad0000; } /* Preprocessor */
-code span.sc { color: #20794d; } /* SpecialChar */
+code span.sc { color: #5e5e5e; } /* SpecialChar */
 code span.ss { color: #20794d; } /* SpecialString */
 code span.st { color: #20794d; } /* String */
 code span.va { color: #111111; } /* Variable */
@@ -85,15 +86,16 @@ code span.vs { color: #20794d; } /* VerbatimString */
 code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </style>
 
+
   <!--radix_placeholder_meta_tags-->
-  <title>SDS 375: SDS 375 Schedule Spring 2022</title>
+  <title>SDS 375: SDS 375 Schedule Spring 2023</title>
 
   <meta property="description" itemprop="description" content=""/>
 
 
 
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
-  <meta property="og:title" content="SDS 375: SDS 375 Schedule Spring 2022"/>
+  <meta property="og:title" content="SDS 375: SDS 375 Schedule Spring 2023"/>
   <meta property="og:type" content="article"/>
   <meta property="og:description" content=""/>
   <meta property="og:locale" content="en_US"/>
@@ -101,14 +103,14 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
   <!--  https://dev.twitter.com/cards/types/summary -->
   <meta property="twitter:card" content="summary"/>
-  <meta property="twitter:title" content="SDS 375: SDS 375 Schedule Spring 2022"/>
+  <meta property="twitter:title" content="SDS 375: SDS 375 Schedule Spring 2023"/>
   <meta property="twitter:description" content=""/>
 
   <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","output"]}},"value":[{"type":"character","attributes":{},"value":["SDS 375 Schedule Spring 2022"]},{"type":"character","attributes":{},"value":[""]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","toc_depth"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[2]}]}]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","output"]}},"value":[{"type":"character","attributes":{},"value":["SDS 375 Schedule Spring 2023"]},{"type":"character","attributes":{},"value":[""]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","toc_depth"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[2]}]}]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   <!--radix_placeholder_navigation_in_header-->
@@ -455,7 +457,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
   </style>
 
-  <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+  <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
   <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet"/>
   <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet"/>
   <script src="site_libs/headroom-0.9.4/headroom.min.js"></script>
@@ -786,6 +788,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   d-article table.gt_table td,
   d-article table.gt_table th {
     border-bottom: none;
+    font-size: 100%;
   }
 
   .html-widget {
@@ -1027,10 +1030,6 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     position: relative;
     margin-bottom: 2.5em;
     margin-top: 1.5em;
-  }
-
-  .figure img {
-    width: 100%;
   }
 
   .figure .caption {
@@ -1862,7 +1861,22 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
       // hoverable references
       $('span.citation[data-cites]').each(function() {
-        var refHtml = $('#ref-' + $(this).attr('data-cites')).html();
+        const citeChild = $(this).children()[0]
+        // Do not process if @xyz has been used without escaping and without bibliography activated
+        // https://github.com/rstudio/distill/issues/466
+        if (citeChild === undefined) return true
+
+        if (citeChild.nodeName == "D-FOOTNOTE") {
+          var fn = citeChild
+          $(this).html(fn.shadowRoot.querySelector("sup"))
+          $(this).id = fn.id
+          fn.remove()
+        }
+        var refs = $(this).attr('data-cites').split(" ");
+        var refHtml = refs.map(function(ref) {
+          // Could use CSS.escape too here, we insure backward compatibility in navigator
+          return "<p>" + $('div[id="ref-' + ref + '"]').html() + "</p>";
+        }).join("\n");
         window.tippy(this, {
           allowHTML: true,
           content: refHtml,
@@ -1873,6 +1887,31 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
           placement: 'bottom-start'
         });
       });
+
+      // fix footnotes in tables (#411)
+      // replacing broken distill.pub feature
+      $('table d-footnote').each(function() {
+        // we replace internal showAtNode methode which is triggered when hovering a footnote
+        this.hoverBox.showAtNode = function(node) {
+          // ported from https://github.com/distillpub/template/pull/105/files
+          calcOffset = function(elem) {
+              let x = elem.offsetLeft;
+              let y = elem.offsetTop;
+              // Traverse upwards until an `absolute` element is found or `elem`
+              // becomes null.
+              while (elem = elem.offsetParent && elem.style.position != 'absolute') {
+                  x += elem.offsetLeft;
+                  y += elem.offsetTop;
+              }
+
+              return { left: x, top: y };
+          }
+          // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetTop
+          const bbox = node.getBoundingClientRect();
+          const offset = calcOffset(node);
+          this.show([offset.left + bbox.width, offset.top + bbox.height]);
+        }
+      })
 
       // clear polling timer
       clearInterval(tid);
@@ -1972,6 +2011,8 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     // mark non-body figures created by knitr chunks as 100% width
     $('.layout-chunk').each(function(i, val) {
       var figures = $(this).find('img, .html-widget');
+      // ignore leaflet img layers (#106)
+      figures = figures.filter(':not(img[class*="leaflet"])')
       if ($(this).attr('data-layout') !== "l-body") {
         figures.css('width', '100%');
       } else {
@@ -1994,7 +2035,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     // get rid of index.html references in header
     if (window.location.protocol !== "file:") {
       $('.distill-site-header a[href]').each(function(i,val) {
-        $(this).attr('href', $(this).attr('href').replace("index.html", "./"));
+        $(this).attr('href', $(this).attr('href').replace(/^index[.]html/, "./"));
       });
     }
 
@@ -2374,7 +2415,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     color: var(--hover-color, white);
   }</style>
   <!--/radix_placeholder_distill-->
-  <script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
+  <script src="site_libs/header-attrs-2.19/header-attrs.js"></script>
   <script src="site_libs/popper-2.6.0/popper.min.js"></script>
   <link href="site_libs/tippy-6.2.7/tippy.css" rel="stylesheet" />
   <link href="site_libs/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
@@ -2394,7 +2435,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"SDS 375 Schedule Spring 2022","description":"","authors":[]}
+{"title":"SDS 375 Schedule Spring 2023","description":"","authors":[]}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -2498,7 +2539,7 @@ Worksheets
 <!--/radix_placeholder_site_before_body-->
 
 <div class="d-title">
-<h1>SDS 375 Schedule Spring 2022</h1>
+<h1>SDS 375 Schedule Spring 2023</h1>
 <!--radix_placeholder_categories-->
 <!--/radix_placeholder_categories-->
 
@@ -2519,7 +2560,7 @@ Worksheets
 </nav>
 </div>
 <h2 id="lectures">Lectures</h2>
-<h3 id="jan-18-2022introduction">1. Jan 18, 2022—Introduction</h3>
+<h3 id="jan-10-2023introduction">1. Jan 10, 2023—Introduction</h3>
 <p class="nospace">
 Materials:
 </p>
@@ -2528,7 +2569,7 @@ Materials:
 </li>
 <li><a href="worksheets/intro-rmarkdown.Rmd">Worksheet</a> (Solutions are <a href="worksheets/intro-rmarkdown-solutions.Rmd">available here</a>)</li>
 </ul>
-<h3 id="jan-20-2022aesthetic-mappings">2. Jan 20, 2022—Aesthetic mappings</h3>
+<h3 id="jan-12-2023aesthetic-mappings">2. Jan 12, 2023—Aesthetic mappings</h3>
 <p class="nospace">
 Materials:
 </p>
@@ -2537,23 +2578,17 @@ Materials:
 </li>
 <li><a href="worksheets/aesthetic-mappings.Rmd">Worksheet</a></li>
 </ul>
-<h3 id="jan-25-2022telling-a-story">3. Jan 25, 2022—Telling a story</h3>
+<h3 id="jan-17-2023telling-a-story-visualizing-amounts">3., 4. Jan 17, 2023—Telling a story, Visualizing amounts</h3>
 <p class="nospace">
 Materials:
 </p>
 <ul>
-<li><a href="slides/telling-a-story.html">Slides</a></li>
-</ul>
-<h3 id="jan-27-2022visualizing-amounts">4. Jan 27, 2022—Visualizing amounts</h3>
-<p class="nospace">
-Materials:
-</p>
-<ul>
-<li><a href="slides/visualizing-amounts.html">Slides</a><br />
+<li><a href="slides/telling-a-story.html">Slides: Telling a story</a></li>
+<li><a href="slides/visualizing-amounts.html">Slides: Visualizing amounts</a><br />
 </li>
 <li><a href="worksheets/visualizing-amounts.Rmd">Worksheet</a></li>
 </ul>
-<h3 id="feb-1-2022coordinate-systems-and-axes">5. Feb 1, 2022—Coordinate systems and axes</h3>
+<h3 id="jan-19-2023coordinate-systems-and-axes">5. Jan 19, 2023—Coordinate systems and axes</h3>
 <p class="nospace">
 Materials:
 </p>
@@ -2562,7 +2597,7 @@ Materials:
 </li>
 <li><a href="worksheets/coordinate-systems-axes.Rmd">Worksheet</a></li>
 </ul>
-<h3 id="feb-8-2022visualizing-distributions-1">6. Feb 8, 2022—Visualizing distributions 1</h3>
+<h3 id="jan-24-2023visualizing-distributions-1">6. Jan 24, 2023—Visualizing distributions 1</h3>
 <p class="nospace">
 Materials:
 </p>
@@ -2571,7 +2606,7 @@ Materials:
 </li>
 <li><a href="worksheets/visualizing-distributions-1.Rmd">Worksheet</a></li>
 </ul>
-<h3 id="feb-10-2022visualizing-distributions-2">7. Feb 10, 2022—Visualizing distributions 2</h3>
+<h3 id="jan-26-2023visualizing-distributions-2">7. Jan 26, 2023—Visualizing distributions 2</h3>
 <p class="nospace">
 Materials:
 </p>
@@ -2580,7 +2615,7 @@ Materials:
 </li>
 <li><a href="worksheets/visualizing-distributions-2.Rmd">Worksheet</a></li>
 </ul>
-<h3 id="feb-15-2022color-scales">8. Feb 15, 2022—Color scales</h3>
+<h3 id="jan-31-2023color-scales">8. Jan 31, 2023—Color scales</h3>
 <p class="nospace">
 Materials:
 </p>
@@ -2589,7 +2624,7 @@ Materials:
 </li>
 <li><a href="worksheets/color-scales.Rmd">Worksheet</a></li>
 </ul>
-<h3 id="feb-17-2022data-wrangling-1">9. Feb 17, 2022—Data wrangling 1</h3>
+<h3 id="feb-2-2023data-wrangling-1">9. Feb 2, 2023—Data wrangling 1</h3>
 <p class="nospace">
 Materials:
 </p>
@@ -2598,7 +2633,7 @@ Materials:
 </li>
 <li><a href="worksheets/data-wrangling-1.Rmd">Worksheet</a></li>
 </ul>
-<h3 id="feb-22-2022data-wrangling-2">10. Feb 22, 2022—Data wrangling 2</h3>
+<h3 id="feb-7-2023data-wrangling-2">10. Feb 7, 2023—Data wrangling 2</h3>
 <p class="nospace">
 Materials:
 </p>
@@ -2607,7 +2642,7 @@ Materials:
 </li>
 <li><a href="worksheets/data-wrangling-2.Rmd">Worksheet</a></li>
 </ul>
-<h3 id="feb-24-2022visualizing-proportions">11. Feb 24, 2022—Visualizing proportions</h3>
+<h3 id="feb-9-2023visualizing-proportions">11. Feb 9, 2023—Visualizing proportions</h3>
 <p class="nospace">
 Materials:
 </p>
@@ -2616,7 +2651,7 @@ Materials:
 </li>
 <li><a href="worksheets/visualizing-proportions.Rmd">Worksheet</a></li>
 </ul>
-<h3 id="mar-1-2022getting-to-know-your-data-1">12. Mar 1, 2022—Getting to know your data 1</h3>
+<h3 id="feb-14-2023getting-to-know-your-data-1">12. Feb 14, 2023—Getting to know your data 1</h3>
 <p class="nospace">
 Materials:
 </p>
@@ -2625,7 +2660,7 @@ Materials:
 </li>
 <li><a href="worksheets/know-your-data-1.Rmd">Worksheet</a></li>
 </ul>
-<h3 id="mar-3-2022getting-to-know-your-data-2">13. Mar 3, 2022—Getting to know your data 2</h3>
+<h3 id="feb-16-2023getting-to-know-your-data-2">13. Feb 16, 2023—Getting to know your data 2</h3>
 <p class="nospace">
 Materials:
 </p>
@@ -2634,7 +2669,7 @@ Materials:
 </li>
 <li><a href="worksheets/know-your-data-2.Rmd">Worksheet</a></li>
 </ul>
-<h3 id="mar-8-2022getting-things-into-the-right-order">14. Mar 8, 2022—Getting things into the right order</h3>
+<h3 id="feb-21-2023getting-things-into-the-right-order">14. Feb 21, 2023—Getting things into the right order</h3>
 <p class="nospace">
 Materials:
 </p>
@@ -2643,7 +2678,7 @@ Materials:
 </li>
 <li><a href="worksheets/getting-things-in-order.Rmd">Worksheet</a></li>
 </ul>
-<h3 id="mar-10-2022figure-design">15. Mar 10, 2022—Figure design</h3>
+<h3 id="feb-23-2023figure-design">15. Feb 23, 2023—Figure design</h3>
 <p class="nospace">
 Materials:
 </p>
@@ -2652,7 +2687,7 @@ Materials:
 </li>
 <li><a href="worksheets/figure-design.Rmd">Worksheet</a></li>
 </ul>
-<h3 id="mar-22-2022color-spaces-and-color-vision-deficiency">16. Mar 22, 2022—Color spaces and color-vision deficiency</h3>
+<h3 id="feb-28-2023color-spaces-and-color-vision-deficiency">16. Feb 28, 2023—Color spaces and color-vision deficiency</h3>
 <p class="nospace">
 Materials:
 </p>
@@ -2661,7 +2696,7 @@ Materials:
 </li>
 <li><a href="worksheets/color-spaces.R">Worksheet</a></li>
 </ul>
-<h3 id="mar-24-2022functions-and-functional-programming">17. Mar 24, 2022—Functions and functional programming</h3>
+<h3 id="mar-2-2023functions-and-functional-programming">17. Mar 2, 2023—Functions and functional programming</h3>
 <p class="nospace">
 Materials:
 </p>
@@ -2670,7 +2705,7 @@ Materials:
 </li>
 <li><a href="worksheets/functional-programming.Rmd">Worksheet</a></li>
 </ul>
-<h3 id="mar-29-2022visualizing-trends">18. Mar 29, 2022—Visualizing trends</h3>
+<h3 id="mar-7-2023visualizing-trends">18. Mar 7, 2023—Visualizing trends</h3>
 <p class="nospace">
 Materials:
 </p>
@@ -2679,7 +2714,7 @@ Materials:
 </li>
 <li><a href="worksheets/visualizing-trends.Rmd">Worksheet</a></li>
 </ul>
-<h3 id="mar-31-2022working-with-models">19. Mar 31, 2022—Working with models</h3>
+<h3 id="mar-9-2023working-with-models">19. Mar 9, 2023—Working with models</h3>
 <p class="nospace">
 Materials:
 </p>
@@ -2688,7 +2723,7 @@ Materials:
 </li>
 <li><a href="worksheets/working-with-models.Rmd">Worksheet</a></li>
 </ul>
-<h3 id="apr-5-2022visualizing-uncertainty">20. Apr 5, 2022—Visualizing uncertainty</h3>
+<h3 id="mar-21-2023visualizing-uncertainty">20. Mar 21, 2023—Visualizing uncertainty</h3>
 <p class="nospace">
 Materials:
 </p>
@@ -2697,7 +2732,7 @@ Materials:
 </li>
 <li><a href="worksheets/visualizing-uncertainty.Rmd">Worksheet</a></li>
 </ul>
-<h3 id="apr-7-2022dimension-reduction-1">21. Apr 7, 2022—Dimension reduction 1</h3>
+<h3 id="mar-23-2023dimension-reduction-1">21. Mar 23, 2023—Dimension reduction 1</h3>
 <p class="nospace">
 Materials:
 </p>
@@ -2706,7 +2741,7 @@ Materials:
 </li>
 <li><a href="worksheets/dimension-reduction-1.Rmd">Worksheet</a></li>
 </ul>
-<h3 id="apr-12-2022dimension-reduction-2">22. Apr 12, 2022—Dimension reduction 2</h3>
+<h3 id="mar-28-2023dimension-reduction-2">22. Mar 28, 2023—Dimension reduction 2</h3>
 <p class="nospace">
 Materials:
 </p>
@@ -2715,7 +2750,7 @@ Materials:
 </li>
 <li><a href="worksheets/dimension-reduction-2.Rmd">Worksheet</a></li>
 </ul>
-<h3 id="apr-14-2022clustering">23. Apr 14, 2022—Clustering</h3>
+<h3 id="mar-30-2023clustering">23. Mar 30, 2023—Clustering</h3>
 <p class="nospace">
 Materials:
 </p>
@@ -2724,7 +2759,7 @@ Materials:
 </li>
 <li><a href="worksheets/clustering.Rmd">Worksheet</a></li>
 </ul>
-<h3 id="apr-19-2022hierarchical-clustering">24. Apr 19, 2022—Hierarchical clustering</h3>
+<h3 id="apr-4-2023hierarchical-clustering">24. Apr 4, 2023—Hierarchical clustering</h3>
 <p class="nospace">
 Materials:
 </p>
@@ -2733,7 +2768,7 @@ Materials:
 </li>
 <li><a href="worksheets/hierarchical-clustering.Rmd">Worksheet</a></li>
 </ul>
-<h3 id="apr-21-2022visualizing-geospatial-data">25. Apr 21, 2022—Visualizing geospatial data</h3>
+<h3 id="apr-6-2023visualizing-geospatial-data">25. Apr 6, 2023—Visualizing geospatial data</h3>
 <p class="nospace">
 Materials:
 </p>
@@ -2742,7 +2777,7 @@ Materials:
 </li>
 <li><a href="worksheets/geospatial-data.Rmd">Worksheet</a></li>
 </ul>
-<h3 id="apr-26-2022redundant-coding-text-annotations">26. Apr 26, 2022—Redundant coding, text annotations</h3>
+<h3 id="apr-11-2023redundant-coding-text-annotations">26. Apr 11, 2023—Redundant coding, text annotations</h3>
 <p class="nospace">
 Materials:
 </p>
@@ -2751,7 +2786,7 @@ Materials:
 </li>
 <li><a href="worksheets/redundant-coding.Rmd">Worksheet</a></li>
 </ul>
-<h3 id="apr-28-2022interactive-plots">27. Apr 28, 2022—Interactive plots</h3>
+<h3 id="apr-13-2023interactive-plots">27. Apr 13, 2023—Interactive plots</h3>
 <p class="nospace">
 Materials:
 </p>
@@ -2760,7 +2795,7 @@ Materials:
 </li>
 <li><a href="worksheets/interactive-plots.Rmd">Worksheet</a></li>
 </ul>
-<h3 id="may-3-2022overplotting">28. May 3, 2022—Overplotting</h3>
+<h3 id="apr-18-2023overplotting">28. Apr 18, 2023—Overplotting</h3>
 <p class="nospace">
 Materials:
 </p>
@@ -2769,7 +2804,7 @@ Materials:
 </li>
 <li><a href="worksheets/overplotting.Rmd">Worksheet</a></li>
 </ul>
-<h3 id="may-5-2022compound-figures">29. May 5, 2022—Compound figures</h3>
+<h3 id="apr-20-2023compound-figures">29. Apr 20, 2023—Compound figures</h3>
 <p class="nospace">
 Materials:
 </p>
@@ -2795,123 +2830,12 @@ Materials:
 <li><a href="slides/animations.html">Slides</a></li>
 </ul>
 <h2 id="homeworks">Homeworks</h2>
-<p>All homeworks are due by 11:00am on the day they are due. Homeworks need to be submitted as pdf files on Canvas.</p>
-<h3 id="homework-1-due-jan-24-2022">Homework 1 (due Jan 24, 2022)</h3>
-<p class="nospace">
-Materials:
-</p>
-<ul>
-<li><a href="assignments/HW1.Rmd">R Markdown template</a></li>
-<li><a href="assignments/HW1.html">HTML</a></li>
-</ul>
-<h3 id="homework-2-due-jan-31-2022">Homework 2 (due Jan 31, 2022)</h3>
-<p class="nospace">
-Materials:
-</p>
-<ul>
-<li><a href="assignments/HW2.Rmd">R Markdown template</a></li>
-<li><a href="assignments/HW2.html">HTML</a></li>
-</ul>
-<h3 id="homework-3-due-feb-7-2022">Homework 3 (due Feb 7, 2022)</h3>
-<p class="nospace">
-Materials:
-</p>
-<ul>
-<li><a href="assignments/HW3.Rmd">R Markdown template</a></li>
-<li><a href="assignments/HW3.html">HTML</a></li>
-</ul>
-<h3 id="homework-4-due-feb-14-2022">Homework 4 (due Feb 14, 2022)</h3>
-<p class="nospace">
-Materials:
-</p>
-<ul>
-<li><a href="assignments/HW4.Rmd">R Markdown template</a></li>
-<li><a href="assignments/HW4.html">HTML</a></li>
-</ul>
-<h3 id="homework-5-due-feb-28-2022">Homework 5 (due Feb 28, 2022)</h3>
-<p class="nospace">
-Materials:
-</p>
-<ul>
-<li><a href="assignments/HW5.Rmd">R Markdown template</a></li>
-<li><a href="assignments/HW5.html">HTML</a></li>
-</ul>
-<h3 id="homework-6-due-mar-7-2022">Homework 6 (due Mar 7, 2022)</h3>
-<p class="nospace">
-Materials:
-</p>
-<ul>
-<li><a href="assignments/HW6.Rmd">R Markdown template</a></li>
-<li><a href="assignments/HW6.html">HTML</a></li>
-</ul>
-<h3 id="homework-7-due-apr-4-2022">Homework 7 (due Apr 4, 2022)</h3>
-<p class="nospace">
-Materials:
-</p>
-<ul>
-<li><a href="assignments/HW7.Rmd">R Markdown template</a></li>
-<li><a href="assignments/HW7.html">HTML</a></li>
-</ul>
-<h3 id="homework-8-due-apr-11-2022">Homework 8 (due Apr 11, 2022)</h3>
-<p class="nospace">
-Materials:
-</p>
-<ul>
-<li><a href="assignments/HW8.Rmd">R Markdown template</a></li>
-<li><a href="assignments/HW8.html">HTML</a></li>
-</ul>
-<h3 id="homework-9-due-apr-18-2022">Homework 9 (due Apr 18, 2022)</h3>
-<p class="nospace">
-Materials:
-</p>
-<ul>
-<li><a href="assignments/HW9.Rmd">R Markdown template</a></li>
-<li><a href="assignments/HW9.html">HTML</a></li>
-</ul>
-<h3 id="homework-10-due-apr-25-2022">Homework 10 (due Apr 25, 2022)</h3>
-<p class="nospace">
-Materials:
-</p>
-<ul>
-<li><a href="assignments/HW10.Rmd">R Markdown template</a></li>
-<li><a href="assignments/HW10.html">HTML</a></li>
-</ul>
+<p>All homeworks are due by 11:00pm on the day they are due. Homeworks need to be submitted as pdf files on Canvas.</p>
 <h2 id="projects">Projects</h2>
-<p>All projects are due by 10:00am on the day they are due. Projects need to be submitted on Canvas. Please carefully read the submission instructions for each project.</p>
-<h3 id="project-1-due-feb-21-2022">Project 1 (due Feb 21, 2022)</h3>
-<p class="nospace">
-Materials:
-</p>
-<ul>
-<li><a href="assignments/Project_1_instructions.html">Instructions</a></li>
-<li><a href="assignments/Project_1.Rmd">Project Template (Rmd)</a></li>
-<li><a href="assignments/Project_1.html">Project Template (HTML)</a></li>
-<li><a href="assignments/Project_1_rubric.pdf">Grading rubric</a></li>
-<li><a href="assignments/Project_1_example.html">Example project</a></li>
-</ul>
-<h3 id="project-2-due-mar-28-2022">Project 2 (due Mar 28, 2022)</h3>
-<p class="nospace">
-Materials:
-</p>
-<ul>
-<li><a href="assignments/Project_2_instructions.html">Instructions</a></li>
-<li><a href="assignments/Project_2.Rmd">Project Template (Rmd)</a></li>
-<li><a href="assignments/Project_2.html">Project Template (HTML)</a></li>
-<li><a href="assignments/Project_2_rubric.pdf">Grading rubric</a></li>
-</ul>
-<h3 id="project-3-due-may-2-2022">Project 3 (due May 2, 2022)</h3>
-<p class="nospace">
-Materials:
-</p>
-<ul>
-<li><a href="assignments/Project_3_instructions.html">Instructions</a></li>
-<li><a href="assignments/Project_3.Rmd">Project Template (Rmd)</a></li>
-<li><a href="assignments/Project_3.html">Project Template (HTML)</a></li>
-<li><a href="assignments/Project_3_rubric.pdf">Grading rubric</a></li>
-</ul>
+<p>All projects are due by 11:00pm on the day they are due. Projects need to be submitted on Canvas. Please carefully read the submission instructions for each project.</p>
 <h2 id="graduate-course-credit">Graduate course credit</h2>
 <p>This is an extra assignment for graduate students only.</p>
-<h3 id="first-draft-due-apr-8-2022">First draft (due Apr 8, 2022)</h3>
+<h3 id="first-draft-due-march-31-2023">First draft (due March 31, 2023)</h3>
 <p class="nospace">
 Materials:
 </p>
@@ -2919,7 +2843,7 @@ Materials:
 <li><a href="assignments/grad_assignment.Rmd">Template and Instructions (Rmd)</a></li>
 <li><a href="assignments/grad_assignment.html">Template and Instructions (HTML)</a></li>
 </ul>
-<h3 id="final-draft-due-may-6-2022">Final draft (due May 6, 2022)</h3>
+<h3 id="final-draft-due-april-24-2023">Final draft (due April 24, 2023)</h3>
 <h2 class="appendix" id="reuse">Reuse</h2>
 <p>Text and figures are licensed under Creative Commons Attribution <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Any computer code (R, HTML, CSS, etc.) in slides and worksheets, including in slide and worksheet sources, is also licensed under <a href="https://github.com/wilkelab/SDS375/LICENSE.md">MIT</a>. Note that figures in slides may be pulled in from external sources and may be licensed under different terms. For such images, image credits are available in the slide notes, accessible via pressing the letter ‘p’.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
