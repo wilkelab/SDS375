@@ -20,12 +20,12 @@ knitr::opts_chunk$set(echo = FALSE)
 
 **Instructor:** Claus	O.	Wilke<br>
 **Email:** wilke@austin.utexas.edu<br>
-**Office Hours:** Mon. 9am - 9:45am (open Zoom), Thurs. 10am - 11am (open Zoom), or by appointment<br>
+**Office Hours:** Mon. 9am - 10am (open Zoom), Thurs. 10am - 11am (open Zoom), or by appointment<br>
 **GitHub:** [clauswilke](https://github.com/clauswilke)<br>
 
 **Teaching Assistant:** Alexis Hill<br>
-**Email:** <br>
-**Office Hours:** TBD, or by appointment<br>
+**Email:** alexis.hill@utexas.edu<br>
+**Office Hours:**  Monday 2pm - 3pm (open Zoom), Tuesday 10am - 11am (open Zoom), or by appointment<br>
 **GitHub:** [alexismhill3](https://github.com/alexismhill3)<br>
 
 ## Purpose and contents of the class
@@ -141,7 +141,9 @@ Programming needs to be learned by doing, and a significant portion of the in-cl
 ## Course site
 
 All materials and assignments will be posted on the course webpage at:
-https://wilkelab.org/SDS375 
+https://wilkelab.org/SDS375
+
+Assignment deadlines are shown on the schedule at: https://wilkelab.org/SDS375/schedule.html
 
 Assignments will be submitted and grades will be posted on Canvas at:
 https://utexas.instructure.com
