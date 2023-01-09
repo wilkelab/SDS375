@@ -15,18 +15,18 @@ knitr::opts_chunk$set(echo = FALSE)
 ## Course title and instructor
 
 **Title:** SDS 375/395 Data Visualization in R<br>
-**Semester:** Spring 2023
+**Semester:** Spring 2023<br>
 **Unique:** 57635 and 57745, TTH 3:30pm--5:00pm, UTC 4.110<br>
 
 **Instructor:** Claus	O.	Wilke<br>
 **Email:** wilke@austin.utexas.edu<br>
-**Office Hours:** Mon. 9am - 9:45am (open Zoom), Thurs. 10am - 11am (open Zoom), or by appointment <br>
-**GitHub:** [clauswilke](https://github.com/clauswilke) <br>
+**Office Hours:** Mon. 9am - 9:45am (open Zoom), Thurs. 10am - 11am (open Zoom), or by appointment<br>
+**GitHub:** [clauswilke](https://github.com/clauswilke)<br>
 
 **Teaching Assistant:** Alexis Hill<br>
 **Email:** <br>
-**Office Hours:** TBD, or by appointment <br>
-**GitHub:** [alexismhill3](https://github.com/alexismhill3) <br>
+**Office Hours:** TBD, or by appointment<br>
+**GitHub:** [alexismhill3](https://github.com/alexismhill3)<br>
 
 ## Purpose and contents of the class
 
