@@ -131,7 +131,6 @@ All these books are freely available online and you do not need to purchase a ph
 
 29.     Compound figures            **patchwork** package
 
-30.     Review
 ----------------------------------------------------------------
 :::
 
@@ -153,7 +152,7 @@ Note that edupods will be unavailable due to maintenance approximately two hours
 https://wikis.utexas.edu/display/RCTFusers
 
 An online discussions forum will be available at the following private GitHub repo:
-https://github.com/wilkelab/SDS375_spring2022<br>
+https://github.com/wilkelab/SDS375_spring2023<br>
 You will be given access to this repo during the first week of class.
 
 ## Assignments and grading
@@ -217,7 +216,7 @@ Both the graduate TAs and myself will be available at posted times or by appoint
     
     I would like to request a meeting with you outside of 
     regular office hours this week. I am available Thurs.
-    between 2pm and 3:30pm or Fri. before 11am or after 4pm.
+    between 1pm and 2:30pm or Fri. before 11am or after 4pm.
     
     Thanks a lot,
       John Doe
