@@ -13,11 +13,11 @@ library(ggthemes)
 
 Write a brief (approximately 2--4 pages total, maximum is 5 pages) report on a data analysis topic of your choice. You should state a clear question, explain briefly the dataset you are using, and then provide an analysis to answer your question. All code required to perform the analysis must be included in the R Markdown document. Please do not include more than 3 figures in your analysis.
 
-The knitted R Markdown document (as a PDF) *and* the raw R Markdown file (as .Rmd) as well as any required data files should be submitted to Canvas by **April 8, 2022.** These two documents will be graded jointly, so they must be consistent (as in, don't change the R Markdown file without also updating the knitted document).
+The knitted R Markdown document (as a PDF) *and* the raw R Markdown file (as .Rmd) as well as any required data files should be submitted to Canvas by **March 31, 2023.** These two documents will be graded jointly, so they must be consistent (as in, don't change the R Markdown file without also updating the knitted document).
 
 Grading comments:
 
-1. This assignment will be graded pass/fail. See the course syllabus for details.
+1. This assignment will be graded pass/fail, but you can make revisions to obtain a passing grade. See the course syllabus for details.
 
 2. If you need more than 5 pages or more than 3 figures your project is too complex! You are not being graded on complexity. The goal is clarity and succinctness.
 
