@@ -364,7 +364,7 @@ df_preprints %>%
   filter(archive == "arXiv q-bio") %>%
   ggplot() +
   aes(date, count, color = archive) + 
-  geom_line(size = 0.75) +
+  geom_line(linewidth = 0.75) +
   scale_y_log10(
     limits = c(40, 400),
     breaks = c(50, 100, 200, 300),
@@ -429,7 +429,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 .center[
 ```{r preprints-part2, cache = params$cache, echo = FALSE, fig.width = 7.5, fig.asp = 0.618, dev = "svg"}
 ggplot(df_preprints, aes(date, count, color = archive)) + 
-  geom_line(size = 0.75) +
+  geom_line(linewidth = 0.75) +
   scale_y_log10(
     limits = c(29, 1600),
     breaks = c(30, 100, 300, 1000),

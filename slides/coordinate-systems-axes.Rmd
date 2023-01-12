@@ -112,7 +112,7 @@ temps_wide_label <- mutate(
 )
 
 ggplot(temps_wide_label, aes(x = `San Diego`, y = Houston)) +
-  geom_path(size = 1, color = "#0072B2") +
+  geom_path(linewidth = 1, color = "#0072B2") +
   geom_text_repel(
     aes(label = label), point.padding = 0.4, color = "black",
     min.segment.length = 0, size = 12/.pt,
@@ -143,7 +143,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 F2C <- function(t) {(t-32)*5/9}
 
 ggplot(temps_wide_label, aes(x = F2C(`San Diego`), y = F2C(Houston))) +
-  geom_path(size = 1, color = "#0072B2") +
+  geom_path(linewidth = 1, color = "#0072B2") +
   geom_text_repel(
     aes(label = label), point.padding = 0.4, color = "black",
     min.segment.length = 0, size = 12/.pt,
@@ -168,7 +168,7 @@ ggplot(temps_wide_label, aes(x = F2C(`San Diego`), y = F2C(Houston))) +
 .center[
 ```{r temperature-normals-Houston, echo = FALSE, fig.width = 5*6/4.2, fig.asp = 3/4, dev = "svg"}
 temp_plot <- ggplot(temps_wide_label, aes(x = date, y = Houston)) +
-  geom_line(size = 1, color = "#0072B2") +
+  geom_line(linewidth = 1, color = "#0072B2") +
   scale_x_date(
     name = "month",
     limits = c(ymd("0000-01-01"), ymd("0001-01-03")),
@@ -435,7 +435,7 @@ ggplot(df_points, aes(x, y)) +
   geom_segment(
     data = df_segments,
     aes(x = x0, xend = x1, y = y0, yend = y1),
-    size = theme_minimal_grid(16)$panel.grid$size,
+    linewidth = theme_minimal_grid(16)$panel.grid$linewidth,
     color = theme_minimal_grid(16)$panel.grid$colour,
     inherit.aes = FALSE
   ) +
@@ -476,7 +476,7 @@ temps_long <- read_csv(here("datasets", "tempnormals.csv")) %>%
   )
 
 ggplot(temps_long, aes(x = date, y = temperature, color = location)) +
-  geom_line(size = 1) +
+  geom_line(linewidth = 1) +
   scale_x_date(
     name = "month",
     limits = c(ymd("0000-01-01"), ymd("0001-01-04")),
@@ -508,7 +508,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 .pull-right[
 ```{r temp-normals-vs-time-polar, echo=FALSE, message=FALSE, fig.width = 5, fig.asp = 0.618, dev="svg"}
 ggplot(temps_long, aes(x = date, y = temperature, color = location)) +
-  geom_line(size = 1) +
+  geom_line(linewidth = 1) +
   scale_x_date(name = "date", expand = c(0, 0)) + 
   scale_y_continuous(
     name = "temperature (°F)",
@@ -534,15 +534,55 @@ class: center middle
 
 ---
 
-## Scale functions customize the x and y axes
+## Getting the data
 
-```{r boxoffice-tibble, echo = FALSE}
+The `boxoffice` dataset:
+
+.tiny-font[
+```{r message = FALSE}
 boxoffice <- tibble(
   rank = 1:5,
   title = c("Star Wars", "Jumanji", "Pitch Perfect 3", "Greatest Showman", "Ferdinand"),
   amount = c(71.57, 36.17, 19.93, 8.81, 7.32) # million USD
 )
 ```
+]
+
+--
+
+The `tx_counties` dataset:
+
+.tiny-font[
+```{r message = FALSE}
+tx_counties <- read_csv("https://wilkelab.org/SDS375/datasets/US_census.csv") %>% 
+  filter(state == "Texas") %>%
+  mutate(popratio = pop2010/median(pop2010)) %>%
+  arrange(desc(popratio)) %>%
+  mutate(index = 1:n())
+```
+]
+
+---
+
+## Getting the data
+
+The `temperatures` dataset:
+
+.tiny-font[
+```{r message = FALSE}
+temperatures <- read_csv("https://wilkelab.org/SDS375/datasets/tempnormals.csv") %>%
+  mutate(
+    location = factor(
+      location, levels = c("Death Valley", "Houston", "San Diego", "Chicago")
+    )
+  ) %>%
+  select(location, station_id, day_of_year, month, temperature)
+```
+]
+
+---
+
+## Scale functions customize the x and y axes
 
 Recall the box-office example from a prior lecture
 

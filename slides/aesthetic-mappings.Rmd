@@ -95,7 +95,7 @@ temps_long %>%
 ```{r temp-normals-vs-time, echo=FALSE, message=FALSE, fig.width = 7, fig.asp = 0.618, dev="svg"}
 
 ggplot(temps_long, aes(x = date, y = temperature, color = location)) +
-  geom_line(size = 1) +
+  geom_line(linewidth = 1) +
   scale_x_date(
     name = "month",
     limits = c(ymd("0000-01-01"), ymd("0001-01-04")),
@@ -247,12 +247,25 @@ class: center middle
 
 ---
 
-## We define the mapping with `aes()`
+## Getting the data
 
-```{r echo=FALSE}
-temperatures <- temps_long %>%
+All examples will use the `temperatures` dataset:
+
+.tiny-font[
+```{r getting-data, message = FALSE}
+temperatures <- read_csv("https://wilkelab.org/SDS375/datasets/tempnormals.csv") %>%
+  mutate(
+    location = factor(
+      location, levels = c("Death Valley", "Houston", "San Diego", "Chicago")
+    )
+  ) %>%
   select(location, station_id, day_of_year, month, temperature)
 ```
+]
+
+---
+
+## We define the mapping with `aes()`
 
 .small-font[
 ```{r ggplot-temps-example, eval = FALSE}

@@ -426,6 +426,19 @@ class: center middle
 
 ## Histograms and density plots in **ggplot2**
 
+---
+
+## Getting the data
+
+All examples will use the `titanic` dataset:
+
+.tiny-font[
+```{r message = FALSE}
+titanic <- read_csv("https://wilkelab.org/SDS375/datasets/titanic.csv") %>%
+  select(age, sex, class, survived)
+```
+]
+
 
 ---
 
