@@ -516,7 +516,7 @@ p_delay_distance <- ggplot(delay) +
   geom_smooth(
     data = flights_clean,
     aes(x = distance, y = arr_delay, color = name),
-    se = FALSE, inherit.aes = FALSE, size = 0.75,
+    se = FALSE, inherit.aes = FALSE, linewidth = 0.75,
     method = 'gam',
     formula = y ~ s(x, bs = "cs", k = 3),
     show.legend = FALSE

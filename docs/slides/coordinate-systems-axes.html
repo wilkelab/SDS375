@@ -19,7 +19,7 @@ class: center, middle, title-slide
 ### Claus O. Wilke
 ]
 .date[
-### last updated: 2023-01-12
+### last updated: 2023-01-19
 ]
 
 ---
@@ -364,7 +364,7 @@ ggplot(boxoffice) +
   aes(amount, fct_reorder(title, amount)) +
   geom_col() +
   scale_x_continuous(
-    name = "weekend gross (million USD)",
+    name = "weekend gross",
     limits = c(0, 80),
     breaks = c(0, 25, 50, 75),
 *   labels = c("0", "$25M", "$50M", "$75M")
@@ -392,7 +392,7 @@ ggplot(boxoffice) +
   aes(amount, fct_reorder(title, amount)) +
   geom_col() +
   scale_x_continuous(
-    name = "weekend gross (million USD)",
+    name = "weekend gross",
     limits = c(0, 80),
     breaks = c(0, 25, 50, 75),
     labels = c("0", "$25M", "$50M", "$75M"),
