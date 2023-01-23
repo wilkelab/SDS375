@@ -117,6 +117,8 @@ Previously, we counted like so:
 .tiny-font[
 
 ```{r eval = FALSE}
+library(palmerpenguins) # loads the `penguins` dataset
+
 penguins %>%
   count(species)
 ```

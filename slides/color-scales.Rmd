@@ -330,7 +330,7 @@ df_long$var2 <- factor(df_long$var2, levels = levels)
 
 p <- ggplot(filter(df_long, as.integer(var1) < as.integer(var2)),
        aes(var1, var2, fill=cor)) + 
-  geom_tile(color = "white", size = 1) + 
+  geom_tile(color = "white", linewidth = 1) + 
   scale_x_discrete(position = "top", name = NULL, expand = c(0, 0)) +
   scale_y_discrete(name = NULL, expand = c(0, 0)) +
   guides(
@@ -609,6 +609,53 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 class: center middle
 
 ## Color scales in **ggplot2**
+
+---
+
+## Getting the data
+
+The `temps_months` dataset:
+
+.tiny-font[
+```{r message = FALSE}
+temps_months <- read_csv("https://wilkelab.org/SDS375/datasets/tempnormals.csv") %>%
+  group_by(location, month_name) %>%
+  summarize(mean = mean(temperature)) %>%
+  mutate(
+    month = factor(
+      month_name,
+      levels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                 "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
+    ),
+    location = factor(
+      location, levels = c("Death Valley", "Houston", "San Diego", "Chicago")
+    )
+  ) %>%
+  select(-month_name)
+```
+]
+
+---
+
+## Getting the data
+
+The `popgrowth` dataset:
+
+.tiny-font[
+```{r message = FALSE}
+US_census <- read_csv("https://wilkelab.org/SDS375/datasets/US_census.csv")
+US_regions <- read_csv("https://wilkelab.org/SDS375/datasets/US_regions.csv")
+popgrowth <- left_join(US_census, US_regions) %>%
+    group_by(region, division, state) %>%
+    summarize(
+      pop2000 = sum(pop2000, na.rm = TRUE),
+      pop2010 = sum(pop2010, na.rm = TRUE),
+      popgrowth = (pop2010-pop2000)/pop2000,
+      .groups = "drop"
+    ) %>%
+    mutate(region = factor(region, levels = c("West", "South", "Midwest", "Northeast")))
+```
+]
 
 ---
 

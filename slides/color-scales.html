@@ -12,9 +12,15 @@
     <textarea id="source">
 class: center, middle, title-slide
 
+.title[
 # Color scales
+]
+.author[
 ### Claus O. Wilke
-### last updated: 2022-02-16
+]
+.date[
+### last updated: 2023-01-23
+]
 
 ---
 
@@ -361,6 +367,55 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 class: center middle
 
 ## Color scales in **ggplot2**
+
+---
+
+## Getting the data
+
+The `temps_months` dataset:
+
+.tiny-font[
+
+```r
+temps_months &lt;- read_csv("https://wilkelab.org/SDS375/datasets/tempnormals.csv") %&gt;%
+  group_by(location, month_name) %&gt;%
+  summarize(mean = mean(temperature)) %&gt;%
+  mutate(
+    month = factor(
+      month_name,
+      levels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                 "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
+    ),
+    location = factor(
+      location, levels = c("Death Valley", "Houston", "San Diego", "Chicago")
+    )
+  ) %&gt;%
+  select(-month_name)
+```
+]
+
+---
+
+## Getting the data
+
+The `popgrowth` dataset:
+
+.tiny-font[
+
+```r
+US_census &lt;- read_csv("https://wilkelab.org/SDS375/datasets/US_census.csv")
+US_regions &lt;- read_csv("https://wilkelab.org/SDS375/datasets/US_regions.csv")
+popgrowth &lt;- left_join(US_census, US_regions) %&gt;%
+    group_by(region, division, state) %&gt;%
+    summarize(
+      pop2000 = sum(pop2000, na.rm = TRUE),
+      pop2010 = sum(pop2010, na.rm = TRUE),
+      popgrowth = (pop2010-pop2000)/pop2000,
+      .groups = "drop"
+    ) %&gt;%
+    mutate(region = factor(region, levels = c("West", "South", "Midwest", "Northeast")))
+```
+]
 
 ---
 
@@ -829,6 +884,19 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
 (function() {
   "use strict"
   // Replace <script> tags in slides area to make them executable

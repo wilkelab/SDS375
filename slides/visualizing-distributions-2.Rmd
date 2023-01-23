@@ -462,6 +462,18 @@ class: center middle
 
 ---
 
+## Getting the data
+
+All examples will use the `lincoln_temps` dataset:
+
+.tiny-font[
+```{r message = FALSE}
+lincoln_temps <- readRDS(url("https://wilkelab.org/SDS375/datasets/lincoln_temps.rds"))
+```
+]
+
+---
+
 ## Making boxplots, violins, etc. in **ggplot2**
 
 .small-font.center[

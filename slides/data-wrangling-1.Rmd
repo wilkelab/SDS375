@@ -64,6 +64,8 @@ class: center, middle
 
 .tiny-font[
 ```{r}
+library(palmerpenguins) # loads the `penguins` dataset
+
 head(penguins)
 ```
 ]
@@ -74,8 +76,9 @@ head(penguins)
 
 .tiny-font[
 ```{r}
-# head(penguins)
+library(palmerpenguins) # loads the `penguins` dataset
 
+# head(penguins)
 penguins %>%
   head()
 ```
