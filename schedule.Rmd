@@ -276,6 +276,12 @@ All projects are due by 11:00pm on the day they are due. Projects need to be sub
 
 ### Project 1 (due Feb 14, 2023)
 
+<p class="nospace">Materials:</p>
+
+- [Instructions](assignments/Project_1_instructions.html)
+- [Project Template (Rmd)](assignments/Project_1.Rmd)
+- [Project Template (HTML)](assignments/Project_1.html)
+
 ### Project 2 (due Mar 7, 2023)
 
 ### Project 3 (due Apr 18, 2023)
