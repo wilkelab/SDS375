@@ -20,7 +20,7 @@ OH_pop <- midwest %>%
 
 *Enter your name and EID here*
 
-**This homework is due on Jan. 31, 2023 at 11:00pm. Please submit as a pdf file on Canvas.**
+**This homework is due on Feb. 7, 2023 at 11:00pm. Please submit as a pdf file on Canvas.**
 
 
 **Problem 1: (4 pts)** For problem 1, we will work with the `diamonds` dataset. See here for details: https://ggplot2.tidyverse.org/reference/diamonds.html.

@@ -198,6 +198,18 @@ The	class	will use +/- grading, and the exact grade boundaries will be determine
        225 (50%)                        D-
 :::
 
+**Update Feb. 6, 2023:** Due to the week-long university closure in the first week of February, there will be one fewer homework, so the total number will be 8 (+1), for a total of 81 points. (You can still drop your lowest-scored homework.) Thus, the total number of points possible will be 441, and the minimum guaranteed grade boundaries will be as follows:
+
+::: l-page
+ Points achieved  Minimum guaranteed grade
+---------------- -------------------------
+       397 (90%)                        A-
+       353 (80%)                        B-
+       309 (70%)                        C-
+       221 (50%)                        D-
+:::
+
+
 ## Late assignment policy
 
 Homeworks that are submitted past the posted deadline will not be graded and will receive 0 points.

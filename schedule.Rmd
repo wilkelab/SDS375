@@ -241,7 +241,7 @@ All homeworks are due by 11:00pm on the day they are due. Homeworks need to be s
 - [R Markdown template](assignments/HW2.Rmd)
 - [HTML](assignments/HW2.html)
 
-### Homework 3 (due Feb 1, 2023)
+### Homework 3 (due Feb 7, 2023)
 
 <p class="nospace">Materials:</p>
 
@@ -249,7 +249,7 @@ All homeworks are due by 11:00pm on the day they are due. Homeworks need to be s
 - [HTML](assignments/HW3.html)
 
 
-### Homework 4 (due Feb 7, 2023)
+### Homework 4 (due Feb 14, 2023)
 
 <p class="nospace">Materials:</p>
 
@@ -257,24 +257,22 @@ All homeworks are due by 11:00pm on the day they are due. Homeworks need to be s
 - [HTML](assignments/HW4.html)
 
 
-### Homework 5 (due Feb 21, 2023)
+### Homework 5 (due Feb 28, 2023)
 
-### Homework 6 (due Feb 28, 2023)
+### Homework 6 (due Mar 7, 2023)
 
-### Homework 7 (due Mar 21, 2023)
+### Homework 7 (due Mar 28, 2023)
 
-### Homework 8 (due Mar 28, 2023)
+### Homework 8 (due Apr 4, 2023)
 
-### Homework 9 (due Apr 4, 2023)
-
-### Homework 10 (due Apr 11, 2023)
+### Homework 9 (due Apr 11, 2023)
 
 
 ## Projects
 
 All projects are due by 11:00pm on the day they are due. Projects need to be submitted on Canvas. Please carefully read the submission instructions for each project.
 
-### Project 1 (due Feb 14, 2023)
+### Project 1 (due Feb 21, 2023)
 
 <p class="nospace">Materials:</p>
 
@@ -282,7 +280,7 @@ All projects are due by 11:00pm on the day they are due. Projects need to be sub
 - [Project Template (Rmd)](assignments/Project_1.Rmd)
 - [Project Template (HTML)](assignments/Project_1.html)
 
-### Project 2 (due Mar 7, 2023)
+### Project 2 (due Mar 21, 2023)
 
 ### Project 3 (due Apr 18, 2023)
 
