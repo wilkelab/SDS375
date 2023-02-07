@@ -55,144 +55,130 @@ knitr::opts_chunk$set(echo = FALSE)
 - [Slides](slides/visualizing-distributions-2.html)  
 - [Worksheet](worksheets/visualizing-distributions-2.Rmd)
 
-### 8. Jan 31, 2023—Color scales
+### 8. Feb 7, 2023—Color scales
 
 <p class="nospace">Materials:</p>
 - [Slides](slides/color-scales.html)  
 - [Worksheet](worksheets/color-scales.Rmd)
 
-### 9. Feb 2, 2023—Data wrangling 1
+### 9. Feb 9, 2023—Data wrangling 1
 
 <p class="nospace">Materials:</p>
 
 - [Slides](slides/data-wrangling-1.html)  
 - [Worksheet](worksheets/data-wrangling-1.Rmd)
 
-### 10. Feb 7, 2023—Data wrangling 2
+### 10. Feb 14, 2023—Data wrangling 2
 
 <p class="nospace">Materials:</p>
 
 - [Slides](slides/data-wrangling-2.html)  
 - [Worksheet](worksheets/data-wrangling-2.Rmd)
 
-### 11. Feb 9, 2023—Visualizing proportions 
+### 11. Feb 16, 2023—Visualizing proportions 
 
 <p class="nospace">Materials:</p>
 
 - [Slides](slides/visualizing-proportions.html)  
 - [Worksheet](worksheets/visualizing-proportions.Rmd)
 
-### 12. Feb 14, 2023—Getting to know your data 1
+### 12. Feb 21, 2023—Getting to know your data 1
 
 <p class="nospace">Materials:</p>
 
 - [Slides](slides/know-your-data-1.html)  
 - [Worksheet](worksheets/know-your-data-1.Rmd)
 
-### 13. Feb 16, 2023—Getting to know your data 2
+### 13. Feb 23, 2023—Getting to know your data 2
 
 <p class="nospace">Materials:</p>
 
 - [Slides](slides/know-your-data-2.html)  
 - [Worksheet](worksheets/know-your-data-2.Rmd)
 
-### 14. Feb 21, 2023—Getting things into the right order
+### 14. Feb 28, 2023—Getting things into the right order
 
 <p class="nospace">Materials:</p>
 
 - [Slides](slides/getting-things-in-order.html)  
 - [Worksheet](worksheets/getting-things-in-order.Rmd)
 
-### 15. Feb 23, 2023—Figure design
+### 15. Mar 2, 2023—Figure design
 
 <p class="nospace">Materials:</p>
 
 - [Slides](slides/figure-design.html)  
 - [Worksheet](worksheets/figure-design.Rmd)
 
-### 16. Feb 28, 2023—Color spaces and color-vision deficiency
+### 16. Mar 7, 2023—Color spaces and color-vision deficiency
 
 <p class="nospace">Materials:</p>
 
 - [Slides](slides/color-spaces.html)  
 - [Worksheet](worksheets/color-spaces.R)
 
-### 17. Mar 2, 2023—Functions and functional programming
+### 17. Mar 9, 2023—Functions and functional programming
 
 <p class="nospace">Materials:</p>
 
 - [Slides](slides/functional-programming.html)  
 - [Worksheet](worksheets/functional-programming.Rmd)
 
-### 18. Mar 7, 2023—Visualizing trends
+### 18. Mar 21, 2023—Visualizing trends
 
 <p class="nospace">Materials:</p>
 
 - [Slides](slides/visualizing-trends.html)  
 - [Worksheet](worksheets/visualizing-trends.Rmd)
 
-### 19. Mar 9, 2023—Working with models
+### 19. Mar 23, 2023—Working with models
 
 <p class="nospace">Materials:</p>
 
 - [Slides](slides/working-with-models.html)  
 - [Worksheet](worksheets/working-with-models.Rmd)
 
-### 20. Mar 21, 2023—Visualizing uncertainty
+### 20. Mar 28, 2023—Visualizing uncertainty
 
 <p class="nospace">Materials:</p>
 
 - [Slides](slides/visualizing-uncertainty.html)  
 - [Worksheet](worksheets/visualizing-uncertainty.Rmd)
 
-### 21. Mar 23, 2023—Dimension reduction 1
+### 21. Mar 30, 2023—Dimension reduction 1
 
 <p class="nospace">Materials:</p>
 
 - [Slides](slides/dimension-reduction-1.html)  
 - [Worksheet](worksheets/dimension-reduction-1.Rmd)
 
-### 22. Mar 28, 2023—Dimension reduction 2
+### 22. Apr 4, 2023—Dimension reduction 2
 
 <p class="nospace">Materials:</p>
 
 - [Slides](slides/dimension-reduction-2.html)  
 - [Worksheet](worksheets/dimension-reduction-2.Rmd)
 
-### 23. Mar 30, 2023—Clustering
+### 23. Apr 6, 2023—Clustering
 
 <p class="nospace">Materials:</p>
 
 - [Slides](slides/clustering.html)  
 - [Worksheet](worksheets/clustering.Rmd)
 
-### 24. Apr 4, 2023—Hierarchical clustering
+### 24. Apr 11, 2023—Hierarchical clustering
 
 <p class="nospace">Materials:</p>
 
 - [Slides](slides/hierarchical-clustering.html)  
 - [Worksheet](worksheets/hierarchical-clustering.Rmd)
 
-### 25. Apr 6, 2023—Visualizing geospatial data
+### 25. Apr 13, 2023—Visualizing geospatial data
 
 <p class="nospace">Materials:</p>
 
 - [Slides](slides/geospatial-data.html)  
 - [Worksheet](worksheets/geospatial-data.Rmd)
-
-### 26. Apr 11, 2023—Redundant coding, text annotations
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/redundant-coding.html)  
-- [Worksheet](worksheets/redundant-coding.Rmd)
-
-### 27. Apr 13, 2023—Interactive plots
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/interactive-plots.html)  
-- [Worksheet](worksheets/interactive-plots.Rmd)
 
 ### 28. Apr 18, 2023—Overplotting
 
@@ -221,6 +207,19 @@ knitr::opts_chunk$set(echo = FALSE)
 
 - [Slides](slides/animations.html)  
 
+### Bonus 3—Redundant coding, text annotations
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/redundant-coding.html)  
+- [Worksheet](worksheets/redundant-coding.Rmd)
+
+### Bonus 4—Interactive plots
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/interactive-plots.html)  
+- [Worksheet](worksheets/interactive-plots.Rmd)
 
 
 ## Homeworks
