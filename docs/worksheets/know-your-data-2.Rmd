@@ -150,7 +150,7 @@ sum(airquality$Ozone)
 sum(airquality$Ozone, na.rm = TRUE)
 ```
 
-To test whether a specific value is missing, you cannot use the standard comparison operator `==`. Instead, you have to use the function `is.na()`. Try this out by filtering out all the rows in `airquality` for which the `Ozone` column contains a missing value.
+To test whether a specific value is missing, you cannot use the standard comparison operator `==`. Instead, you have to use the function `is.na()`. Try this out by retaining only the rows in `airquality` for which the `Ozone` column contains a missing value.
 
 ```{r filter-NA, exercise=TRUE}
 airquality %>%
@@ -177,33 +177,6 @@ airquality %>%
 ```{r filter-not-NA-solution}
 airquality %>%
   filter(!is.na(Ozone))
-```
-
-
-## Types of missing values
-
-We usually write `NA` when we want to indicate a missing value in R, regardless of the type of the variable we are working with (numerical, character string, logical, etc). However, there are typed missing values, and in some cases you need to use them explicitly. The most important ones are `NA_character_` which represents a missing character string and `NA_real_` which represents a missing numerical value.
-
-You need to use typed `NA` values when writing code that expects input of a certain type. For example, in the following `if_else()` statement, becaue the second argument is of type character the third argument has to be as well. Try to run the following code, then fix it and run again.
-
-```{r NA_types, exercise=TRUE}
-# this does not work, try it, then fix it by using the appropriate NA value
-if_else(TRUE, "result if true", NA)
-```
-
-```{r NA_types-solution}
-if_else(TRUE, "result if true", NA_character_)
-```
-
-Let's try this one more time but with a different data type.
-
-```{r NA_types2, exercise=TRUE}
-# this does not work, try it, then fix it by using the appropriate NA value
-if_else(TRUE, 42, NA)
-```
-
-```{r NA_types2-solution}
-if_else(TRUE, 42, NA_real_)
 ```
 
 ## Visualizing missing values

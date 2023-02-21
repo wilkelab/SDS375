@@ -409,7 +409,7 @@ options(width = 95)
 .tiny-font[
 ```{r message = FALSE}
 NCbirths <- read_csv(
-  "https://wilkelab.org/DSC385/datasets/NCbirths.csv",
+  "https://wilkelab.org/SDS375/datasets/NCbirths.csv",
   na = c("", "NA", "#N/A")
 )
 ```
@@ -438,7 +438,7 @@ options(width = 95)
 .tiny-font[
 ```{r eval = FALSE}
 NCbirths <- read_csv(
-  "https://wilkelab.org/DSC385/datasets/NCbirths.csv",
+  "https://wilkelab.org/SDS375/datasets/NCbirths.csv",
   na = c("", "NA", "#N/A")
 )
 ```
@@ -618,7 +618,7 @@ We need to make sure to catch those cases:
 library(naniar) # library for handling missing values
 
 NCbirths <- read_csv(
-  "https://wilkelab.org/DSC385/datasets/NCbirths.csv",
+  "https://wilkelab.org/SDS375/datasets/NCbirths.csv",
   na = c("", "NA", "#N/A")
 ) %>% replace_with_na_at("Weeks", ~.x < 0) # only change column "Weeks" to be safe
 ```
@@ -656,7 +656,7 @@ ggplot(NCbirths, aes(Weeks)) +
 ```
 
 ```{r weeks-histo-flawed, echo = FALSE, message = FALSE, warning = FALSE, fig.width=6., fig.asp = 0.618, dev = "svg"}
-read_csv("https://wilkelab.org/DSC385/datasets/NCbirths.csv") %>%
+read_csv("https://wilkelab.org/SDS375/datasets/NCbirths.csv") %>%
   ggplot(aes(Weeks)) +
   geom_histogram()
 ```
