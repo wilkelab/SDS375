@@ -77,7 +77,7 @@ Variable       | Description
 
 ---
 
-## A complete record of data provenance requires more info
+## A complete record of data provenance requires more information
 
 --
 

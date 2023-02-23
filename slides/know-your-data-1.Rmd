@@ -42,7 +42,7 @@ update_geom_defaults("point", list(size = 2)) # 2 for full width, 2.5 for half w
 
 --
 
-2. Assess data providence<br>
+2. Assess data provenance<br>
   (Where does the data come from? Is it reliable?)
 
 --
