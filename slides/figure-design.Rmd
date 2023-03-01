@@ -109,7 +109,7 @@ ggplot(lincoln_temps) +
 You can download the dataset using this code:
 ```{r eval = FALSE}
 lincoln_temps <- readRDS(
-  url("https://wilkelab.org/DSC385/datasets/lincoln_temps.rds")
+  url("https://wilkelab.org/SDS375/datasets/lincoln_temps.rds")
 )
 ```
 ]
