@@ -636,8 +636,8 @@ ggplot(biorxiv_growth, aes(date_dec, count)) +
     guide = guide_legend(
       override.aes = list(
         color = c("white", "black", "black"),
-        linetype =c(0, 2, 1),
-        shape = c(21, NA, NA)
+        shape = c(21, NA, NA),
+        linetype = c(0, 2, 1)
       )
     )
   ) +
@@ -669,11 +669,11 @@ Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reil
 .center[
 ```{r biorxiv-logscale-doublefit, echo = FALSE, warning = FALSE, fig.width = 7, fig.asp = 0.618, dev = "svg"}
 ggplot(biorxiv_growth, aes(date_dec, count)) +
-  geom_line(data = expfit.df, aes(color = "expfit"), size = .5, linetype = 2) +
+  geom_line(data = expfit.df, aes(color = "expfit"), linewidth = .5, linetype = 2) +
   geom_point(aes(fill = "expfit"), shape = NA, na.rm = TRUE) + # dummy for legend
-  geom_line(data = linfit.df, aes(color = "linfit"), size = .5) +
+  geom_line(data = linfit.df, aes(color = "linfit"), linewidth = .5) +
   geom_point(aes(fill = "linfit"), shape = NA, na.rm = TRUE) + # dummy for legend
-  geom_line(aes(color = "data"), size = .5) +
+  geom_line(aes(color = "data"), linewidth = .5) +
   geom_point(aes(fill = "data"), color = "white", shape = 21, size = 2) +
   scale_y_continuous(
     limits = c(0, 1550),
