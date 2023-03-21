@@ -272,6 +272,11 @@ All homeworks are due by 11:00pm on the day they are due. Homeworks need to be s
 
 ### Homework 7 (due Mar 28, 2023)
 
+<p class="nospace">Materials:</p>
+
+- [R Markdown template](assignments/HW7.Rmd)
+- [HTML](assignments/HW7.html)
+
 ### Homework 8 (due Apr 4, 2023)
 
 ### Homework 9 (due Apr 11, 2023)

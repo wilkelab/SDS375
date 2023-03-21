@@ -84,7 +84,7 @@ Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reil
 blue_jays %>%
   ggplot(aes(body_mass_g, head_length_mm)) + 
   geom_point(aes(fill = "blue jay birds"), pch = 21, color = "white", size = 2.5) +
-  geom_smooth(aes(color = "regression line"), method = "lm", size = 0.75, se = FALSE, fullrange = TRUE) +
+  geom_smooth(aes(color = "regression line"), method = "lm", linewidth = 0.75, se = FALSE, fullrange = TRUE) +
   scale_fill_manual(
     values = c(`blue jay birds` = "black", `regression line` = "black"),
     breaks = c("regression line", "blue jay birds"),
@@ -92,10 +92,7 @@ blue_jays %>%
     name = NULL,
     guide = guide_legend(
       direction = "horizontal",
-      override.aes = list(
-        size = c(0.75, 2.5),
-        linetype = c(1, 0)
-      )
+      override.aes = list(size = 2.5, linetype = 0)
     )
   ) +
   scale_color_manual(
@@ -226,7 +223,7 @@ blue_jays %>%
   filter(sex == "F") %>%
   ggplot(aes(body_mass_g, head_length_mm, color = sex, fill = sex)) + 
   geom_point(pch = 21, color = "white", size = 2.5) +
-  geom_smooth(method = "lm", size = 0.75, se = FALSE, fullrange = TRUE) +
+  geom_smooth(method = "lm", linewidth = 0.75, se = FALSE, fullrange = TRUE) +
   scale_x_continuous(name = "body mass (g)", limits = c(58.7, 81.6)) +
   scale_y_continuous(name = "head length (mm)", limits = c(51.5, 60.8)) +
   scale_fill_manual(
@@ -319,7 +316,7 @@ blue_jays %>%
   filter(sex == "M") %>%
   ggplot(aes(body_mass_g, head_length_mm, color = sex, fill = sex)) + 
   geom_point(pch = 21, color = "white", size = 2.5) +
-  geom_smooth(method = "lm", size = 0.75, se = FALSE, fullrange = TRUE) +
+  geom_smooth(method = "lm", linewidth = 0.75, se = FALSE, fullrange = TRUE) +
   scale_x_continuous(name = "body mass (g)", limits = c(58.7, 81.6)) +
   scale_y_continuous(name = "head length (mm)", limits = c(51.5, 60.8)) +
   scale_fill_manual(
@@ -364,7 +361,7 @@ Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reil
 blue_jays %>%
   ggplot(aes(body_mass_g, head_length_mm, color = sex, fill = sex)) + 
   geom_point(pch = 21, color = "white", size = 2.5) +
-  geom_smooth(method = "lm", size = 0.75, se = FALSE, fullrange = TRUE) +
+  geom_smooth(method = "lm", linewidth = 0.75, se = FALSE, fullrange = TRUE) +
   scale_x_continuous(name = "body mass (g)", limits = c(58.7, 81.6)) +
   scale_y_continuous(name = "head length (mm)", limits = c(51.5, 60.8)) +
   scale_fill_manual(
@@ -410,7 +407,7 @@ biorxiv_growth <- preprints %>%
   filter(archive == "bioRxiv", count > 0)
 
 ggplot(biorxiv_growth, aes(date_dec, count)) + 
-  geom_line(aes(color = "data"), size = .5) +
+  geom_line(aes(color = "data"), linewidth = .5) +
   geom_point(aes(fill = "data"), color = "white", shape = 21, size = 2) +
   scale_y_continuous(
     limits = c(0, 1550),
@@ -423,7 +420,12 @@ ggplot(biorxiv_growth, aes(date_dec, count)) +
     name = NULL,
     values = "#0072B2",
     breaks = "data",
-    labels = "actual counts"
+    labels = "actual counts",
+    guide = guide_legend(
+      override.aes = list(
+        linetype = 0
+      )
+    )
   ) +
   scale_fill_manual(
     name = NULL,
@@ -477,9 +479,9 @@ linfit.df <- data.frame(
 )
 
 ggplot(biorxiv_growth, aes(date_dec, count)) + 
-  geom_line(data = expfit.df, aes(color = "expfit"), size = .5, linetype = 2) +
+  geom_line(data = expfit.df, aes(color = "expfit"), linewidth = .5, linetype = 2) +
   geom_point(aes(fill = "expfit"), shape = NA, na.rm = TRUE) + # dummy for legend
-  geom_line(aes(color = "data"), size = .5) +
+  geom_line(aes(color = "data"), linewidth = .5) +
   geom_point(aes(fill = "data"), color = "white", shape = 21, size = 2) +
   scale_y_continuous(
     limits = c(0, 1550),
@@ -497,7 +499,6 @@ ggplot(biorxiv_growth, aes(date_dec, count)) +
       override.aes = list(
         color = c("white", "black"),
         shape = c(21, NA),
-        size = c(2, 0.5),
         linetype = c(0, 2)
       )
     )
@@ -553,9 +554,9 @@ linfit.df <- data.frame(
 )
 
 ggplot(biorxiv_growth, aes(date_dec, count)) + 
-  geom_line(data = expfit.df, aes(color = "expfit"), size = .5, linetype = 2) +
+  geom_line(data = expfit.df, aes(color = "expfit"), linewidth = .5, linetype = 2) +
   geom_point(aes(fill = "expfit"), shape = NA, na.rm = TRUE) + # dummy for legend
-  geom_line(aes(color = "data"), size = .5) +
+  geom_line(aes(color = "data"), linewidth = .5) +
   geom_point(aes(fill = "data"), color = "white", shape = 21, size = 2) +
   scale_y_log10(
     limits = c(30, 1670),
@@ -577,7 +578,6 @@ ggplot(biorxiv_growth, aes(date_dec, count)) +
       override.aes = list(
         color = c("white", "black"),
         shape = c(21, NA),
-        size = c(2, 0.5),
         linetype = c(0, 2)
       )
     )
@@ -611,11 +611,11 @@ Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reil
 .center[
 ```{r biorxiv-logscale, echo = FALSE, fig.width = 7, fig.asp = 0.618, dev = "svg"}
 ggplot(biorxiv_growth, aes(date_dec, count)) +
-  geom_line(data = expfit.df, aes(color = "expfit"), size = .5, linetype = 2) +
+  geom_line(data = expfit.df, aes(color = "expfit"), linewidth = .5, linetype = 2) +
   geom_point(aes(fill = "expfit"), shape = NA, na.rm = TRUE) + # dummy for legend
-  geom_line(data = linfit.df, aes(color = "linfit"), size = .5) +
+  geom_line(data = linfit.df, aes(color = "linfit"), linewidth = .5) +
   geom_point(aes(fill = "linfit"), shape = NA, na.rm = TRUE) + # dummy for legend
-  geom_line(aes(color = "data"), size = .5) +
+  geom_line(aes(color = "data"), linewidth = .5) +
   geom_point(aes(fill = "data"), color = "white", shape = 21, size = 2) +
   scale_y_log10(
     limits = c(30, 1670),
@@ -636,9 +636,8 @@ ggplot(biorxiv_growth, aes(date_dec, count)) +
     guide = guide_legend(
       override.aes = list(
         color = c("white", "black", "black"),
-        shape = c(21, NA, NA),
-        size = c(2, 0.5, 0.5),
-        linetype = c(0, 2, 1)
+        linetype =c(0, 2, 1),
+        shape = c(21, NA, NA)
       )
     )
   ) +
@@ -692,7 +691,6 @@ ggplot(biorxiv_growth, aes(date_dec, count)) +
       override.aes = list(
         color = c("white", "black", "black"),
         shape = c(21, NA, NA),
-        size = c(2, 0.5, 0.5),
         linetype = c(0, 2, 1)
       )
     )
@@ -728,7 +726,7 @@ Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reil
 hpi_trends %>%
   filter(state %in% c("California", "Nevada", "West Virginia", "Texas")) %>%
   ggplot(aes(date, hpi)) +
-  geom_line(color = "#0072B2", size = 0.75) +
+  geom_line(color = "#0072B2", linewidth = 0.75) +
   scale_x_date(name = NULL) +
   scale_y_log10(name = "House Price Index (Dec. 2000 = 100)") +
   facet_wrap(~state, scales = "free_x") +
@@ -772,8 +770,8 @@ Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reil
 hpi_trends %>%
   filter(state %in% c("California", "Nevada", "West Virginia", "Texas")) %>%
   ggplot(aes(date, hpi)) +
-  geom_line(aes(y = hpi_trend), color = "grey50", size = 0.4) +
-  geom_line(color = "#0072B2", size = 0.75) +
+  geom_line(aes(y = hpi_trend), color = "grey50", linewidth = 0.4) +
+  geom_line(color = "#0072B2", linewidth = 0.75) +
   scale_x_date(name = NULL) +
   scale_y_log10(name = "House Price Index (Dec. 2000 = 100)") +
   facet_wrap(~state, scales = "free_x") +
@@ -813,8 +811,8 @@ Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reil
 hpi_trends %>%
   filter(state %in% c("California", "Nevada", "West Virginia", "Texas")) %>%
   ggplot(aes(date, hpi_detrended)) +
-  geom_hline(yintercept = 1, color = "grey50", size = 0.4) +
-  geom_line(color = "#0072B2", size = 0.75) +
+  geom_hline(yintercept = 1, color = "grey50", linewidth = 0.4) +
+  geom_line(color = "#0072B2", linewidth = 0.75) +
   scale_x_date(name = NULL) +
   scale_y_log10(
     name = "House Price Index (detrended)",
@@ -854,6 +852,32 @@ class: middle, center
 
 # Creating trendlines in **ggplot2**
 
+
+---
+
+## Getting the data
+
+First dataset: `blue_jays`
+
+.tiny-font[
+```{r getting-data, message = FALSE}
+blue_jays <- read_csv("https://wilkelab.org/SDS375/datasets/blue_jays.csv")
+blue_jays
+```
+]
+
+---
+
+## Getting the data
+
+Second dataset: `cars93`
+
+.tiny-font[
+```{r getting-data2, message = FALSE}
+cars93 <- read_csv("https://wilkelab.org/SDS375/datasets/cars93.csv")
+cars93
+```
+]
 
 ---
 
