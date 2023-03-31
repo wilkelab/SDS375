@@ -1,0 +1,30 @@
+---
+title: "Project 3"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+*Enter your name and EID here*
+
+**Introduction:** *Your introduction here.*
+
+```{r}
+# Load your dataset here
+```
+
+**Question:** *Your question here.*
+
+**Approach:** *Your approach here.*
+
+**Analysis:**
+
+```{r}
+# Your R code here
+```
+
+**Discussion:** *Your discussion of results here.*
+

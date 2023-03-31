@@ -313,6 +313,12 @@ All projects are due by 11:00pm on the day they are due. Projects need to be sub
 
 ### Project 3 (due Apr 18, 2023)
 
+<p class="nospace">Materials:</p>
+
+- [Instructions](assignments/Project_3_instructions.html)
+- [Project Template (Rmd)](assignments/Project_3.Rmd)
+- [Project Template (HTML)](assignments/Project_3.html)
+- Grading rubric: coming soon
 
 ## Graduate course credit
 
