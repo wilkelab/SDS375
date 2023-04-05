@@ -287,6 +287,11 @@ All homeworks are due by 11:00pm on the day they are due. Homeworks need to be s
 
 ### Homework 9 (due Apr 11, 2023)
 
+<p class="nospace">Materials:</p>
+
+- [R Markdown template](assignments/HW9.Rmd)
+- [HTML](assignments/HW9.html)
+
 
 ## Projects
 
