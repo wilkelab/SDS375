@@ -368,7 +368,7 @@ df_long$var2 <- factor(df_long$var2, levels = sort(levels))
 
 ggplot(filter(df_long, as.integer(var1) < as.integer(var2)),
        aes(var1, var2, fill=cor)) + 
-  geom_tile(color = "white", size = 1) + 
+  geom_tile(color = "white", linewidth = 1) + 
   scale_x_discrete(position = "top", name = NULL, expand = c(0, 0)) +
   scale_y_discrete(name = NULL, expand = c(0, 0)) +
   scale_fill_continuous_diverging(
@@ -412,7 +412,7 @@ df_long$var2 <- factor(df_long$var2, levels = levels)
 
 ggplot(filter(df_long, as.integer(var1) < as.integer(var2)),
        aes(var1, var2, fill=cor)) + 
-  geom_tile(color = "white", size = 1) + 
+  geom_tile(color = "white", linewidth = 1) + 
   scale_x_discrete(position = "top", name = NULL, expand = c(0, 0)) +
   scale_y_discrete(name = NULL, expand = c(0, 0)) +
   scale_fill_continuous_diverging(
@@ -457,7 +457,7 @@ df_long %>%
   arrange(as.character(var1), as.character(var2)) %>%
   mutate(id = n():1) %>%
   ggplot(aes(1, id, fill=cor)) + 
-  geom_tile(color = "white", size = 1) + 
+  geom_tile(color = "white", linewidth = 1) + 
   geom_text(
     aes(x = 1.75, label = var1), size = 12/.pt, hjust = 0
   ) +
@@ -497,7 +497,7 @@ df_long %>%
   arrange(desc(var1), desc(var2)) %>%
   mutate(id = n():1) %>%
   ggplot(aes(1, id, fill=cor)) + 
-  geom_tile(color = "white", size = 1) + 
+  geom_tile(color = "white", linewidth = 1) + 
   geom_text(
     aes(x = 1.75, label = var1), size = 12/.pt, hjust = 0
   ) +
@@ -619,7 +619,7 @@ dt %>%
 ## Hierarchical clustering via UPGMA
 
 .pull-left.move-up-1em[
-```{r UPGMA-step2, echo = FALSE, message = FALSE, fig.width = 4.5, fig.asp = 1, dev = "svg"}
+```{r UPGMA-step2, echo = FALSE, warning = FALSE, message = FALSE, fig.width = 4.5, fig.asp = 1, dev = "svg"}
 data$fill <- c("white", "white", "yellow", "white", "yellow")
 
 ggplot(data, aes(x, y)) +
@@ -1021,7 +1021,10 @@ class: center middle
 We'll cluster the US state stats dataset
 
 .tiny-font[
-```{r}
+```{r message = FALSE}
+US_state_stats <- read_csv("https://wilkelab.org/SDS375/datasets/US_state_stats.csv") %>%
+  filter(state != "District of Columbia")
+
 US_state_stats 
 ```
 ]

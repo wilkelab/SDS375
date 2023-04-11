@@ -14,9 +14,15 @@
     <textarea id="source">
 class: center, middle, title-slide
 
+.title[
 # Hierarchical clustering
+]
+.author[
 ### Claus O. Wilke
-### last updated: 2022-03-21
+]
+.date[
+### last updated: 2023-04-10
+]
 
 ---
 
@@ -33,22 +39,23 @@ US_state_stats
 
 ```
 # A tibble: 50 × 20
-   state       homeownership multiunit income med_income poverty fed_spend smoke
-   &lt;chr&gt;               &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;      &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;
- 1 Alabama              71.1      15.5  22984      42081    17.1     11.7   24.8
- 2 Alaska               64.7      24.6  30726      66521     9.5     16.8   25  
- 3 Arizona              67.4      20.7  25680      50448    15.3      9.85  20.4
- 4 Arkansas             67.7      15.2  21274      39267    18        9.61  23.5
- 5 California           57.4      30.7  29188      60883    13.7      8.89  15.2
- 6 Colorado             67.6      25.6  30151      56456    12.2      9.15  19.9
- 7 Connecticut          69.2      34.6  36775      67740     9.2     14.8   16.5
- 8 Delaware             73.6      17.7  29007      57599    11        8.89  20.7
- 9 Florida              69.7      30    26551      47661    13.8      9.62  21.6
-10 Georgia              67.2      20.5  25134      49347    15.7      8.88  22.2
-# … with 40 more rows, and 12 more variables: murder &lt;dbl&gt;, robbery &lt;dbl&gt;,
-#   agg_assault &lt;dbl&gt;, larceny &lt;dbl&gt;, motor_theft &lt;dbl&gt;, soc_sec &lt;dbl&gt;,
-#   nuclear &lt;dbl&gt;, coal &lt;dbl&gt;, tr_deaths &lt;dbl&gt;, tr_deaths_no_alc &lt;dbl&gt;,
-#   unempl &lt;dbl&gt;, popdens2010 &lt;dbl&gt;
+   state     homeo…¹ multi…² income med_i…³ poverty fed_s…⁴ smoke murder robbery
+   &lt;chr&gt;       &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;
+ 1 Alabama      71.1    15.5  22984   42081    17.1   11.7   24.8    8.2   141. 
+ 2 Alaska       64.7    24.6  30726   66521     9.5   16.8   25      4.8    80.9
+ 3 Arizona      67.4    20.7  25680   50448    15.3    9.85  20.4    7.5   144. 
+ 4 Arkansas     67.7    15.2  21274   39267    18      9.61  23.5    6.7    91.1
+ 5 Californ…    57.4    30.7  29188   60883    13.7    8.89  15.2    6.9   176. 
+ 6 Colorado     67.6    25.6  30151   56456    12.2    9.15  19.9    3.7    84.6
+ 7 Connecti…    69.2    34.6  36775   67740     9.2   14.8   16.5    2.9   113  
+ 8 Delaware     73.6    17.7  29007   57599    11      8.89  20.7    4.4   155. 
+ 9 Florida      69.7    30    26551   47661    13.8    9.62  21.6    5     169. 
+10 Georgia      67.2    20.5  25134   49347    15.7    8.88  22.2    6.2   155. 
+# … with 40 more rows, 10 more variables: agg_assault &lt;dbl&gt;, larceny &lt;dbl&gt;,
+#   motor_theft &lt;dbl&gt;, soc_sec &lt;dbl&gt;, nuclear &lt;dbl&gt;, coal &lt;dbl&gt;,
+#   tr_deaths &lt;dbl&gt;, tr_deaths_no_alc &lt;dbl&gt;, unempl &lt;dbl&gt;, popdens2010 &lt;dbl&gt;,
+#   and abbreviated variable names ¹​homeownership, ²​multiunit, ³​med_income,
+#   ⁴​fed_spend
 ```
 ]
 
@@ -616,27 +623,31 @@ We'll cluster the US state stats dataset
 .tiny-font[
 
 ```r
+US_state_stats &lt;- read_csv("https://wilkelab.org/SDS375/datasets/US_state_stats.csv") %&gt;%
+  filter(state != "District of Columbia")
+
 US_state_stats 
 ```
 
 ```
 # A tibble: 50 × 20
-   state       homeownership multiunit income med_income poverty fed_spend smoke
-   &lt;chr&gt;               &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;      &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;
- 1 Alabama              71.1      15.5  22984      42081    17.1     11.7   24.8
- 2 Alaska               64.7      24.6  30726      66521     9.5     16.8   25  
- 3 Arizona              67.4      20.7  25680      50448    15.3      9.85  20.4
- 4 Arkansas             67.7      15.2  21274      39267    18        9.61  23.5
- 5 California           57.4      30.7  29188      60883    13.7      8.89  15.2
- 6 Colorado             67.6      25.6  30151      56456    12.2      9.15  19.9
- 7 Connecticut          69.2      34.6  36775      67740     9.2     14.8   16.5
- 8 Delaware             73.6      17.7  29007      57599    11        8.89  20.7
- 9 Florida              69.7      30    26551      47661    13.8      9.62  21.6
-10 Georgia              67.2      20.5  25134      49347    15.7      8.88  22.2
-# … with 40 more rows, and 12 more variables: murder &lt;dbl&gt;, robbery &lt;dbl&gt;,
-#   agg_assault &lt;dbl&gt;, larceny &lt;dbl&gt;, motor_theft &lt;dbl&gt;, soc_sec &lt;dbl&gt;,
-#   nuclear &lt;dbl&gt;, coal &lt;dbl&gt;, tr_deaths &lt;dbl&gt;, tr_deaths_no_alc &lt;dbl&gt;,
-#   unempl &lt;dbl&gt;, popdens2010 &lt;dbl&gt;
+   state     homeo…¹ multi…² income med_i…³ poverty fed_s…⁴ smoke murder robbery
+   &lt;chr&gt;       &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;
+ 1 Alabama      71.1    15.5  22984   42081    17.1   11.7   24.8    8.2   141. 
+ 2 Alaska       64.7    24.6  30726   66521     9.5   16.8   25      4.8    80.9
+ 3 Arizona      67.4    20.7  25680   50448    15.3    9.85  20.4    7.5   144. 
+ 4 Arkansas     67.7    15.2  21274   39267    18      9.61  23.5    6.7    91.1
+ 5 Californ…    57.4    30.7  29188   60883    13.7    8.89  15.2    6.9   176. 
+ 6 Colorado     67.6    25.6  30151   56456    12.2    9.15  19.9    3.7    84.6
+ 7 Connecti…    69.2    34.6  36775   67740     9.2   14.8   16.5    2.9   113  
+ 8 Delaware     73.6    17.7  29007   57599    11      8.89  20.7    4.4   155. 
+ 9 Florida      69.7    30    26551   47661    13.8    9.62  21.6    5     169. 
+10 Georgia      67.2    20.5  25134   49347    15.7    8.88  22.2    6.2   155. 
+# … with 40 more rows, 10 more variables: agg_assault &lt;dbl&gt;, larceny &lt;dbl&gt;,
+#   motor_theft &lt;dbl&gt;, soc_sec &lt;dbl&gt;, nuclear &lt;dbl&gt;, coal &lt;dbl&gt;,
+#   tr_deaths &lt;dbl&gt;, tr_deaths_no_alc &lt;dbl&gt;, unempl &lt;dbl&gt;, popdens2010 &lt;dbl&gt;,
+#   and abbreviated variable names ¹​homeownership, ²​multiunit, ³​med_income,
+#   ⁴​fed_spend
 ```
 ]
 
@@ -1606,6 +1617,19 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
 (function() {
   "use strict"
   // Replace <script> tags in slides area to make them executable

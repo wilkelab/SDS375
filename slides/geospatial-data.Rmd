@@ -13,7 +13,7 @@ output:
       slideNumberFormat: ''
       titleSlideClass: [center, middle]
 params:
-  cache: TRUE
+  cache: FALSE
 ---
 
 ```{r setup, include=FALSE, echo=FALSE, message = FALSE}
@@ -458,7 +458,7 @@ texas_income %>%
     top_ten = rank(desc(median_income)) <= 10
   ) %>%
   ggplot(aes(fill = top_ten)) + 
-  geom_sf(color = "black", size = 0.1) +
+  geom_sf(color = "black", linewidth = 0.1) +
   scale_fill_manual(
     name = NULL,
     values = c(
@@ -493,7 +493,7 @@ We apply styling as usual
 ggplot(texas_income) + 
   geom_sf(
     aes(fill = median_income),
-    color = "black", size = 0.1
+    color = "black", linewidth = 0.1
   ) +
   scale_fill_continuous_sequential(
     palette = "Blues", rev = TRUE
@@ -516,7 +516,7 @@ ggplot(texas_income) +
 ggplot(texas_income) + 
   geom_sf(
     aes(fill = median_income),
-    color = "black", size = 0.1
+    color = "black", linewidth = 0.1
   ) +
   scale_fill_continuous_sequential(
     palette = "Blues", rev = TRUE
@@ -541,7 +541,7 @@ ggplot(texas_income) +
 ggplot(texas_income) + 
   geom_sf(
     aes(fill = median_income),
-    color = "black", size = 0.1
+    color = "black", linewidth = 0.1
   ) +
   scale_fill_continuous_sequential(
     palette = "Blues", rev = TRUE
@@ -572,7 +572,7 @@ Reference: https://spatialreference.org/ref/epsg/3083/
 ggplot(texas_income) + 
   geom_sf(
     aes(fill = median_income),
-    color = "black", size = 0.1
+    color = "black", linewidth = 0.1
   ) +
   scale_fill_continuous_sequential(
     palette = "Blues", rev = TRUE
@@ -603,7 +603,7 @@ Reference: https://spatialreference.org/ref/epsg/32139/
 ggplot(texas_income) + 
   geom_sf(
     aes(fill = median_income),
-    color = "black", size = 0.1
+    color = "black", linewidth = 0.1
   ) +
   scale_fill_continuous_sequential(
     palette = "Blues", rev = TRUE
@@ -634,7 +634,7 @@ Reference: https://spatialreference.org/ref/sr-org/7483/
 ggplot(texas_income) + 
   geom_sf(
     aes(fill = median_income),
-    color = "black", size = 0.1
+    color = "black", linewidth = 0.1
   ) +
   scale_fill_continuous_sequential(
     palette = "Blues", rev = TRUE
@@ -665,7 +665,7 @@ Reference: https://spatialreference.org/ref/epsg/4326/
 ggplot(texas_income) + 
   geom_sf(
     aes(fill = median_income),
-    color = "black", size = 0.1
+    color = "black", linewidth = 0.1
   ) +
   scale_fill_continuous_sequential(
     palette = "Blues", rev = TRUE
@@ -689,6 +689,55 @@ Reference: https://spatialreference.org/ref/epsg/3338/
 
 
 [//]: # "segment ends here"
+
+---
+
+## We can get map data from the rnaturalearth package
+
+.pull-left[
+
+A world map:
+
+.tiny-font[
+```{r world-map, eval = FALSE}
+library(rnaturalearth)
+
+sf_world <- ne_countries(returnclass='sf')
+ggplot(sf_world) + geom_sf()
+```
+]]
+
+.pull-right.width-50[
+```{r world-map-out, cache = params$cache, ref.label = "world-map", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+]
+
+---
+
+## We can get map data from the rnaturalearth package
+
+.pull-left[
+
+A map of the lower 48:
+
+.tiny-font[
+```{r lower-48-map, eval = FALSE}
+sf_us <- ne_states(
+  country = "United States of America",
+  returnclass='sf'
+)
+
+sf_us %>%
+  # exclude Alaska (US02), Hawaii (US15)
+  filter(!code_local %in% c("US02", "US15")) %>%
+  ggplot() + geom_sf()
+```
+]]
+
+.pull-right.width-50[
+```{r lower-48-map-out, cache = params$cache, ref.label = "lower-48-map", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```
+]
 
 
 ---

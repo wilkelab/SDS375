@@ -613,6 +613,19 @@ class: center middle
 
 ---
 
+## Getting the data
+
+We'll be working with the `blue_jays` dataset:
+
+.tiny-font[
+```{r getting-data, message = FALSE}
+blue_jays <- read_csv("https://wilkelab.org/SDS375/datasets/blue_jays.csv")
+blue_jays
+```
+]
+
+---
+
 ## Prerequisite: Scaling of numeric columns
 
 .pull-left.width-50[
