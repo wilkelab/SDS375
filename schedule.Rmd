@@ -13,330 +13,35 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## Lectures
 
-### 1. Jan 10, 2023—Introduction
+### 1. Jan 16, 2024—Introduction
 
 <p class="nospace">Materials:</p>
 
 - [Slides](slides/introduction.html)  
 - [Worksheet](worksheets/intro-rmarkdown.Rmd) (Solutions are [available here](worksheets/intro-rmarkdown-solutions.Rmd))
 
-### 2. Jan 12, 2023—Aesthetic mappings
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/aesthetic-mappings.html)  
-- [Worksheet](worksheets/aesthetic-mappings.Rmd)
-
-### 3., 4. Jan 17, 2023—Telling a story, Visualizing amounts
-
-<p class="nospace">Materials:</p>
-
-- [Slides: Telling a story](slides/telling-a-story.html)
-- [Slides: Visualizing amounts](slides/visualizing-amounts.html)  
-- [Worksheet](worksheets/visualizing-amounts.Rmd)
-
-### 5. Jan 19, 2023—Coordinate systems and axes
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/coordinate-systems-axes.html)  
-- [Worksheet](worksheets/coordinate-systems-axes.Rmd)
-
-### 6. Jan 24, 2023—Visualizing distributions 1
-
-<p class="nospace">Materials:</p>
-- [Slides](slides/visualizing-distributions-1.html)  
-- [Worksheet](worksheets/visualizing-distributions-1.Rmd)
-
-          
-### 7. Jan 26, 2023—Visualizing distributions 2
-
-<p class="nospace">Materials:</p>
-- [Slides](slides/visualizing-distributions-2.html)  
-- [Worksheet](worksheets/visualizing-distributions-2.Rmd)
-
-### 8. Feb 7, 2023—Color scales
-
-<p class="nospace">Materials:</p>
-- [Slides](slides/color-scales.html)  
-- [Worksheet](worksheets/color-scales.Rmd)
-
-### 9. Feb 9, 2023—Data wrangling 1
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/data-wrangling-1.html)  
-- [Worksheet](worksheets/data-wrangling-1.Rmd)
-
-### 10. Feb 14, 2023—Data wrangling 2
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/data-wrangling-2.html)  
-- [Worksheet](worksheets/data-wrangling-2.Rmd)
-
-### 11. Feb 16, 2023—Visualizing proportions 
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/visualizing-proportions.html)  
-- [Worksheet](worksheets/visualizing-proportions.Rmd)
-
-### 12. Feb 21, 2023—Getting to know your data 1
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/know-your-data-1.html)  
-- [Worksheet](worksheets/know-your-data-1.Rmd)
-
-### 13. Feb 23, 2023—Getting to know your data 2
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/know-your-data-2.html)  
-- [Worksheet](worksheets/know-your-data-2.Rmd)
-
-### 14. Feb 28, 2023—Getting things into the right order
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/getting-things-in-order.html)  
-- [Worksheet](worksheets/getting-things-in-order.Rmd)
-
-### 15. Mar 2, 2023—Figure design
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/figure-design.html)  
-- [Worksheet](worksheets/figure-design.Rmd)
-
-### 16. Mar 7, 2023—Color spaces and color-vision deficiency
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/color-spaces.html)  
-- [Worksheet](worksheets/color-spaces.R)
-
-### 17. Mar 9, 2023—Functions and functional programming
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/functional-programming.html)  
-- [Worksheet](worksheets/functional-programming.Rmd)
-
-### 18. Mar 21, 2023—Visualizing trends
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/visualizing-trends.html)  
-- [Worksheet](worksheets/visualizing-trends.Rmd)
-
-### 19. Mar 23, 2023—Working with models
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/working-with-models.html)  
-- [Worksheet](worksheets/working-with-models.Rmd)
-
-### 20. Mar 28, 2023—Visualizing uncertainty
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/visualizing-uncertainty.html)  
-- [Worksheet](worksheets/visualizing-uncertainty.Rmd)
-
-### 21. Mar 30, 2023—Dimension reduction 1
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/dimension-reduction-1.html)  
-- [Worksheet](worksheets/dimension-reduction-1.Rmd)
-
-### 22. Apr 4, 2023—Dimension reduction 2
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/dimension-reduction-2.html)  
-- [Worksheet](worksheets/dimension-reduction-2.Rmd)
-
-### 23. Apr 6, 2023—Clustering
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/clustering.html)  
-- [Worksheet](worksheets/clustering.Rmd)
-
-### 24. Apr 11, 2023—Hierarchical clustering
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/hierarchical-clustering.html)  
-- [Worksheet](worksheets/hierarchical-clustering.Rmd)
-
-### 25. Apr 13, 2023—Visualizing geospatial data
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/geospatial-data.html)  
-- [Worksheet](worksheets/geospatial-data.Rmd)
-
-### 28. Apr 18, 2023—Overplotting
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/overplotting.html)  
-- [Worksheet](worksheets/overplotting.Rmd)
-
-### 29. Apr 20, 2023—Compound figures
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/compound-figures.html)  
-- [Worksheet](worksheets/compound-figures.Rmd)
-
-### Bonus 1—Web design
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/web-design.html)  
-- [Worksheet](slides/web-design-worksheet.html)
-
-### Bonus 2—Animations
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/animations.html)  
-
-### Bonus 3—Redundant coding, text annotations
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/redundant-coding.html)  
-- [Worksheet](worksheets/redundant-coding.Rmd)
-
-### Bonus 4—Interactive plots
-
-<p class="nospace">Materials:</p>
-
-- [Slides](slides/interactive-plots.html)  
-- [Worksheet](worksheets/interactive-plots.Rmd)
-
 
 ## Homeworks
 
 All homeworks are due by 11:00pm on the day they are due. Homeworks need to be submitted as pdf files on Canvas.
 
-### Homework 1 (due Jan 17, 2023)
+### Homework 1 (due Jan 25, 2024)
 
 <p class="nospace">Materials:</p>
 
-- [R Markdown template](assignments/HW1.Rmd)
-- [HTML](assignments/HW1.html)
-
-### Homework 2 (due Jan 24, 2023)
-
-<p class="nospace">Materials:</p>
-
-- [R Markdown template](assignments/HW2.Rmd)
-- [HTML](assignments/HW2.html)
-
-### Homework 3 (due Feb 7, 2023)
-
-<p class="nospace">Materials:</p>
-
-- [R Markdown template](assignments/HW3.Rmd)
-- [HTML](assignments/HW3.html)
-
-
-### Homework 4 (due Feb 14, 2023)
-
-<p class="nospace">Materials:</p>
-
-- [R Markdown template](assignments/HW4.Rmd)
-- [HTML](assignments/HW4.html)
-
-
-### Homework 5 (due Feb 28, 2023)
-
-<p class="nospace">Materials:</p>
-
-- [R Markdown template](assignments/HW5.Rmd)
-- [HTML](assignments/HW5.html)
-
-### Homework 6 (due Mar 7, 2023)
-
-<p class="nospace">Materials:</p>
-
-- [R Markdown template](assignments/HW6.Rmd)
-- [HTML](assignments/HW6.html)
-
-### Homework 7 (due Mar 28, 2023)
-
-<p class="nospace">Materials:</p>
-
-- [R Markdown template](assignments/HW7.Rmd)
-- [HTML](assignments/HW7.html)
-
-### Homework 8 (due Apr 4, 2023)
-
-<p class="nospace">Materials:</p>
-
-- [R Markdown template](assignments/HW8.Rmd)
-- [HTML](assignments/HW8.html)
-
-
-### Homework 9 (due Apr 11, 2023)
-
-<p class="nospace">Materials:</p>
-
-- [R Markdown template](assignments/HW9.Rmd)
-- [HTML](assignments/HW9.html)
+- Coming soon
 
 
 ## Projects
 
 All projects are due by 11:00pm on the day they are due. Projects need to be submitted on Canvas. Please carefully read the submission instructions for each project.
 
-### Project 1 (due Feb 21, 2023)
+### Project 1 (due Feb 15, 2023)
 
 <p class="nospace">Materials:</p>
 
-- [Instructions](assignments/Project_1_instructions.html)
-- [Project Template (Rmd)](assignments/Project_1.Rmd)
-- [Project Template (HTML)](assignments/Project_1.html)
-- [Grading rubric](assignments/Project_1_rubric.pdf)
-- [Example project](assignments/Project_1_example.html)
+- Coming soon
 
-### Project 2 (due Mar 21, 2023)
-
-<p class="nospace">Materials:</p>
-
-- [Instructions](assignments/Project_2_instructions.html)
-- [Project Template (Rmd)](assignments/Project_2.Rmd)
-- [Project Template (HTML)](assignments/Project_2.html)
-- [Grading rubric](assignments/Project_2_rubric.pdf)
-
-### Project 3 (due Apr 18, 2023)
-
-<p class="nospace">Materials:</p>
-
-- [Instructions](assignments/Project_3_instructions.html)
-- [Project Template (Rmd)](assignments/Project_3.Rmd)
-- [Project Template (HTML)](assignments/Project_3.html)
-- [Grading rubric](assignments/Project_3_rubric.pdf)
-
-## Graduate course credit
-
-This is an extra assignment for graduate students only.
-
-### First draft (due March 31, 2023)
-
-<p class="nospace">Materials:</p>
-
-- [Template and Instructions (Rmd)](assignments/grad_assignment.Rmd)
-- [Template and Instructions (HTML)](assignments/grad_assignment.html)
-
-### Final draft (due April 24, 2023)
 
 ## Reuse {.appendix}
 
