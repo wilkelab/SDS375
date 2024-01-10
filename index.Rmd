@@ -32,9 +32,9 @@ For students enrolled in this course, you only need a working web browser to acc
 To run any of the materials locally on your own machine, you will need the following:
 
 - A recent version of R, [download from here.](https://cloud.r-project.org/)
-- A recent version of RStudio, [download from here.](https://rstudio.com/products/rstudio/download/#download)
+- A recent version of RStudio, [download from here.](https://posit.co/download/rstudio-desktop/)
 - The following R packages:    
-  broom, cluster, colorspace, cowplot, distill, gapminder, GGally, gganimate,  ggiraph, ggdendro, ggdist, ggforce, ggplot2movies, ggrepel, ggridges, ggthemes, gifski, glue, knitr, learnr, naniar, margins, MASS, Matrix, nycflights13, palmerpenguins, patchwork, rgdal, rmarkdown, rnaturalearth, rnaturalearthhires, sf, shinyjs, tidyverse, transformr, umap, xaringan
+  cluster, colorspace, cowplot, distill, gapminder, GGally, gganimate, ggiraph, ggdendro, ggdist, ggforce, ggplot2movies, ggrepel, ggridges, ggthemes, gifski, knitr, learnr, naniar, margins, MASS, Matrix, nycflights13, palmerpenguins, patchwork, rmarkdown, rnaturalearth, rnaturalearthhires, sf, shinyjs, tidyverse, transformr, umap, xaringan
 
 You can install all required R packages at once by running the following code in the R command line:
 
@@ -42,11 +42,11 @@ You can install all required R packages at once by running the following code in
 # first run this command:
 install.packages(
   c(
-    "broom", "cluster", "colorspace", "cowplot", "distill", "gapminder", 
+    "cluster", "colorspace", "cowplot", "distill", "gapminder", 
     "GGally", "gganimate", "ggiraph", "ggdendro", "ggdist", "ggforce",
-    "ggplot2movies", "ggrepel", "ggridges", "ggthemes", "gifski", "glue",
+    "ggplot2movies", "ggrepel", "ggridges", "ggthemes", "gifski",
     "knitr", "learnr", "naniar", "margins", "MASS", "Matrix",
-    "nycflights13", "palmerpenguins", "patchwork", "rgdal", "rmarkdown",
+    "nycflights13", "palmerpenguins", "patchwork", "rmarkdown",
     "rnaturalearth", "sf", "shinyjs", "tidyverse", "transformr", "umap",
     "xaringan"
   )
