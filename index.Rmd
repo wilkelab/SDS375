@@ -32,7 +32,7 @@ For students enrolled in this course, you only need a working web browser to acc
 To run any of the materials locally on your own machine, you will need the following:
 
 - A recent version of R, [download from here.](https://cloud.r-project.org/)
-- A recent version of RStudio, [download from here.](https://rstudio.com/products/rstudio/download/#download)
+- A recent version of RStudio, [download from here.](https://posit.co/download/rstudio-desktop/)
 - The following R packages:    
   broom, cluster, colorspace, cowplot, distill, gapminder, GGally, gganimate,  ggiraph, ggdendro, ggdist, ggforce, ggplot2movies, ggrepel, ggridges, ggthemes, gifski, glue, knitr, learnr, naniar, margins, MASS, Matrix, nycflights13, palmerpenguins, patchwork, rmarkdown, rnaturalearth, rnaturalearthhires, scales, sf, shinyjs, tidyverse, transformr, umap, xaringan
 
