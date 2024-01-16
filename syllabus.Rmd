@@ -185,7 +185,7 @@ The	class	will use +/- grading, and the exact grade boundaries will be determine
 
 Homeworks that are submitted past the posted deadline will not be graded and will receive 0 points.
 
-Project submissions will have a 2-day grace period. Projects submitted during the grace period will have 25 points deducted from the obtained grade. After the grace period, students who have not submitted their project will receive 0 points.
+Project submissions will have a 1-day grace period. Projects submitted during the grace period will have 25 points deducted from the obtained grade. After the grace period, students who have not submitted their project will receive 0 points.
 
 Peer grades need to be submitted by the posted deadline. Late submissions will result in 0 points for the peer-grading effort.
 

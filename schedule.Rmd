@@ -29,7 +29,20 @@ All homeworks are due by 11:00pm on the day they are due. Homeworks need to be s
 
 <p class="nospace">Materials:</p>
 
-- Coming soon
+- [R Markdown template](assignments/HW1.Rmd)
+- [HTML](assignments/HW1.html)
+
+### Homework 2 (due Feb 1, 2024)
+
+### Homework 3 (due Feb 8, 2024)
+
+### Homework 4 (due Feb 29, 2024)
+
+### Homework 5 (due Mar 7, 2024)
+
+### Homework 6 (due Apr 4, 2024)
+
+### Homework 7 (due Apr 11, 2024)
 
 
 ## Projects
@@ -38,9 +51,9 @@ All projects are due by 11:00pm on the day they are due. Projects need to be sub
 
 ### Project 1 (due Feb 15, 2023)
 
-<p class="nospace">Materials:</p>
+### Project 2 (due Mar 21, 2023)
 
-- Coming soon
+### Project 3 (due Apr 18, 2023)
 
 
 ## Reuse {.appendix}
