@@ -24,7 +24,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 **Teaching Assistant:** Alexis Hill<br>
 **Email:** alexis.hill@utexas.edu<br>
-**Office Hours:**  TBD<br>
+**Office Hours:**  Wed. 2pm - 3PM (open Zoom), Thurs. 11am - 12pm (open Zoom), or by appointment<br>
 
 
 ## Purpose and contents of the class
