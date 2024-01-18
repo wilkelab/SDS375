@@ -20,6 +20,12 @@ knitr::opts_chunk$set(echo = FALSE)
 - [Slides](slides/introduction.html)  
 - [Worksheet](worksheets/intro-rmarkdown.Rmd) (Solutions are [available here](worksheets/intro-rmarkdown-solutions.Rmd))
 
+### 2. Jan 18, 2024—Aesthetic mappings
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/aesthetic-mappings.html)  
+- [Worksheet](worksheets/aesthetic-mappings.Rmd)
 
 ## Homeworks
 
