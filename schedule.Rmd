@@ -27,6 +27,21 @@ knitr::opts_chunk$set(echo = FALSE)
 - [Slides](slides/aesthetic-mappings.html)  
 - [Worksheet](worksheets/aesthetic-mappings.Rmd)
 
+### 3. Jan 23, 2023—Telling a story, Visualizing amounts
+
+<p class="nospace">Materials:</p>
+
+- [Slides: Telling a story](slides/telling-a-story.html)
+- [Slides: Visualizing amounts](slides/visualizing-amounts.html)  
+- [Worksheet](worksheets/visualizing-amounts.Rmd)
+
+### 4. Jan 25, 2023—Coordinate systems and axes
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/coordinate-systems-axes.html)  
+- [Worksheet](worksheets/coordinate-systems-axes.Rmd)
+
 ## Homeworks
 
 All homeworks are due by 11:00pm on the day they are due. Homeworks need to be submitted as pdf files on Canvas.
@@ -39,6 +54,10 @@ All homeworks are due by 11:00pm on the day they are due. Homeworks need to be s
 - [HTML](assignments/HW1.html)
 
 ### Homework 2 (due Feb 1, 2024)
+
+<p class="nospace">Materials:</p>
+
+- coming soon
 
 ### Homework 3 (due Feb 8, 2024)
 
