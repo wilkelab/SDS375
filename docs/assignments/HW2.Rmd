@@ -1,0 +1,50 @@
+---
+title: "Homework 2"
+---
+
+```{r global_options, include=FALSE}
+library(knitr)
+library(tidyverse)
+opts_chunk$set(fig.align="center", fig.height=4, fig.width=5.5)
+
+# data prep:
+txhouse <- txhousing %>%
+  filter(city %in% c('Austin', 'Houston', 'San Antonio', 'Dallas')) %>%
+  filter(year %in% c('2000', '2005', '2010', '2015')) %>%
+  group_by(city, year) %>%
+  summarize(total_sales = sum(sales))
+```
+
+**This homework is due on Feb. 1, 2024 at 11:00pm. Please submit as a pdf file on Canvas.**
+
+**Problem 1: (6 pts)**  For this Problem you will be working with the `iris` dataset built into R. This data set contains measurements of flowers (sepal length, sepal width, petal length, petal width) for three different *Iris* species (*I. setosa*, *I. versicolor*, *I. virginica*).
+
+```{r}
+head(iris)
+```
+
+Use ggplot to make a histogram of the `Sepal.Length` column. Manually choose appropriate values for `binwidth` and `center`. Explain your choice of values in 2-3 sentences.
+
+```{r}
+# Your code goes here.
+```
+
+*Your explanation goes here.*
+
+**Problem 2: (6 pts)** For this problem you will work with the dataset `txhouse` that has been derived from the `txhousing` dataset provided by **ggplot2**. See here for details of the original dataset: https://ggplot2.tidyverse.org/reference/txhousing.html. `txhouse` contains three columns: `city` (listing four Texas cities), `year` (containing four years between 2000 and 2015) and `total_sales` indicating the total number of sales for the specified year and city.
+
+```{r}
+txhouse
+```
+
+Use ggplot to make a bar plot of the total housing sales (column `total_sales`) for each `year`, color the bar borders "gray34", and fill the bars by `city`. 
+
+```{r}
+# Your code goes here.
+```
+
+**Problem 3: (8 pts)** Modify the plot from Problem 2 by placing `city` bars side-by-side, rather than stacked. See Slide 35 from the lecture on visualizing amounts. Next, reorder the bars for each `year` by `total_sales` in descending order. See Slide 25 from the lecture on visualizing amounts.
+
+```{r}
+# Your code goes here.
+```
