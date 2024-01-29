@@ -1,0 +1,70 @@
+---
+title: "Homework 3"
+---
+
+```{r global_options, include=FALSE}
+library(knitr)
+library(tidyverse)
+library(ggridges)
+options(scipen = 999)
+opts_chunk$set(fig.align="center", fig.height=4, fig.width=5.5)
+
+# data prep:
+OH_pop <- midwest %>%
+  filter(state == "OH") %>%
+  arrange(desc(poptotal)) %>%
+  mutate(row = row_number()) %>%
+  filter(poptotal >= 100000) %>%
+  select(c(county, poptotal))
+```
+
+**This homework is due on Feb. 8, 2024 at 11:00pm. Please submit as a pdf file on Canvas.**
+
+**Problem 1: (6 pts)**
+For problems 1 and 2, we will work with the dataset `OH_pop` that contains Ohio state demographics and has been derived from the `midwest` dataset provided by **ggplot2**. See here for details of the original dataset: https://ggplot2.tidyverse.org/reference/midwest.html. `OH_pop` contains two columns: `county` and `poptotal` (the county's total population), and it only contains counties with at least 100,000 inhabitants.
+
+```{r}
+OH_pop
+```
+
+(a) Use ggplot to make a scatter plot of `county` vs total population (column `poptotal`) and order the counties by the total population. 
+
+(b) Rename the axes and set appropriate limits, breaks and labels. Note: Do not use `xlab()` or `ylab()` to label the axes.
+
+```{r}
+# your code goes here
+```
+
+**Problem 2: (6 pts)** 
+
+(a) Modify the plot from Problem 1 by changing the scale for `poptotal` to logarithmic.
+
+(b) Adjust the limits, breaks and labels for the logarithmic scale.
+
+```{r}
+# your code goes here
+```
+
+
+**Problem 3: (8 pts)** For this problem, we will be working with the `Aus_athletes` dataset that comes with the **ggridges** package:
+
+```{r}
+head(Aus_athletes)
+```
+This dataset contains various physiological measurements made on athletes competing in different sports. Here, we are only interested in the columns `height`, indicating the athleete's height in cm, `sex`, indicating whether an athlete is male or female, and `sport`, indicating the sport the athlete competes in.
+
+Visualize the distribution of athletes' heights by sex and sport with (i)
+boxplots and (ii) ridgelines. Make one plot per geom and do not use faceting. In both cases, put height on the x axis and sport on the y axis. Use color to indicate the athlete's sex.
+
+Do you see anything noteworthy about the boxplots for water polo, netball, and gymnastics? Do they visually match the boxplots for the other sports?
+
+
+```{r}
+# your boxplot code goes here
+```
+
+
+```{r}
+# your ridgelines code goes here
+```
+

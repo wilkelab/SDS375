@@ -76,6 +76,11 @@ All homeworks are due by 11:00pm on the day they are due. Homeworks need to be s
 
 ### Homework 3 (due Feb 8, 2024)
 
+<p class="nospace">Materials:</p>
+
+- [R Markdown template](assignments/HW3.Rmd)
+- [HTML](assignments/HW3.html)
+
 ### Homework 4 (due Feb 29, 2024)
 
 ### Homework 5 (due Mar 7, 2024)
