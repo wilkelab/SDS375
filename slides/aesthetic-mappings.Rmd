@@ -92,7 +92,7 @@ temps_long %>%
 ## Temperatures mapped onto y position
 
 .center[
-```{r temp-normals-vs-time, echo=FALSE, message=FALSE, fig.width = 7, fig.asp = 0.618, dev="svg"}
+```{r temp-normals-vs-time, echo=FALSE, message=FALSE, out.width = "70%", fig.width = 7, fig.asp = 0.618, dev="svg"}
 
 ggplot(temps_long, aes(x = date, y = temperature, color = location)) +
   geom_line(linewidth = 1) +
@@ -129,7 +129,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 <br>
 
 .center[
-```{r four-locations-temps-by-month, echo = FALSE, message = FALSE, fig.width = 8.5, fig.asp = .3, dev = "svg"}
+```{r four-locations-temps-by-month, echo = FALSE, message = FALSE, out.width = "85%", fig.width = 8.5, fig.asp = .3, dev = "svg"}
 
 mean_temps <- temps_long %>%
   group_by(location, month_name) %>%
@@ -198,7 +198,7 @@ Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.
 <br>
 
 .center.move-up-1em[
-```{r mtcars-five-scale, echo = FALSE, message = FALSE, fig.width = 5.5, fig.asp = .8, dev = "svg"}
+```{r mtcars-five-scale, echo = FALSE, message = FALSE, out.width = "60%", fig.width = 5.5, fig.asp = .8, dev = "svg"}
 p_mtcars <- ggplot(mtcars, aes(disp, mpg, fill = hp, shape = factor(cyl), size = wt)) + 
   geom_point(color = "white") +
   scale_shape_manual(values = c(23, 24, 21), name = "cylinders") +
@@ -277,7 +277,7 @@ ggplot(
 ]
 
 .center[
-```{r ggplot-temps-example-out, ref.label="ggplot-temps-example", echo=FALSE, fig.width = 5.5, fig.asp = 0.618, dev="svg"}
+```{r ggplot-temps-example-out, ref.label="ggplot-temps-example", echo=FALSE, out.width = "55%", fig.width = 5.5, fig.asp = 0.618, dev="svg"}
 ```
 ]
 
@@ -296,7 +296,7 @@ ggplot(
 ]
 
 .center[
-```{r ggplot-temps-example2-out, ref.label="ggplot-temps-example2", echo=FALSE, fig.width = 5.5*6/4.2, fig.asp = .3, dev="svg"}
+```{r ggplot-temps-example2-out, ref.label="ggplot-temps-example2", echo=FALSE, out.width = "75%", fig.width = 5.5*6/4.2, fig.asp = .3, dev="svg"}
 ```
 ]
 
@@ -339,7 +339,7 @@ ggplot(temperatures, aes(day_of_year, temperature, color = location)) +
 ]
 
 .center[
-```{r ggplot-temps-example5-out, ref.label="ggplot-temps-example5", echo=FALSE, fig.width = 5.5, fig.asp = 0.618, dev="svg"}
+```{r ggplot-temps-example5-out, ref.label="ggplot-temps-example5", echo=FALSE, out.width = "55%", fig.width = 5.5, fig.asp = 0.618, dev="svg"}
 ```
 ]
 
@@ -356,7 +356,7 @@ ggplot(temperatures, aes(day_of_year, location, color = temperature)) +
 ]
 
 .center[
-```{r ggplot-temps-example6-out, ref.label="ggplot-temps-example6", echo=FALSE, fig.width = 5.5*6/4.2, fig.asp = .3, dev="svg"}
+```{r ggplot-temps-example6-out, ref.label="ggplot-temps-example6", echo=FALSE, out.width = "75%", fig.width = 5.5*6/4.2, fig.asp = .3, dev="svg"}
 ```
 ]
 
@@ -373,7 +373,7 @@ ggplot(temperatures, aes(month, temperature, color = location)) +
 
 
 .center[
-```{r ggplot-temps-example7-out, ref.label="ggplot-temps-example7", echo=FALSE, fig.width = 8, fig.asp = 0.5, dev="svg"}
+```{r ggplot-temps-example7-out, ref.label="ggplot-temps-example7", echo=FALSE, out.width = "80%", fig.width = 8, fig.asp = 0.5, dev="svg"}
 ```
 ]
 
@@ -391,7 +391,7 @@ ggplot(temperatures, aes(month, temperature, fill = location)) +
 
 
 .center[
-```{r ggplot-temps-example8-out, ref.label="ggplot-temps-example8", echo=FALSE, fig.width = 9, fig.asp = 0.44, dev="svg"}
+```{r ggplot-temps-example8-out, ref.label="ggplot-temps-example8", echo=FALSE, out.width = "90%", fig.width = 9, fig.asp = 0.44, dev="svg"}
 ```
 ]
 
@@ -428,7 +428,7 @@ ggplot(temperatures, aes(month, temperature, color = location)) +
 
 
 .center[
-```{r ggplot-color-fill-out, ref.label="ggplot-color-fill", echo=FALSE, fig.width = 8, fig.asp = 0.5, dev="svg"}
+```{r ggplot-color-fill-out, ref.label="ggplot-color-fill", echo=FALSE, out.width = "80%", fig.width = 8, fig.asp = 0.5, dev="svg"}
 ```
 ]
 
@@ -445,7 +445,7 @@ ggplot(temperatures, aes(month, temperature, fill = location)) +
 
 
 .center[
-```{r ggplot-color-fill2-out, ref.label="ggplot-color-fill2", echo=FALSE, fig.width = 8, fig.asp = 0.5, dev="svg"}
+```{r ggplot-color-fill2-out, ref.label="ggplot-color-fill2", echo=FALSE, out.width = "80%", fig.width = 8, fig.asp = 0.5, dev="svg"}
 ```
 ]
 
@@ -462,7 +462,7 @@ ggplot(temperatures, aes(month, temperature, color = location, fill = location))
 
 
 .center[
-```{r ggplot-color-fill3-out, ref.label="ggplot-color-fill3", echo=FALSE, fig.width = 8, fig.asp = 0.5, dev="svg"}
+```{r ggplot-color-fill3-out, ref.label="ggplot-color-fill3", echo=FALSE, out.width = "80%", fig.width = 8, fig.asp = 0.5, dev="svg"}
 ```
 ]
 
@@ -479,7 +479,7 @@ ggplot(temperatures, aes(month, temperature, fill = location)) +
 
 
 .center[
-```{r ggplot-color-fill-params-out, ref.label="ggplot-color-fill-params", echo=FALSE, fig.width = 8, fig.asp = 0.5, dev="svg"}
+```{r ggplot-color-fill-params-out, ref.label="ggplot-color-fill-params", echo=FALSE, out.width = "80%", fig.width = 8, fig.asp = 0.5, dev="svg"}
 ```
 ]
 
@@ -497,7 +497,7 @@ ggplot(temperatures, aes(month, temperature, color = location)) +
 
 
 .center[
-```{r ggplot-color-fill-params2-out, ref.label="ggplot-color-fill-params2", echo=FALSE, fig.width = 8, fig.asp = 0.5, dev="svg"}
+```{r ggplot-color-fill-params2-out, ref.label="ggplot-color-fill-params2", echo=FALSE, out.width = "80%", fig.width = 8, fig.asp = 0.5, dev="svg"}
 ```
 ]
 

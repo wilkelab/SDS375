@@ -48,7 +48,7 @@ lincoln_temps %>%
 --
 
 .pull-right[
-```{r temps_densities_january, echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r temps_densities_january, echo = FALSE, out.width = "100%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 lincoln_temps %>%
   filter(month == "Jan") %>%
   ggplot(aes(mean_temp)) +
@@ -81,7 +81,7 @@ Mean temperatures in Lincoln, NE, in January 2016:
 ]]
 
 .pull-right[
-```{r temps_densities_january2, ref.label = "temps_densities_january", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r temps_densities_january2, ref.label = "temps_densities_january", echo = FALSE, out.width = "100%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 
 How can we compare distributions across months?
@@ -93,7 +93,7 @@ How can we compare distributions across months?
 ## A bad idea: Many overlapping density plots
 
 .center[
-```{r temps_densities_overlapping, echo = FALSE, fig.width = 8, fig.asp = 0.618, dev = "svg"}
+```{r temps_densities_overlapping, echo = FALSE, out.width = "70%", fig.width = 8, fig.asp = 0.618, dev = "svg"}
 p <- lincoln_temps %>%
   mutate(
     month_long = fct_rev(month_long)
@@ -118,7 +118,7 @@ stamp_bad(p)
 ## Another bad idea: Stacked density plots
 
 .center[
-```{r temps_densities_stacked, echo = FALSE, fig.width = 8, fig.asp = 0.618, dev = "svg"}
+```{r temps_densities_stacked, echo = FALSE, out.width = "70%", fig.width = 8, fig.asp = 0.618, dev = "svg"}
 p <- lincoln_temps %>%
   mutate(
     month_long = fct_rev(month_long)
@@ -143,7 +143,7 @@ stamp_bad(p)
 ## Somewhat better: Small multiples
 
 .center[
-```{r temps_densities, echo = FALSE, fig.width = 8, fig.asp = 0.618, dev = "svg"}
+```{r temps_densities, echo = FALSE, out.width = "80%", fig.width = 8, fig.asp = 0.618, dev = "svg"}
 lincoln_temps %>%
   mutate(
     month_long = fct_rev(month_long)
@@ -168,7 +168,7 @@ lincoln_temps %>%
 ## Instead: Show values along y, conditions along x
    
 .center[
-```{r temps_boxplots, echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r temps_boxplots, echo = FALSE, out.width = "70%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
   geom_boxplot(fill = "gray90") + 
   xlab("month") + 
@@ -190,7 +190,7 @@ A boxplot is a crude way of visualizing a distribution.
 ## How to read a boxplot
 
 .center[
-```{r boxplot-schematic, echo = FALSE, fig.width = 8, fig.asp = 0.618, dev = "svg"}
+```{r boxplot-schematic, echo = FALSE, out.width = "70%", fig.width = 8, fig.asp = 0.618, dev = "svg"}
 set.seed(3423)
 
 y <- c(rnorm(100), 3.4)
@@ -235,7 +235,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 ## If you like density plots, consider violins
    
 .center[
-```{r temps_violins, echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r temps_violins, echo = FALSE, out.width = "70%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
   geom_violin(fill = "gray90") + 
   xlab("month") + 
@@ -257,7 +257,7 @@ A violin plot is a density plot rotated 90 degrees and then mirrored.
 ## How to read a violin plot
 
 .center[
-```{r violin-schematic, echo = FALSE, fig.width = 8, fig.asp = 0.618, dev = "svg"}
+```{r violin-schematic, echo = FALSE, out.width = "70%", fig.width = 8, fig.asp = 0.618, dev = "svg"}
 set.seed(3423)
 
 y <- c(rnorm(100), 3.4)
@@ -303,7 +303,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 Advantage: Can see raw data points instead of abstract representation.
 
 .center[
-```{r temps_stripchart, echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r temps_stripchart, echo = FALSE, out.width = "60%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
   geom_point(
     position = position_jitter(width = .15, height = 0, seed = 320),
@@ -330,7 +330,7 @@ Horizontal jittering may be necessary to avoid overlapping points.
 Advantage: Can see raw data points instead of abstract representation.
 
 .center[
-```{r temps_stripchart2, echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r temps_stripchart2, echo = FALSE, out.width = "60%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
   geom_point(size = 0.75) +
   xlab("month") + 
@@ -352,7 +352,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 Advantage: Can see raw data points instead of abstract representation.
 
 .center[
-```{r temps_stripchart3, ref.label = "temps_stripchart", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r temps_stripchart3, ref.label = "temps_stripchart", echo = FALSE, out.width = "60%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -368,7 +368,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 ## We can also jitter points into violins
    
 .center[
-```{r temps_sina, echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r temps_sina, echo = FALSE, out.width = "60%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
   geom_violin(fill = "gray90", color = NA) + 
   geom_sina(size = 0.75) + 
@@ -392,7 +392,7 @@ Such plots are called sina plots, to honor [Sina Hadi Sohi.](https://clauswilke.
 ## But maybe there's hope for overlapping density plots?
 
 .center[
-```{r temps_densities_overlapping2, echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r temps_densities_overlapping2, echo = FALSE, out.width = "65%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 lincoln_temps %>%
   mutate(
     month_long = fct_rev(month_long)
@@ -424,7 +424,7 @@ How about we stagger the densities vertically?
 ## Vertically staggered density plots are called ridgelines
 
 .center[
-```{r lincoln-ridgeline-polished, echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r lincoln-ridgeline-polished, echo = FALSE, out.width = "65%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 
 ggplot(lincoln_temps, aes(x = mean_temp, y = month_long)) +
   geom_density_ridges(
@@ -500,7 +500,7 @@ ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
 ]
 
 .center[
-```{r temps-examples-boxplot-out, ref.label = "temps-examples-boxplot", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r temps-examples-boxplot-out, ref.label = "temps-examples-boxplot", echo = FALSE, out.width = "55%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -516,7 +516,7 @@ ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
 ]
 
 .center[
-```{r temps-examples-violin-out, ref.label = "temps-examples-violins", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r temps-examples-violin-out, ref.label = "temps-examples-violins", echo = FALSE, out.width = "55%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -533,7 +533,7 @@ ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
 ]
 
 .center[
-```{r temps-examples-stripchart-out, ref.label = "temps-examples-stripchart", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r temps-examples-stripchart-out, ref.label = "temps-examples-stripchart", echo = FALSE, out.width = "55%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -555,7 +555,7 @@ ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
 ]
 
 .center[
-```{r temps-examples-stripchart-jitter-out, ref.label = "temps-examples-stripchart-jitter", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r temps-examples-stripchart-jitter-out, ref.label = "temps-examples-stripchart-jitter", echo = FALSE, out.width = "55%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -575,7 +575,7 @@ ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
 ]
 
 .center[
-```{r temps-examples-sina-out, ref.label = "temps-examples-sina", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r temps-examples-sina-out, ref.label = "temps-examples-sina", echo = FALSE, out.width = "55%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -594,7 +594,7 @@ ggplot(lincoln_temps, aes(x = mean_temp, y = month_long)) +
 ]
 
 .center[
-```{r temps-examples-ridgeline-out, ref.label = "temps-examples-ridgeline", echo = FALSE, message = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r temps-examples-ridgeline-out, ref.label = "temps-examples-ridgeline", echo = FALSE, message = FALSE, out.width = "55%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 

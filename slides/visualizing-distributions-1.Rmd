@@ -78,7 +78,7 @@ knitr::kable(age_hist[9:16,], "html")
 --
 
 .pull-right[
-```{r titanic-age-hist, echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r titanic-age-hist, echo = FALSE, out.width = "100%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 age_hist5 <- age_hist %>%
   mutate(age = (1:16) * 5 - 2.5) %>%
   filter(count > 0)
@@ -107,7 +107,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 # Histograms depend on the chosen bin width
 
 .center[
-```{r titanic-age-hist-binwidth, echo = FALSE, fig.width = 8, fig.asp = 0.618, dev = "svg"}
+```{r titanic-age-hist-binwidth, echo = FALSE, out.width = "75%", fig.width = 8, fig.asp = 0.618, dev = "svg"}
 age_hist_1 <- tibble(
   age = (1:75) - 0.5, 
   count = hist(titanic$age, breaks = (0:75) + .01, plot = FALSE)$counts
@@ -216,7 +216,7 @@ Figures redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reil
 ## KDEs also depend on parameter settings
 
 .center[
-```{r titanic-age-kde-grid, echo = FALSE, fig.width = 8, fig.asp = 0.618, dev = "svg"}
+```{r titanic-age-kde-grid, echo = FALSE, out.width = "75%", fig.width = 8, fig.asp = 0.618, dev = "svg"}
 pdens1 <- ggplot(titanic, aes(x = age)) + 
   geom_density(fill = "#56B4E9", color = darken("#56B4E9", 0.5), bw = .5, kernel = "gaussian") + 
   scale_y_continuous(limits = c(0, 0.046), expand = c(0, 0), name = "density") +
@@ -271,7 +271,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 ## Careful: KDEs can show non-sensical data
 
 .center[
-```{r titanic-age-kde-wrong, echo = FALSE, fig.width = 7, fig.asp = 0.618, dev = "svg"}
+```{r titanic-age-kde-wrong, echo = FALSE, out.width = "70%", fig.width = 7, fig.asp = 0.618, dev = "svg"}
 pdens_neg <- ggplot(titanic, aes(x = age)) + 
   geom_density(fill = "#56B4E9", color = darken("#56B4E9", 0.5)) + 
   scale_y_continuous(limits = c(0, 0.046), expand = c(0, 0), name = "density") +
@@ -356,7 +356,7 @@ Figures redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reil
 ## Alternatively: Age pyramid
 
 .center[
-```{r titanic-age-pyramid, echo = FALSE, fig.width = 7, fig.asp = 0.618, dev = "svg"}
+```{r titanic-age-pyramid, echo = FALSE, out.width = "70%", fig.width = 7, fig.asp = 0.618, dev = "svg"}
 ggplot(gender_counts, aes(x = age, y = ifelse(gender == "male", -1, 1)*count, fill = gender)) + 
   geom_col() +
   scale_x_continuous(name = "age (years)", limits = c(0, 75), expand = c(0, 0)) +
@@ -380,7 +380,7 @@ Figures redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reil
 ## Alternatively: KDEs showing proportions of total
 
 .center[
-```{r titanic-age-props, echo = FALSE, fig.width = 10, fig.asp = 0.45, dev = "svg"}
+```{r titanic-age-props, echo = FALSE, out.width = "75%", fig.width = 10, fig.asp = 0.45, dev = "svg"}
 titanic %>%
   mutate(sex = factor(sex, levels = c("male", "female"))) %>%
   ggplot(aes(x = age, y = after_stat(count))) +
@@ -454,7 +454,7 @@ ggplot(titanic, aes(age)) +
 --
 
 .center.small-font[
-```{r titanic-hist-ggplot-demo-out, ref.label = "titanic-hist-ggplot-demo", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r titanic-hist-ggplot-demo-out, ref.label = "titanic-hist-ggplot-demo", echo = FALSE, out.width = "50%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -471,7 +471,7 @@ ggplot(titanic, aes(age)) +
 
 
 .center[
-```{r titanic-hist-ggplot-demo2-out, ref.label = "titanic-hist-ggplot-demo2", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r titanic-hist-ggplot-demo2-out, ref.label = "titanic-hist-ggplot-demo2", echo = FALSE, out.width = "50%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -495,7 +495,7 @@ ggplot(titanic, aes(age)) +
 
 
 .center[
-```{r titanic-hist-ggplot-demo3-out, ref.label = "titanic-hist-ggplot-demo3", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r titanic-hist-ggplot-demo3-out, ref.label = "titanic-hist-ggplot-demo3", echo = FALSE, out.width = "50%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -515,7 +515,7 @@ ggplot(titanic, aes(age)) +
 
 
 .center[
-```{r titanic-hist-ggplot-demo4-out, ref.label = "titanic-hist-ggplot-demo4", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r titanic-hist-ggplot-demo4-out, ref.label = "titanic-hist-ggplot-demo4", echo = FALSE, out.width = "50%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -533,7 +533,7 @@ ggplot(titanic, aes(age)) +
 --
 
 .center[
-```{r titanic-dens-ggplot-demo-out, ref.label = "titanic-dens-ggplot-demo", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r titanic-dens-ggplot-demo-out, ref.label = "titanic-dens-ggplot-demo", echo = FALSE, out.width = "50%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -549,7 +549,7 @@ ggplot(titanic, aes(age)) +
 ]
 
 .center[
-```{r titanic-dens-ggplot-demo2-out, ref.label = "titanic-dens-ggplot-demo2", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r titanic-dens-ggplot-demo2-out, ref.label = "titanic-dens-ggplot-demo2", echo = FALSE, out.width = "50%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -571,7 +571,7 @@ ggplot(titanic, aes(age)) +
 ]
 
 .center[
-```{r titanic-dens-ggplot-demo3-out, ref.label = "titanic-dens-ggplot-demo3", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r titanic-dens-ggplot-demo3-out, ref.label = "titanic-dens-ggplot-demo3", echo = FALSE, out.width = "50%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -592,7 +592,7 @@ ggplot(titanic, aes(age)) +
 ]
 
 .center[
-```{r titanic-dens-ggplot-demo4-out, ref.label = "titanic-dens-ggplot-demo4", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r titanic-dens-ggplot-demo4-out, ref.label = "titanic-dens-ggplot-demo4", echo = FALSE, out.width = "50%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -619,7 +619,7 @@ ggplot(titanic, aes(age)) +
 ]
 
 .center[
-```{r titanic-stat-demo1-out, ref.label = "titanic-stat-demo1", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r titanic-stat-demo1-out, ref.label = "titanic-stat-demo1", echo = FALSE, out.width = "50%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -639,7 +639,7 @@ ggplot(titanic, aes(age)) +
 ]
 
 .center[
-```{r titanic-stat-demo2-out, ref.label = "titanic-stat-demo2", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r titanic-stat-demo2-out, ref.label = "titanic-stat-demo2", echo = FALSE, out.width = "50%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -657,7 +657,7 @@ ggplot(titanic, aes(age)) +
 ]
 
 .center[
-```{r titanic-stat-demo3-out, ref.label = "titanic-stat-demo3", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r titanic-stat-demo3-out, ref.label = "titanic-stat-demo3", echo = FALSE, out.width = "50%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -675,7 +675,7 @@ ggplot(titanic, aes(age)) +
 ]
 
 .center[
-```{r titanic-stat-demo4-out, ref.label = "titanic-stat-demo4", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r titanic-stat-demo4-out, ref.label = "titanic-stat-demo4", echo = FALSE, out.width = "50%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -690,7 +690,7 @@ ggplot(titanic, aes(age)) +
 ```
 
 .center[
-```{r titanic-stat-demo5-out, ref.label = "titanic-stat-demo5", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r titanic-stat-demo5-out, ref.label = "titanic-stat-demo5", echo = FALSE, out.width = "90%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]]
 
@@ -701,7 +701,7 @@ ggplot(titanic, aes(age)) +
 ```
 
 .center[
-```{r titanic-stat-demo6-out, ref.label = "titanic-stat-demo6", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r titanic-stat-demo6-out, ref.label = "titanic-stat-demo6", echo = FALSE, out.width = "90%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]]
 
@@ -728,7 +728,7 @@ ggplot(titanic, aes(age)) +
 ]
 
 .center[
-```{r titanic-stat-demo7-out, ref.label = "titanic-stat-demo7", echo = FALSE, fig.width = 10, fig.asp = 0.3, dev = "svg"}
+```{r titanic-stat-demo7-out, ref.label = "titanic-stat-demo7", echo = FALSE, out.width = "90%", fig.width = 10, fig.asp = 0.3, dev = "svg"}
 ```
 ]
 
@@ -752,7 +752,7 @@ ggplot(titanic, aes(age)) +
 ]
 
 .center[
-```{r titanic-stat-demo8-out, ref.label = "titanic-stat-demo8", echo = FALSE, fig.width = 10, fig.asp = 0.3, dev = "svg"}
+```{r titanic-stat-demo8-out, ref.label = "titanic-stat-demo8", echo = FALSE, out.width = "90%", fig.width = 10, fig.asp = 0.3, dev = "svg"}
 ```
 ]
 

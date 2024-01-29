@@ -19,7 +19,7 @@ class: center, middle, title-slide
 ### Claus O. Wilke
 ]
 .date[
-### last updated: 2023-01-23
+### last updated: 2024-01-29
 ]
 
 ---
@@ -72,7 +72,7 @@ Mean temperatures in Lincoln, NE, in January 2016:
 --
 
 .pull-right[
-![](visualizing-distributions-2_files/figure-html/temps_densities_january-1.svg)&lt;!-- --&gt;
+&lt;img src="visualizing-distributions-2_files/figure-html/temps_densities_january-1.svg" width="100%" /&gt;
 ]
 
 ---
@@ -121,7 +121,7 @@ Mean temperatures in Lincoln, NE, in January 2016:
 ]]
 
 .pull-right[
-![](visualizing-distributions-2_files/figure-html/temps_densities_january2-1.svg)&lt;!-- --&gt;
+&lt;img src="visualizing-distributions-2_files/figure-html/temps_densities_january2-1.svg" width="100%" /&gt;
 
 How can we compare distributions across months?
 ]
@@ -132,7 +132,7 @@ How can we compare distributions across months?
 ## A bad idea: Many overlapping density plots
 
 .center[
-![](visualizing-distributions-2_files/figure-html/temps_densities_overlapping-1.svg)&lt;!-- --&gt;
+&lt;img src="visualizing-distributions-2_files/figure-html/temps_densities_overlapping-1.svg" width="70%" /&gt;
 ]
 
 ---
@@ -140,7 +140,7 @@ How can we compare distributions across months?
 ## Another bad idea: Stacked density plots
 
 .center[
-![](visualizing-distributions-2_files/figure-html/temps_densities_stacked-1.svg)&lt;!-- --&gt;
+&lt;img src="visualizing-distributions-2_files/figure-html/temps_densities_stacked-1.svg" width="70%" /&gt;
 ]
 
 ---
@@ -148,7 +148,7 @@ How can we compare distributions across months?
 ## Somewhat better: Small multiples
 
 .center[
-![](visualizing-distributions-2_files/figure-html/temps_densities-1.svg)&lt;!-- --&gt;
+&lt;img src="visualizing-distributions-2_files/figure-html/temps_densities-1.svg" width="80%" /&gt;
 ]
 
 ---
@@ -156,7 +156,7 @@ How can we compare distributions across months?
 ## Instead: Show values along y, conditions along x
    
 .center[
-![](visualizing-distributions-2_files/figure-html/temps_boxplots-1.svg)&lt;!-- --&gt;
+&lt;img src="visualizing-distributions-2_files/figure-html/temps_boxplots-1.svg" width="70%" /&gt;
 ]
 
 ???
@@ -172,7 +172,7 @@ A boxplot is a crude way of visualizing a distribution.
 ## How to read a boxplot
 
 .center[
-![](visualizing-distributions-2_files/figure-html/boxplot-schematic-1.svg)&lt;!-- --&gt;
+&lt;img src="visualizing-distributions-2_files/figure-html/boxplot-schematic-1.svg" width="70%" /&gt;
 ]
 
 
@@ -185,7 +185,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 ## If you like density plots, consider violins
    
 .center[
-![](visualizing-distributions-2_files/figure-html/temps_violins-1.svg)&lt;!-- --&gt;
+&lt;img src="visualizing-distributions-2_files/figure-html/temps_violins-1.svg" width="70%" /&gt;
 ]
 
 ???
@@ -201,7 +201,7 @@ A violin plot is a density plot rotated 90 degrees and then mirrored.
 ## How to read a violin plot
 
 .center[
-![](visualizing-distributions-2_files/figure-html/violin-schematic-1.svg)&lt;!-- --&gt;
+&lt;img src="visualizing-distributions-2_files/figure-html/violin-schematic-1.svg" width="70%" /&gt;
 ]
 
 ???
@@ -215,7 +215,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 Advantage: Can see raw data points instead of abstract representation.
 
 .center[
-![](visualizing-distributions-2_files/figure-html/temps_stripchart-1.svg)&lt;!-- --&gt;
+&lt;img src="visualizing-distributions-2_files/figure-html/temps_stripchart-1.svg" width="60%" /&gt;
 ]
 
 ???
@@ -233,7 +233,7 @@ Horizontal jittering may be necessary to avoid overlapping points.
 Advantage: Can see raw data points instead of abstract representation.
 
 .center[
-![](visualizing-distributions-2_files/figure-html/temps_stripchart2-1.svg)&lt;!-- --&gt;
+&lt;img src="visualizing-distributions-2_files/figure-html/temps_stripchart2-1.svg" width="60%" /&gt;
 ]
 
 Horizontal jittering may be necessary to avoid overlapping points.
@@ -249,7 +249,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 Advantage: Can see raw data points instead of abstract representation.
 
 .center[
-![](visualizing-distributions-2_files/figure-html/temps_stripchart3-1.svg)&lt;!-- --&gt;
+&lt;img src="visualizing-distributions-2_files/figure-html/temps_stripchart3-1.svg" width="60%" /&gt;
 ]
 
 Horizontal jittering may be necessary to avoid overlapping points.
@@ -264,7 +264,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 ## We can also jitter points into violins
    
 .center[
-![](visualizing-distributions-2_files/figure-html/temps_sina-1.svg)&lt;!-- --&gt;
+&lt;img src="visualizing-distributions-2_files/figure-html/temps_sina-1.svg" width="60%" /&gt;
 ]
 
 ???
@@ -281,7 +281,7 @@ Such plots are called sina plots, to honor [Sina Hadi Sohi.](https://clauswilke.
 ## But maybe there's hope for overlapping density plots?
 
 .center[
-![](visualizing-distributions-2_files/figure-html/temps_densities_overlapping2-1.svg)&lt;!-- --&gt;
+&lt;img src="visualizing-distributions-2_files/figure-html/temps_densities_overlapping2-1.svg" width="65%" /&gt;
 ]
 
 
@@ -298,7 +298,7 @@ How about we stagger the densities vertically?
 ## Vertically staggered density plots are called ridgelines
 
 .center[
-![](visualizing-distributions-2_files/figure-html/lincoln-ridgeline-polished-1.svg)&lt;!-- --&gt;
+&lt;img src="visualizing-distributions-2_files/figure-html/lincoln-ridgeline-polished-1.svg" width="65%" /&gt;
 ]
 
 
@@ -357,7 +357,7 @@ ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
 ]
 
 .center[
-![](visualizing-distributions-2_files/figure-html/temps-examples-boxplot-out-1.svg)&lt;!-- --&gt;
+&lt;img src="visualizing-distributions-2_files/figure-html/temps-examples-boxplot-out-1.svg" width="55%" /&gt;
 ]
 
 ---
@@ -373,7 +373,7 @@ ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
 ]
 
 .center[
-![](visualizing-distributions-2_files/figure-html/temps-examples-violin-out-1.svg)&lt;!-- --&gt;
+&lt;img src="visualizing-distributions-2_files/figure-html/temps-examples-violin-out-1.svg" width="55%" /&gt;
 ]
 
 
@@ -390,7 +390,7 @@ ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
 ]
 
 .center[
-![](visualizing-distributions-2_files/figure-html/temps-examples-stripchart-out-1.svg)&lt;!-- --&gt;
+&lt;img src="visualizing-distributions-2_files/figure-html/temps-examples-stripchart-out-1.svg" width="55%" /&gt;
 ]
 
 
@@ -412,7 +412,7 @@ ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
 ]
 
 .center[
-![](visualizing-distributions-2_files/figure-html/temps-examples-stripchart-jitter-out-1.svg)&lt;!-- --&gt;
+&lt;img src="visualizing-distributions-2_files/figure-html/temps-examples-stripchart-jitter-out-1.svg" width="55%" /&gt;
 ]
 
 
@@ -432,7 +432,7 @@ ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
 ]
 
 .center[
-![](visualizing-distributions-2_files/figure-html/temps-examples-sina-out-1.svg)&lt;!-- --&gt;
+&lt;img src="visualizing-distributions-2_files/figure-html/temps-examples-sina-out-1.svg" width="55%" /&gt;
 ]
 
 
@@ -451,7 +451,7 @@ ggplot(lincoln_temps, aes(x = mean_temp, y = month_long)) +
 ]
 
 .center[
-![](visualizing-distributions-2_files/figure-html/temps-examples-ridgeline-out-1.svg)&lt;!-- --&gt;
+&lt;img src="visualizing-distributions-2_files/figure-html/temps-examples-ridgeline-out-1.svg" width="55%" /&gt;
 ]
 
 [//]: # "segment ends here"

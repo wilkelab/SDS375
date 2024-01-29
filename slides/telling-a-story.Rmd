@@ -263,7 +263,7 @@ class: center middle
 ## Example: Preprints in biology
 
 .center[
-```{r preprints-part1, cache = params$cache, echo = FALSE, fig.width = 9, fig.asp = 0.618, dev = "svg"}
+```{r preprints-part1, cache = params$cache, echo = FALSE, out.width = "75%", fig.width = 7.5, fig.asp = 0.618, dev = "svg"}
 df_preprints <- preprints %>% 
   filter(archive %in% c("bioRxiv", "arXiv q-bio")) %>%
   filter(count > 0)
@@ -288,11 +288,11 @@ df_preprints %>%
   ) + 
   scale_x_date(name = "year", expand = c(0, 0)) +
   scale_color_manual(values = c("#D55E00", "#0072B2"), guide = "none") +
-  theme_minimal_grid(16) +
+  theme_minimal_grid() +
   theme(
     axis.ticks.y.right = element_blank(),
     axis.text.y.right = element_text(
-      size = 16,
+      size = 14,
       margin = margin(0, 0, 0, 0)
     )
   )
@@ -315,7 +315,8 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 ## Example: Preprints in biology
 
 .center[
-![](`r knitr::fig_chunk("preprints-part1", "svg")`)
+```{r preprints-part1-repeat, ref.label = "preprints-part1", cache = params$cache, echo = FALSE, out.width = "75%", fig.width = 7.5, fig.asp = 0.618, dev = "svg"}
+```
 ]
 
 
@@ -337,7 +338,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 ## Example: Preprints in biology
 
 .center[
-```{r preprints-part2, cache = params$cache, echo = FALSE, fig.width = 9, fig.asp = 0.618, dev = "svg"}
+```{r preprints-part2, cache = params$cache, echo = FALSE, out.width = "75%", fig.width = 7.5, fig.asp = 0.618, dev = "svg"}
 ggplot(df_preprints, aes(date, count, color = archive)) + 
   geom_line(linewidth = 0.75) +
   scale_y_log10(
@@ -353,11 +354,11 @@ ggplot(df_preprints, aes(date, count, color = archive)) +
   ) + 
   scale_x_date(name = "year", expand = c(0, 0)) +
   scale_color_manual(values = c("#D55E00", "#0072B2"), guide = "none") +
-  theme_minimal_grid(16) +
+  theme_minimal_grid() +
   theme(
     axis.ticks.y.right = element_blank(),
     axis.text.y.right = element_text(
-      size = 16,
+      size = 14,
       margin = margin(0, 0, 0, 0)
     )
   )
@@ -395,7 +396,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 --
 
 .center[
-```{r arrival-delay-vs-distance, cache = params$cache, echo = FALSE, message = FALSE, fig.width = 9, fig.asp = 0.618, dev = "svg"}
+```{r arrival-delay-vs-distance, cache = params$cache, echo = FALSE, message = FALSE, out.width = "75%", fig.width = 7.5, fig.asp = 0.618, dev = "svg"}
 library(nycflights13)
 carrier_names <- tibble(
   carrier = c("9E", "AA", "B6", "DL", "EV", "MQ", "UA", "US", "WN", "--"),
@@ -461,7 +462,7 @@ p_delay_distance <- ggplot(delay) +
       order = 2
     )
   ) +
-  theme_minimal_grid(16) +
+  theme_minimal_grid() +
   theme(plot.margin = margin(3.5, 14, 3.5, 1.5))
 
 stamp_bad(p_delay_distance) 
@@ -477,7 +478,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 ## Prepare figures that make a clear point
 
 .center[
-```{r mean-arrival-delay-nyc, cache = params$cache, echo = FALSE, message = FALSE, fig.width = 9, fig.asp = 0.618, dev = "svg"}
+```{r mean-arrival-delay-nyc, cache = params$cache, echo = FALSE, message = FALSE, out.width = "75%", fig.width = 7.5, fig.asp = 0.618, dev = "svg"}
 flights_grouped <- flights %>% 
   mutate(
   carrier = ifelse(
@@ -504,7 +505,7 @@ flights_grouped %>%
   scale_y_discrete(name = NULL) +
   scale_fill_manual(values = c("#B0B0B0D0", "#BD3828D0"), guide = "none") +
   coord_cartesian(clip = "off") +
-  theme_minimal_vgrid(16, rel_small = 1) +
+  theme_minimal_vgrid(rel_small = 1) +
   theme(
     axis.line.y = element_blank(),
     axis.ticks.y = element_blank()

@@ -12,9 +12,15 @@
     <textarea id="source">
 class: center, middle, title-slide
 
+.title[
 # SDS 375—Data Visualization in R
+]
+.author[
 ### Claus O. Wilke
-### last updated: 2022-01-17
+]
+.date[
+### last updated: 2024-01-29
+]
 
 ---
 
@@ -216,7 +222,7 @@ rnorm(5) # create 5 normal variates
 ```
 
 ```
-[1] -1.2225017  0.2384018 -0.1399325 -1.5070273 -0.5720342
+[1] -1.3881703  1.1472904  0.6539729  0.9734382  2.3576040
 ```
 ]
 
@@ -379,6 +385,19 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
 (function() {
   "use strict"
   // Replace <script> tags in slides area to make them executable

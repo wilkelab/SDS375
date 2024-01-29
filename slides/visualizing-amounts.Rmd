@@ -64,7 +64,7 @@ Data source: Box Office Mojo
 <br>
 
 .center.move-up-1em[
-```{r boxoffice-vertical, echo = FALSE, fig.width = 10, fig.asp = .5, dev = "svg"}
+```{r boxoffice-vertical, echo = FALSE, out.width = "90%", fig.width = 8.5, fig.asp = .5, dev = "svg"}
 boxoffice %>%
   ggplot(aes(x = fct_reorder(title, rank), y = amount)) +
     geom_col(fill = "#56B4E9", width = 0.6, alpha = 0.9) +
@@ -79,7 +79,7 @@ boxoffice %>%
       expand = c(0, 0.4)
     ) +
     coord_cartesian(clip = "off") +
-    theme_minimal_hgrid(16, rel_small = 1) +
+    theme_minimal_hgrid(12, rel_small = 1) +
     theme(
       axis.line.x = element_blank(),
       axis.ticks.x = element_blank()
@@ -94,7 +94,7 @@ boxoffice %>%
 <br>
 
 .center.move-up-1em[
-```{r boxoffice-horizontal, echo = FALSE, fig.width = 9, fig.asp = .618, dev = "svg"}
+```{r boxoffice-horizontal, echo = FALSE, out.width = "70%", fig.width = 7, fig.asp = .618, dev = "svg"}
 ggplot(boxoffice, aes(x = fct_reorder(title, desc(rank)), y = amount)) +
   geom_col(fill = "#56B4E9", alpha = 0.9) +
   scale_y_continuous(
@@ -109,7 +109,7 @@ ggplot(boxoffice, aes(x = fct_reorder(title, desc(rank)), y = amount)) +
     expand = c(0, 0.5)
   ) +
   coord_flip(clip = "off") +
-  theme_minimal_vgrid(16, rel_small = 1) +
+  theme_minimal_vgrid(rel_small = 1) +
   theme(
     axis.line.y = element_blank(),
     axis.ticks.y = element_blank()
@@ -122,7 +122,7 @@ ggplot(boxoffice, aes(x = fct_reorder(title, desc(rank)), y = amount)) +
 ## Avoid rotated axis labels
 
 .center[
-```{r boxoffice-rot-axis-tick-labels, echo = FALSE, fig.width = 7, fig.asp = .85, dev = "svg"}
+```{r boxoffice-rot-axis-tick-labels, echo = FALSE, out.width = "60%", fig.width = 6, fig.asp = .85, dev = "svg"}
 p_box_axrot <- 
   ggplot(boxoffice, aes(x = fct_reorder(title, rank), y = amount)) +
     geom_col(fill = "#56B4E9", alpha = 0.9) +
@@ -134,7 +134,7 @@ p_box_axrot <-
     ) +
     scale_x_discrete(name = NULL) +
     coord_cartesian(clip = "off") +
-    theme_minimal_hgrid(16, rel_small = 1) +
+    theme_minimal_hgrid(rel_small = 1) +
     theme(
       axis.line.x = element_blank(),
       axis.ticks.x = element_blank(),
@@ -154,7 +154,8 @@ stamp_ugly(p_box_axrot)
 <br>
 
 .center.move-up-1em[
-![](`r knitr::fig_chunk("boxoffice-horizontal", "svg")`)
+```{r boxoffice-horizontal-repeat, , ref.label = "boxoffice-horizontal", echo = FALSE, out.width = "70%", fig.width = 7, fig.asp = .618, dev = "svg"}
+```
 ]
 
 ---
@@ -164,7 +165,7 @@ stamp_ugly(p_box_axrot)
 <br>
 
 .center.move-up-1em[
-```{r boxoffice-horizontal-unordered, echo = FALSE, fig.width = 9, fig.asp = .618, dev = "svg"}
+```{r boxoffice-horizontal-unordered, echo = FALSE, out.width = "70%", fig.width = 7, fig.asp = .618, dev = "svg"}
 p_box_noorder <- ggplot(boxoffice) +
   aes(
     x = factor(title, levels = title[c(2, 1, 5, 3, 4)]),
@@ -183,7 +184,7 @@ p_box_noorder <- ggplot(boxoffice) +
     expand = c(0, 0.5)
   ) +
   coord_flip(clip = "off") +
-  theme_minimal_vgrid(16, rel_small = 1) +
+  theme_minimal_vgrid(rel_small = 1) +
   theme(
     axis.line.y = element_blank(),
     axis.ticks.y = element_blank()
@@ -200,7 +201,8 @@ stamp_bad(p_box_noorder)
 <br>
 
 .center.move-up-1em[
-![](`r knitr::fig_chunk("boxoffice-horizontal", "svg")`)
+```{r boxoffice-horizontal-repeat2, , ref.label = "boxoffice-horizontal", echo = FALSE, out.width = "70%", fig.width = 7, fig.asp = .618, dev = "svg"}
+```
 ]
 
 ---
@@ -210,7 +212,7 @@ stamp_bad(p_box_noorder)
 <br>
 
 .center.move-up-1em[
-```{r boxoffice-dotplot, echo = FALSE, fig.width = 9, fig.asp = .618, dev = "svg"}
+```{r boxoffice-dotplot, echo = FALSE, out.width = "70%", fig.width = 7, fig.asp = .618, dev = "svg"}
 ggplot(boxoffice, aes(x = fct_reorder(title, desc(rank)), y = amount)) +
   geom_point(color = "#0072B2", size = 4) +
   scale_y_continuous(
@@ -225,7 +227,7 @@ ggplot(boxoffice, aes(x = fct_reorder(title, desc(rank)), y = amount)) +
     expand = c(0, 0.5)
   ) +
   coord_flip(clip = "off") +
-  theme_minimal_vgrid(16, rel_small = 1) +
+  theme_minimal_vgrid(rel_small = 1) +
   theme(
     axis.line.y = element_blank(),
     axis.ticks.y = element_blank()
@@ -238,7 +240,7 @@ ggplot(boxoffice, aes(x = fct_reorder(title, desc(rank)), y = amount)) +
 ## Dots are preferable if we want to truncate the axes
 
 .center.move-up-1em[
-```{r Americas-life-expect, echo = FALSE, fig.width = 7., fig.asp = .9, dev = "svg"}
+```{r Americas-life-expect, echo = FALSE, out.width = "60%", fig.width = 6., fig.asp = .9, dev = "svg"}
 library(gapminder)
 
 df_Americas <- gapminder %>% filter(year == 2007, continent == "Americas")
@@ -251,7 +253,7 @@ ggplot(df_Americas, aes(x = lifeExp, y = fct_reorder(country, lifeExp))) +
     expand = c(0, 0)
   ) +
   scale_y_discrete(name = NULL, expand = c(0, 0.5)) +
-  theme_minimal_grid(14, rel_small = 1) +
+  theme_minimal_grid(12, rel_small = 1) +
   theme(
     plot.margin = margin(18, 6, 3, 1.5)
   )
@@ -263,7 +265,7 @@ ggplot(df_Americas, aes(x = lifeExp, y = fct_reorder(country, lifeExp))) +
 ## Dots are preferable if we want to truncate the axes
 
 .center.move-up-1em[
-```{r Americas-life-expect-bad1, echo = FALSE, fig.width = 7., fig.asp = .9, dev = "svg"}
+```{r Americas-life-expect-bad1, echo = FALSE, out.width = "60%", fig.width = 6., fig.asp = .9, dev = "svg"}
 p <- ggplot(df_Americas, aes(x = lifeExp, y = fct_reorder(country, lifeExp))) +
   geom_col(fill = "#56B4E9", alpha = 0.9) +
   scale_x_continuous(
@@ -272,7 +274,7 @@ p <- ggplot(df_Americas, aes(x = lifeExp, y = fct_reorder(country, lifeExp))) +
   ) +
   scale_y_discrete(name = NULL, expand = c(0, 0.5)) +
   coord_cartesian(xlim = c(59.7, 81.5)) +
-  theme_minimal_grid(14, rel_small = 1) +
+  theme_minimal_grid(12, rel_small = 1) +
   theme(
     plot.margin = margin(18, 6, 3, 1.5)
   )
@@ -290,7 +292,7 @@ bar lengths do<br>not accurately<br>represent the<br>data values
 ## Dots are preferable if we want to truncate the axes
 
 .center.move-up-1em[
-```{r Americas-life-expect-bad2, echo = FALSE, fig.width = 7., fig.asp = .9, dev = "svg"}
+```{r Americas-life-expect-bad2, echo = FALSE, out.width = "60%", fig.width = 6., fig.asp = .9, dev = "svg"}
 p <- ggplot(df_Americas, aes(x = lifeExp, y = fct_reorder(country, lifeExp))) +
   geom_col(fill = "#56B4E9", alpha = 0.9) +
   scale_x_continuous(
@@ -299,7 +301,7 @@ p <- ggplot(df_Americas, aes(x = lifeExp, y = fct_reorder(country, lifeExp))) +
   ) +
   scale_y_discrete(name = NULL, expand = c(0, 0.5)) +
   coord_cartesian(xlim = c(0, 85)) +
-  theme_minimal_grid(14, rel_small = 1) +
+  theme_minimal_grid(12, rel_small = 1) +
   theme(
     plot.margin = margin(18, 6, 3, 1.5)
   )
@@ -318,7 +320,8 @@ key features<br>of the data<br>are obscured
 ## Dots are preferable if we want to truncate the axes
 
 .center.move-up-1em[
-![](`r knitr::fig_chunk("Americas-life-expect", "svg")`)
+```{r Americas-life-expect-repeat, ref.label = "Americas-life-expect", echo = FALSE, out.width = "60%", fig.width = 6., fig.asp = .9, dev = "svg"}
+```
 ]
 
 [//]: # "segment ends here"
@@ -337,7 +340,7 @@ class: center middle
 <br>
 
 .center.move-up-1em[
-```{r income-by-age-race-dodged, echo = FALSE, fig.width = 10, fig.asp = 0.5, dev = "svg"}
+```{r income-by-age-race-dodged, echo = FALSE, out.width = "80%", fig.width = 9, fig.asp = 0.5, dev = "svg"}
 # Take the darkest four colors from 5-class ColorBrewer palette "PuBu"
 # colors_four <- RColorBrewer::brewer.pal(5, "PuBu")[5:2]
 colors_four <- c("#045A8D", "#2B8CBE", "#74A9CF", "#BDC9E1")
@@ -353,7 +356,7 @@ ggplot(income_by_age, aes(x = age, y = median_income, fill = race)) +
   scale_fill_manual(values = colors_four, name = NULL) +
   coord_cartesian(clip = "off") +
   xlab("age (years)") +
-  theme_minimal_hgrid(16) +
+  theme_minimal_hgrid() +
   theme(
     axis.line.x = element_blank(),
     axis.ticks.x = element_blank()
@@ -372,7 +375,7 @@ Data source: United States Census Bureau, 2016
 <br>
 
 .center[
-```{r income-by-race-age-dodged, echo = FALSE, fig.width = 10, fig.asp = 0.4, dev = "svg"}
+```{r income-by-race-age-dodged, echo = FALSE, out.width = "80%", fig.width = 8, fig.asp = 0.4, dev = "svg"}
 # Take the darkest seven colors from 8-class ColorBrewer palette "PuBu"
 # colors_seven <- RColorBrewer::brewer.pal(8, "PuBu")[2:8]
 colors_seven <- c("#ECE7F2", "#D0D1E6", "#A6BDDB", "#74A9CF", "#3690C0", "#0570B0", "#034E7B")
@@ -388,7 +391,7 @@ ggplot(income_by_age, aes(x = race, y = median_income, fill = age)) +
   scale_fill_manual(values = colors_seven, name = "age (yrs)") +
   coord_cartesian(clip = "off") +
   xlab(label = NULL) +
-  theme_minimal_hgrid(16) +
+  theme_minimal_hgrid() +
   theme(
     axis.line.x = element_blank(),
     axis.ticks.x = element_blank(),
@@ -406,7 +409,7 @@ Data source: United States Census Bureau, 2016
 ## We can also use multiple plot panels (facets)
 
 .center[
-```{r income-by-age-race-faceted, echo = FALSE, fig.width = 10, fig.asp = 0.618, dev = "svg"}
+```{r income-by-age-race-faceted, echo = FALSE, out.width = "75%", fig.width = 8, fig.asp = 0.618, dev = "svg"}
 ggplot(income_by_age, aes(x = age_brief, y = median_income)) +
   geom_col(fill = "#56B4E9", alpha = 0.9) +
   scale_y_continuous(
@@ -418,7 +421,7 @@ ggplot(income_by_age, aes(x = age_brief, y = median_income)) +
   coord_cartesian(clip = "off") +
   xlab(label = "age (years)") +
   facet_wrap(~race, scales = "free_x") +
-  theme_minimal_hgrid(14) +
+  theme_minimal_hgrid(12) +
   theme(
     axis.ticks.x = element_blank(),
     axis.line = element_blank(),
@@ -471,7 +474,7 @@ ggplot(boxoffice, aes(title, amount)) +
 --
 
 .center[
-```{r boxoffice-naive-out, ref.label = "boxoffice-naive", echo = FALSE, fig.width = 10, fig.asp = 0.4, dev = "svg"}
+```{r boxoffice-naive-out, ref.label = "boxoffice-naive", echo = FALSE, out.width = "75%", fig.width = 8, fig.asp = 0.4, dev = "svg"}
 ```
 ]
 
@@ -488,7 +491,7 @@ ggplot(boxoffice, aes(fct_reorder(title, amount), amount)) +
 ]
 
 .center[
-```{r boxoffice-ordered-out, ref.label = "boxoffice-ordered", echo = FALSE, fig.width = 10, fig.asp = 0.4, dev = "svg"}
+```{r boxoffice-ordered-out, ref.label = "boxoffice-ordered", echo = FALSE, out.width = "75%", fig.width = 8, fig.asp = 0.4, dev = "svg"}
 ```
 ]
 
@@ -505,7 +508,7 @@ ggplot(boxoffice, aes(fct_reorder(title, -amount), amount)) +
 ]
 
 .center[
-```{r boxoffice-ordered2-out, ref.label = "boxoffice-ordered2", echo = FALSE, fig.width = 10, fig.asp = 0.4, dev = "svg"}
+```{r boxoffice-ordered2-out, ref.label = "boxoffice-ordered2", echo = FALSE, out.width = "75%", fig.width = 8, fig.asp = 0.4, dev = "svg"}
 ```
 ]
 
@@ -524,7 +527,7 @@ ggplot(boxoffice, aes(amount, fct_reorder(title, amount))) +
 ]
 
 .center[
-```{r boxoffice-ordered3-out, ref.label = "boxoffice-ordered3", echo = FALSE, fig.width = 6.5, fig.asp = 0.618, dev = "svg"}
+```{r boxoffice-ordered3-out, ref.label = "boxoffice-ordered3", echo = FALSE, out.width = "55%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -565,7 +568,7 @@ ggplot(penguins, aes(y = species)) + # note: no x aesthetic defined
 ]
 
 .center[
-```{r penguins-bars-out, ref.label = "penguins-bars", echo = FALSE, fig.width = 6.5, fig.asp = 0.618, dev = "svg"}
+```{r penguins-bars-out, ref.label = "penguins-bars", echo = FALSE, out.width = "55%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -589,7 +592,7 @@ ggplot(penguins, aes(y = fct_relevel(species, "Chinstrap", "Gentoo", "Adelie")))
 ]
 
 .center[
-```{r penguins-bars2-out, ref.label = "penguins-bars2", echo = FALSE, fig.width = 6.5, fig.asp = 0.618, dev = "svg"}
+```{r penguins-bars2-out, ref.label = "penguins-bars2", echo = FALSE, out.width = "55%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -608,7 +611,7 @@ ggplot(penguins, aes(y = fct_rev(fct_infreq(species)))) +
 ]
 
 .center[
-```{r penguins-bars3-out, ref.label = "penguins-bars3", echo = FALSE, fig.width = 6.5, fig.asp = 0.618, dev = "svg"}
+```{r penguins-bars3-out, ref.label = "penguins-bars3", echo = FALSE, out.width = "55%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -625,7 +628,7 @@ ggplot(penguins, aes(sex, fill = species)) +
 ]
 
 .center[
-```{r penguins-sex-species-out, ref.label = "penguins-sex-species", echo = FALSE, fig.width = 6.5, fig.asp = 0.618, dev = "svg"}
+```{r penguins-sex-species-out, ref.label = "penguins-sex-species", echo = FALSE, out.width = "55%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -643,7 +646,7 @@ ggplot(penguins_nomissing, aes(sex, fill = species)) +
 ]
 
 .center[
-```{r penguins-sex-species2-out, ref.label = "penguins-sex-species2", echo = FALSE, fig.width = 6.5, fig.asp = 0.618, dev = "svg"}
+```{r penguins-sex-species2-out, ref.label = "penguins-sex-species2", echo = FALSE, out.width = "55%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -661,7 +664,7 @@ ggplot(penguins_nomissing, aes(sex, fill = species)) +
 ]
 
 .center[
-```{r penguins-sex-species-dodge-out, ref.label = "penguins-sex-species-dodge", echo = FALSE, fig.width = 6.5, fig.asp = 0.618, dev = "svg"}
+```{r penguins-sex-species-dodge-out, ref.label = "penguins-sex-species-dodge", echo = FALSE, out.width = "55%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -680,7 +683,7 @@ ggplot(penguins_nomissing, aes(sex, fill = species)) +
 ]
 
 .center[
-```{r penguins-sex-species-stack-out, ref.label = "penguins-sex-species-stack", echo = FALSE, fig.width = 6.5, fig.asp = 0.618, dev = "svg"}
+```{r penguins-sex-species-stack-out, ref.label = "penguins-sex-species-stack", echo = FALSE, out.width = "55%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -699,7 +702,7 @@ ggplot(penguins_nomissing, aes(sex, fill = species)) +
 ]
 
 .center[
-```{r penguins-sex-species-fill-out, ref.label = "penguins-sex-species-fill", echo = FALSE, fig.width = 6.5, fig.asp = 0.618, dev = "svg"}
+```{r penguins-sex-species-fill-out, ref.label = "penguins-sex-species-fill", echo = FALSE, out.width = "55%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
