@@ -154,7 +154,7 @@ stamp_ugly(p_box_axrot)
 <br>
 
 .center.move-up-1em[
-```{r boxoffice-horizontal-repeat, , ref.label = "boxoffice-horizontal", echo = FALSE, out.width = "70%", fig.width = 7, fig.asp = .618, dev = "svg"}
+```{r boxoffice-horizontal-repeat, ref.label = "boxoffice-horizontal", echo = FALSE, out.width = "70%", fig.width = 7, fig.asp = .618, dev = "svg"}
 ```
 ]
 
@@ -201,7 +201,7 @@ stamp_bad(p_box_noorder)
 <br>
 
 .center.move-up-1em[
-```{r boxoffice-horizontal-repeat2, , ref.label = "boxoffice-horizontal", echo = FALSE, out.width = "70%", fig.width = 7, fig.asp = .618, dev = "svg"}
+```{r boxoffice-horizontal-repeat2, ref.label = "boxoffice-horizontal", echo = FALSE, out.width = "70%", fig.width = 7, fig.asp = .618, dev = "svg"}
 ```
 ]
 
