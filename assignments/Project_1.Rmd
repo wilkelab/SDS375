@@ -1,0 +1,64 @@
+---
+title: "Project 1"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This is the dataset you will be working with:
+```{r message = FALSE}
+olympics <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-07-27/olympics.csv')
+
+triathlon <- olympics %>% 
+  filter(!is.na(height)) %>%             # only keep athletes with known height
+  filter(sport == "Triathlon") %>%       # keep only triathletes
+  mutate(
+    medalist = case_when(                # add column to track medalist vs not
+      is.na(medal) ~ "non-medalist",
+      !is.na(medal) ~ "medalist"         # any medals (Gold, Silver, Bronze) count
+    )
+  )
+```
+
+`triathlon` is a subset of `olympics` and contains only the data for triathletes. More information about the original `olympics` dataset can be found at https://github.com/rfordatascience/tidytuesday/tree/master/data/2021/2021-07-27/readme.md and https://www.sports-reference.com/olympics.html.
+
+For this project, use `triathlon` to answer the following questions about athletes competing in this sport:
+
+1. In how many events total did male and female triathletes compete for each country? 
+2. Are there height differences among triathletes between sexes or over time?
+3. Are there height differences among triathletes that have medaled or not, again also considering athlete sex? 
+
+You should make one plot per question.
+
+**Hints:**
+
+- We recommend you use a bar plot for question 1, a boxplot for question 2, and a sina plot overlaid on top of violins for question 3. However, you are free to use any of the plots we have discussed in class so far.
+- For question 2, you will have to convert `year` into a factor. 
+- For question 3, consider why a boxplot or simple violin plot is not a good idea and mention this in the approach section.
+- For all questions, you can use either faceting or color coding or both. Pick whichever you prefer.
+- Adjust `fig.width` and `fig.height` in the chunk headers to customize figure sizing and figure aspect ratios.
+
+You can delete these instructions from your project. Please also delete text such as *Your approach here* or `# Q1: Your R code here`.
+
+**Introduction:** *Your introduction here.*
+
+**Approach:** *Your approach here.*
+
+**Analysis:**
+
+```{r fig.width = 5, fig.heigth = 5}
+# Q1: Your R code here
+```
+
+```{r fig.width = 5, fig.heigth = 5}
+# Q2: Your R code here
+```
+
+```{r fig.width = 5, fig.heigth = 5}
+# Q3: Your R code here
+```
+
+**Discussion:** *Your discussion of results here.*
