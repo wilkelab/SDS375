@@ -1,5 +1,5 @@
 ---
-title: "SDS 375 Schedule Spring 2023"
+title: "SDS 375 Schedule Spring 2024"
 description: ""
 output:
   distill::distill_article:
@@ -27,7 +27,7 @@ knitr::opts_chunk$set(echo = FALSE)
 - [Slides](slides/aesthetic-mappings.html)  
 - [Worksheet](worksheets/aesthetic-mappings.Rmd)
 
-### 3. Jan 23, 2023—Telling a story, Visualizing amounts
+### 3. Jan 23, 2024—Telling a story, Visualizing amounts
 
 <p class="nospace">Materials:</p>
 
@@ -35,7 +35,7 @@ knitr::opts_chunk$set(echo = FALSE)
 - [Slides: Visualizing amounts](slides/visualizing-amounts.html)  
 - [Worksheet](worksheets/visualizing-amounts.Rmd)
 
-### 4. Jan 25, 2023—Coordinate systems and axes
+### 4. Jan 25, 2024—Coordinate systems and axes
 
 <p class="nospace">Materials:</p>
 
