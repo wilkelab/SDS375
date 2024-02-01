@@ -94,7 +94,7 @@ All homeworks are due by 11:00pm on the day they are due. Homeworks need to be s
 
 All projects are due by 11:00pm on the day they are due. Projects need to be submitted on Canvas. Please carefully read the submission instructions for each project.
 
-### Project 1 (due Feb 15, 2023)
+### Project 1 (due Feb 15, 2024)
 
 <p class="nospace">Materials:</p>
 
@@ -104,9 +104,9 @@ All projects are due by 11:00pm on the day they are due. Projects need to be sub
 - [Grading rubric](assignments/Project_1_rubric.pdf)
 - [Example project](assignments/Project_1_example.html)
 
-### Project 2 (due Mar 21, 2023)
+### Project 2 (due Mar 21, 2024)
 
-### Project 3 (due Apr 18, 2023)
+### Project 3 (due Apr 18, 2024)
 
 
 ## Reuse {.appendix}
