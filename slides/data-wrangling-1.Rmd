@@ -96,7 +96,7 @@ ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color = species)) + geom_poi
 ]
 
 .center[
-```{r penguins-scatter-out, ref.label = "penguins-scatter", echo = FALSE, warning=FALSE, fig.width=6, fig.asp = 0.618, dev = "svg"}
+```{r penguins-scatter-out, ref.label = "penguins-scatter", echo = FALSE, warning=FALSE, out.width = "55%", fig.width=6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -115,7 +115,7 @@ penguins %>%
 ]
 
 .center[
-```{r penguins-scatter2-out, ref.label = "penguins-scatter2", echo = FALSE, warning=FALSE, fig.width=6, fig.asp = 0.618, dev = "svg"}
+```{r penguins-scatter2-out, ref.label = "penguins-scatter2", echo = FALSE, warning=FALSE, out.width = "55%", fig.width=6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -131,7 +131,7 @@ penguins |>
 ]
 
 .center[
-```{r penguins-scatter3-out, ref.label = "penguins-scatter3", echo = FALSE, warning=FALSE, fig.width=6, fig.asp = 0.618, dev = "svg"}
+```{r penguins-scatter3-out, ref.label = "penguins-scatter3", echo = FALSE, warning=FALSE, out.width = "55%", fig.width=6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 

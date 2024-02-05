@@ -51,7 +51,7 @@ update_geom_defaults("point", list(size = 2)) # 2 for full width, 2.5 for half w
 # Qualitative scale example
 
 .center.nogap[
-```{r popgrowth-vs-popsize-colored, echo = FALSE, message = FALSE, fig.width = 7.5, fig.asp = 0.618, dev = "svg"}
+```{r popgrowth-vs-popsize-colored, echo = FALSE, message = FALSE, out.width = "65%", fig.width = 7.5, fig.asp = 0.618, dev = "svg"}
 US_census <- read_csv(here("datasets", "US_census.csv"))
 US_regions <- read_csv(here("datasets", "US_regions.csv"))
 
@@ -123,7 +123,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 # Qualitative scale example
 
 .center.nogap[
-```{r popgrowth-vs-popsize-colored2, echo = FALSE, message = FALSE, fig.width = 7.5, fig.asp = 0.618, dev = "svg"}
+```{r popgrowth-vs-popsize-colored2, echo = FALSE, message = FALSE, out.width = "65%", fig.width = 7.5, fig.asp = 0.618, dev = "svg"}
 
 region_colors <- RColorBrewer::brewer.pal(4, "Set1")
 
@@ -145,7 +145,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 # Qualitative scale example
 
 .center.nogap[
-```{r popgrowth-vs-popsize-colored3, echo = FALSE, message = FALSE, fig.width = 7.5, fig.asp = 0.618, dev = "svg"}
+```{r popgrowth-vs-popsize-colored3, echo = FALSE, message = FALSE, out.width = "65%", fig.width = 7.5, fig.asp = 0.618, dev = "svg"}
 
 region_colors <- RColorBrewer::brewer.pal(4, "Set3")
 
@@ -194,7 +194,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 <br>
 
 .center[
-```{r four-locations-temps-by-month, echo = FALSE, message = FALSE, fig.width = 9, fig.asp = .3, dev = "svg"}
+```{r four-locations-temps-by-month, echo = FALSE, message = FALSE, out.width = "90%", fig.width = 9, fig.asp = .3, dev = "svg"}
 temps_months <- read_csv(here("datasets", "tempnormals.csv")) %>%
   group_by(location, month_name) %>%
   summarize(mean = mean(temperature)) %>%
@@ -240,7 +240,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 <br>
 
 .center[
-```{r four-locations-temps-by-month2, echo = FALSE, message = FALSE, fig.width = 9, fig.asp = .3, dev = "svg"}
+```{r four-locations-temps-by-month2, echo = FALSE, message = FALSE, out.width = "90%", fig.width = 9, fig.asp = .3, dev = "svg"}
 p + scale_fill_viridis_c(
     option = "B", begin = 0.15, end = 0.98,
     name = "temperature (°F)"
@@ -262,7 +262,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 <br>
 
 .center[
-```{r four-locations-temps-by-month3, echo = FALSE, message = FALSE, fig.width = 9, fig.asp = .3, dev = "svg"}
+```{r four-locations-temps-by-month3, echo = FALSE, message = FALSE, out.width = "90%", fig.width = 9, fig.asp = .3, dev = "svg"}
 p + scale_fill_viridis_c(
     option = "E",
     name = "temperature (°F)"
@@ -315,7 +315,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 # Diverging scale example
 
 .center.nogap[
-```{r forensic-correlations1, echo = FALSE, message = FALSE, fig.width = 4., fig.asp = 1, dev = "svg"}
+```{r forensic-correlations1, echo = FALSE, message = FALSE, out.width = "35%", fig.width = 4., fig.asp = 1, dev = "svg"}
 forensic_glass <- read_csv(here("datasets", "forensic_glass.csv"))
 
 cm <- cor(select(forensic_glass, -type, -RI, -Si))
@@ -376,7 +376,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 # Diverging scale example
 
 .center.nogap[
-```{r forensic-correlations2, echo = FALSE, message = FALSE, fig.width = 4., fig.asp = 1, dev = "svg"}
+```{r forensic-correlations2, echo = FALSE, message = FALSE, out.width = "35%", fig.width = 4., fig.asp = 1, dev = "svg"}
 p + scale_fill_continuous_divergingx(
   name = "correlation",
   limits = c(-.5, .5),
@@ -399,7 +399,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 # Diverging scale example
 
 .center.nogap[
-```{r forensic-correlations3, echo = FALSE, message = FALSE, fig.width = 4., fig.asp = 1, dev = "svg"}
+```{r forensic-correlations3, echo = FALSE, message = FALSE, out.width = "35%", fig.width = 4., fig.asp = 1, dev = "svg"}
 p + scale_fill_continuous_diverging(
   name = "correlation",
   limits = c(-.5, .5),
@@ -464,7 +464,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 # Highlight example
 
 .center[
-```{r Aus-athletes-track, echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r Aus-athletes-track, echo = FALSE, out.width = "60%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 male_Aus <- ggridges::Aus_athletes %>%
   filter(sex == "m") %>%
   filter(
@@ -513,7 +513,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 # Highlight example
 
 .center[
-```{r Aus-athletes-track2, echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r Aus-athletes-track2, echo = FALSE, out.width = "60%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 
 accent_OkabeIto <- c("#E69F00", "#56B4E9", "#CC79A7", "#F0E442", "#0072B2", "#009E73", "#D55E00")
 accent_OkabeIto[1:4] <- desaturate(lighten(accent_OkabeIto[1:4], .4), .8)
@@ -542,7 +542,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 # Highlight example
 
 .center[
-```{r Aus-athletes-track3, echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r Aus-athletes-track3, echo = FALSE, out.width = "60%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 
 accent_Brewer <- RColorBrewer::brewer.pal(7, name = "Accent")[c(7, 1:4)]
 
@@ -745,7 +745,7 @@ ggplot(temps_months, aes(x = month, y = location, fill = mean)) +
 ]
 
 .center[
-```{r temps-tiles1-out, ref.label = "temps-tiles1", echo = FALSE, fig.width = 7, fig.asp = .3, dev = "svg"}
+```{r temps-tiles1-out, ref.label = "temps-tiles1", echo = FALSE, out.width = "90%", fig.width = 7, fig.asp = .3, dev = "svg"}
 ```
 ]
 
@@ -765,7 +765,7 @@ ggplot(temps_months, aes(x = month, y = location, fill = mean)) +
 ]
 
 .center[
-```{r temps-tiles2-out, ref.label = "temps-tiles2", echo = FALSE, fig.width = 7, fig.asp = .3, dev = "svg"}
+```{r temps-tiles2-out, ref.label = "temps-tiles2", echo = FALSE, out.width = "90%", fig.width = 7, fig.asp = .3, dev = "svg"}
 ```
 ]
 
@@ -784,7 +784,7 @@ ggplot(temps_months, aes(x = month, y = location, fill = mean)) +
 ]
 
 .center[
-```{r temps-tiles3-out, ref.label = "temps-tiles3", echo = FALSE, fig.width = 7, fig.asp = .3, dev = "svg"}
+```{r temps-tiles3-out, ref.label = "temps-tiles3", echo = FALSE, out.width = "90%", fig.width = 7, fig.asp = .3, dev = "svg"}
 ```
 ]
 
@@ -804,7 +804,7 @@ ggplot(temps_months, aes(x = month, y = location, fill = mean)) +
 ]
 
 .center[
-```{r temps-tiles4-out, ref.label = "temps-tiles4", echo = FALSE, fig.width = 7, fig.asp = .3, dev = "svg"}
+```{r temps-tiles4-out, ref.label = "temps-tiles4", echo = FALSE, out.width = "90%", fig.width = 7, fig.asp = .3, dev = "svg"}
 ```
 ]
 
@@ -824,7 +824,7 @@ ggplot(temps_months, aes(x = month, y = location, fill = mean)) +
 ]
 
 .center[
-```{r temps-tiles5-out, ref.label = "temps-tiles5", echo = FALSE, fig.width = 7, fig.asp = .3, dev = "svg"}
+```{r temps-tiles5-out, ref.label = "temps-tiles5", echo = FALSE, out.width = "90%", fig.width = 7, fig.asp = .3, dev = "svg"}
 ```
 ]
 
@@ -868,7 +868,7 @@ ggplot(temps_months, aes(x = month, y = location, fill = mean)) +
 ]
 
 .center[
-```{r temps-tiles6-out, ref.label = "temps-tiles6", echo = FALSE, fig.width = 7, fig.asp = .3, dev = "svg"}
+```{r temps-tiles6-out, ref.label = "temps-tiles6", echo = FALSE, out.width = "90%", fig.width = 7, fig.asp = .3, dev = "svg"}
 ```
 ]
 
@@ -887,7 +887,7 @@ ggplot(temps_months, aes(x = month, y = location, fill = mean)) +
 ]
 
 .center[
-```{r temps-tiles7-out, ref.label = "temps-tiles7", echo = FALSE, fig.width = 7, fig.asp = .3, dev = "svg"}
+```{r temps-tiles7-out, ref.label = "temps-tiles7", echo = FALSE, out.width = "90%", fig.width = 7, fig.asp = .3, dev = "svg"}
 ```
 ]
 
@@ -906,7 +906,7 @@ ggplot(temps_months, aes(x = month, y = location, fill = mean)) +
 ]
 
 .center[
-```{r temps-tiles8-out, ref.label = "temps-tiles8", echo = FALSE, fig.width = 7, fig.asp = .3, dev = "svg"}
+```{r temps-tiles8-out, ref.label = "temps-tiles8", echo = FALSE, out.width = "90%", fig.width = 7, fig.asp = .3, dev = "svg"}
 ```
 ]
 
@@ -918,7 +918,7 @@ colorspace::hcl_palettes(type = "sequential", plot = TRUE) # all sequential pale
 ```
 
 .center[
-```{r colorspace-palettes-seq-out, ref.label = 'colorspace-palettes-seq', echo = FALSE, fig.width = 12, fig.asp = .5, dev = "svg"}
+```{r colorspace-palettes-seq-out, ref.label = 'colorspace-palettes-seq', echo = FALSE, out.width = "95%", fig.width = 12, fig.asp = .5, dev = "svg"}
 ```
 ]
 ]
@@ -932,7 +932,7 @@ colorspace::hcl_palettes(type = "diverging", plot = TRUE, n = 9) # all diverging
 ```
 
 .center[
-```{r colorspace-palettes-div-out, ref.label = 'colorspace-palettes-div', echo = FALSE, fig.width = 6, fig.asp = 1, dev = "svg"}
+```{r colorspace-palettes-div-out, ref.label = 'colorspace-palettes-div', echo = FALSE, out.width = "55%", fig.width = 6, fig.asp = 1, dev = "svg"}
 ```
 ]
 ]
@@ -945,7 +945,7 @@ colorspace::divergingx_palettes(plot = TRUE, n = 9) # all divergingx palettes
 ```
 
 .center[
-```{r colorspace-palettes-divx-out, ref.label = 'colorspace-palettes-divx', echo = FALSE, fig.width = 8, fig.asp = .7, dev = "svg"}
+```{r colorspace-palettes-divx-out, ref.label = 'colorspace-palettes-divx', echo = FALSE, out.width = "75%", fig.width = 8, fig.asp = .7, dev = "svg"}
 ```
 ]
 ]
@@ -972,7 +972,7 @@ ggplot(popgrowth, aes(x = pop2000, y = popgrowth, color = region)) +
 ]
 
 .center[
-```{r qual-scales-example1-out, ref.label = "qual-scales-example1", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r qual-scales-example1-out, ref.label = "qual-scales-example1", echo = FALSE, out.width = "55%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -991,7 +991,7 @@ ggplot(popgrowth, aes(x = pop2000, y = popgrowth, color = region)) +
 ]
 
 .center[
-```{r qual-scales-example2-out, ref.label = "qual-scales-example2", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r qual-scales-example2-out, ref.label = "qual-scales-example2", echo = FALSE, out.width = "55%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -1012,7 +1012,7 @@ ggplot(popgrowth, aes(x = pop2000, y = popgrowth, color = region)) +
 ]
 
 .center[
-```{r qual-scales-example3-out, ref.label = "qual-scales-example3", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r qual-scales-example3-out, ref.label = "qual-scales-example3", echo = FALSE, out.width = "55%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -1033,7 +1033,7 @@ ggplot(popgrowth, aes(x = pop2000, y = popgrowth, color = region)) +
 ]
 
 .center[
-```{r qual-scales-example4-out, ref.label = "qual-scales-example4", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r qual-scales-example4-out, ref.label = "qual-scales-example4", echo = FALSE, out.width = "55%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 

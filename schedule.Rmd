@@ -55,6 +55,19 @@ knitr::opts_chunk$set(echo = FALSE)
 - [Slides](slides/visualizing-distributions-2.html)  
 - [Worksheet](worksheets/visualizing-distributions-2.Rmd)
 
+### 7. Feb 6, 2024—Color scales
+
+<p class="nospace">Materials:</p>
+- [Slides](slides/color-scales.html)  
+- [Worksheet](worksheets/color-scales.Rmd)
+
+### 8. Feb 8, 2024—Data wrangling 1
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/data-wrangling-1.html)  
+- [Worksheet](worksheets/data-wrangling-1.Rmd)
+
 
 ## Homeworks
 
