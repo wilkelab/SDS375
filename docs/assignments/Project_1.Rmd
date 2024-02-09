@@ -49,15 +49,15 @@ You can delete these instructions from your project. Please also delete text suc
 
 **Analysis:**
 
-```{r fig.width = 5, fig.heigth = 5}
+```{r fig.width = 5, fig.height = 5}
 # Q1: Your R code here
 ```
 
-```{r fig.width = 5, fig.heigth = 5}
+```{r fig.width = 5, fig.height = 5}
 # Q2: Your R code here
 ```
 
-```{r fig.width = 5, fig.heigth = 5}
+```{r fig.width = 5, fig.height = 5}
 # Q3: Your R code here
 ```
 
