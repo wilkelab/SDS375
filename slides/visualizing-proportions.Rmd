@@ -39,7 +39,7 @@ bundestag <- tibble(
 ```
 
 .small-font.center[
-```{r bundestag-pie, echo = FALSE, fig.width = 7, fig.asp = 0.58, dev = "svg"}
+```{r bundestag-pie, echo = FALSE, out.width = "65%", fig.width = 7, fig.asp = 0.58, dev = "svg"}
 bund_pie <- bundestag %>%
   arrange(seats) %>%
   mutate(
@@ -171,7 +171,7 @@ bt_stacked <-
 ```
 
 .center[
-```{r bundestag-various, echo = FALSE, fig.width = 10.5, fig.asp = 0.3, dev = "svg"}
+```{r bundestag-various, echo = FALSE, out.width = "95%", fig.width = 10.5, fig.asp = 0.3, dev = "svg"}
 bt_bars <- bundestag %>%
   mutate(party = factor(party, levels = party)) %>%
   ggplot(aes(x = party, y = seats, fill = colors)) + 
@@ -212,7 +212,7 @@ Figures redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reil
 ## Example where side-by-side bars are preferred
 
 .center[
-```{r marketshare-side-by-side, echo = FALSE, message = FALSE, fig.width = 7, fig.asp = 0.618, dev = "svg"}
+```{r marketshare-side-by-side, echo = FALSE, message = FALSE, out.width = "65%", fig.width = 7, fig.asp = 0.618, dev = "svg"}
 marketshare <- read_csv(here("datasets", "marketshare.csv"))
 
 ggplot(marketshare, aes(x = company, y = percent, fill = company)) + 
@@ -245,7 +245,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 ## Example where side-by-side bars are preferred
 
 .center[
-```{r marketshare-stacked, echo = FALSE, fig.width = 7, fig.asp = 0.618, dev = "svg"}
+```{r marketshare-stacked, echo = FALSE, out.width = "65%", fig.width = 7, fig.asp = 0.618, dev = "svg"}
 ggplot(marketshare, aes(x = year, y = percent, fill = company)) + 
   geom_col(position = "stack") + 
   scale_y_continuous(
@@ -273,7 +273,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 ## Example where side-by-side bars are preferred
 
 .center[
-```{r marketshare-pies, echo = FALSE, fig.width = 8.5, fig.asp = 7*.618/8.5, dev = "svg"}
+```{r marketshare-pies, echo = FALSE, out.width = "75%", fig.width = 8.5, fig.asp = 7*.618/8.5, dev = "svg"}
 market_pies_df <- marketshare %>%
   group_by(year) %>%
   mutate(
@@ -340,7 +340,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 ## Example where side-by-side bars are preferred
 
 .center[
-```{r marketshare-side-by-side2, echo = FALSE, message = FALSE, fig.width = 7, fig.asp = 0.618, dev = "svg"}
+```{r marketshare-side-by-side2, echo = FALSE, message = FALSE, out.width = "65%", fig.width = 7, fig.asp = 0.618, dev = "svg"}
 ggplot(marketshare, aes(x = company, y = percent, fill = company)) + 
   geom_col() + 
   facet_wrap(~year) +
@@ -372,7 +372,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 ## Example where stacked bars are preferred
 
 .small-font.center[
-```{r women-parliament, echo = FALSE, message = FALSE, fig.width = 7.5, fig.asp = .55, dev = "svg"}
+```{r women-parliament, echo = FALSE, message = FALSE, out.width = "65%", fig.width = 7.5, fig.asp = .55, dev = "svg"}
 ccode = "RWA" # Rwanda
 
 women_parliaments <- read_csv(here("datasets", "women_parliaments.csv"))
@@ -392,11 +392,11 @@ ggplot(rwanda_data, aes(x = year, y = percent, fill = gender)) +
     geom_col(
       position = "stack",
       width = 1, color = "#FFFFFF",
-      size = 0.75, alpha = 0.8
+      linewidth = 0.75, alpha = 0.8
     ) +
     geom_hline(
       yintercept = 50,
-      color = "#000000FF", size = 0.4, linetype = 2
+      color = "#000000FF", linewidth = 0.4, linetype = 2
     ) +
     geom_hline(yintercept = 100, color = "black") +
     scale_x_continuous(expand = c(0, 0)) +
@@ -647,7 +647,7 @@ ggplot(bundestag) +
 ]
 
 .pull-right[
-```{r bundestag-coord-polar1-out, ref.label = "bundestag-coord-polar1", echo = FALSE, message = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r bundestag-coord-polar1-out, ref.label = "bundestag-coord-polar1", echo = FALSE, message = FALSE, out.width="100%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -673,7 +673,7 @@ ggplot(bundestag) +
 ]
 
 .pull-right[
-```{r bundestag-coord-polar2-out, ref.label = "bundestag-coord-polar2", echo = FALSE, message = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r bundestag-coord-polar2-out, ref.label = "bundestag-coord-polar2", echo = FALSE, message = FALSE, out.width="100%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -706,7 +706,7 @@ ggplot(bundestag) +
 ]
 
 .pull-right[
-```{r bundestag-coord-polar3-out, ref.label = "bundestag-coord-polar3", echo = FALSE, message = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r bundestag-coord-polar3-out, ref.label = "bundestag-coord-polar3", echo = FALSE, message = FALSE, out.width="100%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -732,7 +732,7 @@ ggplot(bundestag) +
 ]
 
 .pull-right[
-```{r bundestag-stat-pie1-out, ref.label = "bundestag-stat-pie1", echo = FALSE, message = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r bundestag-stat-pie1-out, ref.label = "bundestag-stat-pie1", echo = FALSE, message = FALSE, out.width="100%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -758,7 +758,7 @@ ggplot(bundestag) +
 ]
 
 .pull-right[
-```{r bundestag-stat-pie2-out, ref.label = "bundestag-stat-pie2", echo = FALSE, message = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r bundestag-stat-pie2-out, ref.label = "bundestag-stat-pie2", echo = FALSE, message = FALSE, out.width="100%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -786,7 +786,7 @@ ggplot(bundestag) +
 ]
 
 .pull-right[
-```{r bundestag-stat-pie3-out, ref.label = "bundestag-stat-pie3", echo = FALSE, message = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r bundestag-stat-pie3-out, ref.label = "bundestag-stat-pie3", echo = FALSE, message = FALSE, out.width="100%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -814,7 +814,7 @@ ggplot(bundestag) +
 ]
 
 .pull-right[
-```{r bundestag-stat-pie4-out, ref.label = "bundestag-stat-pie4", echo = FALSE, message = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r bundestag-stat-pie4-out, ref.label = "bundestag-stat-pie4", echo = FALSE, message = FALSE, out.width="100%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -841,7 +841,7 @@ ggplot(bundestag) +
 ]
 
 .pull-right[
-```{r bundestag-stat-pie5-out, ref.label = "bundestag-stat-pie5", echo = FALSE, message = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r bundestag-stat-pie5-out, ref.label = "bundestag-stat-pie5", echo = FALSE, message = FALSE, out.width="100%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -955,7 +955,7 @@ ggplot(pie_data) +
 ]
 
 .pull-right[
-```{r bundestag-arc-bar1-out, ref.label = "bundestag-arc-bar1", echo = FALSE, message = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r bundestag-arc-bar1-out, ref.label = "bundestag-arc-bar1", echo = FALSE, message = FALSE, out.width="100%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -984,7 +984,7 @@ ggplot(pie_data) +
 ]
 
 .pull-right[
-```{r bundestag-arc-bar2-out, ref.label = "bundestag-arc-bar2", echo = FALSE, message = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r bundestag-arc-bar2-out, ref.label = "bundestag-arc-bar2", echo = FALSE, message = FALSE, out.width="100%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -1013,7 +1013,7 @@ ggplot(pie_data) +
 ]
 
 .pull-right[
-```{r bundestag-arc-bar3-out, ref.label = "bundestag-arc-bar3", echo = FALSE, message = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r bundestag-arc-bar3-out, ref.label = "bundestag-arc-bar3", echo = FALSE, message = FALSE, out.width="100%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -1042,7 +1042,7 @@ ggplot(pie_data) +
 ]
 
 .pull-right[
-```{r bundestag-arc-bar4-out, ref.label = "bundestag-arc-bar4", echo = FALSE, message = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r bundestag-arc-bar4-out, ref.label = "bundestag-arc-bar4", echo = FALSE, message = FALSE, out.width="100%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -1071,7 +1071,7 @@ ggplot(pie_data) +
 ]
 
 .pull-right[
-```{r bundestag-arc-bar5-out, ref.label = "bundestag-arc-bar5", echo = FALSE, message = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r bundestag-arc-bar5-out, ref.label = "bundestag-arc-bar5", echo = FALSE, message = FALSE, out.width="100%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -1108,7 +1108,7 @@ ggplot(pie_data) +
 ]
 
 .pull-right[
-```{r bundestag-arc-bar6-out, ref.label = "bundestag-arc-bar6", echo = FALSE, message = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r bundestag-arc-bar6-out, ref.label = "bundestag-arc-bar6", echo = FALSE, message = FALSE, out.width="100%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -1145,7 +1145,7 @@ ggplot(pie_data) +
 ]
 
 .pull-right[
-```{r bundestag-arc-bar7-out, ref.label = "bundestag-arc-bar7", echo = FALSE, message = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r bundestag-arc-bar7-out, ref.label = "bundestag-arc-bar7", echo = FALSE, message = FALSE, out.width="100%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -1182,7 +1182,7 @@ ggplot(pie_data) +
 ]
 
 .pull-right[
-```{r bundestag-arc-bar8-out, ref.label = "bundestag-arc-bar8", echo = FALSE, message = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r bundestag-arc-bar8-out, ref.label = "bundestag-arc-bar8", echo = FALSE, message = FALSE, out.width="100%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
