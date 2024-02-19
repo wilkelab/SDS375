@@ -44,7 +44,7 @@ ggplot(penguins, aes(y = fct_relevel(species, "Chinstrap", "Gentoo", "Adelie")))
 ]
 
 .center[
-```{r penguins-ordered-out, ref.label = "penguins-ordered", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r penguins-ordered-out, ref.label = "penguins-ordered", echo = FALSE, out.width = "55%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -62,7 +62,7 @@ penguins %>%
 ]
 
 .center[
-```{r penguins-ordered-pipe-out, ref.label = "penguins-ordered-pipe", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r penguins-ordered-pipe-out, ref.label = "penguins-ordered-pipe", echo = FALSE, out.width = "55%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -216,7 +216,7 @@ penguins %>%
 ]
 
 .center[
-```{r penguins-ordered-pipe2-out, ref.label = "penguins-ordered-pipe2", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r penguins-ordered-pipe2-out, ref.label = "penguins-ordered-pipe2", echo = FALSE, out.width = "55%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -260,7 +260,7 @@ penguins %>%
 ]
 
 .center[
-```{r penguins-infreq-out, ref.label = "penguins-infreq", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r penguins-infreq-out, ref.label = "penguins-infreq", echo = FALSE, out.width = "55%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -278,7 +278,7 @@ penguins %>%
 ]
 
 .center[
-```{r penguins-infreq-rev-out, ref.label = "penguins-infreq-rev", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r penguins-infreq-rev-out, ref.label = "penguins-infreq-rev", echo = FALSE, out.width = "55%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -336,7 +336,7 @@ penguins %>%
 ]
 
 .center[
-```{r penguins-reorder-out, ref.label = "penguins-reorder", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r penguins-reorder-out, ref.label = "penguins-reorder", echo = FALSE, out.width = "55%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -379,7 +379,7 @@ penguins %>%
 ## Compare to see the difference
 
 .xtiny-font.pull-left[
-```{r penguins-geom-col, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r penguins-geom-col, out.width = "95%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 penguins %>%
   count(species) %>% # summarize data
   mutate(species = fct_reorder(species, n)) %>%
@@ -389,7 +389,7 @@ penguins %>%
 ]
 
 .xtiny-font.pull-right[
-```{r penguins-geom-bar, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r penguins-geom-bar, out.width = "95%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 penguins %>% 
   # modify the original dataset, no summary
   mutate(species = fct_infreq(species)) %>%
@@ -402,7 +402,7 @@ penguins %>%
 ## Compare to see the difference
 
 .xtiny-font.pull-left[
-```{r penguins-geom-col2, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r penguins-geom-col2, out.width = "95%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 penguins %>%
   count(species) %>% # summarize data
   mutate(species = fct_reorder(species, n)) %>%
@@ -412,7 +412,7 @@ penguins %>%
 ]
 
 .xtiny-font.pull-right[
-```{r penguins-geom-bar2, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r penguins-geom-bar2, out.width = "95%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 penguins %>% 
   # modify the original dataset, no summary
   mutate(species = fct_infreq(species)) %>%
@@ -457,7 +457,7 @@ gapminder %>%
 ]
 
 .pull-right[
-```{r gapminder-unordered-out, ref.label = "gapminder-unordered", echo = FALSE, fig.width = 5, fig.asp = 0.9, dev = "svg"}
+```{r gapminder-unordered-out, ref.label = "gapminder-unordered", echo = FALSE, out.width = "95%", fig.width = 5, fig.asp = 0.9, dev = "svg"}
 ```
 ]
 
@@ -486,7 +486,7 @@ Default order is alphabetic, from bottom to top
 ]]
 
 .pull-right[
-```{r gapminder-unordered2-out, ref.label = "gapminder-unordered2", echo = FALSE, fig.width = 5, fig.asp = 0.9, dev = "svg"}
+```{r gapminder-unordered2-out, ref.label = "gapminder-unordered2", echo = FALSE, out.width = "95%", fig.width = 5, fig.asp = 0.9, dev = "svg"}
 ```
 ]
 
@@ -515,7 +515,7 @@ Order is ascending from bottom to top
 
 
 .pull-right[
-```{r gapminder-ordered-out, ref.label = "gapminder-ordered", echo = FALSE, fig.width = 5, fig.asp = 0.9, dev = "svg"}
+```{r gapminder-ordered-out, ref.label = "gapminder-ordered", echo = FALSE, out.width = "95%", fig.width = 5, fig.asp = 0.9, dev = "svg"}
 ```
 ]
 
@@ -534,7 +534,7 @@ gapminder %>%
 ]
 
 .center[
-```{r gapminder-europe-unordered-out, ref.label = "gapminder-europe-unordered", echo = FALSE, fig.width = 12, fig.asp = 0.25, dev = "svg"}
+```{r gapminder-europe-unordered-out, ref.label = "gapminder-europe-unordered", echo = FALSE, out.width = "95%", fig.width = 12, fig.asp = 0.25, dev = "svg"}
 ```
 ]
 
@@ -558,7 +558,7 @@ gapminder %>%
 ]
 
 .center[
-```{r gapminder-europe-unordered2-out, ref.label = "gapminder-europe-unordered2", echo = FALSE, fig.width = 12, fig.asp = 0.25, dev = "svg"}
+```{r gapminder-europe-unordered2-out, ref.label = "gapminder-europe-unordered2", echo = FALSE, out.width = "95%", fig.width = 12, fig.asp = 0.25, dev = "svg"}
 ```
 ]
 
@@ -582,7 +582,7 @@ gapminder %>%
 ]
 
 .center[
-```{r gapminder-europe1-out, ref.label = "gapminder-europe1", echo = FALSE, fig.width = 12, fig.asp = 0.25, dev = "svg"}
+```{r gapminder-europe1-out, ref.label = "gapminder-europe1", echo = FALSE, out.width = "95%", fig.width = 12, fig.asp = 0.25, dev = "svg"}
 ```
 ]
 
@@ -608,7 +608,7 @@ gapminder %>%
 ]
 
 .center[
-```{r gapminder-europe2-out, ref.label = "gapminder-europe2", echo = FALSE, fig.width = 12, fig.asp = 0.25, dev = "svg"}
+```{r gapminder-europe2-out, ref.label = "gapminder-europe2", echo = FALSE, out.width = "95%", fig.width = 12, fig.asp = 0.25, dev = "svg"}
 ```
 ]
 
@@ -632,7 +632,7 @@ gapminder %>%
 ]
 
 .center[
-```{r gapminder-europe3-out, ref.label = "gapminder-europe3", echo = FALSE, fig.width = 12, fig.asp = 0.25, dev = "svg"}
+```{r gapminder-europe3-out, ref.label = "gapminder-europe3", echo = FALSE, out.width = "95%", fig.width = 12, fig.asp = 0.25, dev = "svg"}
 ```
 ]
 
@@ -656,7 +656,7 @@ gapminder %>%
 ]
 
 .center[
-```{r gapminder-europe4-out, ref.label = "gapminder-europe4", echo = FALSE, fig.width = 12, fig.asp = 0.25, dev = "svg"}
+```{r gapminder-europe4-out, ref.label = "gapminder-europe4", echo = FALSE, out.width = "95%", fig.width = 12, fig.asp = 0.25, dev = "svg"}
 ```
 ]
 
@@ -676,7 +676,7 @@ gapminder %>%
 ]
 
 .center[
-```{r gapminder-europe5-out, ref.label = "gapminder-europe5", echo = FALSE, fig.width = 12, fig.asp = 0.25, dev = "svg"}
+```{r gapminder-europe5-out, ref.label = "gapminder-europe5", echo = FALSE, out.width = "95%", fig.width = 12, fig.asp = 0.25, dev = "svg"}
 ```
 ]
 
@@ -696,7 +696,7 @@ gapminder %>%
 ]
 
 .center[
-```{r gapminder-europe6-out, ref.label = "gapminder-europe6", echo = FALSE, fig.width = 12, fig.asp = 0.25, dev = "svg"}
+```{r gapminder-europe6-out, ref.label = "gapminder-europe6", echo = FALSE, out.width = "95%", fig.width = 12, fig.asp = 0.25, dev = "svg"}
 ```
 ]
 
@@ -716,7 +716,7 @@ gapminder %>%
 ]
 
 .center[
-```{r gapminder-europe7-out, ref.label = "gapminder-europe7", echo = FALSE, fig.width = 12, fig.asp = 0.25, dev = "svg"}
+```{r gapminder-europe7-out, ref.label = "gapminder-europe7", echo = FALSE, out.width = "95%", fig.width = 12, fig.asp = 0.25, dev = "svg"}
 ```
 ]
 
@@ -761,7 +761,7 @@ flight_data %>%
 ]
 
 .pull-right[
-```{r flights-unordered-out, ref.label = "flights-unordered", echo = FALSE, fig.width = 6, fig.asp = 0.75, dev = "svg"}
+```{r flights-unordered-out, ref.label = "flights-unordered", echo = FALSE, out.width = "95%", fig.width = 6, fig.asp = 0.75, dev = "svg"}
 ```
 ]
 
@@ -790,7 +790,7 @@ flight_data %>%
 
 
 .pull-right[
-```{r flights-ordered-out, ref.label = "flights-ordered", echo = FALSE, fig.width = 6, fig.asp = 0.75, dev = "svg"}
+```{r flights-ordered-out, ref.label = "flights-ordered", echo = FALSE, out.width = "95%", fig.width = 6, fig.asp = 0.75, dev = "svg"}
 ```
 ]
 
@@ -818,7 +818,7 @@ flight_data %>%
 
 
 .pull-right[
-```{r flights-lumped-out, ref.label = "flights-lumped", echo = FALSE, fig.width = 6, fig.asp = 0.75, dev = "svg"}
+```{r flights-lumped-out, ref.label = "flights-lumped", echo = FALSE, out.width = "95%", fig.width = 6, fig.asp = 0.75, dev = "svg"}
 ```
 ]
 
@@ -846,7 +846,7 @@ flight_data %>%
 ]
 
 .pull-right[
-```{r flights-lumped-ordered-out, ref.label = "flights-lumped-ordered", echo = FALSE, fig.width = 6, fig.asp = 0.75, dev = "svg"}
+```{r flights-lumped-ordered-out, ref.label = "flights-lumped-ordered", echo = FALSE, out.width = "95%", fig.width = 6, fig.asp = 0.75, dev = "svg"}
 ```
 ]
 
@@ -868,7 +868,7 @@ flight_data %>%
 
 
 .pull-right[
-```{r flights-lumped-ordered2-out, ref.label = "flights-lumped-ordered2", echo = FALSE, fig.width = 6, fig.asp = 0.75, dev = "svg"}
+```{r flights-lumped-ordered2-out, ref.label = "flights-lumped-ordered2", echo = FALSE, out.width = "95%", fig.width = 6, fig.asp = 0.75, dev = "svg"}
 ```
 ]
 
@@ -897,7 +897,7 @@ flight_data %>%
 
 
 .pull-right[
-```{r flights-lumped-ordered3-out, ref.label = "flights-lumped-ordered3", echo = FALSE, fig.width = 6, fig.asp = 0.75, dev = "svg"}
+```{r flights-lumped-ordered3-out, ref.label = "flights-lumped-ordered3", echo = FALSE, out.width = "95%", fig.width = 6, fig.asp = 0.75, dev = "svg"}
 ```
 ]
 
@@ -932,7 +932,7 @@ flight_data %>%
 
 
 .pull-right[
-```{r flights-highlight-out, ref.label = "flights-highlight", echo = FALSE, fig.width = 6, fig.asp = 0.75, dev = "svg"}
+```{r flights-highlight-out, ref.label = "flights-highlight", echo = FALSE, out.width = "95%", fig.width = 6, fig.asp = 0.75, dev = "svg"}
 ```
 ]
 
@@ -971,7 +971,7 @@ flight_data %>%
 
 
 .pull-right[
-```{r flights-highlight2-out, ref.label = "flights-highlight2", echo = FALSE, fig.width = 6, fig.asp = 0.75, dev = "svg"}
+```{r flights-highlight2-out, ref.label = "flights-highlight2", echo = FALSE, out.width = "95%", fig.width = 6, fig.asp = 0.75, dev = "svg"}
 ```
 ]
 
@@ -1010,7 +1010,7 @@ flight_data %>%
 
 
 .pull-right[
-```{r flights-final-out, ref.label = "flights-final", echo = FALSE, fig.width = 5, fig.asp = 0.75, dev = "svg"}
+```{r flights-final-out, ref.label = "flights-final", echo = FALSE, out.width = "95%", fig.width = 5, fig.asp = 0.75, dev = "svg"}
 ```
 ]
 

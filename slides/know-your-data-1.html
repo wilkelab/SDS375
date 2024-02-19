@@ -19,7 +19,7 @@ class: center, middle, title-slide
 ### Claus O. Wilke
 ]
 .date[
-### last updated: 2023-02-22
+### last updated: 2024-02-19
 ]
 
 ---
@@ -366,20 +366,20 @@ NCbirths
 
 ```
 # A tibble: 1,450 × 15
-      ID Plural   Sex MomAge Weeks Marital RaceMom HispMom Gained Smoke BirthWe…¹ Birth…²   Low
-   &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;  &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;
- 1     1      1     1     32    40       1       1 N       38         0       111   3147.     0
- 2     2      1     2     32    37       1       1 N       34         0       116   3289.     0
- 3     3      1     1     27    39       1       1 N       12         0       138   3912.     0
- 4     4      1     1     27    39       1       1 N       15         0       136   3856.     0
- 5     5      1     1     25    39       1       1 N       32         0       121   3430.     0
- 6     6      1     1     28    43       1       1 N       32         0       117   3317.     0
- 7     7      1     2     25    39       1       1 N       75         0       143   4054.     0
- 8     8      1     2     15    42       2       1 N       25         0       113   3204.     0
- 9     9      1     2     21    39       1       1 N       28         0       120   3402      0
-10    10      1     2     27    40       2       1 N       37         0       124   3515.     0
-# … with 1,440 more rows, 2 more variables: Premie &lt;dbl&gt;, MomRace &lt;chr&gt;, and abbreviated
-#   variable names ¹​BirthWeightOz, ²​BirthWeightGm
+      ID Plural   Sex MomAge Weeks Marital RaceMom HispMom Gained Smoke BirthWeightOz
+   &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;  &lt;dbl&gt;         &lt;dbl&gt;
+ 1     1      1     1     32    40       1       1 N       38         0           111
+ 2     2      1     2     32    37       1       1 N       34         0           116
+ 3     3      1     1     27    39       1       1 N       12         0           138
+ 4     4      1     1     27    39       1       1 N       15         0           136
+ 5     5      1     1     25    39       1       1 N       32         0           121
+ 6     6      1     1     28    43       1       1 N       32         0           117
+ 7     7      1     2     25    39       1       1 N       75         0           143
+ 8     8      1     2     15    42       2       1 N       25         0           113
+ 9     9      1     2     21    39       1       1 N       28         0           120
+10    10      1     2     27    40       2       1 N       37         0           124
+# ℹ 1,440 more rows
+# ℹ 4 more variables: BirthWeightGm &lt;dbl&gt;, Low &lt;dbl&gt;, Premie &lt;dbl&gt;, MomRace &lt;chr&gt;
 ```
 ]
 
@@ -553,20 +553,20 @@ NCbirths  # check entire data frame
 
 ```
 # A tibble: 1,450 × 15
-      ID Plural   Sex MomAge Weeks Marital RaceMom HispMom Gained Smoke BirthWe…¹ Birth…²   Low
-   &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;
- 1     1      1     1     32    40       1       1 N           38     0       111   3147.     0
- 2     2      1     2     32    37       1       1 N           34     0       116   3289.     0
- 3     3      1     1     27    39       1       1 N           12     0       138   3912.     0
- 4     4      1     1     27    39       1       1 N           15     0       136   3856.     0
- 5     5      1     1     25    39       1       1 N           32     0       121   3430.     0
- 6     6      1     1     28    43       1       1 N           32     0       117   3317.     0
- 7     7      1     2     25    39       1       1 N           75     0       143   4054.     0
- 8     8      1     2     15    42       2       1 N           25     0       113   3204.     0
- 9     9      1     2     21    39       1       1 N           28     0       120   3402      0
-10    10      1     2     27    40       2       1 N           37     0       124   3515.     0
-# … with 1,440 more rows, 2 more variables: Premie &lt;dbl&gt;, MomRace &lt;chr&gt;, and abbreviated
-#   variable names ¹​BirthWeightOz, ²​BirthWeightGm
+      ID Plural   Sex MomAge Weeks Marital RaceMom HispMom Gained Smoke BirthWeightOz
+   &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt;         &lt;dbl&gt;
+ 1     1      1     1     32    40       1       1 N           38     0           111
+ 2     2      1     2     32    37       1       1 N           34     0           116
+ 3     3      1     1     27    39       1       1 N           12     0           138
+ 4     4      1     1     27    39       1       1 N           15     0           136
+ 5     5      1     1     25    39       1       1 N           32     0           121
+ 6     6      1     1     28    43       1       1 N           32     0           117
+ 7     7      1     2     25    39       1       1 N           75     0           143
+ 8     8      1     2     15    42       2       1 N           25     0           113
+ 9     9      1     2     21    39       1       1 N           28     0           120
+10    10      1     2     27    40       2       1 N           37     0           124
+# ℹ 1,440 more rows
+# ℹ 4 more variables: BirthWeightGm &lt;dbl&gt;, Low &lt;dbl&gt;, Premie &lt;dbl&gt;, MomRace &lt;chr&gt;
 ```
 ]
 
@@ -1952,7 +1952,7 @@ ggplot(NCbirths, aes(Plural, MomAge, color = Sex)) + geom_point(position = "jitt
 ]
 
 .center[
-![](know-your-data-1_files/figure-html/NCbirths-pairs-out-1.svg)&lt;!-- --&gt;![](know-your-data-1_files/figure-html/NCbirths-pairs-out-2.svg)&lt;!-- --&gt;
+&lt;img src="know-your-data-1_files/figure-html/NCbirths-pairs-out-1.svg" width="45%" /&gt;&lt;img src="know-your-data-1_files/figure-html/NCbirths-pairs-out-2.svg" width="45%" /&gt;
 ]
 
 ---
@@ -1968,7 +1968,7 @@ ggplot(NCbirths, aes(Weeks, Gained, color = Sex)) + geom_point(position = "jitte
 ]
 
 .center[
-![](know-your-data-1_files/figure-html/NCbirths-pairs2-out-1.svg)&lt;!-- --&gt;![](know-your-data-1_files/figure-html/NCbirths-pairs2-out-2.svg)&lt;!-- --&gt;
+&lt;img src="know-your-data-1_files/figure-html/NCbirths-pairs2-out-1.svg" width="45%" /&gt;&lt;img src="know-your-data-1_files/figure-html/NCbirths-pairs2-out-2.svg" width="45%" /&gt;
 ]
 
 --

@@ -12,9 +12,15 @@
     <textarea id="source">
 class: center, middle, title-slide
 
+.title[
 # Getting things into the right order
+]
+.author[
 ### Claus O. Wilke
-### last updated: 2022-02-16
+]
+.date[
+### last updated: 2024-02-19
+]
 
 ---
 
@@ -39,7 +45,7 @@ ggplot(penguins, aes(y = fct_relevel(species, "Chinstrap", "Gentoo", "Adelie")))
 ]
 
 .center[
-![](getting-things-in-order_files/figure-html/penguins-ordered-out-1.svg)&lt;!-- --&gt;
+&lt;img src="getting-things-in-order_files/figure-html/penguins-ordered-out-1.svg" width="55%" /&gt;
 ]
 
 ---
@@ -57,7 +63,7 @@ penguins %&gt;%
 ]
 
 .center[
-![](getting-things-in-order_files/figure-html/penguins-ordered-pipe-out-1.svg)&lt;!-- --&gt;
+&lt;img src="getting-things-in-order_files/figure-html/penguins-ordered-pipe-out-1.svg" width="55%" /&gt;
 ]
 
 ---
@@ -139,7 +145,8 @@ penguins %&gt;%
  8 Adelie  Torgersen           39.2          19.6               195        4675
  9 Adelie  Torgersen           34.1          18.1               193        3475
 10 Adelie  Torgersen           42            20.2               190        4250
-# … with 334 more rows, and 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;
+# ℹ 334 more rows
+# ℹ 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;
 ```
 ]
 
@@ -286,7 +293,7 @@ penguins %&gt;%
 ]
 
 .center[
-![](getting-things-in-order_files/figure-html/penguins-ordered-pipe2-out-1.svg)&lt;!-- --&gt;
+&lt;img src="getting-things-in-order_files/figure-html/penguins-ordered-pipe2-out-1.svg" width="55%" /&gt;
 ]
 
 ---
@@ -338,7 +345,7 @@ penguins %&gt;%
 ]
 
 .center[
-![](getting-things-in-order_files/figure-html/penguins-infreq-out-1.svg)&lt;!-- --&gt;
+&lt;img src="getting-things-in-order_files/figure-html/penguins-infreq-out-1.svg" width="55%" /&gt;
 ]
 
 ---
@@ -356,7 +363,7 @@ penguins %&gt;%
 ]
 
 .center[
-![](getting-things-in-order_files/figure-html/penguins-infreq-rev-out-1.svg)&lt;!-- --&gt;
+&lt;img src="getting-things-in-order_files/figure-html/penguins-infreq-rev-out-1.svg" width="55%" /&gt;
 ]
 
 ---
@@ -422,7 +429,7 @@ penguins %&gt;%
 ]
 
 .center[
-![](getting-things-in-order_files/figure-html/penguins-reorder-out-1.svg)&lt;!-- --&gt;
+&lt;img src="getting-things-in-order_files/figure-html/penguins-reorder-out-1.svg" width="55%" /&gt;
 ]
 
 ---
@@ -473,7 +480,8 @@ penguins %&gt;%
  8 Adelie  Torgersen           39.2          19.6               195        4675
  9 Adelie  Torgersen           34.1          18.1               193        3475
 10 Adelie  Torgersen           42            20.2               190        4250
-# … with 334 more rows, and 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;
+# ℹ 334 more rows
+# ℹ 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;
 ```
 ]
 
@@ -491,7 +499,7 @@ penguins %&gt;%
   ggplot(aes(n, species)) + geom_col()
 ```
 
-![](getting-things-in-order_files/figure-html/penguins-geom-col-1.svg)&lt;!-- --&gt;
+&lt;img src="getting-things-in-order_files/figure-html/penguins-geom-col-1.svg" width="95%" /&gt;
 
 ]
 
@@ -504,7 +512,7 @@ penguins %&gt;%
   ggplot(aes(y = species)) + geom_bar()
 ```
 
-![](getting-things-in-order_files/figure-html/penguins-geom-bar-1.svg)&lt;!-- --&gt;
+&lt;img src="getting-things-in-order_files/figure-html/penguins-geom-bar-1.svg" width="95%" /&gt;
 ]
 
 ---
@@ -520,7 +528,7 @@ penguins %&gt;%
   ggplot(aes(n, species)) + geom_col()
 ```
 
-![](getting-things-in-order_files/figure-html/penguins-geom-col2-1.svg)&lt;!-- --&gt;
+&lt;img src="getting-things-in-order_files/figure-html/penguins-geom-col2-1.svg" width="95%" /&gt;
 
 ]
 
@@ -533,7 +541,7 @@ penguins %&gt;%
   ggplot(aes(y = fct_rev(species))) + geom_bar()
 ```
 
-![](getting-things-in-order_files/figure-html/penguins-geom-bar2-1.svg)&lt;!-- --&gt;
+&lt;img src="getting-things-in-order_files/figure-html/penguins-geom-bar2-1.svg" width="95%" /&gt;
 ]
 
 [//]: # "segment ends here"
@@ -570,7 +578,7 @@ gapminder
  8 Afghanistan Asia       1987    40.8 13867957      852.
  9 Afghanistan Asia       1992    41.7 16317921      649.
 10 Afghanistan Asia       1997    41.8 22227415      635.
-# … with 1,694 more rows
+# ℹ 1,694 more rows
 ```
 ]
 
@@ -592,7 +600,7 @@ gapminder %&gt;%
 ]
 
 .pull-right[
-![](getting-things-in-order_files/figure-html/gapminder-unordered-out-1.svg)&lt;!-- --&gt;
+&lt;img src="getting-things-in-order_files/figure-html/gapminder-unordered-out-1.svg" width="95%" /&gt;
 ]
 
 
@@ -621,7 +629,7 @@ Default order is alphabetic, from bottom to top
 ]]
 
 .pull-right[
-![](getting-things-in-order_files/figure-html/gapminder-unordered2-out-1.svg)&lt;!-- --&gt;
+&lt;img src="getting-things-in-order_files/figure-html/gapminder-unordered2-out-1.svg" width="95%" /&gt;
 ]
 
 ---
@@ -650,7 +658,7 @@ Order is ascending from bottom to top
 
 
 .pull-right[
-![](getting-things-in-order_files/figure-html/gapminder-ordered-out-1.svg)&lt;!-- --&gt;
+&lt;img src="getting-things-in-order_files/figure-html/gapminder-ordered-out-1.svg" width="95%" /&gt;
 ]
 
 
@@ -669,7 +677,7 @@ gapminder %&gt;%
 ]
 
 .center[
-![](getting-things-in-order_files/figure-html/gapminder-europe-unordered-out-1.svg)&lt;!-- --&gt;
+&lt;img src="getting-things-in-order_files/figure-html/gapminder-europe-unordered-out-1.svg" width="95%" /&gt;
 ]
 
 --
@@ -693,7 +701,7 @@ gapminder %&gt;%
 ]
 
 .center[
-![](getting-things-in-order_files/figure-html/gapminder-europe-unordered2-out-1.svg)&lt;!-- --&gt;
+&lt;img src="getting-things-in-order_files/figure-html/gapminder-europe-unordered2-out-1.svg" width="95%" /&gt;
 ]
 
 .small-font[
@@ -717,7 +725,7 @@ gapminder %&gt;%
 ]
 
 .center[
-![](getting-things-in-order_files/figure-html/gapminder-europe1-out-1.svg)&lt;!-- --&gt;
+&lt;img src="getting-things-in-order_files/figure-html/gapminder-europe1-out-1.svg" width="95%" /&gt;
 ]
 
 --
@@ -743,7 +751,7 @@ gapminder %&gt;%
 ]
 
 .center[
-![](getting-things-in-order_files/figure-html/gapminder-europe2-out-1.svg)&lt;!-- --&gt;
+&lt;img src="getting-things-in-order_files/figure-html/gapminder-europe2-out-1.svg" width="95%" /&gt;
 ]
 
 .small-font[
@@ -767,7 +775,7 @@ gapminder %&gt;%
 ]
 
 .center[
-![](getting-things-in-order_files/figure-html/gapminder-europe3-out-1.svg)&lt;!-- --&gt;
+&lt;img src="getting-things-in-order_files/figure-html/gapminder-europe3-out-1.svg" width="95%" /&gt;
 ]
 
 .small-font[
@@ -791,7 +799,7 @@ gapminder %&gt;%
 ]
 
 .center[
-![](getting-things-in-order_files/figure-html/gapminder-europe4-out-1.svg)&lt;!-- --&gt;
+&lt;img src="getting-things-in-order_files/figure-html/gapminder-europe4-out-1.svg" width="95%" /&gt;
 ]
 
 
@@ -811,7 +819,7 @@ gapminder %&gt;%
 ]
 
 .center[
-![](getting-things-in-order_files/figure-html/gapminder-europe5-out-1.svg)&lt;!-- --&gt;
+&lt;img src="getting-things-in-order_files/figure-html/gapminder-europe5-out-1.svg" width="95%" /&gt;
 ]
 
 ---
@@ -831,7 +839,7 @@ gapminder %&gt;%
 ]
 
 .center[
-![](getting-things-in-order_files/figure-html/gapminder-europe6-out-1.svg)&lt;!-- --&gt;
+&lt;img src="getting-things-in-order_files/figure-html/gapminder-europe6-out-1.svg" width="95%" /&gt;
 ]
 
 ---
@@ -851,7 +859,7 @@ gapminder %&gt;%
 ]
 
 .center[
-![](getting-things-in-order_files/figure-html/gapminder-europe7-out-1.svg)&lt;!-- --&gt;
+&lt;img src="getting-things-in-order_files/figure-html/gapminder-europe7-out-1.svg" width="95%" /&gt;
 ]
 
 ---
@@ -875,7 +883,7 @@ flight_data &lt;- flights %&gt;% # take data on individual flights
 ```
 
 ```
-Joining, by = "carrier"
+Joining with `by = join_by(carrier)`
 ```
 ]
 
@@ -901,7 +909,7 @@ flight_data
  8 ExpressJet Airlines Inc. EV        5708  2013     1     1 LGA    IAD  
  9 JetBlue Airways          B6          79  2013     1     1 JFK    MCO  
 10 American Airlines Inc.   AA         301  2013     1     1 LGA    ORD  
-# … with 336,766 more rows
+# ℹ 336,766 more rows
 ```
 ]
 
@@ -919,7 +927,7 @@ flight_data %&gt;%
 ]
 
 .pull-right[
-![](getting-things-in-order_files/figure-html/flights-unordered-out-1.svg)&lt;!-- --&gt;
+&lt;img src="getting-things-in-order_files/figure-html/flights-unordered-out-1.svg" width="95%" /&gt;
 ]
 
 --
@@ -948,7 +956,7 @@ flight_data %&gt;%
 
 
 .pull-right[
-![](getting-things-in-order_files/figure-html/flights-ordered-out-1.svg)&lt;!-- --&gt;
+&lt;img src="getting-things-in-order_files/figure-html/flights-ordered-out-1.svg" width="95%" /&gt;
 ]
 
 --
@@ -976,7 +984,7 @@ flight_data %&gt;%
 
 
 .pull-right[
-![](getting-things-in-order_files/figure-html/flights-lumped-out-1.svg)&lt;!-- --&gt;
+&lt;img src="getting-things-in-order_files/figure-html/flights-lumped-out-1.svg" width="95%" /&gt;
 ]
 
 --
@@ -1004,7 +1012,7 @@ flight_data %&gt;%
 ]
 
 .pull-right[
-![](getting-things-in-order_files/figure-html/flights-lumped-ordered-out-1.svg)&lt;!-- --&gt;
+&lt;img src="getting-things-in-order_files/figure-html/flights-lumped-ordered-out-1.svg" width="95%" /&gt;
 ]
 
 ---
@@ -1026,7 +1034,7 @@ flight_data %&gt;%
 
 
 .pull-right[
-![](getting-things-in-order_files/figure-html/flights-lumped-ordered2-out-1.svg)&lt;!-- --&gt;
+&lt;img src="getting-things-in-order_files/figure-html/flights-lumped-ordered2-out-1.svg" width="95%" /&gt;
 ]
 
 --
@@ -1055,7 +1063,7 @@ flight_data %&gt;%
 
 
 .pull-right[
-![](getting-things-in-order_files/figure-html/flights-lumped-ordered3-out-1.svg)&lt;!-- --&gt;
+&lt;img src="getting-things-in-order_files/figure-html/flights-lumped-ordered3-out-1.svg" width="95%" /&gt;
 ]
 
 .small-font[
@@ -1090,7 +1098,7 @@ flight_data %&gt;%
 
 
 .pull-right[
-![](getting-things-in-order_files/figure-html/flights-highlight-out-1.svg)&lt;!-- --&gt;
+&lt;img src="getting-things-in-order_files/figure-html/flights-highlight-out-1.svg" width="95%" /&gt;
 ]
 
 --
@@ -1129,7 +1137,7 @@ flight_data %&gt;%
 
 
 .pull-right[
-![](getting-things-in-order_files/figure-html/flights-highlight2-out-1.svg)&lt;!-- --&gt;
+&lt;img src="getting-things-in-order_files/figure-html/flights-highlight2-out-1.svg" width="95%" /&gt;
 ]
 
 
@@ -1167,7 +1175,7 @@ flight_data %&gt;%
 
 
 .pull-right[
-![](getting-things-in-order_files/figure-html/flights-final-out-1.svg)&lt;!-- --&gt;
+&lt;img src="getting-things-in-order_files/figure-html/flights-final-out-1.svg" width="95%" /&gt;
 ]
 
 ---
@@ -1250,6 +1258,19 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
 (function() {
   "use strict"
   // Replace <script> tags in slides area to make them executable

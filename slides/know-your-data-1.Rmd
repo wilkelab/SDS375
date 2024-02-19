@@ -838,7 +838,7 @@ ggplot(NCbirths, aes(Plural, MomAge, color = Sex)) + geom_point(position = "jitt
 ]
 
 .center[
-```{r NCbirths-pairs-out, ref.label='NCbirths-pairs', echo = FALSE, warning = FALSE, fig.width=4.8, fig.asp = .618, dev = "svg"}
+```{r NCbirths-pairs-out, ref.label='NCbirths-pairs', echo = FALSE, warning = FALSE, out.width = "45%", fig.width=4.8, fig.asp = .618, dev = "svg"}
 ```
 ]
 
@@ -854,7 +854,7 @@ ggplot(NCbirths, aes(Weeks, Gained, color = Sex)) + geom_point(position = "jitte
 ]
 
 .center[
-```{r NCbirths-pairs2-out, ref.label='NCbirths-pairs2', echo = FALSE, warning = FALSE, fig.width=4.8, fig.asp = .618, dev = "svg"}
+```{r NCbirths-pairs2-out, ref.label='NCbirths-pairs2', echo = FALSE, warning = FALSE, out.width = "45%", fig.width=4.8, fig.asp = .618, dev = "svg"}
 ```
 ]
 

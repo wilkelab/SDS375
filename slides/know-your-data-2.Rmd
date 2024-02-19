@@ -473,7 +473,7 @@ typeof(c(1, 2, NA_character_))
 
 ---
 
-## Replacing `NA` values
+## Replacing `NA` values with something else
 
 Remember from class on data wrangling:
 
@@ -486,7 +486,7 @@ band_data
 
 ---
 
-## Replacing `NA` values
+## Replacing `NA` values with something else
 
 Replace `NA`s with empty strings in `plays` column:
 
@@ -500,7 +500,7 @@ band_data %>%
 
 ---
 
-## Replacing `NA` values
+## Replacing `NA` values with something else
 
 Replace `NA`s with empty strings in all columns:
 
@@ -513,7 +513,7 @@ band_data %>%
 
 ---
 
-## Replacing `NA` values
+## Replacing things with `NA` values
 
 Replace empty strings with `NA` in `plays` column (requires **naniar** package):
 
@@ -527,7 +527,7 @@ band_data %>%
 
 ---
 
-## Replacing `NA` values
+## Replacing things with `NA` values
 
 Replace empty strings with `NA` in all columns (requires **naniar** package):
 
@@ -593,7 +593,7 @@ By default, missing points are not shown
 ]
 
 .pull-right.xtiny-font.width-55[
-```{r NCbirths-plot-missing-out, ref.label = "NCbirths-plot-missing", echo = FALSE, fig.width = (.618*6/.75), fig.height = 0.618*6, dev = "svg"}
+```{r NCbirths-plot-missing-out, ref.label = "NCbirths-plot-missing", echo = FALSE, out.width = "75%", fig.width = (.618*6/.75), fig.height = 0.618*6, dev = "svg"}
 ```
 ]
 
@@ -615,7 +615,7 @@ Can show them with the **naniar** package
 ]
 
 .pull-right.xtiny-font.width-55[
-```{r NCbirths-plot-missing2-out, ref.label = "NCbirths-plot-missing2", echo = FALSE, fig.width = 6, fig.height = 0.618*6, dev = "svg"}
+```{r NCbirths-plot-missing2-out, ref.label = "NCbirths-plot-missing2", echo = FALSE, out.width = "95%", fig.width = 6, fig.height = 0.618*6, dev = "svg"}
 ```
 ]
 

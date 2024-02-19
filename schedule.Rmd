@@ -82,6 +82,23 @@ knitr::opts_chunk$set(echo = FALSE)
 - [Slides](slides/visualizing-proportions.html)  
 - [Worksheet](worksheets/visualizing-proportions.Rmd)
 
+### 11. Feb 20, 2024—Getting to know your data
+
+<p class="nospace">Materials:</p>
+
+- [Slides 1](slides/know-your-data-1.html)
+- [Slides 2](slides/know-your-data-2.html)
+- [Worksheet 1: Data cleaning and inspection](worksheets/know-your-data-1.Rmd)
+- [Worksheet 2: Missing values](worksheets/know-your-data-2.Rmd)
+
+### 12. Feb 22, 2024—Getting things into the right order
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/getting-things-in-order.html)  
+- [Worksheet](worksheets/getting-things-in-order.Rmd)
+
+
 
 ## Homeworks
 
