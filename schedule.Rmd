@@ -148,6 +148,12 @@ All homeworks are due by 11:00pm on the day they are due. Homeworks need to be s
 
 ### Homework 5 (due Mar 7, 2024)
 
+<p class="nospace">Materials:</p>
+
+- [R Markdown template](assignments/HW5.Rmd)
+- [HTML](assignments/HW5.html)
+
+
 ### Homework 6 (due Apr 4, 2024)
 
 ### Homework 7 (due Apr 11, 2024)
@@ -168,6 +174,15 @@ All projects are due by 11:00pm on the day they are due. Projects need to be sub
 - [Example project](assignments/Project_1_example.html)
 
 ### Project 2 (due Mar 21, 2024)
+
+<p class="nospace">Materials:</p>
+
+- [Instructions](assignments/Project_2_instructions.html)
+- [Project Template (Rmd)](assignments/Project_2.Rmd)
+- [Project Template (HTML)](assignments/Project_2.html)
+- [Grading rubric](assignments/Project_2_rubric.pdf)
+
+Please use the example and the solutions from Project 1 as examples for Project 2.
 
 ### Project 3 (due Apr 18, 2024)
 

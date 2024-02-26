@@ -1,0 +1,82 @@
+---
+title: "Homework 5"
+output:
+  html_document:
+    theme:
+      version: 4
+---
+
+```{r global_options, include=FALSE}
+library(knitr)
+library(tidyverse)
+library(colorspace)
+opts_chunk$set(fig.align="center", fig.height=4, fig.width=5.5)
+
+# data prep:
+olympics <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-07-27/olympics.csv')
+olympics_2002 <- olympics %>%
+  filter(year == 2002, season == "Winter") %>%
+  select(sex) %>%
+  count(sex) %>%
+  pivot_wider(names_from = sex, values_from = n)
+
+#data prep:
+midwest2 <- midwest %>%
+  filter(state != "IN")
+```
+
+**This homework is due on Mar. 7, 2024 at 11:00pm. Please submit as a pdf file on Canvas.**
+
+**Problem 1:  (9 pts)** We will work with the dataset `olympics_2002` that contains the count of all athletes by sex for the 2002 Winter Olympics in Salt Lake City. It has been derived from the `olympics` dataset, which is described here: https://github.com/rfordatascience/tidytuesday/blob/master/data/2021/2021-07-27/readme.md
+
+```{r}
+olympics_2002
+```
+Follow these steps and display the modified data frame after each step:
+
+1. Rearrange the data frame into long form. The resulting data frame will have two columns, which you should call `sex` and `count`, respectively. There will be two rows of data, one for female and one for male athletes.
+2. Create a new column in which you calculate the percent of male and female ahtletes.
+3. Rename the values in the column `sex` to "female" and "male". 
+
+```{r}
+# your code here
+```
+
+```{r}
+# your code here
+```
+
+```{r}
+# your code here
+```
+
+**Problem 2: (5 pts)** 
+
+Use the color picker app from the **colorspace** package (`colorspace::choose_color()`) to create a qualitative color scale containing four colors. One of the four colors should be `#A23C42`, so you need to find three additional colors that go with this one. Use the function `swatchplot()` to plot your colors. `swatchplot()` takes in a vector. 
+
+```{r}
+# complete and uncomment
+#my_colors <- c('#A23C42', ...)
+#swatchplot(my_colors)
+```
+
+**Problem 3: (6 pts)** 
+
+For this problem, we will work with the `midwest2` dataset (derived from `midwest`). In the following plot, you may notice that the axis tick labels are smaller than the axis titles, and also in a different color (gray instead of black). 
+
+1. Use the colors you chose in Problem 1 to color the points.
+2. Make the axis tick labels the same size (`size = 12`) and give them the color black (`color = "black"`)
+3. Set the entire plot background to the color `"#FEF8F0"`. Make sure there are no white areas remaining, such as behind the plot panel or under the legend.
+
+```{r}
+ggplot(midwest2, aes(popdensity, percollege, fill = state)) +
+  geom_point(shape = 21, size = 3, color = "white", stroke = 0.2) +
+  scale_x_log10(name = "population density") +
+  scale_y_continuous(name = "percent college educated") +
+  # your color choices go here in a scale function. 
+  theme_classic(12) +
+  theme(
+    # your theme customization code goes here
+  )
+```
+
