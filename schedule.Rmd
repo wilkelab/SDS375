@@ -98,6 +98,20 @@ knitr::opts_chunk$set(echo = FALSE)
 - [Slides](slides/getting-things-in-order.html)  
 - [Worksheet](worksheets/getting-things-in-order.Rmd)
 
+### 13. Feb 27, 2024—Figure design
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/figure-design.html)  
+- [Worksheet](worksheets/figure-design.Rmd)
+
+### 14. Feb 29, 2024—Color spaces and color-vision deficiency
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/color-spaces.html)  
+- [Worksheet](worksheets/color-spaces.R)
+
 
 
 ## Homeworks

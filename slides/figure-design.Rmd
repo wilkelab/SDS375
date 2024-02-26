@@ -37,7 +37,7 @@ lincoln_temps <- readRDS(here("datasets", "lincoln_temps.rds"))
 .title-font[How do you go from this ...]
 
 .center[
-```{r lincoln-ridgeline-raw, echo = FALSE, message = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r lincoln-ridgeline-raw, echo = FALSE, message = FALSE, out.width = "95%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ggplot(lincoln_temps, aes(x = mean_temp, y = month_long)) +
   geom_density_ridges()
 ```
@@ -50,7 +50,7 @@ ggplot(lincoln_temps, aes(x = mean_temp, y = month_long)) +
 
 
 .center[
-```{r lincoln-ridgeline-polished, echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r lincoln-ridgeline-polished, echo = FALSE, out.width = "95%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 
 ggplot(lincoln_temps, aes(x = mean_temp, y = month_long)) +
   geom_density_ridges(
@@ -99,7 +99,7 @@ ggplot(lincoln_temps) +
 ]
 
 .pull-right[
-```{r lincoln-ridgeline-progression1-out, ref.label = "lincoln-ridgeline-progression1", echo = FALSE, message = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r lincoln-ridgeline-progression1-out, ref.label = "lincoln-ridgeline-progression1", echo = FALSE, message = FALSE, out.width = "100%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -129,7 +129,7 @@ ggplot(lincoln_temps) +
 ]
 
 .pull-right[
-```{r lincoln-ridgeline-progression2-out, ref.label = "lincoln-ridgeline-progression2", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r lincoln-ridgeline-progression2-out, ref.label = "lincoln-ridgeline-progression2", echo = FALSE, out.width = "100%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -150,7 +150,7 @@ ggplot(lincoln_temps) +
 ]
 
 .pull-right[
-```{r lincoln-ridgeline-progression3-out, ref.label = "lincoln-ridgeline-progression3", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r lincoln-ridgeline-progression3-out, ref.label = "lincoln-ridgeline-progression3", echo = FALSE, out.width = "100%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -177,7 +177,7 @@ ggplot(lincoln_temps) +
 ]
 
 .pull-right[
-```{r lincoln-ridgeline-progression4-out, ref.label = "lincoln-ridgeline-progression4", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r lincoln-ridgeline-progression4-out, ref.label = "lincoln-ridgeline-progression4", echo = FALSE, out.width = "100%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -205,7 +205,7 @@ ggplot(lincoln_temps) +
 ]
 
 .pull-right[
-```{r lincoln-ridgeline-progression5-out, ref.label = "lincoln-ridgeline-progression5", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r lincoln-ridgeline-progression5-out, ref.label = "lincoln-ridgeline-progression5", echo = FALSE, out.width = "100%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -235,7 +235,7 @@ ggplot(lincoln_temps) +
 ]
 
 .pull-right[
-```{r lincoln-ridgeline-progression6-out, ref.label = "lincoln-ridgeline-progression6", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r lincoln-ridgeline-progression6-out, ref.label = "lincoln-ridgeline-progression6", echo = FALSE, out.width = "100%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -267,7 +267,7 @@ ggplot(lincoln_temps) +
 ]
 
 .pull-right[
-```{r lincoln-ridgeline-progression7-out, ref.label = "lincoln-ridgeline-progression7", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r lincoln-ridgeline-progression7-out, ref.label = "lincoln-ridgeline-progression7", echo = FALSE, out.width = "100%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -300,7 +300,7 @@ ggplot(lincoln_temps) +
 ]
 
 .pull-right[
-```{r lincoln-ridgeline-progression8-out, ref.label = "lincoln-ridgeline-progression8", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r lincoln-ridgeline-progression8-out, ref.label = "lincoln-ridgeline-progression8", echo = FALSE, out.width = "100%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -334,7 +334,7 @@ ggplot(lincoln_temps) +
 ]
 
 .pull-right[
-```{r lincoln-ridgeline-final-out, ref.label = "lincoln-ridgeline-final", echo = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r lincoln-ridgeline-final-out, ref.label = "lincoln-ridgeline-final", echo = FALSE, out.width = "100%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -360,7 +360,7 @@ ggplot(penguins, aes(flipper_length_mm, body_mass_g, color = species)) +
 ]
 
 .center[
-```{r penguins-complete-themes-out, ref.label = "penguins-complete-themes", echo = FALSE, warning = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r penguins-complete-themes-out, ref.label = "penguins-complete-themes", echo = FALSE, warning = FALSE, out.width = "55%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -378,7 +378,7 @@ ggplot(penguins, aes(flipper_length_mm, body_mass_g, color = species)) +
 ]
 
 .center[
-```{r penguins-complete-themes2-out, ref.label = "penguins-complete-themes2", echo = FALSE, warning = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r penguins-complete-themes2-out, ref.label = "penguins-complete-themes2", echo = FALSE, warning = FALSE, out.width = "55%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -396,7 +396,7 @@ ggplot(penguins, aes(flipper_length_mm, body_mass_g, color = species)) +
 ]
 
 .center[
-```{r penguins-complete-themes3-out, ref.label = "penguins-complete-themes3", echo = FALSE, warning = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r penguins-complete-themes3-out, ref.label = "penguins-complete-themes3", echo = FALSE, warning = FALSE, out.width = "55%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -414,7 +414,7 @@ ggplot(penguins, aes(flipper_length_mm, body_mass_g, color = species)) +
 ]
 
 .center[
-```{r penguins-complete-themes4-out, ref.label = "penguins-complete-themes4", echo = FALSE, warning = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r penguins-complete-themes4-out, ref.label = "penguins-complete-themes4", echo = FALSE, warning = FALSE, out.width = "55%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -432,7 +432,7 @@ ggplot(penguins, aes(flipper_length_mm, body_mass_g, color = species)) +
 ]
 
 .center[
-```{r penguins-complete-themes5-out, ref.label = "penguins-complete-themes5", echo = FALSE, warning = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r penguins-complete-themes5-out, ref.label = "penguins-complete-themes5", echo = FALSE, warning = FALSE, out.width = "55%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -450,7 +450,7 @@ ggplot(penguins, aes(flipper_length_mm, body_mass_g, color = species)) +
 ]
 
 .center[
-```{r penguins-complete-themes6-out, ref.label = "penguins-complete-themes6", echo = FALSE, warning = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r penguins-complete-themes6-out, ref.label = "penguins-complete-themes6", echo = FALSE, warning = FALSE, out.width = "55%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -468,7 +468,7 @@ ggplot(penguins, aes(flipper_length_mm, body_mass_g, color = species)) +
 ]
 
 .center[
-```{r penguins-complete-themes7-out, ref.label = "penguins-complete-themes7", echo = FALSE, warning = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r penguins-complete-themes7-out, ref.label = "penguins-complete-themes7", echo = FALSE, warning = FALSE, out.width = "55%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -486,7 +486,7 @@ ggplot(penguins, aes(flipper_length_mm, body_mass_g, color = species)) +
 ]
 
 .center[
-```{r penguins-complete-themes8-out, ref.label = "penguins-complete-themes8", echo = FALSE, warning = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r penguins-complete-themes8-out, ref.label = "penguins-complete-themes8", echo = FALSE, warning = FALSE, out.width = "55%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -504,7 +504,7 @@ ggplot(penguins, aes(flipper_length_mm, body_mass_g, color = species)) +
 ]
 
 .center[
-```{r penguins-complete-themes9-out, ref.label = "penguins-complete-themes9", echo = FALSE, warning = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r penguins-complete-themes9-out, ref.label = "penguins-complete-themes9", echo = FALSE, warning = FALSE, out.width = "55%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -522,7 +522,7 @@ ggplot(penguins, aes(flipper_length_mm, body_mass_g, color = species)) +
 ]
 
 .center[
-```{r penguins-complete-themes10-out, ref.label = "penguins-complete-themes10", echo = FALSE, warning = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r penguins-complete-themes10-out, ref.label = "penguins-complete-themes10", echo = FALSE, warning = FALSE, out.width = "55%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -541,7 +541,7 @@ ggplot(penguins, aes(flipper_length_mm, body_mass_g, color = species)) +
 ]
 
 .center[
-```{r penguins-complete-themes11-out, ref.label = "penguins-complete-themes11", echo = FALSE, warning = FALSE, fig.width = 4.944, fig.asp = 0.75, dev = "svg"}
+```{r penguins-complete-themes11-out, ref.label = "penguins-complete-themes11", echo = FALSE, warning = FALSE, out.width = "45%", fig.width = 4.944, fig.asp = 0.75, dev = "svg"}
 ```
 ]
 
@@ -560,7 +560,7 @@ ggplot(penguins, aes(flipper_length_mm, body_mass_g, color = species)) +
 ]
 
 .center[
-```{r penguins-complete-themes12-out, ref.label = "penguins-complete-themes12", echo = FALSE, warning = FALSE, fig.width = 4.944, fig.asp = 0.75, dev = "svg"}
+```{r penguins-complete-themes12-out, ref.label = "penguins-complete-themes12", echo = FALSE, warning = FALSE, out.width = "45%", fig.width = 4.944, fig.asp = 0.75, dev = "svg"}
 ```
 ]
 
@@ -578,7 +578,7 @@ ggplot(penguins, aes(flipper_length_mm, body_mass_g, color = species)) +
 ]
 
 .center[
-```{r penguins-complete-themes13-out, ref.label = "penguins-complete-themes13", echo = FALSE, warning = FALSE, fig.width = 4.944, fig.asp = 0.75, dev = "svg"}
+```{r penguins-complete-themes13-out, ref.label = "penguins-complete-themes13", echo = FALSE, warning = FALSE, out.width = "45%", fig.width = 4.944, fig.asp = 0.75, dev = "svg"}
 ```
 ]
 
@@ -597,7 +597,7 @@ ggplot(penguins) +
 ]
 
 .pull-right[
-```{r penguins-theme-elements1-out, ref.label = "penguins-theme-elements1", echo = FALSE, warning = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r penguins-theme-elements1-out, ref.label = "penguins-theme-elements1", echo = FALSE, warning = FALSE, out.width = "100%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -623,7 +623,7 @@ ggplot(penguins) +
 ]
 
 .pull-right[
-```{r penguins-theme-elements2-out, ref.label = "penguins-theme-elements2", echo = FALSE, warning = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r penguins-theme-elements2-out, ref.label = "penguins-theme-elements2", echo = FALSE, warning = FALSE, out.width = "100%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -648,7 +648,7 @@ ggplot(penguins) +
 ]
 
 .pull-right[
-```{r penguins-theme-elements3-out, ref.label = "penguins-theme-elements3", echo = FALSE, warning = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r penguins-theme-elements3-out, ref.label = "penguins-theme-elements3", echo = FALSE, warning = FALSE, out.width = "100%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -673,7 +673,7 @@ ggplot(penguins) +
 ]
 
 .pull-right[
-```{r penguins-theme-elements4-out, ref.label = "penguins-theme-elements4", echo = FALSE, warning = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r penguins-theme-elements4-out, ref.label = "penguins-theme-elements4", echo = FALSE, warning = FALSE, out.width = "100%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -697,7 +697,7 @@ ggplot(penguins) +
 ]
 
 .pull-right[
-```{r penguins-theme-elements5-out, ref.label = "penguins-theme-elements5", echo = FALSE, warning = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r penguins-theme-elements5-out, ref.label = "penguins-theme-elements5", echo = FALSE, warning = FALSE, out.width = "100%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -722,7 +722,7 @@ ggplot(penguins) +
 ]
 
 .pull-right[
-```{r penguins-theme-elements6-out, ref.label = "penguins-theme-elements6", echo = FALSE, warning = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r penguins-theme-elements6-out, ref.label = "penguins-theme-elements6", echo = FALSE, warning = FALSE, out.width = "100%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -753,7 +753,7 @@ ggplot(penguins) +
 ]
 
 .pull-right[
-```{r penguins-theme-elements7-out, ref.label = "penguins-theme-elements7", echo = FALSE, warning = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r penguins-theme-elements7-out, ref.label = "penguins-theme-elements7", echo = FALSE, warning = FALSE, out.width = "100%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -779,7 +779,7 @@ ggplot(penguins) +
 ]
 
 .pull-right[
-```{r penguins-theme-elements8-out, ref.label = "penguins-theme-elements8", echo = FALSE, warning = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r penguins-theme-elements8-out, ref.label = "penguins-theme-elements8", echo = FALSE, warning = FALSE, out.width = "100%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -805,7 +805,7 @@ ggplot(penguins) +
 ]
 
 .pull-right[
-```{r penguins-theme-elements9-out, ref.label = "penguins-theme-elements9", echo = FALSE, warning = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r penguins-theme-elements9-out, ref.label = "penguins-theme-elements9", echo = FALSE, warning = FALSE, out.width = "100%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -831,7 +831,7 @@ ggplot(penguins) +
 ]
 
 .pull-right[
-```{r penguins-theme-elements10-out, ref.label = "penguins-theme-elements10", echo = FALSE, warning = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r penguins-theme-elements10-out, ref.label = "penguins-theme-elements10", echo = FALSE, warning = FALSE, out.width = "100%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -857,7 +857,7 @@ ggplot(penguins) +
 ]
 
 .pull-right[
-```{r penguins-theme-elements11-out, ref.label = "penguins-theme-elements11", echo = FALSE, warning = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r penguins-theme-elements11-out, ref.label = "penguins-theme-elements11", echo = FALSE, warning = FALSE, out.width = "100%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -883,7 +883,7 @@ ggplot(penguins) +
 ]
 
 .pull-right[
-```{r penguins-theme-elements12-out, ref.label = "penguins-theme-elements12", echo = FALSE, warning = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r penguins-theme-elements12-out, ref.label = "penguins-theme-elements12", echo = FALSE, warning = FALSE, out.width = "100%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -906,7 +906,7 @@ ggplot(penguins) +
 ]
 
 .pull-right[
-```{r penguins-theme-elements13-out, ref.label = "penguins-theme-elements13", echo = FALSE, warning = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r penguins-theme-elements13-out, ref.label = "penguins-theme-elements13", echo = FALSE, warning = FALSE, out.width = "100%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -929,7 +929,7 @@ ggplot(penguins) +
 ]
 
 .pull-right[
-```{r penguins-theme-elements14-out, ref.label = "penguins-theme-elements14", echo = FALSE, warning = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r penguins-theme-elements14-out, ref.label = "penguins-theme-elements14", echo = FALSE, warning = FALSE, out.width = "100%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -953,7 +953,7 @@ ggplot(penguins) +
 ]
 
 .pull-right[
-```{r penguins-theme-elements15-out, ref.label = "penguins-theme-elements15", echo = FALSE, warning = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r penguins-theme-elements15-out, ref.label = "penguins-theme-elements15", echo = FALSE, warning = FALSE, out.width = "100%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -976,7 +976,7 @@ ggplot(penguins) +
 ]
 
 .pull-right[
-```{r penguins-theme-elements16-out, ref.label = "penguins-theme-elements16", echo = FALSE, warning = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r penguins-theme-elements16-out, ref.label = "penguins-theme-elements16", echo = FALSE, warning = FALSE, out.width = "100%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -1000,7 +1000,7 @@ ggplot(penguins) +
 ]
 
 .pull-right[
-```{r penguins-theme-elements17-out, ref.label = "penguins-theme-elements17", echo = FALSE, warning = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r penguins-theme-elements17-out, ref.label = "penguins-theme-elements17", echo = FALSE, warning = FALSE, out.width = "100%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -1025,7 +1025,7 @@ ggplot(penguins) +
 ]
 
 .pull-right[
-```{r penguins-theme-elements18-out, ref.label = "penguins-theme-elements18", echo = FALSE, warning = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r penguins-theme-elements18-out, ref.label = "penguins-theme-elements18", echo = FALSE, warning = FALSE, out.width = "100%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -1055,7 +1055,7 @@ ggplot(penguins) +
 ]
 
 .pull-right[
-```{r penguins-theme-elements19-out, ref.label = "penguins-theme-elements19", echo = FALSE, warning = FALSE, fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
+```{r penguins-theme-elements19-out, ref.label = "penguins-theme-elements19", echo = FALSE, warning = FALSE, out.width = "100%", fig.width = 5.5, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 

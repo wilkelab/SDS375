@@ -13,7 +13,7 @@ output:
       slideNumberFormat: ''
       titleSlideClass: [center, middle]
 params:
-  cache: TRUE
+  cache: FALSE
 ---
 
 ```{r setup, include=FALSE, echo=FALSE, message = FALSE}
@@ -35,7 +35,7 @@ theme_colorspace <- function(size = 12) {
   panel_border(color = "black", size = 0.4) +
   theme(
     axis.ticks.length = grid::unit(0, "pt"),
-    axis.ticks = element_line(size = 0.2, color = "black"),
+    axis.ticks = element_line(linewidth = 0.2, color = "black"),
     strip.text = element_text(size = size)
   )
 }
@@ -76,7 +76,7 @@ R | G | B | hex code | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;color&nbsp;&nbsp;&nbs
 ## The RGB color space
 
 .center[
-```{r rgb-viz, echo = FALSE, cache = params$cache, fig.width = 10, fig.asp = .5, dev = "svg"}
+```{r rgb-viz, echo = FALSE, cache = params$cache, out.width = "85%", fig.width = 10, fig.asp = .5, dev = "svg"}
 rgb_by_b <- expand_grid(
   R = seq(0, 255, by = 2),
   G = seq(0, 255, by = 2),
@@ -132,7 +132,7 @@ class: center middle
 ]
 
 .pull-right.move-up-1em[
-```{r hsv-viz-single, echo = FALSE, cache = params$cache, fig.width = 5, fig.asp = 1, dev = "svg"}
+```{r hsv-viz-single, echo = FALSE, cache = params$cache, out.width = "100%", fig.width = 5, fig.asp = 1, dev = "svg"}
 hsv_by_h <- expand_grid(
   H = seq(0, 330, by = 30),
   S = seq(0, 1, by = .01),
@@ -173,7 +173,7 @@ hsv_by_h %>%
 ## The HSV color space
 
 .center[
-```{r hsv-viz, echo = FALSE, cache = params$cache, fig.width = 10, fig.asp = .5, dev = "svg"}
+```{r hsv-viz, echo = FALSE, cache = params$cache, out.width = "85%", fig.width = 10, fig.asp = .5, dev = "svg"}
 hsv_by_h %>%
   ggplot(aes(S, V, fill = hex)) +
   geom_raster(na.rm = TRUE) +
@@ -215,7 +215,7 @@ hsv_by_h %>%
 ]
 
 .pull-right.move-up-1em[
-```{r hls-viz-single, echo = FALSE, cache = params$cache, fig.width = 5, fig.asp = 1, dev = "svg"}
+```{r hls-viz-single, echo = FALSE, cache = params$cache, out.width = "100%", fig.width = 5, fig.asp = 1, dev = "svg"}
 hls_by_h <- expand_grid(
   H = seq(0, 330, by = 30),
   L = seq(0, 1, by = .01),
@@ -256,7 +256,7 @@ hls_by_h %>%
 ## The HLS color space
 
 .center[
-```{r hls-viz, echo = FALSE, cache = params$cache, fig.width = 10, fig.asp = .5, dev = "svg"}
+```{r hls-viz, echo = FALSE, cache = params$cache, out.width = "85%", fig.width = 10, fig.asp = .5, dev = "svg"}
 hls_by_h %>%
   ggplot(aes(S, L, fill = hex)) +
   geom_raster(na.rm = TRUE) +
@@ -304,7 +304,7 @@ class: center middle
 ]
 
 .pull-right.move-up-2em[
-```{r luv-viz-single, echo = FALSE, cache = params$cache, fig.width = 5, fig.asp = 1, dev = "svg"}
+```{r luv-viz-single, echo = FALSE, cache = params$cache, out.width = "100%", fig.width = 5, fig.asp = 1, dev = "svg"}
 luv_by_l <- expand_grid(
   L = seq(20, 90, by = 10),
   U = seq(-80, 170, by = 1),
@@ -344,7 +344,7 @@ luv_by_l %>%
 ## The Luv color space
 
 .center[
-```{r luv-viz, echo = FALSE, cache = params$cache, fig.width = 10, fig.asp = .5, dev = "svg"}
+```{r luv-viz, echo = FALSE, cache = params$cache, out.width = "85%", fig.width = 10, fig.asp = .5, dev = "svg"}
 luv_by_l %>%
   ggplot(aes(U, V, fill = hex)) +
   geom_raster(na.rm = TRUE) +
@@ -374,7 +374,7 @@ luv_by_l %>%
 ## The HCL color space: polar Luv
 
 .center.move-up-1em[
-```{r hcl-viz-single, echo = FALSE, cache = params$cache, fig.width = 5.5, fig.asp = 1, dev = "svg"}
+```{r hcl-viz-single, echo = FALSE, cache = params$cache, out.width = "50%", fig.width = 5.5, fig.asp = 1, dev = "svg"}
 
 rC <- 60
 hue_df <- tibble(
@@ -401,11 +401,11 @@ luv_by_l %>%
   geom_segment(
     data = chroma_df,
     aes(x = 0, y = 0, xend = U, yend = V),
-    size = 0.2
+    linewidth = 0.2
   ) +
   geom_path(
     data = hue_df,
-    size = 0.2
+    linewidth = 0.2
   ) +
   geom_text(
     data = labels_df,
@@ -444,7 +444,7 @@ luv_by_l %>%
 ## The HCL color space: polar Luv
 
 .move-up-1em.center[
-```{r cl-planes, echo = FALSE, cache = params$cache, fig.width = 9, fig.asp = .6, dev = "svg"}
+```{r cl-planes, echo = FALSE, cache = params$cache, out.width = "80%", fig.width = 9, fig.asp = .6, dev = "svg"}
 hcl_by_h <- expand_grid(
   L = seq(1, 99, by = 0.5),
   C = seq(0, 155, by = 1),

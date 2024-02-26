@@ -12,9 +12,15 @@
     <textarea id="source">
 class: center, middle, title-slide
 
+.title[
 # Color spaces and color-vision deficiency
+]
+.author[
 ### Claus O. Wilke
-### last updated: 2022-03-21
+]
+.date[
+### last updated: 2024-02-26
+]
 
 ---
 
@@ -56,7 +62,7 @@ R | G | B | hex code | &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nb
 ## The RGB color space
 
 .center[
-![](color-spaces_files/figure-html/rgb-viz-1.svg)&lt;!-- --&gt;
+&lt;img src="color-spaces_files/figure-html/rgb-viz-1.svg" width="85%" /&gt;
 ]
 
 ---
@@ -81,7 +87,7 @@ class: center middle
 ]
 
 .pull-right.move-up-1em[
-![](color-spaces_files/figure-html/hsv-viz-single-1.svg)&lt;!-- --&gt;
+&lt;img src="color-spaces_files/figure-html/hsv-viz-single-1.svg" width="100%" /&gt;
 ]
 
 
@@ -90,7 +96,7 @@ class: center middle
 ## The HSV color space
 
 .center[
-![](color-spaces_files/figure-html/hsv-viz-1.svg)&lt;!-- --&gt;
+&lt;img src="color-spaces_files/figure-html/hsv-viz-1.svg" width="85%" /&gt;
 ]
 
 ---
@@ -109,7 +115,7 @@ class: center middle
 ]
 
 .pull-right.move-up-1em[
-![](color-spaces_files/figure-html/hls-viz-single-1.svg)&lt;!-- --&gt;
+&lt;img src="color-spaces_files/figure-html/hls-viz-single-1.svg" width="100%" /&gt;
 
 ]
 
@@ -118,7 +124,7 @@ class: center middle
 ## The HLS color space
 
 .center[
-![](color-spaces_files/figure-html/hls-viz-1.svg)&lt;!-- --&gt;
+&lt;img src="color-spaces_files/figure-html/hls-viz-1.svg" width="85%" /&gt;
 ]
 
 ---
@@ -143,7 +149,7 @@ class: center middle
 ]
 
 .pull-right.move-up-2em[
-![](color-spaces_files/figure-html/luv-viz-single-1.svg)&lt;!-- --&gt;
+&lt;img src="color-spaces_files/figure-html/luv-viz-single-1.svg" width="100%" /&gt;
 ]
 
 
@@ -152,7 +158,7 @@ class: center middle
 ## The Luv color space
 
 .center[
-![](color-spaces_files/figure-html/luv-viz-1.svg)&lt;!-- --&gt;
+&lt;img src="color-spaces_files/figure-html/luv-viz-1.svg" width="85%" /&gt;
 ]
 
 ---
@@ -160,7 +166,7 @@ class: center middle
 ## The HCL color space: polar Luv
 
 .center.move-up-1em[
-![](color-spaces_files/figure-html/hcl-viz-single-1.svg)&lt;!-- --&gt;
+&lt;img src="color-spaces_files/figure-html/hcl-viz-single-1.svg" width="50%" /&gt;
 ]
 
 
@@ -169,7 +175,7 @@ class: center middle
 ## The HCL color space: polar Luv
 
 .move-up-1em.center[
-![](color-spaces_files/figure-html/cl-planes-1.svg)&lt;!-- --&gt;
+&lt;img src="color-spaces_files/figure-html/cl-planes-1.svg" width="80%" /&gt;
 ]
 
 [//]: # "segment ends here"
@@ -389,6 +395,19 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
 (function() {
   "use strict"
   // Replace <script> tags in slides area to make them executable
