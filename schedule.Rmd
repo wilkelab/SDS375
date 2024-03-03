@@ -112,6 +112,19 @@ knitr::opts_chunk$set(echo = FALSE)
 - [Slides](slides/color-spaces.html)  
 - [Worksheet](worksheets/color-spaces.R)
 
+### 15. Mar 5, 2024—Functions and functional programming
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/functional-programming.html)  
+- [Worksheet](worksheets/functional-programming.Rmd)
+
+### 16. Mar 7, 2024—Visualizing trends
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/visualizing-trends.html)  
+- [Worksheet](worksheets/visualizing-trends.Rmd)
 
 
 ## Homeworks

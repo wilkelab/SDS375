@@ -35,7 +35,7 @@ cars93 <- read_csv(here("datasets", "cars93.csv"))
 ## We visualize linear trends with regression lines
 
 .center[
-```{r blue-jays-scatter, echo = FALSE, message = FALSE, fig.width = 6, fig.asp = 3.2/4, dev = "svg"}
+```{r blue-jays-scatter, echo = FALSE, message = FALSE, out.width = "55%", fig.width = 6, fig.asp = 3.2/4, dev = "svg"}
 blue_jays %>%
   ggplot(aes(body_mass_g, head_length_mm)) + 
   geom_point(aes(fill = "blue jay birds"), pch = 21, color = "white", size = 2.5) +
@@ -80,7 +80,7 @@ Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reil
 ## We visualize linear trends with regression lines
 
 .center[
-```{r blue-jays-scatter-lm, echo = FALSE, message = FALSE, fig.width = 6, fig.asp = 3.2/4, dev = "svg"}
+```{r blue-jays-scatter-lm, echo = FALSE, message = FALSE, out.width = "55%", fig.width = 6, fig.asp = 3.2/4, dev = "svg"}
 blue_jays %>%
   ggplot(aes(body_mass_g, head_length_mm)) + 
   geom_point(aes(fill = "blue jay birds"), pch = 21, color = "white", size = 2.5) +
@@ -125,7 +125,7 @@ Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reil
 ## We visualize linear trends with regression lines
 
 .center[
-```{r blue-jays-scatter-line-sex, echo = FALSE, message = FALSE, fig.width = 6, fig.asp = 3.2/4, dev = "svg"}
+```{r blue-jays-scatter-line-sex, echo = FALSE, message = FALSE, out.width = "55%", fig.width = 6, fig.asp = 3.2/4, dev = "svg"}
 blue_jays %>%
   ggplot(aes(body_mass_g, head_length_mm)) + 
   geom_point(aes(fill = sex), pch = 21, color = "white", size = 2.5) +
@@ -172,7 +172,7 @@ Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reil
 ## We visualize linear trends with regression lines
 
 .center[
-```{r blue-jays-scatter-female, echo = FALSE, message = FALSE, fig.width = 6, fig.asp = 3.2/4, dev = "svg"}
+```{r blue-jays-scatter-female, echo = FALSE, message = FALSE, out.width = "55%", fig.width = 6, fig.asp = 3.2/4, dev = "svg"}
 blue_jays %>%
   filter(sex == "F") %>%
   ggplot(aes(body_mass_g, head_length_mm, color = sex, fill = sex)) + 
@@ -218,7 +218,7 @@ Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reil
 ## We visualize linear trends with regression lines
 
 .center[
-```{r blue-jays-scatter-line-female, echo = FALSE, message = FALSE, fig.width = 6, fig.asp = 3.2/4, dev = "svg"}
+```{r blue-jays-scatter-line-female, echo = FALSE, message = FALSE, out.width = "55%", fig.width = 6, fig.asp = 3.2/4, dev = "svg"}
 blue_jays %>%
   filter(sex == "F") %>%
   ggplot(aes(body_mass_g, head_length_mm, color = sex, fill = sex)) + 
@@ -265,7 +265,7 @@ Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reil
 ## We visualize linear trends with regression lines
 
 .center[
-```{r blue-jays-scatter-male, echo = FALSE, message = FALSE, fig.width = 6, fig.asp = 3.2/4, dev = "svg"}
+```{r blue-jays-scatter-male, echo = FALSE, message = FALSE, out.width = "55%", fig.width = 6, fig.asp = 3.2/4, dev = "svg"}
 blue_jays %>%
   filter(sex == "M") %>%
   ggplot(aes(body_mass_g, head_length_mm, color = sex, fill = sex)) + 
@@ -311,7 +311,7 @@ Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reil
 ## We visualize linear trends with regression lines
 
 .center[
-```{r blue-jays-scatter-line-male, echo = FALSE, message = FALSE, fig.width = 6, fig.asp = 3.2/4, dev = "svg"}
+```{r blue-jays-scatter-line-male, echo = FALSE, message = FALSE, out.width = "55%", fig.width = 6, fig.asp = 3.2/4, dev = "svg"}
 blue_jays %>%
   filter(sex == "M") %>%
   ggplot(aes(body_mass_g, head_length_mm, color = sex, fill = sex)) + 
@@ -357,7 +357,7 @@ Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reil
 ## We visualize linear trends with regression lines
 
 .center[
-```{r blue-jays-scatter-sex-line, echo = FALSE, message = FALSE, fig.width = 6, fig.asp = 3.2/4, dev = "svg"}
+```{r blue-jays-scatter-sex-line, echo = FALSE, message = FALSE, out.width = "55%", fig.width = 6, fig.asp = 3.2/4, dev = "svg"}
 blue_jays %>%
   ggplot(aes(body_mass_g, head_length_mm, color = sex, fill = sex)) + 
   geom_point(pch = 21, color = "white", size = 2.5) +
@@ -402,7 +402,7 @@ Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reil
 ## Exponential trends are linear trends on a log scale
 
 .center[
-```{r biorxiv-nofit, echo = FALSE, fig.width = 7, fig.asp = 0.618, dev = "svg"}
+```{r biorxiv-nofit, echo = FALSE, out.width = "65%", fig.width = 7, fig.asp = 0.618, dev = "svg"}
 biorxiv_growth <- preprints %>%
   filter(archive == "bioRxiv", count > 0)
 
@@ -454,7 +454,7 @@ Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reil
 ## Exponential trends are linear trends on a log scale
 
 .center[
-```{r biorxiv-expfit, echo = FALSE, fig.width = 7, fig.asp = 0.618, dev = "svg"}
+```{r biorxiv-expfit, echo = FALSE, out.width = "65%", fig.width = 7, fig.asp = 0.618, dev = "svg"}
 biorxiv_growth <- preprints %>%
   filter(archive == "bioRxiv", count > 0)
 
@@ -529,7 +529,7 @@ Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reil
 ## Exponential trends are linear trends on a log scale
 
 .center[
-```{r biorxiv-expfit-logscale, echo = FALSE, fig.width = 7, fig.asp = 0.618, dev = "svg"}
+```{r biorxiv-expfit-logscale, echo = FALSE, out.width = "65%", fig.width = 7, fig.asp = 0.618, dev = "svg"}
 biorxiv_growth <- preprints %>%
   filter(archive == "bioRxiv", count > 0)
 
@@ -609,7 +609,7 @@ Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reil
 ## Exponential trends are linear trends on a log scale
 
 .center[
-```{r biorxiv-logscale, echo = FALSE, fig.width = 7, fig.asp = 0.618, dev = "svg"}
+```{r biorxiv-logscale, echo = FALSE, out.width = "65%", fig.width = 7, fig.asp = 0.618, dev = "svg"}
 ggplot(biorxiv_growth, aes(date_dec, count)) +
   geom_line(data = expfit.df, aes(color = "expfit"), linewidth = .5, linetype = 2) +
   geom_point(aes(fill = "expfit"), shape = NA, na.rm = TRUE) + # dummy for legend
@@ -667,7 +667,7 @@ Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reil
 ## Exponential trends are linear trends on a log scale
 
 .center[
-```{r biorxiv-logscale-doublefit, echo = FALSE, warning = FALSE, fig.width = 7, fig.asp = 0.618, dev = "svg"}
+```{r biorxiv-logscale-doublefit, echo = FALSE, warning = FALSE, out.width = "65%", fig.width = 7, fig.asp = 0.618, dev = "svg"}
 ggplot(biorxiv_growth, aes(date_dec, count)) +
   geom_line(data = expfit.df, aes(color = "expfit"), linewidth = .5, linetype = 2) +
   geom_point(aes(fill = "expfit"), shape = NA, na.rm = TRUE) + # dummy for legend
@@ -721,7 +721,7 @@ Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reil
 ## Detrending: Removing the underlying trend
 
 .center[
-```{r hpi-no-trendline, echo = FALSE, warning = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r hpi-no-trendline, echo = FALSE, warning = FALSE, out.width = "55%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 
 hpi_trends %>%
   filter(state %in% c("California", "Nevada", "West Virginia", "Texas")) %>%
@@ -765,7 +765,7 @@ Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reil
 ## Detrending: Removing the underlying trend
 
 .center[
-```{r hpi-trends, echo = FALSE, warning = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r hpi-trends, echo = FALSE, warning = FALSE, out.width = "55%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 
 hpi_trends %>%
   filter(state %in% c("California", "Nevada", "West Virginia", "Texas")) %>%
@@ -806,7 +806,7 @@ Figure redrawn after [Claus O. Wilke. Fundamentals of Data Visualization. O'Reil
 ## Detrending: Removing the underlying trend
 
 .center[
-```{r hpi-detrended, echo = FALSE, warning = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r hpi-detrended, echo = FALSE, warning = FALSE, out.width = "55%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 
 hpi_trends %>%
   filter(state %in% c("California", "Nevada", "West Virginia", "Texas")) %>%
@@ -892,7 +892,7 @@ ggplot(blue_jays) +
 ]
 
 .xtiny-font.pull-right[
-```{r blue-jays-scatter-gg-out, ref.label = "blue-jays-scatter-gg", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r blue-jays-scatter-gg-out, ref.label = "blue-jays-scatter-gg", echo = FALSE, out.width = "100%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -915,7 +915,7 @@ ggplot(blue_jays) +
 ]
 
 .xtiny-font.pull-right[
-```{r blue-jays-scatter-gg-smooth-out, ref.label = "blue-jays-scatter-gg-smooth", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r blue-jays-scatter-gg-smooth-out, ref.label = "blue-jays-scatter-gg-smooth", echo = FALSE, out.width = "100%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -940,7 +940,7 @@ ggplot(blue_jays) +
 ]
 
 .xtiny-font.pull-right[
-```{r blue-jays-scatter-gg-lm-out, ref.label = "blue-jays-scatter-gg-lm", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r blue-jays-scatter-gg-lm-out, ref.label = "blue-jays-scatter-gg-lm", echo = FALSE, out.width = "100%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -968,7 +968,7 @@ ggplot(blue_jays) +
 ]
 
 .xtiny-font.pull-right[
-```{r blue-jays-scatter-gg-lm-nose-out, ref.label = "blue-jays-scatter-gg-lm-nose", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r blue-jays-scatter-gg-lm-nose-out, ref.label = "blue-jays-scatter-gg-lm-nose", echo = FALSE, out.width = "100%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -998,7 +998,7 @@ ggplot(blue_jays) +
 ]
 
 .xtiny-font.pull-right[
-```{r blue-jays-scatter-gg-sex-out, ref.label = "blue-jays-scatter-gg-sex", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r blue-jays-scatter-gg-sex-out, ref.label = "blue-jays-scatter-gg-sex", echo = FALSE, out.width = "100%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -1025,7 +1025,7 @@ ggplot(cars93) +
 ]
 
 .xtiny-font.pull-right[
-```{r cars-lm-out, ref.label = "cars-lm", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r cars-lm-out, ref.label = "cars-lm", echo = FALSE, out.width = "100%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -1052,7 +1052,7 @@ ggplot(cars93) +
 ]
 
 .xtiny-font.pull-right[
-```{r cars-loess-out, ref.label = "cars-loess", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r cars-loess-out, ref.label = "cars-loess", echo = FALSE, out.width = "100%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -1075,7 +1075,7 @@ ggplot(cars93) +
 ]
 
 .xtiny-font.pull-right[
-```{r cars-loess2-out, ref.label = "cars-loess2", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r cars-loess2-out, ref.label = "cars-loess2", echo = FALSE, out.width = "100%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -1106,7 +1106,7 @@ ggplot(cars93) +
 ]
 
 .xtiny-font.pull-right[
-```{r cars-loess3-out, ref.label = "cars-loess3", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r cars-loess3-out, ref.label = "cars-loess3", echo = FALSE, out.width = "100%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -1135,7 +1135,7 @@ ggplot(cars93) +
 ]
 
 .xtiny-font.pull-right[
-```{r cars-loess4-out, ref.label = "cars-loess4", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r cars-loess4-out, ref.label = "cars-loess4", echo = FALSE, out.width = "100%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -1164,7 +1164,7 @@ ggplot(cars93) +
 ]
 
 .xtiny-font.pull-right[
-```{r cars-loess5-out, ref.label = "cars-loess5", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r cars-loess5-out, ref.label = "cars-loess5", echo = FALSE, out.width = "100%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -1192,7 +1192,7 @@ ggplot(cars93) +
 ]
 
 .xtiny-font.pull-right[
-```{r cars-loess6-out, ref.label = "cars-loess6", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r cars-loess6-out, ref.label = "cars-loess6", echo = FALSE, out.width = "100%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -1219,7 +1219,7 @@ ggplot(cars93) +
 ]
 
 .xtiny-font.pull-right[
-```{r cars-gam-out, ref.label = "cars-gam", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r cars-gam-out, ref.label = "cars-gam", echo = FALSE, out.width = "100%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -1246,7 +1246,7 @@ ggplot(cars93) +
 ]
 
 .xtiny-font.pull-right[
-```{r cars-gam2-out, ref.label = "cars-gam2", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r cars-gam2-out, ref.label = "cars-gam2", echo = FALSE, out.width = "100%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -1274,7 +1274,7 @@ ggplot(cars93) +
 ]
 
 .xtiny-font.pull-right[
-```{r cars-gam3-out, ref.label = "cars-gam3", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r cars-gam3-out, ref.label = "cars-gam3", echo = FALSE, out.width = "100%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
