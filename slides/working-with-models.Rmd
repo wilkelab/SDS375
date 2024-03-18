@@ -30,7 +30,7 @@ update_geom_defaults("point", list(size = 2)) # 2 for full width, 2.5 for half w
 ## How do we obtain information about model fits?
 
 .tiny-font[
-```{r penguins-fits, message = FALSE, warning = FALSE, fig.width = 10, fig.asp = 0.4, dev = "svg"}
+```{r penguins-fits, eval = FALSE}
 penguins %>%
   ggplot(aes(body_mass_g, flipper_length_mm)) +
   geom_point() +
@@ -38,6 +38,12 @@ penguins %>%
   facet_wrap(vars(species))
 ```
 ]
+
+.center[
+```{r penguins-fits-out, ref.label = "penguins-fits", echo = FALSE, message = FALSE, warning = FALSE, out.width = "80%", fig.width = 9, fig.asp = 0.4, dev = "svg"}
+```
+]
+
 
 ---
 
@@ -321,7 +327,7 @@ ggplot(penguins, aes(body_mass_g, flipper_length_mm)) + geom_point() +
 ]
 
 .center[
-```{r penguins-fit-w-labels-out, ref.label = "penguins-fit-w-labels", echo = FALSE, message = FALSE, warning = FALSE, fig.width = 9, fig.asp = 0.4, dev = "svg"}
+```{r penguins-fit-w-labels-out, ref.label = "penguins-fit-w-labels", echo = FALSE, message = FALSE, warning = FALSE, out.width = "80%", fig.width = 9, fig.asp = 0.4, dev = "svg"}
 ```
 ]
 

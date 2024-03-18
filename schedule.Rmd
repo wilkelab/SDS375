@@ -126,6 +126,19 @@ knitr::opts_chunk$set(echo = FALSE)
 - [Slides](slides/visualizing-trends.html)  
 - [Worksheet](worksheets/visualizing-trends.Rmd)
 
+### 17. Mar 19, 2024—Working with models
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/working-with-models.html)  
+- [Worksheet](worksheets/working-with-models.Rmd)
+
+### 18. Mar 21, 2024—Visualizing uncertainty
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/visualizing-uncertainty.html)  
+- [Worksheet](worksheets/visualizing-uncertainty.Rmd)
 
 ## Homeworks
 

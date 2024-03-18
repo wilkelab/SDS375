@@ -19,7 +19,7 @@ class: center, middle, title-slide
 ### Claus O. Wilke
 ]
 .date[
-### last updated: 2023-03-20
+### last updated: 2024-03-18
 ]
 
 ---
@@ -38,9 +38,12 @@ penguins %&gt;%
   geom_smooth(method = "lm", se = FALSE) +
   facet_wrap(vars(species))
 ```
-
-![](working-with-models_files/figure-html/penguins-fits-1.svg)&lt;!-- --&gt;
 ]
+
+.center[
+&lt;img src="working-with-models_files/figure-html/penguins-fits-out-1.svg" width="80%" /&gt;
+]
+
 
 ---
 
@@ -336,11 +339,10 @@ glance(lm_out)
 
 ```
 # A tibble: 1 × 12
-  r.squ…¹ adj.r…² sigma stati…³ p.value    df logLik   AIC   BIC devia…⁴ df.re…⁵
-    &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;int&gt;
-1   0.219   0.214  5.80    41.8 1.34e-9     1  -479.  963.  972.   5008.     149
-# … with 1 more variable: nobs &lt;int&gt;, and abbreviated variable names
-#   ¹​r.squared, ²​adj.r.squared, ³​statistic, ⁴​deviance, ⁵​df.residual
+  r.squared adj.r.squared sigma statistic       p.value    df logLik   AIC   BIC
+      &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1     0.219         0.214  5.80      41.8 0.00000000134     1  -479.  963.  972.
+# ℹ 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;
 ```
 ]
 
@@ -506,13 +508,12 @@ lm_data %&gt;%
 
 ```
 # A tibble: 3 × 13
-  species   r.squared adj.r.sq…¹ sigma stati…²  p.value    df logLik   AIC   BIC
-  &lt;fct&gt;         &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-1 Adelie        0.219      0.214  5.80    41.8 1.34e- 9     1  -479.  963.  972.
-2 Gentoo        0.494      0.490  4.63   118.  1.33e-19     1  -362.  730.  739.
-3 Chinstrap     0.412      0.403  5.51    46.2 3.75e- 9     1  -212.  429.  436.
-# … with 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;, and
-#   abbreviated variable names ¹​adj.r.squared, ²​statistic
+  species   r.squared adj.r.squared sigma statistic  p.value    df logLik   AIC
+  &lt;fct&gt;         &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+1 Adelie        0.219         0.214  5.80      41.8 1.34e- 9     1  -479.  963.
+2 Gentoo        0.494         0.490  4.63     118.  1.33e-19     1  -362.  730.
+3 Chinstrap     0.412         0.403  5.51      46.2 3.75e- 9     1  -212.  429.
+# ℹ 4 more variables: BIC &lt;dbl&gt;, deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;
 ```
 ]
 
@@ -538,13 +539,12 @@ lm_summary
 
 ```
 # A tibble: 3 × 13
-  species   r.squared adj.r.sq…¹ sigma stati…²  p.value    df logLik   AIC   BIC
-  &lt;fct&gt;         &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-1 Adelie        0.219      0.214  5.80    41.8 1.34e- 9     1  -479.  963.  972.
-2 Gentoo        0.494      0.490  4.63   118.  1.33e-19     1  -362.  730.  739.
-3 Chinstrap     0.412      0.403  5.51    46.2 3.75e- 9     1  -212.  429.  436.
-# … with 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;, and
-#   abbreviated variable names ¹​adj.r.squared, ²​statistic
+  species   r.squared adj.r.squared sigma statistic  p.value    df logLik   AIC
+  &lt;fct&gt;         &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+1 Adelie        0.219         0.214  5.80      41.8 1.34e- 9     1  -479.  963.
+2 Gentoo        0.494         0.490  4.63     118.  1.33e-19     1  -362.  730.
+3 Chinstrap     0.412         0.403  5.51      46.2 3.75e- 9     1  -212.  429.
+# ℹ 4 more variables: BIC &lt;dbl&gt;, deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;
 ```
 ]
 
@@ -596,7 +596,7 @@ ggplot(penguins, aes(body_mass_g, flipper_length_mm)) + geom_point() +
 ]
 
 .center[
-![](working-with-models_files/figure-html/penguins-fit-w-labels-out-1.svg)&lt;!-- --&gt;
+&lt;img src="working-with-models_files/figure-html/penguins-fit-w-labels-out-1.svg" width="80%" /&gt;
 ]
 
 [//]: # "segment ends here"

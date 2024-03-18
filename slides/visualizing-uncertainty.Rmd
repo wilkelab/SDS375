@@ -96,7 +96,7 @@ class: center middle
 ## It helps to visualize a set of possible outcomes
 
 .center[
-```{r freq-waffle, fig.width = 4.5, fig.asp = 1, echo = FALSE, dev = "svg"}
+```{r freq-waffle, out.width = "40%", fig.width = 4.5, fig.asp = 1, echo = FALSE, dev = "svg"}
 g <- expand.grid(x = 1:10, y = 1:10)
 
 set.seed(84520)
@@ -120,7 +120,7 @@ data <- data.frame(ratio = c(0.99, 0.9, 0.7)) %>%
 
 data %>% filter(ratio == .9) %>%
   ggplot(aes(x, y, fill = value)) +
-  geom_tile(color = "white", size = 2) +
+  geom_tile(color = "white", linewidth = 2) +
   coord_fixed(expand = FALSE, clip = "off") +
   scale_x_continuous(name = NULL, breaks = NULL) +
   scale_y_continuous(name = NULL, breaks = NULL) +
@@ -154,9 +154,9 @@ Possible outcomes from 100 individual games played
 <br>
 
 .center[
-```{r freq-waffle2, fig.width = 10, fig.asp = 0.45, echo = FALSE, dev = "svg"}
+```{r freq-waffle2, out.width = "90%", fig.width = 10, fig.asp = 0.45, echo = FALSE, dev = "svg"}
 ggplot(data, aes(x, y, fill = value)) +
-  geom_tile(color = "white", size = 1.5) +
+  geom_tile(color = "white", linewidth = 1.5) +
   coord_fixed(expand = FALSE, clip = "off") +
   scale_x_continuous(name = NULL, breaks = NULL) +
   scale_y_continuous(name = NULL, breaks = NULL) +
@@ -216,7 +216,7 @@ class: center middle
 ## Key concepts of statistical sampling
 
 .center[
-```{r sampling-schematic1, echo = FALSE, fig.width = 7, fig.asp = 3/4, dev = "svg"}
+```{r sampling-schematic1, echo = FALSE, out.width = "60%", fig.width = 7, fig.asp = 3/4, dev = "svg"}
 fill_color <- "lightblue"
 
 set.seed(452061)
@@ -305,7 +305,7 @@ p2 <- ggplot(df_sample, aes(x, y)) +
   geom_segment( # vertical bar representing mean
     data = data.frame(x = 1),
     aes(x = mean(df_sample$x), xend = mean(df_sample$x), y = -.2, yend = .2),
-    size = 1.5,
+    linewidth = 1.5,
     color = "#D55E00",
     inherit.aes = FALSE
   ) +
@@ -399,7 +399,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 ## Key concepts of statistical sampling
 
 .center[
-```{r sampling-schematic2, echo = FALSE, fig.width = 7, fig.asp = 3/4, dev = "svg"}
+```{r sampling-schematic2, echo = FALSE, out.width = "60%", fig.width = 7, fig.asp = 3/4, dev = "svg"}
 plot_grid(
   p1,
   p2,
@@ -419,7 +419,7 @@ Figure redrawn from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reill
 ## Key concepts of statistical sampling
 
 .center[
-```{r sampling-schematic3, echo = FALSE, fig.width = 7, fig.asp = 3/4, dev = "svg"}
+```{r sampling-schematic3, echo = FALSE, out.width = "60%", fig.width = 7, fig.asp = 3/4, dev = "svg"}
 plot_grid(
   p1,
   p2,
@@ -451,7 +451,7 @@ Figure from [Claus O. Wilke. Fundamentals of Data Visualization. O'Reilly, 2019.
 ## Example: Highest point reached on Everest in 2019
 
 .center[
-```{r everest-highest-point, echo = FALSE, fig.width = 8, fig.asp = 0.5, dev = "svg"}
+```{r everest-highest-point, echo = FALSE, out.width = "70%", fig.width = 8, fig.asp = 0.5, dev = "svg"}
 everest_2019 <- everest %>%
   filter(!is.na(highpoint_metres) & success == FALSE) %>%
   filter(year == 2019)
@@ -569,7 +569,7 @@ a male climber who climbed with oxygen, summited, and survived
 --
 
 .center[
-```{r everest_margins, echo = FALSE, fig.width = 8, fig.asp = 0.5, dev = "svg"}
+```{r everest_margins, echo = FALSE, out.width = "70%", fig.width = 8, fig.asp = 0.5, dev = "svg"}
 library(margins)
 
 everest_data <- everest %>%
@@ -633,7 +633,7 @@ ggplot(evrst_gg) +
 Other visualization options: half-eye
 
 .center[
-```{r everest_margins2, echo = FALSE, fig.width = 8, fig.asp = 0.5, dev = "svg"}
+```{r everest_margins2, echo = FALSE, out.width = "70%", fig.width = 8, fig.asp = 0.5, dev = "svg"}
 library(ggdist)
 library(distributional)
 
@@ -665,7 +665,7 @@ ggplot(evrst_gg) +
 Other visualization options: gradient interval
 
 .center[
-```{r everest_margins3, echo = FALSE, fig.width = 8, fig.asp = 0.5, dev = "svg"}
+```{r everest_margins3, echo = FALSE, out.width = "70%", fig.width = 8, fig.asp = 0.5, dev = "svg"}
 library(ggdist)
 library(distributional) # for dist_normal()
 
@@ -696,7 +696,7 @@ ggplot(evrst_gg) +
 Other visualization options: quantile dotplot
 
 .center[
-```{r everest_margins4, echo = FALSE, fig.width = 8, fig.asp = 0.5, dev = "svg"}
+```{r everest_margins4, echo = FALSE, out.width = "70%", fig.width = 8, fig.asp = 0.5, dev = "svg"}
 library(ggdist)
 library(distributional) # for dist_normal()
 
@@ -728,7 +728,7 @@ ggplot(evrst_gg) +
 Other visualization options: quantile dotplot
 
 .center[
-```{r everest_margins5, echo = FALSE, fig.width = 8, fig.asp = 0.5, dev = "svg"}
+```{r everest_margins5, echo = FALSE, out.width = "70%", fig.width = 8, fig.asp = 0.5, dev = "svg"}
 library(ggdist)
 library(distributional) # for dist_normal()
 
@@ -761,7 +761,7 @@ ggplot(evrst_gg) +
 Other visualization options: quantile dotplot
 
 .center[
-```{r everest_margins6, echo = FALSE, fig.width = 8, fig.asp = 0.5, dev = "svg"}
+```{r everest_margins6, echo = FALSE, out.width = "70%", fig.width = 8, fig.asp = 0.5, dev = "svg"}
 library(ggdist)
 library(distributional) # for dist_normal()
 
@@ -804,7 +804,7 @@ Example: Relationship between life expectancy and GDP per capita
 ]
 
 .center[
-```{r gapminder-regressions, echo = FALSE, message = FALSE, fig.width = 7, fig.asp = 0.65, dev = "svg"}
+```{r gapminder-regressions, echo = FALSE, message = FALSE, out.width = "60%", fig.width = 7, fig.asp = 0.65, dev = "svg"}
 gapminder %>%
   filter(
     continent != "Oceania",
@@ -836,7 +836,7 @@ Example: Relationship between life expectancy and GDP per capita
 ]
 
 .pull-left[
-```{r gapminder-regressions2, echo = FALSE, message = FALSE, fig.width = 7, fig.asp = 0.65, dev = "svg"}
+```{r gapminder-regressions2, echo = FALSE, message = FALSE, out.width = "95%", fig.width = 7, fig.asp = 0.65, dev = "svg"}
 gapminder %>%
   filter(
     continent != "Oceania",
@@ -861,7 +861,7 @@ gapminder %>%
 
 .pull-right[
 <br>
-```{r gapminder-summary, echo = FALSE, message = FALSE, fig.width = 7, fig.asp = 0.5, dev = "svg"}
+```{r gapminder-summary, echo = FALSE, message = FALSE, out.width = "95%", fig.width = 7, fig.asp = 0.5, dev = "svg"}
 gapminder %>%
   nest(data = -c(continent, year)) %>%
   mutate(
@@ -1027,7 +1027,7 @@ ggplot(lm_data) +
 ]
 
 .pull-right[
-```{r gapminder-model-out, ref.label = "gapminder-model", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r gapminder-model-out, ref.label = "gapminder-model", echo = FALSE, out.width = "100%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -1067,7 +1067,7 @@ lm_data %>%
 ]
 
 .pull-right[
-```{r gapminder-halfeye-out, ref.label = "gapminder-halfeye", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r gapminder-halfeye-out, ref.label = "gapminder-halfeye", echo = FALSE, out.width = "100%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -1100,7 +1100,7 @@ lm_data %>%
 ]
 
 .pull-right[
-```{r gapminder-gradinterval-out, ref.label = "gapminder-gradinterval", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r gapminder-gradinterval-out, ref.label = "gapminder-gradinterval", echo = FALSE, out.width = "100%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -1134,7 +1134,7 @@ lm_data %>%
 ]
 
 .pull-right[
-```{r gapminder-quantiledots-out, ref.label = "gapminder-quantiledots", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r gapminder-quantiledots-out, ref.label = "gapminder-quantiledots", echo = FALSE, out.width = "100%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -1168,7 +1168,7 @@ lm_data %>%
 ]
 
 .pull-right[
-```{r gapminder-quantiledots2-out, ref.label = "gapminder-quantiledots2", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r gapminder-quantiledots2-out, ref.label = "gapminder-quantiledots2", echo = FALSE, out.width = "100%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
