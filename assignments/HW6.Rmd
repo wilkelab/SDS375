@@ -1,0 +1,65 @@
+---
+title: "Homework 6"
+output:
+  html_document:
+    theme:
+      version: 4
+---
+
+```{r global_options, include=FALSE}
+library(knitr)
+library(tidyverse)
+library(lubridate)
+library(colorspace)
+library(ggridges)
+library(ggforce)
+opts_chunk$set(fig.align="center", fig.height=4, fig.width=5.5)
+
+# data prep:
+sf_trees <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-01-28/sf_trees.csv')
+
+tree_species <- c(
+  "Tristaniopsis laurina :: Swamp Myrtle",
+  "Lophostemon confertus :: Brisbane Box",
+  "Magnolia grandiflora :: Southern Magnolia",
+  "Pittosporum undulatum :: Victorian Box"
+)
+
+trees <- sf_trees %>%
+  filter(
+    !is.na(date),
+    !is.na(dbh),
+    species %in% tree_species
+  ) %>%
+  mutate(
+    year = year(ymd(date))
+  ) %>%
+  filter(
+    year >= 1969,
+    dbh < 40
+  ) %>%
+  select(species, year, diameter = dbh)
+```
+
+**This homework is due on Apr 4, 2024 at 11:00pm. Please submit as a pdf file on Canvas.**
+
+We will work with the dataset `trees` that contains information about various trees in San Francisco. You can find out more about this dataset here: https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-01-28/readme.md
+
+The dataset we will be working with here has been simplified and cleaned up and contains three columns, `species` (the tree species), `year` (the year the tree was planted), and `diameter` (the diameter of the tree).
+```{r}
+trees
+```
+
+For this homework, you will be visualizing this dataset. Pick any visualization you like, but use all three columns of the dataset. Appropriate visualizations may include but are not limited to scatter plots, strip charts, box plots, sina plots, density plots, histograms, or ridgeline plots.
+
+**Problem 1: (10 pts)** Make the worst possible visualization of this dataset you can imagine. Really make it ugly. Don't hold back. For full points, you must customize the plot theme, axes, color scales (if used).
+
+```{r}
+# your code here
+```
+
+**Problem 2: (10 pts)** Now make the best possible visualization of this dataset you can imagine. Try your best to come up with a beautiful, polished, publication-quality visualization. For full points, you must customize the plot theme, axes, color scales (if used). Also, for full points, the plot must be legible and clear.
+
+```{r}
+# your code here
+```
