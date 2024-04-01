@@ -154,6 +154,20 @@ knitr::opts_chunk$set(echo = FALSE)
 - [Slides](slides/dimension-reduction-2.html)  
 - [Worksheet](worksheets/dimension-reduction-2.Rmd)
 
+### 21. Apr 2, 2024—Clustering
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/clustering.html)  
+- [Worksheet](worksheets/clustering.Rmd)
+
+### 22. Apr 4, 2024—Hierarchical clustering
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/hierarchical-clustering.html)  
+- [Worksheet](worksheets/hierarchical-clustering.Rmd)
+
 
 ## Homeworks
 
@@ -204,6 +218,11 @@ All homeworks are due by 11:00pm on the day they are due. Homeworks need to be s
 
 ### Homework 7 (due Apr 11, 2024)
 
+<p class="nospace">Materials:</p>
+
+- [R Markdown template](assignments/HW7.Rmd)
+- [HTML](assignments/HW7.html)
+
 
 ## Projects
 
@@ -232,6 +251,11 @@ Please use the example and the solutions from Project 1 as examples for Project 
 
 ### Project 3 (due Apr 18, 2024)
 
+<p class="nospace">Materials:</p>
+
+- [Instructions](assignments/Project_3_instructions.html)
+- [Project Template (Rmd)](assignments/Project_3.Rmd)
+- [Project Template (HTML)](assignments/Project_3.html)
 
 ## Reuse {.appendix}
 

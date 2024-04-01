@@ -1,0 +1,47 @@
+---
+title: "Project 3"
+output:
+  html_document:
+    theme:
+      version: 4
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+In this project, you will be working with a dataset of your own choosing. **Important:** The dataset needs to be picked from the [TidyTuesday project,](https://github.com/rfordatascience/tidytuesday/tree/master/data/2023), and it needs to be one that has been released between May 30, 2023 and December 26, 2023 (both dates inclusive).
+
+**Hints:**
+
+- Read in your data with `readr::read_csv()`, as we have done in prior projects. **Do not use the tidytuesdayR package.** The TidyTuesday site explains for each dataset how it can be read with `readr::read_csv()`, under "Get the data here", part "Or read in the data manually".
+  
+- Make sure your question is actually a question, and not a veiled instruction to perform a particular analysis.
+
+- Adjust `fig.width` and `fig.height` in the chunk headers to customize figure sizing and figure aspect ratios. These numbers are measured in inches and will usually fall between 4 and 10.
+
+You can delete these instructions from your project. Please also delete text such as *Your approach here* or `# Code for figure 1 here`.
+
+**Introduction:** *Your introduction here.*
+
+**Question:** *Your question here.*
+
+**Approach:** *Your approach here.*
+
+**Analysis:**
+
+```{r}
+# Data loading/wrangling/analysis code here
+```
+
+```{r fig.width = 5, fig.height = 5}
+# Code for figure 1 here
+```
+
+```{r fig.width = 5, fig.height = 5}
+# Code for figure 2 here
+```
+
+**Discussion:** *Your discussion of results here.*
