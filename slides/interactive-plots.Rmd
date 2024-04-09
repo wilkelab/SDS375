@@ -20,7 +20,6 @@ knitr::opts_chunk$set(comment = "")
 
 library(tidyverse)
 library(colorspace)
-library(colorblindr)
 library(cowplot)
 library(ggrepel)
 library(ggiraph)
@@ -114,7 +113,7 @@ iris_scatter <- iris %>%
   ) +
   theme_minimal_grid() +
   theme(
-    legend.title.align = 0.5,
+    legend.title = element_text(hjust = 0.5),
     legend.text = element_text(face = "italic"),
     legend.spacing.y = unit(3.5, "pt"),
     plot.margin = margin(7, 7, 3, 1.5)
@@ -194,7 +193,7 @@ iris_scatter <- iris %>%
   ) +
   theme_minimal_grid() +
   theme(
-    legend.title.align = 0.5,
+    legend.title = element_text(hjust = 0.5),
     legend.text = element_text(face = "italic"),
     legend.spacing.y = unit(3.5, "pt"),
     plot.margin = margin(7, 7, 3, 1.5)
@@ -277,7 +276,7 @@ iris_scatter <- iris %>%
   ) +
   theme_minimal_grid() +
   theme(
-    legend.title.align = 0.5,
+    legend.title = element_text(hjust = 0.5),
     legend.text = element_text(face = "italic"),
     legend.spacing.y = unit(3.5, "pt"),
     plot.margin = margin(7, 7, 3, 1.5)
@@ -502,7 +501,7 @@ iris_scatter
 ]
 
 .pull-right.move-up-1em[
-```{r iris-no-girafe-demo-out, ref.label="iris-no-girafe-demo", echo=FALSE, warning=FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r iris-no-girafe-demo-out, ref.label="iris-no-girafe-demo", echo=FALSE, warning=FALSE, out.width = "100%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 
 .small-font[

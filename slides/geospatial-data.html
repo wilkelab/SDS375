@@ -19,7 +19,7 @@ class: center, middle, title-slide
 ### Claus O. Wilke
 ]
 .date[
-### last updated: 2023-04-10
+### last updated: 2024-04-08
 ]
 
 ---
@@ -304,6 +304,41 @@ Artwork by &lt;a href="https://twitter.com/allison_horst/status/1071456081308614
 
 ---
 
+## Getting the data
+
+We'll be working with the `texas_income` dataset:
+
+.tiny-font[
+
+```r
+texas_income &lt;- readRDS(url("https://wilkelab.org/SDS375/datasets/Texas_income.rds"))
+
+texas_income
+```
+
+```
+Simple feature collection with 254 features and 4 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: -106.6456 ymin: 25.83738 xmax: -93.50829 ymax: 36.5007
+Geodetic CRS:  NAD83
+First 10 features:
+    FIPS    county median_income  moe                       geometry
+1  48001  Anderson         41327 1842 MULTIPOLYGON (((-96.0648 31...
+2  48003   Andrews         70423 6038 MULTIPOLYGON (((-103.0647 3...
+3  48005  Angelina         44223 1611 MULTIPOLYGON (((-95.00488 3...
+4  48007   Aransas         41690 3678 MULTIPOLYGON (((-96.8229 28...
+5  48009    Archer         60275 5182 MULTIPOLYGON (((-98.95382 3...
+6  48011 Armstrong         59737 4968 MULTIPOLYGON (((-101.6294 3...
+7  48013  Atascosa         52192 3005 MULTIPOLYGON (((-98.80479 2...
+8  48015    Austin         53687 3810 MULTIPOLYGON (((-96.62085 3...
+9  48017    Bailey         37397 8652 MULTIPOLYGON (((-103.0469 3...
+10 48019   Bandera         49863 7193 MULTIPOLYGON (((-99.60332 2...
+```
+]
+
+---
+
 ## The **sf** package: Simple Features in R
 
 .tiny-font[
@@ -410,7 +445,7 @@ ggplot(texas_income) +
 ]
 
 .pull-right.width-50[
-![](geospatial-data_files/figure-html/texas-no-aes-out-1.svg)&lt;!-- --&gt;
+&lt;img src="geospatial-data_files/figure-html/texas-no-aes-out-1.svg" width="100%" /&gt;
 
 ]
 
@@ -430,7 +465,7 @@ texas_income %&gt;%
 ]
 
 .pull-right.width-50[
-![](geospatial-data_files/figure-html/texas-sf-filter-out-1.svg)&lt;!-- --&gt;
+&lt;img src="geospatial-data_files/figure-html/texas-sf-filter-out-1.svg" width="100%" /&gt;
 
 ]
 
@@ -450,7 +485,7 @@ texas_income %&gt;%
 ]
 
 .pull-right.width-50[
-![](geospatial-data_files/figure-html/texas-sf-filter2-out-1.svg)&lt;!-- --&gt;
+&lt;img src="geospatial-data_files/figure-html/texas-sf-filter2-out-1.svg" width="100%" /&gt;
 
 ]
 
@@ -470,7 +505,7 @@ texas_income %&gt;%
 ]
 
 .pull-right.width-50[
-![](geospatial-data_files/figure-html/texas-no-coordsf-out-1.svg)&lt;!-- --&gt;
+&lt;img src="geospatial-data_files/figure-html/texas-no-coordsf-out-1.svg" width="100%" /&gt;
 ]
 
 
@@ -498,7 +533,7 @@ texas_income %&gt;%
 ]
 
 .pull-right.width-50[
-![](geospatial-data_files/figure-html/texas-sf-mutate-out-1.svg)&lt;!-- --&gt;
+&lt;img src="geospatial-data_files/figure-html/texas-sf-mutate-out-1.svg" width="100%" /&gt;
 
 ]
 
@@ -535,7 +570,7 @@ We apply styling as usual
 
 
 .pull-right.width-50[
-![](geospatial-data_files/figure-html/texas-sf-mutate2-out-1.svg)&lt;!-- --&gt;
+&lt;img src="geospatial-data_files/figure-html/texas-sf-mutate2-out-1.svg" width="100%" /&gt;
 
 ]
 
@@ -560,7 +595,7 @@ ggplot(texas_income) +
 ]
 
 .pull-right.width-50[
-![](geospatial-data_files/figure-html/texas-styled-out-1.svg)&lt;!-- --&gt;
+&lt;img src="geospatial-data_files/figure-html/texas-styled-out-1.svg" width="100%" /&gt;
 ]
 
 ---
@@ -584,7 +619,7 @@ ggplot(texas_income) +
 ]
 
 .pull-right.width-50[
-![](geospatial-data_files/figure-html/texas-coord-sf-out-1.svg)&lt;!-- --&gt;
+&lt;img src="geospatial-data_files/figure-html/texas-coord-sf-out-1.svg" width="100%" /&gt;
 ]
 
 
@@ -612,7 +647,7 @@ ggplot(texas_income) +
 ]
 
 .pull-right.width-50[
-![](geospatial-data_files/figure-html/texas-coord-sf-3083-out-1.svg)&lt;!-- --&gt;
+&lt;img src="geospatial-data_files/figure-html/texas-coord-sf-3083-out-1.svg" width="100%" /&gt;
 ]
 
 .absolute-bottom-left[
@@ -643,7 +678,7 @@ ggplot(texas_income) +
 ]
 
 .pull-right.width-50[
-![](geospatial-data_files/figure-html/texas-coord-sf-32139-out-1.svg)&lt;!-- --&gt;
+&lt;img src="geospatial-data_files/figure-html/texas-coord-sf-32139-out-1.svg" width="100%" /&gt;
 ]
 
 .absolute-bottom-left[
@@ -674,7 +709,7 @@ ggplot(texas_income) +
 ]
 
 .pull-right.width-50[
-![](geospatial-data_files/figure-html/texas-coord-sf-3857-out-1.svg)&lt;!-- --&gt;
+&lt;img src="geospatial-data_files/figure-html/texas-coord-sf-3857-out-1.svg" width="100%" /&gt;
 ]
 
 .absolute-bottom-left[
@@ -705,7 +740,7 @@ ggplot(texas_income) +
 ]
 
 .pull-right.width-50[
-![](geospatial-data_files/figure-html/texas-coord-sf-4326-out-1.svg)&lt;!-- --&gt;
+&lt;img src="geospatial-data_files/figure-html/texas-coord-sf-4326-out-1.svg" width="100%" /&gt;
 ]
 
 .absolute-bottom-left[
@@ -736,7 +771,7 @@ ggplot(texas_income) +
 ]
 
 .pull-right.width-50[
-![](geospatial-data_files/figure-html/texas-coord-sf-3338-out-1.svg)&lt;!-- --&gt;
+&lt;img src="geospatial-data_files/figure-html/texas-coord-sf-3338-out-1.svg" width="100%" /&gt;
 ]
 
 .absolute-bottom-left[
@@ -765,7 +800,7 @@ ggplot(sf_world) + geom_sf()
 ]]
 
 .pull-right.width-50[
-![](geospatial-data_files/figure-html/world-map-out-1.svg)&lt;!-- --&gt;
+&lt;img src="geospatial-data_files/figure-html/world-map-out-1.svg" width="100%" /&gt;
 ]
 
 ---

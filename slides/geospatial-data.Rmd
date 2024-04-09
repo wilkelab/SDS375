@@ -30,7 +30,7 @@ library(here)
 theme_set(theme_gray(16)) # 16 for full width, 18 for half width 
 update_geom_defaults("point", list(size = 2.0)) # 2 for full width, 2.5 for half width
 
-texas_income <- readRDS(here("datasets", "Texas_income.rds"))
+#texas_income <- readRDS(here("datasets", "Texas_income.rds"))
 ```
 
 background-image: url("https://clauswilke.com/dataviz/geospatial_data_files/figure-html/world-orthographic-1.png")
@@ -310,6 +310,20 @@ Artwork by <a href="https://twitter.com/allison_horst/status/1071456081308614656
 
 ---
 
+## Getting the data
+
+We'll be working with the `texas_income` dataset:
+
+.tiny-font[
+```{r getting-data, message = FALSE}
+texas_income <- readRDS(url("https://wilkelab.org/SDS375/datasets/Texas_income.rds"))
+
+texas_income
+```
+]
+
+---
+
 ## The **sf** package: Simple Features in R
 
 .tiny-font[
@@ -353,7 +367,7 @@ ggplot(texas_income) +
 ]
 
 .pull-right.width-50[
-```{r texas-no-aes-out, cache = params$cache, ref.label = "texas-no-aes", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r texas-no-aes-out, cache = params$cache, ref.label = "texas-no-aes", echo = FALSE, out.width = "100%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 
 ]
@@ -373,7 +387,7 @@ texas_income %>%
 ]
 
 .pull-right.width-50[
-```{r texas-sf-filter-out, cache = params$cache, ref.label = "texas-sf-filter", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r texas-sf-filter-out, cache = params$cache, ref.label = "texas-sf-filter", echo = FALSE, out.width = "100%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 
 ]
@@ -393,7 +407,7 @@ texas_income %>%
 ]
 
 .pull-right.width-50[
-```{r texas-sf-filter2-out, cache = params$cache, ref.label = "texas-sf-filter2", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r texas-sf-filter2-out, cache = params$cache, ref.label = "texas-sf-filter2", echo = FALSE, out.width = "100%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 
 ]
@@ -413,7 +427,7 @@ texas_income %>%
 ]
 
 .pull-right.width-50[
-```{r texas-no-coordsf-out, cache = params$cache, ref.label = "texas-no-coordsf", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r texas-no-coordsf-out, cache = params$cache, ref.label = "texas-no-coordsf", echo = FALSE, out.width = "100%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -441,7 +455,7 @@ texas_income %>%
 ]
 
 .pull-right.width-50[
-```{r texas-sf-mutate-out, cache = params$cache, ref.label = "texas-sf-mutate", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r texas-sf-mutate-out, cache = params$cache, ref.label = "texas-sf-mutate", echo = FALSE, out.width = "100%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 
 ]
@@ -478,7 +492,7 @@ We apply styling as usual
 
 
 .pull-right.width-50[
-```{r texas-sf-mutate2-out, cache = params$cache, ref.label = "texas-sf-mutate2", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r texas-sf-mutate2-out, cache = params$cache, ref.label = "texas-sf-mutate2", echo = FALSE, out.width = "100%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 
 ]
@@ -503,7 +517,7 @@ ggplot(texas_income) +
 ]
 
 .pull-right.width-50[
-```{r texas-styled-out, cache = params$cache, ref.label = "texas-styled", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r texas-styled-out, cache = params$cache, ref.label = "texas-styled", echo = FALSE, out.width = "100%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -527,7 +541,7 @@ ggplot(texas_income) +
 ]
 
 .pull-right.width-50[
-```{r texas-coord-sf-out, cache = params$cache, ref.label = "texas-coord-sf", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r texas-coord-sf-out, cache = params$cache, ref.label = "texas-coord-sf", echo = FALSE, out.width = "100%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -555,7 +569,7 @@ ggplot(texas_income) +
 ]
 
 .pull-right.width-50[
-```{r texas-coord-sf-3083-out, cache = params$cache, ref.label = "texas-coord-sf-3083", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r texas-coord-sf-3083-out, cache = params$cache, ref.label = "texas-coord-sf-3083", echo = FALSE, out.width = "100%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -586,7 +600,7 @@ ggplot(texas_income) +
 ]
 
 .pull-right.width-50[
-```{r texas-coord-sf-32139-out, cache = params$cache, ref.label = "texas-coord-sf-32139", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r texas-coord-sf-32139-out, cache = params$cache, ref.label = "texas-coord-sf-32139", echo = FALSE, out.width = "100%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -617,7 +631,7 @@ ggplot(texas_income) +
 ]
 
 .pull-right.width-50[
-```{r texas-coord-sf-3857-out, cache = params$cache, ref.label = "texas-coord-sf-3857", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r texas-coord-sf-3857-out, cache = params$cache, ref.label = "texas-coord-sf-3857", echo = FALSE, out.width = "100%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -648,7 +662,7 @@ ggplot(texas_income) +
 ]
 
 .pull-right.width-50[
-```{r texas-coord-sf-4326-out, cache = params$cache, ref.label = "texas-coord-sf-4326", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r texas-coord-sf-4326-out, cache = params$cache, ref.label = "texas-coord-sf-4326", echo = FALSE, out.width = "100%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -679,7 +693,7 @@ ggplot(texas_income) +
 ]
 
 .pull-right.width-50[
-```{r texas-coord-sf-3338-out, cache = params$cache, ref.label = "texas-coord-sf-3338", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r texas-coord-sf-3338-out, cache = params$cache, ref.label = "texas-coord-sf-3338", echo = FALSE, out.width = "100%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 
@@ -708,7 +722,7 @@ ggplot(sf_world) + geom_sf()
 ]]
 
 .pull-right.width-50[
-```{r world-map-out, cache = params$cache, ref.label = "world-map", echo = FALSE, fig.width = 6, fig.asp = 0.618, dev = "svg"}
+```{r world-map-out, cache = params$cache, ref.label = "world-map", echo = FALSE, message = FALSE, out.width = "100%", fig.width = 6, fig.asp = 0.618, dev = "svg"}
 ```
 ]
 

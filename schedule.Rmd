@@ -168,6 +168,27 @@ knitr::opts_chunk$set(echo = FALSE)
 - [Slides](slides/hierarchical-clustering.html)  
 - [Worksheet](worksheets/hierarchical-clustering.Rmd)
 
+### 23. Apr 9, 2024—Visualizing geospatial data
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/geospatial-data.html)  
+- [Worksheet](worksheets/geospatial-data.Rmd)
+
+### 24. Apr 11, 2024—Redundant coding, text annotations
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/redundant-coding.html)  
+- [Worksheet](worksheets/redundant-coding.Rmd)
+
+
+### 25. Apr 16, 2024—Interactive plots
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/interactive-plots.html)  
+- [Worksheet](worksheets/interactive-plots.Rmd)
 
 ## Homeworks
 
