@@ -277,6 +277,7 @@ Please use the example and the solutions from Project 1 as examples for Project 
 - [Instructions](assignments/Project_3_instructions.html)
 - [Project Template (Rmd)](assignments/Project_3.Rmd)
 - [Project Template (HTML)](assignments/Project_3.html)
+- [Grading rubric](assignments/Project_3_rubric.pdf)
 
 ## Reuse {.appendix}
 
