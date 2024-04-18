@@ -190,6 +190,13 @@ knitr::opts_chunk$set(echo = FALSE)
 - [Slides](slides/interactive-plots.html)  
 - [Worksheet](worksheets/interactive-plots.Rmd)
 
+### 26. Apr 18, 2024—Overplotting
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/overplotting.html)  
+- [Worksheet](worksheets/overplotting.Rmd)
+
 ## Homeworks
 
 All homeworks are due by 11:00pm on the day they are due. Homeworks need to be submitted as pdf files on Canvas.
