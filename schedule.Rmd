@@ -197,6 +197,26 @@ knitr::opts_chunk$set(echo = FALSE)
 - [Slides](slides/overplotting.html)  
 - [Worksheet](worksheets/overplotting.Rmd)
 
+### 27. Apr 23, 2024—Compound figures/Animations
+
+<p class="nospace">Materials, compound figures:</p>
+
+- [Slides](slides/compound-figures.html)  
+- [Worksheet](worksheets/compound-figures.Rmd)
+
+<p class="nospace">Materials, animations:</p>
+
+- [Slides](slides/animations.html)  
+
+
+### 28. Apr 25, 2024—Web design
+
+<p class="nospace">Materials:</p>
+
+- [Slides](slides/web-design.html)  
+- [Worksheet](slides/web-design-worksheet.html)
+
+
 ## Homeworks
 
 All homeworks are due by 11:00pm on the day they are due. Homeworks need to be submitted as pdf files on Canvas.

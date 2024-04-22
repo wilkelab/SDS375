@@ -13,7 +13,7 @@ output:
       slideNumberFormat: ''
       titleSlideClass: [center, middle]
 params:
-  cache: TRUE
+  cache: FALSE
   nframes: 200
   fps: 20
   res: 150
@@ -29,6 +29,7 @@ library(cowplot)
 library(glue)
 library(ggrepel)
 library(gganimate)
+library(gapminder)
 
 # ggplot2 settings so plots scale well for slide size 
 theme_set(theme_gray(16)) # 16 for full width, 18 for half width 
@@ -42,10 +43,11 @@ gdp_ranked <- read_csv(here("datasets", "gdp_ranked.csv")) %>%
 ## Animations can create more engaging displays
 
 .center.move-up-1em[
-```{r gdp-anim-bar-race, cache = params$cache, echo = FALSE, warning = FALSE, out.width = "50%"}
+```{r gdp-anim-bar-race, echo = FALSE, warning = FALSE, out.width = "50%"}
 p <- gdp_ranked %>%
   mutate(
-    label = scales::comma(gdp, 1),
+    #label = scales::comma(gdp, 1), # doesn't work for some reason
+    label = paste0(gdp),
     highlight = ifelse(country == "China", "China", "other")
   ) %>%
   ggplot(
@@ -93,11 +95,12 @@ p <- gdp_ranked %>%
 
 animate(
   p,
-  width = 6*params$res,
-  height = 6*params$res,
+  width = 6,
+  height = 6,
   res = params$res,
   nframes = params$nframes,
-  fps = params$fps
+  fps = params$fps,
+  device = 'ragg_png'
 )
 ```
 ]
@@ -111,7 +114,7 @@ Data source: World Bank
 ## Animations can create more engaging displays
 
 .center[
-```{r gdp-anim-lines-race, cache = params$cache, echo = FALSE, warning = FALSE, out.width = "66%"}
+```{r gdp-anim-lines-race, echo = FALSE, message = FALSE, warning = FALSE, out.width = "66%"}
 p <- gdp_ranked %>%
   filter(
     #TRUE
@@ -129,6 +132,7 @@ p <- gdp_ranked %>%
     nudge_x = 1,
     direction = "y",
     xlim = c(NA, Inf),
+    segment.color = NA,
     size = 14/.pt
   ) +
   scale_y_log10(name = "GDP (billion USD)", labels = scales::comma) +
@@ -143,11 +147,12 @@ p <- gdp_ranked %>%
 
 animate(
   p,
-  width = 8*params$res,
-  height = 0.618*8*params$res,
+  width = 8,
+  height = 0.618*8,
   res = params$res,
   nframes = params$nframes,
-  fps = params$fps
+  fps = params$fps,
+  device = 'ragg_png'
 )
 ```
 ]
@@ -175,6 +180,21 @@ The **gganimate** package adds powerful animation tools to **ggplot2**
 <img src = "https://gganimate.com/reference/figures/logo.png", width = 15%, style = "position:absolute; top: 19%; right: 13%;" />
 
 ---
+
+## Getting the data
+
+We'll be working with the `gdp_ranked` dataset:
+
+.tiny-font[
+```{r getting-data, message = FALSE}
+gdp_ranked <- read_csv("https://wilkelab.org/SDS375/datasets/gdp_ranked.csv") %>%
+  mutate(rank = fct_rev(factor(rank)))
+
+gdp_ranked
+```
+]
+
+---
 class: center middle
 
 ## How should we think about making an animation?
@@ -184,11 +204,12 @@ class: center middle
 ## Think of an animation as faceting by time
 
 .center.move-up-1em[
-```{r gdp-anim-bar-facets, cache = params$cache, echo = FALSE, warning = FALSE, fig.width = 9, fig.height = 5.33, dev = "svg"}
+```{r gdp-anim-bar-facets, echo = FALSE, warning = FALSE, out.width = "80%", fig.width = 9, fig.height = 5.33, dev = "svg"}
 gdp_ranked %>%
   filter(year > 1985 & year %% 5 == 0) %>%
   mutate(
-    label = scales::comma(gdp, 1),
+    #label = scales::comma(gdp, 1), # doesn't work for some reason
+    label = paste0(gdp),
     highlight = ifelse(country == "China", "China", "other")
   ) %>%
   ggplot(
@@ -227,7 +248,7 @@ gdp_ranked %>%
     axis.ticks.y = element_blank(),
     axis.line.y = element_blank(),
     axis.title.x = element_text(hjust = 1),
-    panel.grid.major.x = element_line(size = 0.4)
+    panel.grid.major.x = element_line(linewidth = 0.4)
   )
 ```
 ]
@@ -242,12 +263,12 @@ gdp_ranked %>%
   filter(year > 1985 & year %% 5 == 0) %>%
   ggplot(aes(gdp, rank)) +
   geom_col(aes(fill = country)) +
-  facet_wrap(vars(year))
+  facet_wrap(~year)
 ```
 ]
 
 .center[
-```{r gdp-facet-demo-out, ref.label = "gdp-facet-demo", cache = params$cache, echo = FALSE, warning = FALSE, fig.width = 6, fig.asp = 0.66, dev = "svg"}
+```{r gdp-facet-demo-out, ref.label = "gdp-facet-demo", echo = FALSE, warning = FALSE, out.width = "50%", fig.width = 6, fig.asp = 0.66, dev = "svg"}
 
 ```
 ]
@@ -267,7 +288,7 @@ gdp_ranked %>%
 ]
 
 .center[
-```{r gdp-bar-race-demo, cache = params$cache, echo = FALSE, warning = FALSE, out.width = "40%"}
+```{r gdp-bar-race-demo, echo = FALSE, warning = FALSE, out.width = "40%"}
 p <- gdp_ranked %>%
   ggplot(aes(gdp, rank, group = country)) +
   geom_col(aes(fill = country)) +
@@ -275,11 +296,12 @@ p <- gdp_ranked %>%
 
 animate(
   p,
-  width = 6*params$res,
-  height = 5*params$res,
+  width = 6,
+  height = 5,
   res = params$res,
   nframes = params$nframes,
-  fps = params$fps
+  fps = params$fps,
+  device = 'ragg_png'
 )
 ```
 ]
@@ -313,7 +335,7 @@ gdp_ranked %>%
 ]
 
 .pull-right.width-40[
-```{r gdp-anim-fancy-out, cache = params$cache, echo = FALSE, warning = FALSE, out.width = "100%"}
+```{r gdp-anim-fancy-out, echo = FALSE, warning = FALSE, out.width = "100%"}
 p <- gdp_ranked %>%
   ggplot(aes(gdp, rank, group = country)) +
   geom_col(aes(fill = country)) +
@@ -335,11 +357,12 @@ p <- gdp_ranked %>%
 
 animate(
   p,
-  width = 6*params$res,
-  height = 6*params$res,
+  width = 6,
+  height = 6,
   res = params$res,
   nframes = params$nframes,
-  fps = params$fps
+  fps = params$fps,
+  device = 'ragg_png'
 )
 ```
 ]
@@ -364,7 +387,7 @@ gdp_ranked %>%
 ]
 
 .pull-right.width-45[
-```{r gdp-line-race-demo-out, cache = params$cache, echo = FALSE, warning = FALSE, out.width = "100%"}
+```{r gdp-line-race-demo-out, echo = FALSE, message = FALSE, warning = FALSE, out.width = "100%"}
 selected <- c("China", "Japan",
   "United States", "Germany", "Brazil")
 
@@ -378,11 +401,12 @@ p <- gdp_ranked %>%
 
 animate(
   p,
-  width = 6*params$res,
-  height = 0.618*6*params$res,
+  width = 6,
+  height = 0.618*6,
   res = params$res,
   nframes = params$nframes,
-  fps = params$fps
+  fps = params$fps,
+  device = 'ragg_png'
 )
 ```
 ]
@@ -403,7 +427,8 @@ gdp_ranked %>%
     hjust = 0,
     nudge_x = 2,
     direction = "y",
-    xlim = c(NA, Inf)
+    xlim = c(NA, Inf),
+    segment.color = NA
   ) +
   scale_y_log10() +
   guides(color = "none") +
@@ -414,7 +439,7 @@ gdp_ranked %>%
 ]
 
 .pull-right.width-45[
-```{r gdp-line-race-labeled-out, cache = params$cache, echo = FALSE, warning = FALSE, out.width = "100%"}
+```{r gdp-line-race-labeled-out, echo = FALSE, message = FALSE, warning = FALSE, out.width = "100%"}
 p <- gdp_ranked %>%
   filter(country %in% selected) %>%
   ggplot(aes(year, gdp, color = country)) +
@@ -425,7 +450,8 @@ p <- gdp_ranked %>%
     hjust = 0,
     nudge_x = 2,
     direction = "y",
-    xlim = c(NA, Inf)
+    xlim = c(NA, Inf),
+    segment.color = NA
   ) +
   scale_y_log10() +
   guides(color = "none") +
@@ -435,11 +461,67 @@ p <- gdp_ranked %>%
 
 animate(
   p,
-  width = 6*params$res,
-  height = 0.618*6*params$res,
+  width = 6,
+  height = 0.618*6,
   res = params$res,
   nframes = params$nframes,
-  fps = params$fps
+  fps = params$fps,
+  device = 'ragg_png'
+)
+```
+]
+
+---
+
+## Reproducing the famous gapminder animation
+
+.xtiny-font.pull-left.width-50[
+```{r gapminder-bubbles, eval = FALSE}
+library(gapminder)
+
+gapminder %>% filter(continent != "Oceania") %>%
+  ggplot() +
+  aes(gdpPercap, lifeExp, size = pop) +
+  geom_point(alpha = 0.7, color = "#0072B2") +
+  scale_size(range = c(2, 12), guide = "none") +
+  scale_x_log10(name = "GDP per capita") +
+  facet_wrap(~continent, nrow = 2) +
+  labs(
+    title = "Year: {frame_time}",
+    y = "life expectancy"
+  ) +
+  transition_time(year) +
+  ease_aes("linear")
+```
+
+See Hans Rosling [video here.](https://www.youtube.com/watch?v=jbkSRLYSojo)
+
+]
+
+.pull-right.width-45[
+```{r gapminder-bubbles-out, echo = FALSE, message = FALSE, warning = FALSE, out.width = "100%"}
+p <- gapminder %>% filter(continent != "Oceania") %>%
+  ggplot() +
+  aes(gdpPercap, lifeExp, size = pop) +
+  geom_point(alpha = 0.7, color = "#0072B2") +
+  scale_size(range = c(2, 12), guide = "none") +
+  scale_x_log10(name = "GDP per capita") +
+  facet_wrap(~continent, nrow = 2) +
+  labs(
+    title = "Year: {frame_time}",
+    y = "life expectancy"
+  ) +
+  transition_time(year) +
+  ease_aes("linear")
+
+animate(
+  p,
+  width = 6,
+  height = 6,
+  res = params$res,
+  nframes = params$nframes,
+  fps = params$fps,
+  device = 'ragg_png'
 )
 ```
 ]

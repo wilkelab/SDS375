@@ -12,9 +12,15 @@
     <textarea id="source">
 class: center, middle, title-slide
 
+.title[
 # Compound figures
+]
+.author[
 ### Claus O. Wilke
-### last updated: 2022-04-25
+]
+.date[
+### last updated: 2024-04-22
+]
 
 ---
 
@@ -330,7 +336,7 @@ p1
 ]
 
 .pull-right.width-55[
-![](compound-figures_files/figure-html/patchwork-demo1-out-1.svg)&lt;!-- --&gt;
+&lt;img src="compound-figures_files/figure-html/patchwork-demo1-out-1.svg" width="100%" /&gt;
 ]
 
 ---
@@ -356,7 +362,7 @@ p2
 ]
 
 .pull-right.width-55[
-![](compound-figures_files/figure-html/patchwork-demo2-out-1.svg)&lt;!-- --&gt;
+&lt;img src="compound-figures_files/figure-html/patchwork-demo2-out-1.svg" width="100%" /&gt;
 ]
 
 ---
@@ -383,7 +389,7 @@ p2 &lt;- ggplot(mtcars) +
 ]
 
 .pull-right.width-55[
-![](compound-figures_files/figure-html/patchwork-demo3-out-1.svg)&lt;!-- --&gt;
+&lt;img src="compound-figures_files/figure-html/patchwork-demo3-out-1.svg" width="100%" /&gt;
 ]
 
 ---
@@ -410,7 +416,7 @@ p2 &lt;- ggplot(mtcars) +
 ]
 
 .pull-right.width-40.move-up-3em[
-![](compound-figures_files/figure-html/patchwork-demo4-out-1.svg)&lt;!-- --&gt;
+&lt;img src="compound-figures_files/figure-html/patchwork-demo4-out-1.svg" width="60%" /&gt;
 ]
 
 ---
@@ -433,7 +439,7 @@ p4 &lt;- ggplot(mtcars) +
 ]
 
 .pull-right.width-60.move-up-1em[
-![](compound-figures_files/figure-html/patchwork-demo5-out-1.svg)&lt;!-- --&gt;
+&lt;img src="compound-figures_files/figure-html/patchwork-demo5-out-1.svg" width="90%" /&gt;
 ]
 
 ---
@@ -453,7 +459,7 @@ Automatic labeling of plots
 ]
 
 .pull-right.width-60.move-up-1em[
-![](compound-figures_files/figure-html/patchwork-demo6-out-1.svg)&lt;!-- --&gt;
+&lt;img src="compound-figures_files/figure-html/patchwork-demo6-out-1.svg" width="90%" /&gt;
 ]
 
 ---
@@ -473,7 +479,7 @@ Automatic labeling of plots
 ]
 
 .pull-right.width-60.move-up-1em[
-![](compound-figures_files/figure-html/patchwork-demo7-out-1.svg)&lt;!-- --&gt;
+&lt;img src="compound-figures_files/figure-html/patchwork-demo7-out-1.svg" width="90%" /&gt;
 ]
 
 ---
@@ -494,7 +500,7 @@ Applying one theme to all plots
 ]
 
 .pull-right.width-60.move-up-1em[
-![](compound-figures_files/figure-html/patchwork-demo8-out-1.svg)&lt;!-- --&gt;
+&lt;img src="compound-figures_files/figure-html/patchwork-demo8-out-1.svg" width="90%" /&gt;
 ]
 
 ---
@@ -518,7 +524,7 @@ Titles and captions
 ]
 
 .pull-right.width-60.move-up-1em[
-![](compound-figures_files/figure-html/patchwork-demo9-out-1.svg)&lt;!-- --&gt;
+&lt;img src="compound-figures_files/figure-html/patchwork-demo9-out-1.svg" width="90%" /&gt;
 ]
 
 
@@ -583,6 +589,19 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
 (function() {
   "use strict"
   // Replace <script> tags in slides area to make them executable

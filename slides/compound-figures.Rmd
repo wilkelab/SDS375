@@ -338,7 +338,7 @@ p1
 ]
 
 .pull-right.width-55[
-```{r patchwork-demo1-out, cache = params$cache, ref.label="patchwork-demo1", fig.width=6., fig.asp = 0.75, echo=FALSE, dev = "svg"}
+```{r patchwork-demo1-out, cache = params$cache, ref.label="patchwork-demo1", out.width = "100%", fig.width=6., fig.asp = 0.75, echo=FALSE, dev = "svg"}
 ```
 ]
 
@@ -364,7 +364,7 @@ p2
 ]
 
 .pull-right.width-55[
-```{r patchwork-demo2-out, cache = params$cache, ref.label="patchwork-demo2", fig.width=6., fig.asp = 0.75, echo=FALSE, dev = "svg"}
+```{r patchwork-demo2-out, cache = params$cache, ref.label="patchwork-demo2", out.width = "100%", fig.width=6., fig.asp = 0.75, echo=FALSE, dev = "svg"}
 ```
 ]
 
@@ -391,7 +391,7 @@ p1 | p2   #<<
 ]
 
 .pull-right.width-55[
-```{r patchwork-demo3-out, cache = params$cache, ref.label="patchwork-demo3", fig.width=6., fig.asp = 0.5, echo=FALSE, dev = "svg"}
+```{r patchwork-demo3-out, cache = params$cache, ref.label="patchwork-demo3", out.width = "100%", fig.width=6., fig.asp = 0.5, echo=FALSE, dev = "svg"}
 ```
 ]
 
@@ -418,7 +418,7 @@ p1 / p2  #<<
 ]
 
 .pull-right.width-40.move-up-3em[
-```{r patchwork-demo4-out, cache = params$cache, ref.label="patchwork-demo4", fig.width=3., fig.asp = 2, echo=FALSE, dev = "svg"}
+```{r patchwork-demo4-out, cache = params$cache, ref.label="patchwork-demo4", out.width = "60%", fig.width=3., fig.asp = 2, echo=FALSE, dev = "svg"}
 ```
 ]
 
@@ -441,7 +441,7 @@ p4 <- ggplot(mtcars) +
 ]
 
 .pull-right.width-60.move-up-1em[
-```{r patchwork-demo5-out, cache = params$cache, ref.label="patchwork-demo5", message = FALSE, fig.width=6., fig.asp = 0.9, echo=FALSE, dev = "svg"}
+```{r patchwork-demo5-out, cache = params$cache, ref.label="patchwork-demo5", message = FALSE, out.width = "90%", fig.width=6., fig.asp = 0.9, echo=FALSE, dev = "svg"}
 ```
 ]
 
@@ -461,7 +461,7 @@ Automatic labeling of plots
 ]
 
 .pull-right.width-60.move-up-1em[
-```{r patchwork-demo6-out, cache = params$cache, ref.label="patchwork-demo6", message = FALSE, fig.width=6., fig.asp = 0.9, echo=FALSE, dev = "svg"}
+```{r patchwork-demo6-out, cache = params$cache, ref.label="patchwork-demo6", message = FALSE, out.width = "90%", fig.width=6., fig.asp = 0.9, echo=FALSE, dev = "svg"}
 ```
 ]
 
@@ -481,7 +481,7 @@ Automatic labeling of plots
 ]
 
 .pull-right.width-60.move-up-1em[
-```{r patchwork-demo7-out, cache = params$cache, ref.label="patchwork-demo7", message = FALSE, fig.width=6., fig.asp = 0.9, echo=FALSE, dev = "svg"}
+```{r patchwork-demo7-out, cache = params$cache, ref.label="patchwork-demo7", message = FALSE, out.width = "90%", fig.width=6., fig.asp = 0.9, echo=FALSE, dev = "svg"}
 ```
 ]
 
@@ -502,7 +502,7 @@ Applying one theme to all plots
 ]
 
 .pull-right.width-60.move-up-1em[
-```{r patchwork-demo8-out, cache = params$cache, ref.label="patchwork-demo8", message = FALSE, fig.width=6., fig.asp = 0.9, echo=FALSE, dev = "svg"}
+```{r patchwork-demo8-out, cache = params$cache, ref.label="patchwork-demo8", message = FALSE, out.width = "90%", fig.width=6., fig.asp = 0.9, echo=FALSE, dev = "svg"}
 ```
 ]
 
@@ -526,7 +526,7 @@ Titles and captions
 ]
 
 .pull-right.width-60.move-up-1em[
-```{r patchwork-demo9-out, cache = params$cache, ref.label="patchwork-demo9", message = FALSE, fig.width=6., fig.asp = 0.9, echo=FALSE, dev = "svg"}
+```{r patchwork-demo9-out, cache = params$cache, ref.label="patchwork-demo9", message = FALSE, out.width = "90%", fig.width=6., fig.asp = 0.9, echo=FALSE, dev = "svg"}
 ```
 ]
 
